@@ -33,6 +33,10 @@ export default function AdminSidebar() {
     const router = useRouter();
     const [collapsed, setCollapsed] = useState(false);
 
+    if (pathname.startsWith("/admin/login")) {
+        return null;
+    }
+
     const supabase = createBrowserClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!

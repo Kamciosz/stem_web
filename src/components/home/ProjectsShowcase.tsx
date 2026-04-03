@@ -185,8 +185,6 @@ export default function ProjectsShowcase() {
       ref={ref}
       className="relative py-12 md:py-14 stone-texture"
     >
-      {/* Background decorative glow */}
-      <div className="absolute bottom-1/4 left-[10%] w-[500px] h-[500px] bg-[var(--color-purple-700)]/4 rounded-full blur-[140px] pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         {/* Section header */}
         <motion.div

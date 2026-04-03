@@ -15,11 +15,11 @@ const sidebarVariants = {
   hidden: { x: "-100%" },
   visible: {
     x: 0,
-    transition: { duration: 0.6, ease, staggerChildren: 0.06, delayChildren: 0.15 },
+    transition: { duration: 0.32, ease, staggerChildren: 0.04, delayChildren: 0.04 },
   },
   exit: {
     x: "-100%",
-    transition: { duration: 0.4, ease },
+    transition: { duration: 0.24, ease },
   },
 };
 

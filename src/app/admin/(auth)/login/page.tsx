@@ -1,10 +1,8 @@
 "use client";
 
-"use client";
-
 import { useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Lock, AlertCircle } from "lucide-react";
 
 export default function AdminLoginPage() {
@@ -13,16 +11,27 @@ export default function AdminLoginPage() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const missingEnv = searchParams.get("error") === "missing_supabase_env";
 
-    const supabase = createBrowserClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const canUseSupabase = Boolean(supabaseUrl && supabaseAnonKey);
+
+    const supabase = canUseSupabase
+        ? createBrowserClient(supabaseUrl!, supabaseAnonKey!)
+        : null;
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setError("");
         setLoading(true);
+
+        if (!supabase) {
+            setError("Brak konfiguracji Supabase na środowisku produkcyjnym.");
+            setLoading(false);
+            return;
+        }
 
         const { error } = await supabase.auth.signInWithPassword({
             email,
@@ -56,6 +65,13 @@ export default function AdminLoginPage() {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
+                        {missingEnv && (
+                            <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm">
+                                <AlertCircle size={16} />
+                                Brakuje zmiennych SUPABASE na Vercelu.
+                            </div>
+                        )}
+
                         {error && (
                             <div className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                                 <AlertCircle size={16} />
@@ -103,7 +119,7 @@ export default function AdminLoginPage() {
 
                         <button
                             type="submit"
-                            disabled={loading}
+                            disabled={loading || !canUseSupabase}
                             className="w-full py-3 rounded-xl bg-[var(--color-purple-600)] hover:bg-[var(--color-purple-500)] disabled:bg-[var(--color-purple-800)] disabled:cursor-not-allowed text-white font-medium transition-all duration-300 glow-purple"
                         >
                             {loading ? "Logowanie..." : "Zaloguj się"}

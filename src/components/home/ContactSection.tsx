@@ -57,8 +57,6 @@ export default function ContactSection() {
       ref={ref}
       className="relative py-12 md:py-14 stone-texture"
     >
-      {/* Background decorative glow */}
-      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[var(--color-purple-700)]/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Left — Info */}

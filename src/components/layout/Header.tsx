@@ -10,7 +10,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const hoverDelayMs = 2500;
+  const hoverDelayMs = 2000;
 
   const openMenu = useCallback(() => setIsMenuOpen(true), []);
 

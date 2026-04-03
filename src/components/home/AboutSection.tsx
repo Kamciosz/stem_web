@@ -40,8 +40,6 @@ export default function AboutSection() {
       ref={ref}
       className="relative py-12 md:py-14 stone-texture"
     >
-      {/* Decorative background glow orb */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--color-purple-700)]/4 rounded-full blur-[150px] pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         {/* Section header */}
         <motion.div
