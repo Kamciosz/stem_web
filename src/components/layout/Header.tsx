@@ -13,69 +13,69 @@ export default function Header() {
   const [isHovering, setIsHovering] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
+  const isHomepage = pathname === "/" || pathname === "/pl" || pathname === "/en";
+  const hoverDelayMs = isHomepage ? 5000 : 3000;
 
   const openMenu = useCallback(() => setIsMenuOpen(true), []);
 
-  // When hovering on logo: start timer → auto-open menu after delay
   useEffect(() => {
-    if (!isHovering || isMenuOpen) return;
-
-    const storageKey = "stem-menu-auto-opened";
-    const alreadyOpened = sessionStorage.getItem(storageKey);
-
-    const isHomepage = pathname === "/" || pathname === "/pl" || pathname === "/en";
-    const delay = isHomepage ? 5000 : 3000;
-
-    // If already auto-opened this session, still allow hover-hold to open
-    timerRef.current = setTimeout(() => {
-      if (!alreadyOpened) sessionStorage.setItem(storageKey, "1");
-      openMenu();
-    }, delay);
-
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [isHovering, isMenuOpen, pathname, openMenu]);
+  }, []);
+
+  function handleMouseEnter() {
+    if (isMenuOpen) return;
+    setIsHovering(true);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      openMenu();
+      setIsHovering(false);
+    }, hoverDelayMs);
+  }
+
+  function handleMouseLeave() {
+    setIsHovering(false);
+    if (timerRef.current) clearTimeout(timerRef.current);
+  }
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40">
-        <div className="flex items-center px-8 py-5 md:px-12 md:py-6 bg-white/[0.02] backdrop-blur-xl border-b border-white/[0.04]" style={{ WebkitBackdropFilter: 'blur(30px) saturate(1.6)' }}>
-          {/* Logo with hover-triggered underline */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, ease }}
-            onHoverStart={() => setIsHovering(true)}
-            onHoverEnd={() => {
-              setIsHovering(false);
-              if (timerRef.current) clearTimeout(timerRef.current);
-            }}
-            className="cursor-pointer"
+      <header className="fixed top-4 left-4 z-40 md:top-6 md:left-6">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1, ease }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className="relative"
+        >
+          <button
+            type="button"
+            onClick={openMenu}
+            className="relative flex items-center gap-2 rounded-xl border border-white/10 bg-black/35 px-4 py-2 backdrop-blur-xl transition-colors hover:border-white/20"
+            style={{ WebkitBackdropFilter: "blur(24px) saturate(1.5)" }}
+            aria-label="Otwórz menu"
           >
-            <Link
-              href="/"
-              className="relative flex items-center gap-2"
-            >
-              <span className="text-lg md:text-xl font-bold tracking-tight text-[var(--color-text-primary)]">
-                STEM
-              </span>
-              <span className="text-lg md:text-xl font-light text-[var(--color-purple-400)]">
-                ×
-              </span>
-              <span className="text-lg md:text-xl font-bold tracking-tight text-[var(--color-text-primary)]">
-                TEB Technikum
-              </span>
+            <span className="text-sm md:text-base font-bold tracking-tight text-[var(--color-text-primary)]">
+              STEM
+            </span>
+            <span className="text-sm md:text-base font-bold tracking-tight text-[var(--color-text-primary)]">
+              x TEB Technikum
+            </span>
 
-              {/* Underline — expands on hover, retracts on leave */}
-              <motion.span
-                className="absolute -bottom-1.5 left-0 h-[2px] bg-gradient-to-r from-[var(--color-purple-600)] via-[var(--color-purple-400)] to-transparent"
-                animate={{ width: isHovering ? "100%" : "0%" }}
-                transition={{ duration: isHovering ? 1.2 : 0.6, ease }}
-              />
-            </Link>
-          </motion.div>
-        </div>
+            {/* Underline fills exactly for 5s/3s and resets on leave. */}
+            <motion.span
+              className="absolute -bottom-1 left-0 h-[2px] bg-gradient-to-r from-[var(--color-purple-600)] via-[var(--color-purple-400)] to-transparent"
+              animate={{ width: isHovering ? "100%" : "0%" }}
+              transition={{ duration: isHovering ? hoverDelayMs / 1000 : 0.22, ease: isHovering ? "linear" : ease }}
+            />
+          </button>
+
+          <Link href="/" className="sr-only">
+            Strona główna
+          </Link>
+        </motion.div>
       </header>
 
       {/* Slide-in Sidebar Menu */}

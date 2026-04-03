@@ -183,14 +183,14 @@ export default function ProjectsShowcase() {
     <section
       id="projects"
       ref={ref}
-      className="relative py-24 md:py-32 stone-texture"
+      className="relative py-12 md:py-14 stone-texture"
     >
       {/* Background decorative glow */}
       <div className="absolute bottom-1/4 left-[10%] w-[500px] h-[500px] bg-[var(--color-purple-700)]/4 rounded-full blur-[140px] pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         {/* Section header */}
         <motion.div
-          className="text-center mb-16 md:mb-24"
+          className="text-center mb-10 md:mb-12"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
@@ -204,7 +204,7 @@ export default function ProjectsShowcase() {
         </motion.div>
 
         {/* Alternating project rows */}
-        <div className="flex flex-col gap-20 md:gap-28">
+        <div className="flex flex-col gap-10 md:gap-12">
           {projects.map((project, index) => (
             <ProjectRow
               key={project.id}
@@ -229,7 +229,7 @@ export default function ProjectsShowcase() {
 
         {/* View all button */}
         <motion.div
-          className="text-center mt-16 md:mt-24"
+          className="text-center mt-10 md:mt-12"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}

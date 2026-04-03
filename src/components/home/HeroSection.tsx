@@ -20,7 +20,7 @@ export default function HeroSection() {
   return (
     <section
       ref={ref}
-      className="relative h-screen flex items-center justify-center overflow-hidden stone-texture vignette"
+      className="relative min-h-[82svh] md:min-h-[90svh] flex items-center justify-center overflow-hidden stone-texture vignette"
     >
       {/* Background gradient layers */}
       <motion.div
@@ -57,15 +57,6 @@ export default function HeroSection() {
         className="relative z-10 flex flex-col items-center text-center px-6"
         style={{ opacity, scale }}
       >
-        {/* Decorative line */}
-        <motion.div
-          className="w-px h-16 mb-8 rounded-full"
-          style={{ background: "linear-gradient(to bottom, transparent, #8b45ff, transparent)" }}
-          initial={{ scaleY: 0 }}
-          animate={{ scaleY: 1 }}
-          transition={{ duration: 1.2, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
-        />
-
         {/* Subtitle */}
         <motion.p
           className="text-sm md:text-base tracking-[0.3em] uppercase text-[var(--color-purple-400)] font-medium mb-4"
@@ -84,7 +75,7 @@ export default function HeroSection() {
           transition={{ duration: 1, delay: 0.7 }}
         >
           <span className="gradient-text">STEM</span>
-          <span className="text-[var(--color-purple-400)] mx-3 md:mx-4 font-extralight">×</span>
+          <span className="text-[var(--color-purple-400)] mx-3 md:mx-4 font-extralight">x</span>
           <span className="text-[var(--color-text-primary)]">TEB</span>
         </motion.h1>
 

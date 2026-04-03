@@ -55,7 +55,7 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={ref}
-      className="relative py-24 md:py-32 stone-texture"
+      className="relative py-12 md:py-14 stone-texture"
     >
       {/* Background decorative glow */}
       <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[var(--color-purple-700)]/5 rounded-full blur-[120px] pointer-events-none" />

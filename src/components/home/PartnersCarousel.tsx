@@ -97,7 +97,7 @@ export default function PartnersCarousel() {
   if (loading) return null;
 
   return (
-    <section ref={ref} className="relative py-16 overflow-hidden">
+    <section ref={ref} className="relative py-6 md:py-8 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <motion.div
           className="text-center mb-10"
@@ -113,7 +113,7 @@ export default function PartnersCarousel() {
         {partners.length === 0 ? (
           /* No partners yet — friendly message */
           <motion.div
-            className="text-center py-12"
+            className="text-center py-6"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}

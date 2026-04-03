@@ -38,14 +38,14 @@ export default function AboutSection() {
     <section
       id="about"
       ref={ref}
-      className="relative py-24 md:py-32 stone-texture"
+      className="relative py-12 md:py-14 stone-texture"
     >
       {/* Decorative background glow orb */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[var(--color-purple-700)]/4 rounded-full blur-[150px] pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         {/* Section header */}
         <motion.div
-          className="text-center mb-16 md:mb-20"
+          className="text-center mb-10 md:mb-12"
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, ease: [0.4, 0, 0.2, 1] }}
