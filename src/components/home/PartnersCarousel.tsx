@@ -37,6 +37,9 @@ import type { Partner } from "@/types/database";
 
 function PartnerLogo({ partner }: { partner: Partner }) {
   const inner = partner.logo_url ? (
+    // rule disabled: external images handled by simple <img> wrapper to avoid
+    // adding Next.js Image loader config for many external domains during dev
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={partner.logo_url}
       alt={partner.name}
