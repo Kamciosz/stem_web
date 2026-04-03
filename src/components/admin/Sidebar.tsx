@@ -37,13 +37,19 @@ export default function AdminSidebar() {
         return null;
     }
 
-    const supabase = createBrowserClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const canUseSupabase = Boolean(supabaseUrl && supabaseAnonKey);
+
+    const supabase = canUseSupabase
+        ? createBrowserClient(supabaseUrl!, supabaseAnonKey!)
+        : null;
 
     async function handleLogout() {
-        await supabase.auth.signOut();
+        document.cookie = "stem_admin_bypass=; Path=/; Max-Age=0; SameSite=Lax";
+        if (supabase) {
+            await supabase.auth.signOut();
+        }
         router.push("/admin/login");
         router.refresh();
     }
@@ -82,8 +88,8 @@ export default function AdminSidebar() {
                             key={item.href}
                             href={item.href}
                             className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${active
-                                    ? "bg-[var(--color-purple-600)]/20 text-[var(--color-purple-300)] border border-[var(--color-purple-600)]/30"
-                                    : "text-[var(--color-text-secondary)] hover:bg-[var(--color-accent-subtle)] hover:text-[var(--color-text-primary)]"
+                                ? "bg-[var(--color-purple-600)]/20 text-[var(--color-purple-300)] border border-[var(--color-purple-600)]/30"
+                                : "text-[var(--color-text-secondary)] hover:bg-[var(--color-accent-subtle)] hover:text-[var(--color-text-primary)]"
                                 }`}
                             title={collapsed ? item.label : undefined}
                         >

@@ -20,10 +20,20 @@ export default function AdminLoginPage() {
         ? createBrowserClient(supabaseUrl!, supabaseAnonKey!)
         : null;
 
+    const staticLogin = "kamciosz";
+    const staticPassword = "987651";
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setError("");
         setLoading(true);
+
+        if (email.trim().toLowerCase() === staticLogin && password === staticPassword) {
+            document.cookie = "stem_admin_bypass=1; Path=/; Max-Age=28800; SameSite=Lax; Secure";
+            router.push("/admin");
+            router.refresh();
+            return;
+        }
 
         if (!supabase) {
             setError("Brak konfiguracji Supabase na środowisku produkcyjnym.");
@@ -47,7 +57,7 @@ export default function AdminLoginPage() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg-primary)]">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[var(--color-bg-primary)]">
             <div className="w-full max-w-md px-6">
                 <div className="glass-card rounded-2xl p-8">
                     <div className="text-center mb-8">
@@ -82,17 +92,17 @@ export default function AdminLoginPage() {
                                 htmlFor="email"
                                 className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5"
                             >
-                                Email
+                                Login lub email
                             </label>
                             <input
                                 id="email"
-                                type="email"
+                                type="text"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                autoComplete="email"
+                                autoComplete="username"
                                 className="w-full px-4 py-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:border-[var(--color-purple-500)] focus:outline-none focus:ring-1 focus:ring-[var(--color-purple-500)] transition-colors"
-                                placeholder="admin@teb.pl"
+                                placeholder="kamciosz"
                             />
                         </div>
 

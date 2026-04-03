@@ -56,14 +56,14 @@ export default function Header() {
           }}
           aria-label="Otworz menu"
         >
-          <div className="relative flex items-center gap-1.5 rounded-lg bg-black/15 px-2 py-1.5 backdrop-blur-md md:px-2.5">
-            <span className="text-sm md:text-[15px] font-semibold tracking-tight text-[var(--color-text-primary)]">
+          <div className="relative flex items-center gap-2 rounded-xl border border-white/10 bg-black/20 px-3 py-2 backdrop-blur-md md:px-4 md:py-2.5">
+            <span className="gradient-text text-base md:text-[22px] font-semibold tracking-[0.01em]">
               STEM
             </span>
-            <span className="text-sm md:text-[15px] font-light text-[var(--color-purple-400)]">
+            <span className="text-base md:text-[20px] font-light text-[var(--color-purple-300)]">
               x
             </span>
-            <span className="text-sm md:text-[15px] font-semibold tracking-tight text-[var(--color-text-primary)]">
+            <span className="text-base md:text-[22px] font-semibold tracking-[0.01em] text-[var(--color-text-primary)]">
               TEB Technikum
             </span>
 
