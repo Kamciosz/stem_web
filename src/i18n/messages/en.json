@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "title": "STEM x TEB Technikum",
+    "description": "STEM Technology Club at TEB Technikum in Warsaw. Robotics, mechatronics, programming — we create the future."
+  },
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "partners": "Partners",
+    "contact": "Contact",
+    "language": "PL"
+  },
+  "hero": {
+    "subtitle": "Technology Club",
+    "school": "TEB Technikum Warsaw",
+    "cta": "Get to know us",
+    "scroll": "Scroll down"
+  },
+  "about": {
+    "title": "Who we are",
+    "description": "Technikum students fascinated and absorbed in the world of technology. We are diverse, but united by our passion for creation and innovation — in both hardware and software.",
+    "robotics": "Robotics",
+    "roboticsDesc": "We design and build robots that solve real-world problems.",
+    "mechatronics": "Mechatronics",
+    "mechatronicsDesc": "We combine mechanics, electronics, and computer science into innovative systems.",
+    "programming": "Programming",
+    "programmingDesc": "We create apps, websites, and systems that improve everyday life.",
+    "futureEngineers": "Future engineers"
+  },
+  "projects": {
+    "title": "Student projects",
+    "subtitle": "See what we create",
+    "viewAll": "View more projects",
+    "viewProject": "View project",
+    "categories": {
+      "all": "All",
+      "robotyka": "Robotics",
+      "mechatronika": "Mechatronics",
+      "programowanie": "Programming",
+      "inne": "Other"
+    },
+    "groupProject": "Group project",
+    "by": "By",
+    "stars": "stars",
+    "lastCommit": "Last commit",
+    "noProjects": "No projects in this category."
+  },
+  "partners": {
+    "title": "Partners",
+    "subtitle": "We collaborate with the best",
+    "noPartners": "We will announce our partners soon."
+  },
+  "awards": {
+    "title": "Awards & Certificates",
+    "noAwards": "Our awards will appear here soon."
+  },
+  "contact": {
+    "title": "Collaboration",
+    "subtitle": "Get in touch",
+    "name": "Full name",
+    "email": "Email",
+    "company": "Company (optional)",
+    "subject": "Subject",
+    "message": "Message",
+    "businessInfo": "STEM — technology club at TEB Technikum school. Open to collaboration with companies and institutions.",
+    "location": "Location",
+    "address": "ul. Mińska 25, Warsaw",
+    "send": "Send message",
+    "sending": "Sending...",
+    "success": "Message sent successfully!",
+    "error": "An error occurred. Please try again."
+  },
+  "profile": {
+    "projects": "Projects",
+    "member": "STEM Member",
+    "noProjects": "This member has no projects yet."
+  },
+  "group": {
+    "members": "Members",
+    "projects": "Group projects",
+    "permanent": "Permanent group",
+    "temporary": "Temporary group"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "madeWith": "Made with",
+    "by": "by TEB Technikum students"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "back": "Back",
+    "readMore": "Read more"
+  }
+}

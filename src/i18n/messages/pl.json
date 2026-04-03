@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "title": "STEM x TEB Technikum",
+    "description": "Koło technologiczne STEM przy TEB Technikum w Warszawie. Robotyka, mechatronika, programowanie — tworzymy przyszłość."
+  },
+  "nav": {
+    "home": "Strona główna",
+    "projects": "Projekty",
+    "partners": "Partnerzy",
+    "contact": "Kontakt",
+    "language": "EN"
+  },
+  "hero": {
+    "subtitle": "Koło Technologiczne",
+    "school": "TEB Technikum Warszawa",
+    "cta": "Poznaj nas bliżej",
+    "scroll": "Przewiń w dół"
+  },
+  "about": {
+    "title": "Kim jesteśmy",
+    "description": "Uczniowie technikum zafascynowani i pochłonięci światem technologii. Jesteśmy różnorodni, ale łączy nas pasja do tworzenia i innowacji — zarówno w hardware, jak i software.",
+    "robotics": "Robotyka",
+    "roboticsDesc": "Projektujemy i budujemy roboty, które rozwiązują realne problemy.",
+    "mechatronics": "Mechatronika",
+    "mechatronicsDesc": "Łączymy mechanikę, elektronikę i informatykę w innowacyjne systemy.",
+    "programming": "Programowanie",
+    "programmingDesc": "Tworzymy aplikacje, strony i systemy, które ulepszają codzienne życie.",
+    "futureEngineers": "Przyszli inżynierowie"
+  },
+  "projects": {
+    "title": "Projekty uczniów",
+    "subtitle": "Zobacz co tworzymy",
+    "viewAll": "Zobacz więcej projektów",
+    "viewProject": "Zobacz projekt",
+    "categories": {
+      "all": "Wszystkie",
+      "robotyka": "Robotyka",
+      "mechatronika": "Mechatronika",
+      "programowanie": "Programowanie",
+      "inne": "Inne"
+    },
+    "groupProject": "Projekt grupowy",
+    "by": "Autor",
+    "stars": "gwiazdek",
+    "lastCommit": "Ostatni commit",
+    "noProjects": "Brak projektów w tej kategorii."
+  },
+  "partners": {
+    "title": "Partnerzy",
+    "subtitle": "Współpracujemy z najlepszymi",
+    "noPartners": "Wkrótce ogłosimy naszych partnerów."
+  },
+  "awards": {
+    "title": "Nagrody i certyfikaty",
+    "noAwards": "Nasze nagrody wkrótce się tutaj pojawią."
+  },
+  "contact": {
+    "title": "Współpraca",
+    "subtitle": "Nawiąż kontakt",
+    "name": "Imię i nazwisko",
+    "email": "Email",
+    "company": "Firma (opcjonalne)",
+    "subject": "Temat",
+    "message": "Wiadomość",
+    "businessInfo": "STEM — koło technologiczne przy szkole TEB Technikum. Otwarte na współpracę z firmami i instytucjami.",
+    "location": "Lokalizacja",
+    "address": "ul. Mińska 25, Warszawa",
+    "send": "Wyślij wiadomość",
+    "sending": "Wysyłanie...",
+    "success": "Wiadomość wysłana pomyślnie!",
+    "error": "Wystąpił błąd. Spróbuj ponownie."
+  },
+  "profile": {
+    "projects": "Projekty",
+    "member": "Członek STEM",
+    "noProjects": "Ten członek nie ma jeszcze projektów."
+  },
+  "group": {
+    "members": "Członkowie",
+    "projects": "Projekty grupy",
+    "permanent": "Grupa stała",
+    "temporary": "Grupa tymczasowa"
+  },
+  "footer": {
+    "rights": "Wszelkie prawa zastrzeżone.",
+    "madeWith": "Stworzone z",
+    "by": "przez uczniów TEB Technikum"
+  },
+  "common": {
+    "loading": "Ładowanie...",
+    "error": "Wystąpił błąd",
+    "back": "Powrót",
+    "readMore": "Czytaj więcej"
+  }
+}
