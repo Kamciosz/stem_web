@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createBrowserClient } from "@supabase/ssr";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Lock, AlertCircle } from "lucide-react";
 
 export default function AdminLoginPage() {
@@ -11,8 +11,6 @@ export default function AdminLoginPage() {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const missingEnv = searchParams.get("error") === "missing_supabase_env";
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -65,7 +63,7 @@ export default function AdminLoginPage() {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-5">
-                        {missingEnv && (
+                        {!canUseSupabase && (
                             <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-sm">
                                 <AlertCircle size={16} />
                                 Brakuje zmiennych SUPABASE na Vercelu.
