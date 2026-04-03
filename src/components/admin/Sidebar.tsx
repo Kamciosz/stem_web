@@ -46,7 +46,6 @@ export default function AdminSidebar() {
         : null;
 
     async function handleLogout() {
-        document.cookie = "stem_admin_bypass=; Path=/; Max-Age=0; SameSite=Lax";
         if (supabase) {
             await supabase.auth.signOut();
         }

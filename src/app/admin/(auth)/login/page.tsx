@@ -20,20 +20,10 @@ export default function AdminLoginPage() {
         ? createBrowserClient(supabaseUrl!, supabaseAnonKey!)
         : null;
 
-    const staticLogin = "kamciosz";
-    const staticPassword = "987651";
-
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         setError("");
         setLoading(true);
-
-        if (email.trim().toLowerCase() === staticLogin && password === staticPassword) {
-            document.cookie = "stem_admin_bypass=1; Path=/; Max-Age=28800; SameSite=Lax; Secure";
-            router.push("/admin");
-            router.refresh();
-            return;
-        }
 
         if (!supabase) {
             setError("Brak konfiguracji Supabase na środowisku produkcyjnym.");
@@ -92,17 +82,17 @@ export default function AdminLoginPage() {
                                 htmlFor="email"
                                 className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1.5"
                             >
-                                Login lub email
+                                Email
                             </label>
                             <input
                                 id="email"
-                                type="text"
+                                type="email"
                                 required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                autoComplete="username"
+                                autoComplete="email"
                                 className="w-full px-4 py-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:border-[var(--color-purple-500)] focus:outline-none focus:ring-1 focus:ring-[var(--color-purple-500)] transition-colors"
-                                placeholder="kamciosz"
+                                placeholder="admin@teb.pl"
                             />
                         </div>
 

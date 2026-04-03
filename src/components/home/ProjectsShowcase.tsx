@@ -1,12 +1,13 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ArrowRight, Users } from "lucide-react";
 import { GitHubStats } from "@/components/projects/GitHubStats";
 import ImageCarousel from "@/components/projects/ImageCarousel";
+import { createClient } from "@/lib/supabase/client";
 import type { Project, ProjectMedia, ProjectMember, Member } from "@/types/database";
 
 /* -------------------------------------------------------------------------- */
@@ -17,63 +18,6 @@ interface ProjectWithRelations extends Project {
   project_media?: ProjectMedia[];
   project_members?: (ProjectMember & { member: Member })[];
 }
-
-/* -------------------------------------------------------------------------- */
-/* Mock data                                                                   */
-/* -------------------------------------------------------------------------- */
-
-const MOCK_PROJECTS: ProjectWithRelations[] = [
-  {
-    id: "1",
-    slug: "teb-app",
-    title_pl: "TEB App",
-    title_en: "TEB App",
-    short_desc_pl: "Progresywna aplikacja webowa dla szkoły TEB Technikum — plan lekcji, oceny, ogłoszenia w jednym miejscu.",
-    short_desc_en: "Progressive web app for TEB Technikum school — schedule, grades, announcements in one place.",
-    full_desc_pl: null,
-    full_desc_en: null,
-    category: "programowanie",
-    github_repo: "https://github.com/Kamciosz/teb-app-production",
-    website_url: null,
-    is_featured: true,
-    display_order: 1,
-    popularity: 100,
-    is_group_project: false,
-    group_id: null,
-    status: "published",
-    created_at: "2025-09-01",
-    updated_at: "2026-03-15",
-    project_media: [
-      { id: "m1", project_id: "1", url: "", type: "image", alt_text: "TEB App screenshot", display_order: 1, created_at: "" },
-    ],
-    project_members: [
-      {
-        id: "pm1",
-        project_id: "1",
-        member_id: "u1",
-        role_in_project: "Full-Stack Developer",
-        display_order: 1,
-        member: {
-          id: "u1",
-          slug: "Szymon-Sosnowski",
-          name: "Szymon Sosnowski",
-          nickname: "Kamciosz",
-          avatar_url: null,
-          bio_pl: null,
-          bio_en: null,
-          github_url: "https://github.com/Kamciosz",
-          linkedin_url: null,
-          website_url: null,
-          email: null,
-          role: "member",
-          display_order: 1,
-          is_visible: true,
-          created_at: "",
-        },
-      },
-    ],
-  },
-];
 
 /* -------------------------------------------------------------------------- */
 /* Single project row — alternating image/text                                 */
@@ -176,8 +120,41 @@ export default function ProjectsShowcase() {
   const locale = useLocale();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [projects, setProjects] = useState<ProjectWithRelations[]>([]);
 
-  const projects = MOCK_PROJECTS;
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadProjects() {
+      try {
+        const supabase = createClient();
+        const { data } = await supabase
+          .from("projects")
+          .select(`
+            *,
+            project_media(*),
+            project_members(*, member:members(*))
+          `)
+          .eq("status", "published")
+          .order("display_order", { ascending: true })
+          .limit(6);
+
+        if (isMounted) {
+          setProjects((data as ProjectWithRelations[]) ?? []);
+        }
+      } catch {
+        if (isMounted) {
+          setProjects([]);
+        }
+      }
+    }
+
+    loadProjects();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <section
