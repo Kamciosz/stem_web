@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "@/i18n/navigation";
-import { usePathname } from "next/navigation";
 import SlideMenu from "./SlideMenu";
 
 const ease = [0.4, 0, 0.2, 1] as const;
@@ -12,9 +10,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pathname = usePathname();
-  const isHomepage = pathname === "/" || pathname === "/pl" || pathname === "/en";
-  const hoverDelayMs = isHomepage ? 5000 : 3000;
+  const hoverDelayMs = 2500;
 
   const openMenu = useCallback(() => setIsMenuOpen(true), []);
 
@@ -48,33 +44,36 @@ export default function Header() {
           transition={{ duration: 1, ease }}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="relative"
+          className="relative cursor-pointer"
+          onClick={openMenu}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              openMenu();
+            }
+          }}
+          aria-label="Otworz menu"
         >
-          <button
-            type="button"
-            onClick={openMenu}
-            className="relative flex items-center gap-2 rounded-xl border border-white/10 bg-black/35 px-4 py-2 backdrop-blur-xl transition-colors hover:border-white/20"
-            style={{ WebkitBackdropFilter: "blur(24px) saturate(1.5)" }}
-            aria-label="Otwórz menu"
-          >
-            <span className="text-sm md:text-base font-bold tracking-tight text-[var(--color-text-primary)]">
+          <div className="relative flex items-center gap-1.5 rounded-lg bg-black/15 px-2 py-1.5 backdrop-blur-md md:px-2.5">
+            <span className="text-sm md:text-[15px] font-semibold tracking-tight text-[var(--color-text-primary)]">
               STEM
             </span>
-            <span className="text-sm md:text-base font-bold tracking-tight text-[var(--color-text-primary)]">
-              x TEB Technikum
+            <span className="text-sm md:text-[15px] font-light text-[var(--color-purple-400)]">
+              x
+            </span>
+            <span className="text-sm md:text-[15px] font-semibold tracking-tight text-[var(--color-text-primary)]">
+              TEB Technikum
             </span>
 
-            {/* Underline fills exactly for 5s/3s and resets on leave. */}
+            {/* Underline fills over the same delay as menu auto-open. */}
             <motion.span
               className="absolute -bottom-1 left-0 h-[2px] bg-gradient-to-r from-[var(--color-purple-600)] via-[var(--color-purple-400)] to-transparent"
               animate={{ width: isHovering ? "100%" : "0%" }}
               transition={{ duration: isHovering ? hoverDelayMs / 1000 : 0.22, ease: isHovering ? "linear" : ease }}
             />
-          </button>
-
-          <Link href="/" className="sr-only">
-            Strona główna
-          </Link>
+          </div>
         </motion.div>
       </header>
 
