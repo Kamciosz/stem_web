@@ -160,7 +160,7 @@ export default function ProjectsShowcase() {
     <section
       id="projects"
       ref={ref}
-      className="relative py-12 md:py-14 stone-texture"
+      className="relative py-20 md:py-32 stone-texture"
     >
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         {/* Section header */}

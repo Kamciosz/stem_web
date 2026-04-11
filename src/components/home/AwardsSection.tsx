@@ -17,7 +17,7 @@ export default function AwardsSection() {
     if (awards.length === 0) return null;
 
     return (
-        <section ref={ref} className="relative py-20">
+        <section ref={ref} className="relative py-20 md:py-32">
             <div className="mx-auto max-w-7xl px-6 md:px-10">
                 <motion.div
                     className="text-center mb-12"

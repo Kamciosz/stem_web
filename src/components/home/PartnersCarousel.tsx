@@ -100,7 +100,7 @@ export default function PartnersCarousel() {
   if (loading) return null;
 
   return (
-    <section ref={ref} className="relative py-6 md:py-8 overflow-hidden">
+    <section ref={ref} className="relative py-16 md:py-24 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <motion.div
           className="text-center mb-10"

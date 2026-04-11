@@ -55,7 +55,7 @@ export default function ContactSection() {
     <section
       id="contact"
       ref={ref}
-      className="relative py-12 md:py-14 stone-texture"
+      className="relative py-20 md:py-32 stone-texture"
     >
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">

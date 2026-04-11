@@ -20,7 +20,7 @@ export default function HeroSection() {
   return (
     <section
       ref={ref}
-      className="relative min-h-[82svh] md:min-h-[90svh] flex items-center justify-center overflow-hidden stone-texture vignette"
+      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden stone-texture vignette"
     >
       {/* Background gradient layers */}
       <motion.div
