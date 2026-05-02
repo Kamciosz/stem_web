@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Industrialny warsztat technologiczny">
+  <rect width="1200" height="900" fill="#030303"/>
+  <path d="M0 654h1200v246H0z" fill="#0d0d0d"/>
+  <path d="M96 168h368v486H96zM520 244h582v410H520z" fill="#111" stroke="#e8e8e8" stroke-width="6"/>
+  <path d="M146 222h268M146 292h268M146 362h268M146 432h268M568 302h486M568 390h486M568 478h486" stroke="#525252" stroke-width="4"/>
+  <path d="M184 654l148-212 98 212M744 654l112-164 126 164" fill="none" stroke="#e8e8e8" stroke-width="10"/>
+  <path d="M0 734h1200M0 796h1200M188 654v246M406 654v246M624 654v246M842 654v246M1060 654v246" stroke="#1a1a1a" stroke-width="4"/>
+  <circle cx="880" cy="342" r="58" fill="none" stroke="#e8e8e8" stroke-width="8"/>
+  <path d="M880 284v116M822 342h116" stroke="#525252" stroke-width="5"/>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Autonomiczny robot mobilny">
+  <rect width="1200" height="900" fill="#030303"/>
+  <path d="M0 670h1200v230H0z" fill="#0d0d0d"/>
+  <rect x="250" y="360" width="700" height="244" fill="#111" stroke="#e8e8e8" stroke-width="10"/>
+  <rect x="398" y="248" width="404" height="112" fill="#141414" stroke="#e8e8e8" stroke-width="8"/>
+  <circle cx="374" cy="626" r="84" fill="#030303" stroke="#e8e8e8" stroke-width="10"/>
+  <circle cx="826" cy="626" r="84" fill="#030303" stroke="#e8e8e8" stroke-width="10"/>
+  <path d="M476 418h248M476 484h248M476 550h160M812 418h72v72h-72z" stroke="#525252" stroke-width="8" fill="none"/>
+  <path d="M600 248V142M520 142h160M302 670h596" stroke="#e8e8e8" stroke-width="8"/>
+  <path d="M128 730h944M184 794h832" stroke="#1a1a1a" stroke-width="5"/>
+  <path d="M250 360l-84-88M950 360l84-88" stroke="#7c3aed" stroke-width="5"/>
+</svg>

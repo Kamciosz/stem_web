@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Aplikacja PWA jako industrialny interfejs">
+  <rect width="1200" height="900" fill="#030303"/>
+  <rect x="116" y="96" width="968" height="708" fill="#0d0d0d" stroke="#e8e8e8" stroke-width="8"/>
+  <path d="M180 180h396v64H180zM180 300h840v40H180zM180 386h840v40H180zM180 472h520v40H180z" fill="#e8e8e8"/>
+  <path d="M740 524h280v168H740zM180 576h456v116H180z" fill="#141414" stroke="#525252" stroke-width="4"/>
+  <path d="M116 96h968M116 804h968M116 96v708M1084 96v708" stroke="#525252" stroke-width="2"/>
+  <path d="M64 96h52M1084 96h52M64 804h52M1084 804h52" stroke="#7c3aed" stroke-width="5"/>
+  <text x="180" y="748" fill="#525252" font-family="monospace" font-size="44" font-weight="700">PWA / SCHEDULE / TASKS</text>
+</svg>

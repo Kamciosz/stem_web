@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Mikro linia produkcyjna">
+  <rect width="1200" height="900" fill="#030303"/>
+  <path d="M96 582h1008v112H96z" fill="#0d0d0d" stroke="#e8e8e8" stroke-width="8"/>
+  <path d="M156 582V318h176v264M462 582V222h276v360M868 582V374h176v208" fill="#111" stroke="#e8e8e8" stroke-width="8"/>
+  <path d="M96 638h1008M194 638h70M338 638h70M482 638h70M626 638h70M770 638h70M914 638h70" stroke="#525252" stroke-width="8"/>
+  <path d="M520 286h160M520 358h160M520 430h160M184 390h120M896 446h120" stroke="#e8e8e8" stroke-width="6"/>
+  <circle cx="244" cy="748" r="54" fill="#030303" stroke="#e8e8e8" stroke-width="8"/>
+  <circle cx="600" cy="748" r="54" fill="#030303" stroke="#e8e8e8" stroke-width="8"/>
+  <circle cx="956" cy="748" r="54" fill="#030303" stroke="#e8e8e8" stroke-width="8"/>
+  <path d="M462 222l-94-78M738 222l94-78M600 222V114" stroke="#7c3aed" stroke-width="5"/>
+</svg>
