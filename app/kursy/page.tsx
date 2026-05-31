@@ -1,11 +1,13 @@
+import Link from "next/link";
 import { courses } from "@/lib/data";
+import { courseDetails } from "@/lib/courses";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export const dynamic = "force-static";
 
 export const metadata = {
     title: "Kursy | STEM",
-    description: "Kursy programistyczne Koła STEM — Python, JavaScript, C++, TypeScript, Mikrokontrolery i więcej. Wkrótce."
+    description: "Darmowe materiały do nauki programowania — przygotowanie do egzaminów INF.02, INF.03, INF.04 dla uczniów techników i pasjonatów. Niski próg wejścia."
 };
 
 const levelLabel: Record<string, string> = {
@@ -23,11 +25,46 @@ export default function CoursesPage() {
                     <h1 className="headline-large" id="courses-title">
                         KURSY
                     </h1>
-                    <p style={{ maxWidth: 560, color: "var(--recede)", lineHeight: 1.7, marginTop: 16 }}>
-                        Programujemy, budujemy, uczymy się razem. Poniżej kursy, które przygotowujemy dla członków koła i uczniów zainteresowanych technologią.
+                    <p style={{ maxWidth: 620, color: "var(--recede)", lineHeight: 1.7, marginTop: 16 }}>
+                        Darmowe materiały do nauki dla uczniów techników przygotowujących się do egzaminów INF.02, INF.03 i INF.04 — i dla każdego, kto traktuje programowanie jako hobby. Niski próg wejścia, żargon tłumaczony po najechaniu, wiedza sprawdzana quizami. Tworzymy je jako członkowie Koła STEM.
                     </p>
                 </header>
 
+                {courseDetails.length > 0 && (
+                    <>
+                        <h2 className="courses-section-label font-mono-industrial">DOSTĘPNE TERAZ</h2>
+                        <div className="courses-grid">
+                            {courseDetails.map((course, i) => {
+                                const totalLessons = course.modules.reduce((acc, m) => acc + m.lessons.length, 0);
+                                const publishedLessons = course.modules.reduce(
+                                    (acc, m) => acc + m.lessons.filter((l) => l.published).length,
+                                    0
+                                );
+                                return (
+                                    <ScrollReveal key={course.id} delay={i * 0.06}>
+                                        <Link href={`/kursy/${course.id}`} className="course-card course-card-live">
+                                            <div className="course-card-header">
+                                                <span className="course-level">{course.badge}</span>
+                                                <span className="course-available">DOSTĘPNY →</span>
+                                            </div>
+                                            <h3>{course.title}</h3>
+                                            <p style={{ color: "var(--laser)", fontSize: "0.8rem", fontFamily: "var(--font-jetbrains-mono)", marginBottom: 12, marginTop: -4 }}>
+                                                {course.subtitle}
+                                            </p>
+                                            <p>{course.intro}</p>
+                                            <div className="course-progress">
+                                                <span>{course.modules.length} MODUŁÓW</span>
+                                                <span>{publishedLessons} / {totalLessons} LEKCJI GOTOWYCH</span>
+                                            </div>
+                                        </Link>
+                                    </ScrollReveal>
+                                );
+                            })}
+                        </div>
+                    </>
+                )}
+
+                <h2 className="courses-section-label font-mono-industrial">W PRZYGOTOWANIU</h2>
                 <div className="courses-grid">
                     {courses.map((course, i) => (
                         <ScrollReveal key={course.id} delay={i * 0.06}>

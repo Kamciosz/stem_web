@@ -1,0 +1,123 @@
+Strona zbudowana z samych <Term word="znacznik">znaczników</Term> `<div>` działa, ale nikt — ani przeglądarka, ani wyszukiwarka, ani czytnik ekranu — nie wie, co który fragment znaczy. HTML <Term word="semantyczny">semantyczny</Term> rozwiązuje ten problem: zamiast neutralnego pudełka używasz znacznika, który opisuje rolę treści.
+
+## Czym różni się div od znacznika semantycznego
+
+`<div>` to pojemnik bez znaczenia. Mówi „tu jest jakiś blok” i nic więcej. Znacznik semantyczny mówi, czym ten blok jest:
+
+```html
+<!-- Niesemantycznie: same pudełka -->
+<div class="top">
+    <div class="menu">...</div>
+</div>
+<div class="content">
+    <div class="post">...</div>
+</div>
+
+<!-- Semantycznie: każdy element ma rolę -->
+<header>
+    <nav>...</nav>
+</header>
+<main>
+    <article>...</article>
+</main>
+```
+
+Oba dają ten sam wygląd po ostylowaniu CSS. Różnica jest w znaczeniu, które odczytują maszyny.
+
+<Callout type="info" title="Dlaczego to ważne">
+Wyszukiwarka indeksuje treść w `<main>` wyżej niż losowy `<div>`. Czytnik ekranu pozwala niewidomemu użytkownikowi przeskoczyć od razu do `<nav>` albo `<main>`. Bez semantyki te skróty nie istnieją.
+</Callout>
+
+## Najważniejsze znaczniki semantyczne
+
+Te elementy pokrywają strukturę prawie każdej strony:
+
+- `<header>` — nagłówek strony lub sekcji (logo, tytuł, nawigacja górna)
+- `<nav>` — blok nawigacji, czyli zestaw linków do innych części serwisu
+- `<main>` — główna, unikalna treść strony. Na stronie powinien być tylko jeden
+- `<article>` — samodzielny fragment treści, który ma sens w oderwaniu (wpis, artykuł, komentarz)
+- `<section>` — tematyczna sekcja treści, zwykle z własnym nagłówkiem
+- `<aside>` — treść poboczna (panel boczny, powiązane linki, reklama)
+- `<footer>` — stopka strony lub sekcji (prawa autorskie, kontakt, linki)
+
+## Pełny szkielet strony
+
+Tak wygląda poprawnie zbudowany dokument, gdzie każdy blok ma swoją rolę:
+
+```html
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Koło STEM</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Start</a>
+            <a href="/kursy">Kursy</a>
+        </nav>
+    </header>
+
+    <main>
+        <article>
+            <h1>Tytuł artykułu</h1>
+            <p>Treść główna artykułu.</p>
+        </article>
+
+        <aside>
+            <h2>Powiązane</h2>
+            <p>Linki poboczne.</p>
+        </aside>
+    </main>
+
+    <footer>
+        <p>© 2026 Koło STEM</p>
+    </footer>
+</body>
+</html>
+```
+
+<Callout type="exam">
+Na egzaminie INF.03 zadania z HTML często wymagają poprawnej struktury semantycznej. Użycie `<div>` tam, gdzie pasuje `<nav>` czy `<main>`, bywa punktowane jako błąd jakości kodu. Naucz się rozróżniać te znaczniki na pamięć.
+</Callout>
+
+## Hierarchia nagłówków
+
+Semantyka to nie tylko bloki, ale też nagłówki `<h1>`–`<h6>`. Tworzą one spis treści strony:
+
+- Jeden `<h1>` na stronę — główny temat
+- `<h2>` to podrozdziały, `<h3>` to punkty wewnątrz nich, i tak dalej
+- Nie przeskakuj poziomów (po `<h1>` nie dawaj od razu `<h4>`) tylko dla efektu wizualnego — od wyglądu jest CSS
+
+Czytnik ekranu buduje z nagłówków nawigację. Połamana hierarchia psuje ją tak samo, jak losowo ponumerowane rozdziały w książce.
+
+## Podsumowanie
+
+HTML semantyczny nic nie kosztuje — piszesz tyle samo kodu, tylko dobierasz właściwy znacznik. W zamian dostajesz lepsze pozycjonowanie, dostępność dla czytników ekranu i czytelniejszy kod, w którym od razu widać strukturę.
+
+<Quiz questions={[
+    {
+        question: "Który znacznik powinien zawierać główną, unikalną treść strony?",
+        options: ["<section>", "<main>", "<div>", "<article>"],
+        correct: 1,
+        explanation: "<main> oznacza główną treść strony i powinien wystąpić tylko raz. Czytniki ekranu pozwalają przeskoczyć bezpośrednio do niego."
+    },
+    {
+        question: "Czym różni się <article> od <section>?",
+        options: [
+            "Niczym, to synonimy",
+            "<article> to samodzielna treść mająca sens w oderwaniu, <section> to tematyczny fragment większej całości",
+            "<section> jest tylko do nagłówków",
+            "<article> nie może mieć nagłówka"
+        ],
+        correct: 1,
+        explanation: "<article> ma sens samodzielnie (wpis, komentarz), <section> grupuje tematycznie powiązaną treść wewnątrz strony."
+    },
+    {
+        question: "Ile znaczników <h1> powinno być na jednej stronie?",
+        options: ["Dokładnie jeden", "Co najmniej trzy", "Dowolnie wiele", "Żadnego"],
+        correct: 0,
+        explanation: "Jeden <h1> wyznacza główny temat strony. Kolejne poziomy (<h2>, <h3>) budują hierarchię podrozdziałów."
+    }
+]} />

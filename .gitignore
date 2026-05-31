@@ -20,4 +20,6 @@ pnpm-debug.log*
 # system
 .DS_Store
 Thumbs.db
-.next/\ntsconfig.tsbuildinfo
+
+# typescript build cache
+tsconfig.tsbuildinfo
