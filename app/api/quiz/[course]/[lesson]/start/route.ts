@@ -61,10 +61,26 @@ export async function GET(_req: Request, ctx: RouteContext) {
         .eq("lesson_slug", lessonSlug);
 
     if (poolErr) {
+        // Rozszerzony log dla debugu — fetch failed w Vercel często znaczy
+        // problem z DNS/egress, nie z Supabase samym.
+        const cause = (poolErr as { cause?: unknown }).cause;
         return NextResponse.json(
-            { error: "Błąd odczytu puli pytań.", detail: poolErr.message },
+            {
+                error: "Błąd odczytu puli pytań.",
+                detail: poolErr.message,
+                cause: cause ? String(cause) : undefined,
+                code: (poolErr as { code?: string }).code
+            },
             { status: 500 }
         );
+    }
+
+    // DEBUG: wypisz szczegóły błędu fetch żeby zobaczyć prawdziwą przyczynę
+    if (!pool && process.env.NODE_ENV !== "production") {
+        console.log("Pool is null/empty, envs:", {
+            url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+            anon: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+        });
     }
 
     if (!pool || pool.length < MIN_POOL) {
