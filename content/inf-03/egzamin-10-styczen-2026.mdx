@@ -1,0 +1,76 @@
+---
+title: "Blog kulinarny — przepisy"
+---
+
+**Arkusz:** INF.03-10-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki14.7z` · **Hasło:** `BLog+#KuLinarnY@`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Blog kulinarny z przepisami.
+Skrypty **PHP** działają po stronie serwera (XAMPP, localhost).
+
+**Baza danych:** `przepisy` — potrawy (id, nazwa, trudnosc, kalorie, przepis, plik, id_rodzaj FK), rodzaje (id, rodzaj), alergeny (id, nazwa), lista_alergenow (id_potrawa FK, id_alergen FK) — relacja n:m.
+
+## Co musisz oddać — pliki
+
+przepisy.php: aside z 10 odnośnikami potraw (GET id=1..10), main: nagłówek h1 z nazwą potrawy (skrypt 1), sekcja z przepisem+grafika+alergeny (skrypt 2). GET przez odnośniki, dane z bazy.
+
+## CSS — najważniejsze zasady
+
+Szczegóły w arkuszu — semantyczne bloki, nawigacja, responsywność.
+
+## Grafika — co robić
+
+separator.png: skadrowany do pierwszego separatora po lewej stronie
+
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `przepisy`. Plik SQL: `przepisy.sql`.
+
+### Zapytanie 1: Dane potrawy id=7
+
+```sql
+SELECT nazwa, trudnosc, kalorie FROM potrawy WHERE id = 7;
+```
+
+### Zapytanie 2: Potrawa + rodzaj (JOIN 1:N)
+
+```sql
+SELECT p.nazwa, r.rodzaj FROM potrawy p JOIN rodzaje r ON p.id_rodzaj = r.id WHERE p.id = 7;
+```
+
+### Zapytanie 3: Potrawa + alergeny (relacja n:m przez 3 tabele)
+
+```sql
+SELECT p.nazwa, a.nazwa FROM potrawy p JOIN lista_alergenow la ON p.id = la.id_potrawa JOIN alergeny a ON la.id_alergen = a.id WHERE p.id = 7;
+```
+
+### Zapytanie 4: Przepis i plik graficzny potrawy id=7
+
+```sql
+SELECT przepis, plik FROM potrawy WHERE id = 7;
+```
+
+
+## Skrypty — rozwiązanie krok po kroku
+
+{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+
+## Punkty — co sprawdza egzaminator
+
+Ocenie podlegać będzie 5 rezultatów:
+
+1. **Operacje na bazie danych** — import tabel + kwerendy SQL
+2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
+3. **Działanie witryny** — czy skrypty działają poprawnie
+4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
+5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają

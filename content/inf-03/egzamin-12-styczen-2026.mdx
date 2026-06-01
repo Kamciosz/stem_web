@@ -1,0 +1,76 @@
+---
+title: "Studio tatuażu — galeria i dodawanie"
+---
+
+**Arkusz:** INF.03-12-26.01-SG (styczeń 2026)
+**Technologia:** PHP + JS + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki16.7z` · **Hasło:** `<Studio&T@tu>`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Studio tatuażu z galerią.
+W tym arkuszu **JavaScript** działa po stronie klienta (w przeglądarce).
+
+**Baza danych:** `studiotatuazu` — tatual (id, wzor, cena, kolor FK), style (id, nazwa), kolory (id, nazwa).
+
+## Co musisz oddać — pliki
+
+index.html: nagłówek z logo (przezroczyste), h1 'Studio Tatuażu', sekcja z galerią obrazów (smok, koliber), aside z formularzem: nazwa pliku + input file (tylko PNG) + kolor (select) + cena (number) + Dodaj Wzór. Skrypt JS: pobiera dane z formularza, wyświetla komunikat 'Wzór: X, kolor Y w cenie Z zł', tworzy element `<img>` z klasą miniatury i dodaje do sekcji (createElement+appendChild). @font-face Dancing Script.
+
+## CSS — najważniejsze zasady
+
+Dancing Script @font-face, body 120% centered, header1+aside RosyBrown 30%, aside left 350px, header2 RosyBrown 70% 100px, section 70% 550px overflow scroll, label line-height 50px, .miniatury 150px hover: Bisque bg 200px width transition 1s.
+
+## Grafika — co robić
+
+logo.png: skadrowana do ptaka, przezroczyste tło, 300px wysokość + litery S/T czcionką ozdobną, obrazy tatuaży: smok.png, koliber.png, triquetra.png, aniol.png, lotos.png
+
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `studiotatuazu`. Plik SQL: `studiotatuazu.sql`.
+
+### Zapytanie 1: Czarne tatuaże droższe niż 100 zł
+
+```sql
+SELECT wzor, cena FROM tatual WHERE kolor = (SELECT id FROM kolory WHERE nazwa = 'czarny') AND cena > 100 ORDER BY cena DESC;
+```
+
+### Zapytanie 2: Liczba tatuaży wg koloru (GROUP BY)
+
+```sql
+SELECT k.nazwa, COUNT(*) FROM tatual t JOIN kolory k ON t.kolor = k.id GROUP BY k.id;
+```
+
+### Zapytanie 3: Zielone tatuaże + styl (JOIN)
+
+```sql
+SELECT t.wzor, s.nazwa FROM tatual t JOIN style s ON t.styl = s.id WHERE t.kolor = (SELECT id FROM kolory WHERE nazwa = 'zielony');
+```
+
+### Zapytanie 4: Podwyżka o 10% dla czerwonych tatuaży
+
+```sql
+UPDATE tatual SET cena = cena * 1.1 WHERE kolor = (SELECT id FROM kolory WHERE nazwa = 'czerwony');
+```
+
+
+## Skrypty — rozwiązanie krok po kroku
+
+{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+
+## Punkty — co sprawdza egzaminator
+
+Ocenie podlegać będzie 5 rezultatów:
+
+1. **Operacje na bazie danych** — import tabel + kwerendy SQL
+2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
+3. **Działanie witryny** — czy skrypty działają poprawnie
+4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
+5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają

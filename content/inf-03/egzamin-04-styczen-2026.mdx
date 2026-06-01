@@ -1,0 +1,82 @@
+---
+title: "Portal maturzystów — system informacji"
+---
+
+**Arkusz:** INF.03-04-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki3-2.7z` · **Hasło:** `Z@Rok!Matur@`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Portal dla maturzystów z wynikami.
+Skrypty **PHP** działają po stronie serwera (XAMPP, localhost).
+
+**Baza danych:** `matura` — maturzysta (id, imie, nazwisko, szkola), arkusz (id, rok, przedmiot, sesja), wyniki (id, id_maturzysta FK, id_arkusz FK, punkty).
+
+## Co musisz oddać — pliki
+
+index.php + wynik.php. Index: nawigacja po lewej (3 obrazy), sekcja z listą uczniów jako odnośniki (skrypt 2, GET → wynik.php?id=X&imie=Y&nazwisko=Z), 4 kafelki (Przedmioty, Lata, Najlepszy wynik, Najgorszy wynik) z danymi z bazy (skrypt 1). wynik.php: wyświetla imię/nazwisko z GET i wyniki z bazy (skrypt 3).
+
+## CSS — najważniejsze zasady
+
+cursive sans-serif, tło #4682B4, header+footer #0F0F64 (white, centered), aside 20% 500px, sekcje 80% 250px overflow auto, obrazy 150px padding 2px, kafelki: #2B6BA0 white 150×150px margin 10px shadow 3/5 black inline-block, odnośniki white no-underline hover #12538A.
+
+## Grafika — co robić
+
+Trzy zdjęcia: ma.jpg, tu.jpg, ra.jpg
+
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `matura`. Plik SQL: `egzamin.sql`.
+
+### Zapytanie 1: Maturzyści ze szkoły T3 sortowani po nazwisku
+
+```sql
+SELECT id, imie, nazwisko FROM maturzysta WHERE szkola = 'T3' ORDER BY nazwisko ASC;
+```
+
+### Zapytanie 2: Unikalne nazwy przedmiotów
+
+```sql
+SELECT DISTINCT przedmiot FROM arkusz;
+```
+
+### Zapytanie 3: Najstarszy i najmłodszy arkusz
+
+```sql
+SELECT MIN(rok) AS najstarszy, MAX(rok) AS najmlodszy FROM arkusz;
+```
+
+### Zapytanie 4: Maturzysta z najlepszą średnią
+
+```sql
+SELECT id_maturzysta, AVG(punkty) AS Wynik FROM wyniki GROUP BY id_maturzysta ORDER BY Wynik DESC LIMIT 1;
+```
+
+### Zapytanie 5: Wyniki maturzysty 31 z JOIN
+
+```sql
+SELECT a.rok, a.sesja, a.przedmiot, w.punkty FROM arkusz a JOIN wyniki w ON a.id = w.id_arkusz WHERE w.id_maturzysta = 31;
+```
+
+
+## Skrypty — rozwiązanie krok po kroku
+
+{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+
+## Punkty — co sprawdza egzaminator
+
+Ocenie podlegać będzie 5 rezultatów:
+
+1. **Operacje na bazie danych** — import tabel + kwerendy SQL
+2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
+3. **Działanie witryny** — czy skrypty działają poprawnie
+4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
+5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają

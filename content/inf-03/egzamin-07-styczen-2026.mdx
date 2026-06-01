@@ -1,0 +1,76 @@
+---
+title: "Stacja meteorologiczna — pogoda"
+---
+
+**Arkusz:** INF.03-07-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki9-2.7z` · **Hasło:** `&M3t3oPogoDa%`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Stacja meteorologiczna z pomiarami.
+Skrypty **PHP** działają po stronie serwera (XAMPP, localhost).
+
+**Baza danych:** `pogoda` — miejscowosc (id, miasto, kraj), miesiace (id, nazwa), pomiary (id, id_miejscowosc FK, id_miesiac FK, temperatura).
+
+## Co musisz oddać — pliki
+
+index.php: nagłówek, nawigacja, główny blok z sekcjami wyświetlającymi dane pogodowe z bazy, grafiki pogodowe (słońce, chmury, deszcz) wycięte z pogoda.png.
+
+## CSS — najważniejsze zasady
+
+Szczegóły CSS w arkuszu — kolory, układ bloków z użyciem semantycznych znaczników HTML5.
+
+## Grafika — co robić
+
+pogoda.png → wykadrowane i przeskalowane do 100×100px: slonce.png, chmury.png, deszcz.png (z przezroczystością)
+
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `pogoda`. Plik SQL: `pogoda.sql`.
+
+### Zapytanie 1: Średnia temperatura za lipiec zaokrąglona do 2 miejsc
+
+```sql
+SELECT ROUND(AVG(temperatura), 2) FROM pomiary WHERE id_miesiac = 7;
+```
+
+### Zapytanie 2: Wstawienie Kijowa
+
+```sql
+INSERT INTO miejscowosc (miasto, kraj) VALUES ('Kijów', 'Ukraina');
+```
+
+### Zapytanie 3: Miasta, kraje i temperatury w lipcu
+
+```sql
+SELECT m.miasto, m.kraj, p.temperatura FROM miejscowosc m JOIN pomiary p ON m.id = p.id_miejscowosc WHERE p.id_miesiac = 7;
+```
+
+### Zapytanie 4: Średnia temperatura dla każdego miesiąca
+
+```sql
+SELECT mi.nazwa, ROUND(AVG(p.temperatura),2) FROM miesiace mi JOIN pomiary p ON mi.id = p.id_miesiac GROUP BY mi.id;
+```
+
+
+## Skrypty — rozwiązanie krok po kroku
+
+{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+
+## Punkty — co sprawdza egzaminator
+
+Ocenie podlegać będzie 5 rezultatów:
+
+1. **Operacje na bazie danych** — import tabel + kwerendy SQL
+2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
+3. **Działanie witryny** — czy skrypty działają poprawnie
+4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
+5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają

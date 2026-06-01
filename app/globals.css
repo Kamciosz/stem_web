@@ -3387,3 +3387,133 @@ a.lesson-nav-link:hover {
         max-width: 220px;
     }
 }
+
+/* ===== EXAM PICKER ===== */
+.exam-picker {
+    margin-top: 1.5rem;
+    border-radius: 12px;
+    background: var(--surface-container-low);
+    border: 1px solid var(--outline-variant);
+    overflow: hidden;
+}
+
+.exam-picker-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--on-surface);
+    transition: background 0.15s;
+}
+
+.exam-picker-toggle:hover {
+    background: var(--surface-container);
+}
+
+.exam-picker-title {
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+}
+
+.exam-picker-chevron {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.25s ease;
+}
+
+.exam-picker-chevron.open {
+    transform: rotate(180deg);
+}
+
+.exam-picker-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.25s ease;
+    padding: 0 16px;
+}
+
+.exam-picker-panel.open {
+    max-height: 800px;
+    padding: 0 16px 16px;
+}
+
+.exam-session {
+    margin-top: 12px;
+}
+
+.exam-session:first-child {
+    margin-top: 0;
+}
+
+.exam-session-header {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-laser);
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--outline-variant);
+}
+
+.exam-session-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.exam-entry-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--on-surface);
+    transition: background 0.15s;
+}
+
+.exam-entry-link:hover {
+    background: var(--surface-container-high);
+}
+
+.exam-tech-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    border-radius: 4px;
+}
+
+.exam-tech-both {
+    display: flex;
+    gap: 3px;
+}
+
+.exam-entry-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+}
+
+.exam-entry-id {
+    font-size: 0.7rem;
+    color: var(--on-surface-variant);
+    font-weight: 500;
+}
+
+.exam-entry-topic {
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

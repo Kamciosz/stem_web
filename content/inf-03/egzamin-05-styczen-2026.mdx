@@ -1,0 +1,76 @@
+---
+title: "Zgłoszenia wydarzeń — portal wypadków"
+---
+
+**Arkusz:** INF.03-05-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki7.7z` · **Hasło:** `@LarMowe^`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Portal zgłoszeń wypadków.
+Skrypty **PHP** działają po stronie serwera (XAMPP, localhost).
+
+**Baza danych:** `zgloszenia` — personel (id, imie, nazwisko, status='policjant'|'ratownik'), pojazdy (id, typ='K'|'R'), rejestr (id, id_personel FK, id_pojazd FK, data).
+
+## Co musisz oddać — pliki
+
+index.php: sekcja lewa — radio (Policjant/Ratownik) + Pokaż → skrypt 1 filtruje personel wg opcji, tabela Id/Imię/Nazwisko; sekcja prawa — lista numerowana personelu bez zgłoszeń (skrypt 2), formularz z id + Dodaj zgłoszenie (skrypt 3 wstawia do bazy).
+
+## CSS — najważniejsze zasady
+
+Tahoma, Maroon header+footer (white, padding 10px), sekcje 50% 500px: left LightSalmon, right DarkSalmon, h1+h2+h3 centered, tabela border 1px solid Maroon collapsed 85% auto margin, lista no bullets, przyciski Maroon white no border border-radius 20px margin-left 20px padding 10px hover: white bg Maroon text.
+
+## Grafika — co robić
+
+Brak szczególnych grafik
+
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `zgloszenia`. Plik SQL: `zgloszenia.sql`.
+
+### Zapytanie 1: Policjanci z personelu
+
+```sql
+SELECT id, imie, nazwisko FROM personel WHERE status = 'policjant';
+```
+
+### Zapytanie 2: Liczba karetek i radiowozów
+
+```sql
+SELECT typ, COUNT(*) FROM pojazdy GROUP BY typ;
+```
+
+### Zapytanie 3: Personel BEZ zgłoszeń (NOT IN)
+
+```sql
+SELECT id, nazwisko FROM personel WHERE id NOT IN (SELECT id_personel FROM rejestr);
+```
+
+### Zapytanie 4: Wstawienie zgłoszenia z aktualną datą
+
+```sql
+INSERT INTO rejestr (id_personel, id_pojazd, data) VALUES (1, 14, NOW());
+```
+
+
+## Skrypty — rozwiązanie krok po kroku
+
+{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+
+## Punkty — co sprawdza egzaminator
+
+Ocenie podlegać będzie 5 rezultatów:
+
+1. **Operacje na bazie danych** — import tabel + kwerendy SQL
+2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
+3. **Działanie witryny** — czy skrypty działają poprawnie
+4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
+5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają

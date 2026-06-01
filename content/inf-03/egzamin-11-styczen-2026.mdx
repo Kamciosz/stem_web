@@ -1,0 +1,82 @@
+---
+title: "KinoTEKA — portal filmowy"
+---
+
+**Arkusz:** INF.03-11-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki17.7z` · **Hasło:** `@ktorzy+f1Lmy`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Portal kina z aktorami i filmami.
+Skrypty **PHP** działają po stronie serwera (XAMPP, localhost).
+
+**Baza danych:** `kino` — aktorzy (id, imie, nazwisko, plik), filmy (id, tytul, rok, czas_trwania), filmy_aktorzy (id_film FK, id_aktor FK) — relacja n:m.
+
+## Co musisz oddać — pliki
+
+index.php + aktor.php. Index: nagłówek KinoTEKA (odnośnik), h1 'Najlepsi aktorzy', siatka awatarów aktorów z bazy (skrypt 1), kliknięcie → aktor.php?id=X. aktor.php: dane aktora, lista filmów z bazy (skrypt 2). znaczniki `<em>` i `<strong>` w odpowiednich miejscach.
+
+## CSS — najważniejsze zasady
+
+Układ z semantycznymi blokami, awatary w siatce, odnośniki bez dekoracji.
+
+## Grafika — co robić
+
+Awatary aktorów jako pliki .jpeg
+
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `kino`. Plik SQL: `kino.sql`.
+
+### Zapytanie 1: Filmy trwające min. 100 min
+
+```sql
+SELECT id, tytul, rok, czas_trwania FROM filmy WHERE czas_trwania >= 100;
+```
+
+### Zapytanie 2: Dane aktora id=3
+
+```sql
+SELECT imie, nazwisko, plik FROM aktorzy WHERE id = 3;
+```
+
+### Zapytanie 3: Wszyscy aktorzy posortowani alfabetycznie
+
+```sql
+SELECT * FROM aktorzy ORDER BY nazwisko ASC, imie ASC;
+```
+
+### Zapytanie 4: Filmy z aktorem id=3 (JOIN n:m)
+
+```sql
+SELECT f.id, f.tytul, f.rok FROM filmy f JOIN filmy_aktorzy fa ON f.id = fa.id_film WHERE fa.id_aktor = 3;
+```
+
+### Zapytanie 5: Liczba filmów per aktor (GROUP BY)
+
+```sql
+SELECT id_aktor, COUNT(*) AS liczba_filmow FROM filmy_aktorzy GROUP BY id_aktor;
+```
+
+
+## Skrypty — rozwiązanie krok po kroku
+
+{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+
+## Punkty — co sprawdza egzaminator
+
+Ocenie podlegać będzie 5 rezultatów:
+
+1. **Operacje na bazie danych** — import tabel + kwerendy SQL
+2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
+3. **Działanie witryny** — czy skrypty działają poprawnie
+4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
+5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają

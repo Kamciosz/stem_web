@@ -1,0 +1,76 @@
+---
+title: "Zdrowy bazarek — sklep z warzywami"
+---
+
+**Arkusz:** INF.03-02-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki3-1.7z` · **Hasło:** `baz@rEk100%`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Portal dla sklepów z warzywami.
+Skrypty **PHP** działają po stronie serwera (XAMPP, localhost).
+
+**Baza danych:** `bazar` — towar (id, rodzaj, nazwa, cena, plik), sklep (id, nazwa, adres), zamowienie (id, id_towar FK, id_sklep FK, kg).
+
+## Co musisz oddać — pliki
+
+index.php: nagłówek 'Zdrowy bazarek', nawigacja z obrazami owoców z bazy (skrypt 1), sekcja z formularzem: lista rozwijana towarów (skrypt 2), pole kg, przycisk Zamów → skrypt 3 oblicza wartość (cena × kg) i wstawia rekord.
+
+## CSS — najważniejsze zasady
+
+Georgia, ForestGreen header/footer, DarkKhaki nav (overflow hidden, h:150px), Khaki aside+section (50%, 400px), obraz z dotted border + border-radius 40px, paragraf 120% italic.
+
+## Grafika — co robić
+
+jablko.png — tło przezroczyste, market.png — skalowana do 300px szerokości
+
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `bazar`. Plik SQL: `baza-nowa.sql`.
+
+### Zapytanie 1: 10 pierwszych towarów — nazwa i plik
+
+```sql
+SELECT nazwa, plik FROM towar LIMIT 10;
+```
+
+### Zapytanie 2: Identyfikator i nazwa wszystkich towarów
+
+```sql
+SELECT id, nazwa FROM towar;
+```
+
+### Zapytanie 3: Rodzaj, nazwa i cena towaru o id=1
+
+```sql
+SELECT rodzaj, nazwa, cena FROM towar WHERE id = 1;
+```
+
+### Zapytanie 4: Wstawienie zamówienia: towar 9, sklep 2, 20 kg
+
+```sql
+INSERT INTO zamowienie (id_towar, id_sklep, kg) VALUES (9, 2, 20);
+```
+
+
+## Skrypty — rozwiązanie krok po kroku
+
+{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+
+## Punkty — co sprawdza egzaminator
+
+Ocenie podlegać będzie 5 rezultatów:
+
+1. **Operacje na bazie danych** — import tabel + kwerendy SQL
+2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
+3. **Działanie witryny** — czy skrypty działają poprawnie
+4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
+5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają

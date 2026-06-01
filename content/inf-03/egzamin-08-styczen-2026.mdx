@@ -1,0 +1,76 @@
+---
+title: "Korona gór polskich — szczyty"
+---
+
+**Arkusz:** INF.03-08-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki13.7z` · **Hasło:** `Gory^PoLskie!`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Portal Korony Gór Polskich.
+Skrypty **PHP** działają po stronie serwera (XAMPP, localhost).
+
+**Baza danych:** `korona` — szczyty (id, nazwa, wysokosc, pasmo, lokator, plik), opis (id, id_szczyt FK, opis).
+
+## Co musisz oddać — pliki
+
+index.php + szczyty.php. Index: logo (przezroczyste), h1 'Korona Gór Polskich', nawigacja, sekcja z listą szczytów z bazy (odnośniki GET→szczyty.php?id=X). szczyty.php: szczegóły wybranego szczytu z obrazem i opisem.
+
+## CSS — najważniejsze zasady
+
+Układ z semantycznymi blokami, logo float left, overflow auto na sekcjach, obrazy gór.
+
+## Grafika — co robić
+
+logo.png: białe tło→przezroczyste, skadrowane do szczytu, przeskalowane do 100px wysokości
+
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `korona`. Plik SQL: `korona.sql`.
+
+### Zapytanie 1: Szczyty posortowane malejąco po wysokości
+
+```sql
+SELECT id, nazwa FROM szczyty ORDER BY wysokosc DESC;
+```
+
+### Zapytanie 2: Pliki i nazwy pierwszych 10 szczytów
+
+```sql
+SELECT plik, nazwa FROM szczyty LIMIT 10;
+```
+
+### Zapytanie 3: Dane + opis szczytu id=1
+
+```sql
+SELECT s.plik, s.nazwa, s.wysokosc, s.pasmo, o.opis FROM szczyty s JOIN opis o ON s.id = o.id_szczyt WHERE s.id = 1;
+```
+
+### Zapytanie 4: Szczyty w Beskidach (LIKE)
+
+```sql
+SELECT nazwa, wysokosc, pasmo FROM szczyty WHERE pasmo LIKE 'Beskid%';
+```
+
+
+## Skrypty — rozwiązanie krok po kroku
+
+{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+
+## Punkty — co sprawdza egzaminator
+
+Ocenie podlegać będzie 5 rezultatów:
+
+1. **Operacje na bazie danych** — import tabel + kwerendy SQL
+2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
+3. **Działanie witryny** — czy skrypty działają poprawnie
+4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
+5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają

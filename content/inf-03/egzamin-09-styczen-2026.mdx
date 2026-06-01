@@ -1,0 +1,76 @@
+---
+title: "Salon stylizacji paznokci"
+---
+
+**Arkusz:** INF.03-09-26.01-SG (styczeń 2026)
+**Technologia:** PHP + JS + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki15.7z` · **Hasło:** `P@znoKcie?`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Salon stylizacji paznokci.
+W tym arkuszu **JavaScript** działa po stronie klienta (w przeglądarce).
+
+**Baza danych:** `paznokcie` — klienci (id, imie, kolor, cena, data, topKlient 1/0), ksztalty (id, nazwa), wzory (id, nazwa).
+
+## Co musisz oddać — pliki
+
+paznokcie.html/php: aside (manicure.jpg), main z 3 sekcjami (Kolor/Ksztalt/Wzór — tylko 1 widoczna naraz), nawigacja: 3 przyciski. Skrypt 1 (PHP lub JS): pętla 10 obrazów 1.jpg-10.jpg z klasą 'wzory' i title. Skrypt 2 (JS onmouseover): przełącza display block/none sekcji i kolory przycisków Salmon/Crimson.
+
+## CSS — najważniejsze zasady
+
+Trebuchet MS, body BlanchedAlmond centered, aside 20% img 100%, main 80%, nav text-align left margin-left 10%, sekcje Salmon margin-left 10% padding 10px height 250px — sekcja1 block, 2+3 display:none, przyciski 26% white no-border font-size 200% — 1wszy Salmon, reszta Crimson, klasa .wzory: 70px border-radius 100% margin 5px.
+
+## Grafika — co robić
+
+kolory.png: skadrowane do butelek, wysokość 70px
+
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `paznokcie`. Plik SQL: `paznokcie.sql`.
+
+### Zapytanie 1: Ważni klienci (topKlient=1)
+
+```sql
+SELECT imie, kolor, cena FROM klienci WHERE topKlient = 1;
+```
+
+### Zapytanie 2: Klienci z danego dnia
+
+```sql
+SELECT imie, cena FROM klienci WHERE data = '2024-05-23';
+```
+
+### Zapytanie 3: Klienci z kształtem migdał (JOIN)
+
+```sql
+SELECT k.imie, k.kolor, ks.nazwa FROM klienci k JOIN ksztalty ks ON k.ksztalt = ks.id WHERE ks.nazwa = 'migdał';
+```
+
+### Zapytanie 4: Dodanie kolumny doplata do tabeli wzory
+
+```sql
+ALTER TABLE wzory ADD COLUMN doplata INT;
+```
+
+
+## Skrypty — rozwiązanie krok po kroku
+
+{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+
+## Punkty — co sprawdza egzaminator
+
+Ocenie podlegać będzie 5 rezultatów:
+
+1. **Operacje na bazie danych** — import tabel + kwerendy SQL
+2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
+3. **Działanie witryny** — czy skrypty działają poprawnie
+4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
+5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają

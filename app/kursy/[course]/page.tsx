@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { courseDetails, getCourseDetail } from "@/lib/courses";
+import { courseDetails, getCourseDetail, examSessions } from "@/lib/courses";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { ExamPicker } from "@/components/ExamPicker";
 
 type CoursePageProps = {
     params: Promise<{ course: string }>;
@@ -61,6 +62,10 @@ export default async function CoursePage({ params }: CoursePageProps) {
                         </span>
                     </div>
                 </header>
+
+                {detail.id === "inf-03" && examSessions.length > 0 && (
+                    <ExamPicker sessions={examSessions} courseId={detail.id} />
+                )}
 
                 <ol className="module-list">
                     {detail.modules.map((module, mi) => (
