@@ -14,6 +14,9 @@ export const dynamic = "force-static";
  * Generujemy statyczne strony /quiz dla KAŻDEJ opublikowanej lekcji z quizem
  * w courses.ts. Pula pytań i tak leci z Supabase w runtime — strona jest
  * tylko szkieletem (tytuł + nawigacja + QuizClient który fetchuje API).
+ *
+ * Źródło prawdy o tym, czy lekcja ma quiz: pole `hasQuiz` w lib/courses.ts
+ * (dawne `quiz` z pytaniami w kodzie — deprecated, zostawiam jako fallback).
  */
 export function generateStaticParams() {
     return courseDetails.flatMap((course) =>
@@ -25,7 +28,9 @@ export function generateStaticParams() {
     );
 }
 
-function lessonHasQuizFlag(lesson: { quiz?: unknown[] }): boolean {
+function lessonHasQuizFlag(lesson: { hasQuiz?: boolean; quiz?: unknown[] }): boolean {
+    // Preferuj nowe pole `hasQuiz`. Fallback: stare `quiz` z pytaniami.
+    if (lesson.hasQuiz) return true;
     return Boolean(lesson.quiz && lesson.quiz.length > 0);
 }
 
