@@ -1,8 +1,8 @@
-SQL (Structured Query Language) to język do rozmawiania z bazą danych. Pozwala tworzyć tabele, wstawiać dane, wyciągać je w złożony sposób i zarządzać uprawnieniami. W tej lekcji opanujesz absolutne podstawy, które wystarczą do 90% zadań INF.03.
+Wyobraź sobie, że masz sklep internetowy. Tysiące produktów, setki klientów, zamówienia spływają co minutę. Gdzie to wszystko trzymasz? Nie w Excelu — w **bazie danych**. A żeby z nią rozmawiać, potrzebujesz <Term word="SQL">SQL</Term>. To język, który mówi bazie: "daj mi to", "zapisz tamto", "usuń to". Bez SQL nie ma <Term word="backend">backendu</Term>, nie ma aplikacji, nie ma danych.
 
-## Czym jest relacyjna baza danych
+## Jak wygląda baza danych — zanim zaczniesz pisać
 
-Baza relacyjna przechowuje dane w **tabelach** (jak arkusze Excela), które mogą być ze sobą powiązane (relacje). Każda tabela ma **wiersze** (rekordy) i **kolumny** (pola).
+Relacyjna baza to zbiór **tabel** — jak arkusze w Excelu, tylko połączone ze sobą. Każda tabela ma kolumny (pola) i wiersze (<Term word="rekord">rekordy</Term>).
 
 ```
 users                          orders
@@ -15,9 +15,11 @@ users                          orders
 +----+---------+----+         +----+---------+--------+
 ```
 
-`orders.user_id` wskazuje na `users.id` — relacja jeden-do-wielu (jeden user, wiele zamówień).
+`orders.user_id` wskazuje na `users.id` — to relacja jeden-do-wielu: jeden user, wiele zamówień. O łączeniu tabel więcej w lekcji o JOIN-ach.
 
 ## CREATE TABLE — tworzenie tabeli
+
+Zanim cokolwiek zapiszesz, musisz stworzyć tabelę. Definiujesz w niej kolumny i ich typy.
 
 ```sql
 CREATE TABLE users (
@@ -29,7 +31,7 @@ CREATE TABLE users (
 );
 ```
 
-### Typy danych
+### Typy danych — co gdzie wpisać
 
 | Typ | Co przechowuje | Przykład |
 |-----|---------------|----------|
@@ -45,14 +47,14 @@ CREATE TABLE users (
 | `ENUM` | jedna z listy | `ENUM('user', 'admin')` |
 | `JSON` | dane JSON | MySQL 5.7+ |
 
-### Ograniczenia (constraints)
+### Ograniczenia (constraints) — zasady dla danych
 
-- **`PRIMARY KEY`** — unikalny identyfikator wiersza. Zwykle `id` AUTO_INCREMENT.
-- **`NOT NULL`** — pole wymagane.
+- **`PRIMARY KEY`** — unikalny identyfikator wiersza. Zwykle `id` z AUTO_INCREMENT.
+- **`NOT NULL`** — pole wymagane, nie może być puste.
 - **`UNIQUE`** — wartość nie może się powtórzyć w tabeli.
 - **`DEFAULT wartość`** — wartość domyślna gdy nie podano.
-- **`CHECK (warunek)`** — walidacja (MySQL 8+).
-- **`FOREIGN KEY`** — klucz obcy, łączy z inną tabelą (patrz lekcja `relacje-join`).
+- **`CHECK (warunek)`** — <Term word="walidacja">walidacja</Term> wartości (MySQL 8+).
+- **`FOREIGN KEY`** — <Term word="klucz_obcy">klucz obcy</Term>, łączy z inną tabelą (patrz lekcja relacje-join).
 
 ```sql
 CREATE TABLE products (
@@ -66,17 +68,19 @@ CREATE TABLE products (
 ```
 
 <Callout type="tip" title="AUTO_INCREMENT">
-`AUTO_INCREMENT` = baza sama nadaje kolejne numery. Po `INSERT` bez podania `id`, baza wpisze następny wolny numer. W innych bazach (PostgreSQL) to `SERIAL` lub `INT GENERATED ALWAYS AS IDENTITY`.
+`AUTO_INCREMENT` = baza sama nadaje kolejne numery. Po `INSERT` bez podania `id`, baza wpisze następny wolny numer. W PostgreSQL to `SERIAL` lub `INT GENERATED ALWAYS AS IDENTITY`.
 </Callout>
 
 ## INSERT — wstawianie danych
 
+Tabela istnieje, czas ją wypełnić.
+
 ```sql
--- Pełna forma
+-- Jeden rekord
 INSERT INTO users (name, email, age)
 VALUES ('Anna Nowak', 'anna@example.com', 16);
 
--- Wiele rekordów naraz
+-- Wiele rekordów naraz — szybciej niż osobne INSERT-y
 INSERT INTO users (name, email, age) VALUES
     ('Jan Kowalski', 'jan@example.com', 17),
     ('Ola Wiśniewska', 'ola@example.com', 16),
@@ -88,6 +92,8 @@ INSERT INTO users VALUES
 ```
 
 ## SELECT — pobieranie danych
+
+To będziesz pisać najczęściej. <Term word="query">Zapytanie</Term> SELECT mówi bazie: "daj mi te dane, z tej tabeli, spełniające te warunki".
 
 ### Podstawowy SELECT
 
@@ -128,15 +134,16 @@ SELECT * FROM users ORDER BY age DESC, name ASC;   -- wielopoziomowe
 
 ### LIMIT i OFFSET — stronicowanie
 
+Nie chcesz zwracać 10 000 rekordów naraz. <Term word="paginacja">Paginacja</Term> rozwiązuje problem.
+
 ```sql
 SELECT * FROM users ORDER BY id LIMIT 10;                 -- pierwsze 10
 SELECT * FROM users ORDER BY id LIMIT 10 OFFSET 20;       -- pomiń 20, weź 10
--- (strona 3, po 10 na stronę)
-SELECT * FROM users ORDER BY id LIMIT 10 OFFSET 20;
+-- (strona 3, po 10 na stronę: OFFSET = (strona-1) * limit)
 ```
 
 <Callout type="exam">
-Na egzaminie INF.03 `LIMIT` i `OFFSET` to standard stronicowania. Pamiętaj: `LIMIT 10` = 10 rekordów, `OFFSET 20` = pomiń pierwszych 20.
+Na egzaminie INF.03 `LIMIT` i `OFFSET` to standard stronicowania. Pamiętaj: `LIMIT 10` = 10 rekordów, `OFFSET 20` = pomiń pierwszych 20. Strona 3 przy 10 na stronę = `LIMIT 10 OFFSET 20`.
 </Callout>
 
 ### DISTINCT — unikalne wartości
@@ -153,7 +160,7 @@ UPDATE users
 SET age = 17
 WHERE id = 1;
 
--- Wiele kolumn
+-- Wiele kolumn naraz
 UPDATE users
 SET name = 'Anna K.', age = 17
 WHERE id = 1;
@@ -163,9 +170,9 @@ UPDATE users SET age = 18;   -- ⚠️ ustawia WSZYSTKIM userom wiek 18
 ```
 
 <Callout type="warning" title="UPDATE bez WHERE = katastrofa">
-Zawsze testuj `WHERE` przez `SELECT` z tym samym warunkiem:
+Zawsze testuj `WHERE` przez `SELECT` z tym samym warunkiem zanim odpalisz UPDATE:
 ```sql
--- najpierw sprawdź
+-- najpierw sprawdź co zmienisz
 SELECT * FROM users WHERE age < 13;
 -- potem aktualizuj
 UPDATE users SET status = 'minor' WHERE age < 13;
@@ -179,21 +186,23 @@ DELETE FROM users WHERE id = 5;
 DELETE FROM users WHERE created_at < '2024-01-01';
 
 -- BEZ WHERE = usuwa WSZYSTKO
-DELETE FROM users;   -- ⚠️ kasuje CAŁĄ tabelę
+DELETE FROM users;   -- ⚠️ kasuje CAŁĄ zawartość tabeli
 ```
 
-Bezpieczniejsza wersja: `TRUNCATE TABLE users;` — też kasuje wszystko, ale szybciej (nie loguje zmian).
+Bezpieczniejsza wersja do czyszczenia tabeli: `TRUNCATE TABLE users;` — też kasuje wszystko, ale szybciej (nie loguje zmian wiersz po wierszu).
 
 ## DROP TABLE — usuwanie tabeli
 
 ```sql
-DROP TABLE users;        -- usuwa tabelę (NIEODWRACALNIE)
+DROP TABLE users;            -- usuwa tabelę (NIEODWRACALNIE)
 DROP TABLE IF EXISTS users;  -- nie rzuca błędu gdy tabeli nie ma
 ```
 
-`IF EXISTS` to dobra praktyka w migracjach.
+`IF EXISTS` to dobra praktyka w migracjach — skrypt nie wysypie się gdy tabela już nie istnieje.
 
 ## ALTER TABLE — zmiana struktury
+
+Tabela już istnieje, ale potrzebujesz ją zmodyfikować? `ALTER TABLE` to narzędzie do tego.
 
 ```sql
 -- Dodaj kolumnę
@@ -205,11 +214,13 @@ ALTER TABLE users MODIFY COLUMN age SMALLINT;
 -- Usuń kolumnę
 ALTER TABLE users DROP COLUMN phone;
 
--- Zmień nazwę
+-- Zmień nazwę tabeli
 ALTER TABLE users RENAME TO app_users;
 ```
 
 ## Indeksy — przyspieszanie zapytań
+
+Wyobraź sobie książkę bez spisu treści — żeby znaleźć rozdział, musisz czytać od początku. <Term word="indeks">Indeks</Term> w bazie to właśnie spis treści: zamiast przeglądać każdy wiersz, baza skacze od razu do właściwego miejsca.
 
 ```sql
 -- Indeks na pojedynczej kolumnie
@@ -218,16 +229,18 @@ CREATE INDEX idx_users_email ON users(email);
 -- Unikalny indeks
 CREATE UNIQUE INDEX idx_users_email ON users(email);
 
--- Indeks złożony
+-- Indeks złożony (przydatny gdy filtrujesz po obu kolumnach)
 CREATE INDEX idx_users_age_name ON users(age, name);
 
 -- Usunięcie indeksu
 DROP INDEX idx_users_email ON users;
 ```
 
-Indeks przyspiesza `WHERE`, `ORDER BY`, `JOIN` na danej kolumnie. **ALE** spowalnia `INSERT` / `UPDATE` (bo trzeba aktualizować indeks). Dodawaj indeksy tam, gdzie NAPRAWDĘ pomagają.
+Indeks przyspiesza `WHERE`, `ORDER BY`, `JOIN` na danej kolumnie. **ALE** spowalnia `INSERT` / `UPDATE` (bo trzeba aktualizować indeks). Dodawaj indeksy tam, gdzie naprawdę pomagają — na kolumnach, po których często filtrujesz.
 
 ## Kompletny przykład — sklep
+
+Wszystko razem: tabele, dane, zapytania.
 
 ```sql
 -- Tabele
@@ -268,4 +281,8 @@ SELECT AVG(amount) FROM orders WHERE status = 'paid';
 
 ## Podsumowanie
 
-`CREATE TABLE` tworzy tabelę z typami (`INT`, `VARCHAR`, `DECIMAL`, `TIMESTAMP`, `ENUM`) i ograniczeniami (`PRIMARY KEY`, `NOT NULL`, `UNIQUE`, `DEFAULT`, `CHECK`). `INSERT INTO ... VALUES` wstawia. `SELECT ... FROM ... WHERE ... ORDER BY ... LIMIT ... OFFSET` pobiera z filtrami i stronicowaniem. `UPDATE ... SET ... WHERE` aktualizuje. `DELETE FROM ... WHERE` usuwa. `ALTER TABLE` zmienia strukturę. Indeksy przyspieszają zapytania kosztem INSERT/UPDATE. ZAWSZE `WHERE` w `UPDATE`/`DELETE` — bez niego zmienisz wszystkie wiersze.
+`CREATE TABLE` tworzy tabelę z typami (`INT`, `VARCHAR`, `DECIMAL`, `TIMESTAMP`, `ENUM`) i ograniczeniami (`PRIMARY KEY`, `NOT NULL`, `UNIQUE`, `DEFAULT`, `CHECK`). `INSERT INTO ... VALUES` wstawia rekordy. `SELECT ... FROM ... WHERE ... ORDER BY ... LIMIT ... OFFSET` pobiera z filtrami i stronicowaniem. `UPDATE ... SET ... WHERE` aktualizuje — zawsze z `WHERE`. `DELETE FROM ... WHERE` usuwa — też zawsze z `WHERE`. `ALTER TABLE` zmienia strukturę istniejącej tabeli. Indeksy przyspieszają zapytania kosztem INSERT/UPDATE.
+
+<Callout type="exam">
+Na egzaminie INF.03 najczęściej pytają o: poprawną składnię `CREATE TABLE` z ograniczeniami, `SELECT` z `WHERE` i `ORDER BY`, różnicę między `DELETE` a `TRUNCATE`, oraz `LIMIT`/`OFFSET` do stronicowania. Naucz się tych czterech operacji na pamięć.
+</Callout>

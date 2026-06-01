@@ -1,14 +1,16 @@
-Responsywność (RWD, Responsive Web Design) to projektowanie stron, które dobrze wyglądają na każdym ekranie — od 320px telefonu do 4K monitora. W tej lekcji poznasz techniki, dzięki którym Twoja strona będzie elastyczna.
+Wyciągasz telefon, wchodzisz na stronę — i widzisz miniaturę wersji desktopowej, w której musisz zoomować palcami, żeby cokolwiek przeczytać. Albo odwrotnie: strona zbudowana tylko pod telefon wygląda żałośnie wąsko na dużym monitorze. <Term word="responsive">Responsywność</Term> (RWD, Responsive Web Design) rozwiązuje ten problem: jedna strona, która dobrze wygląda wszędzie — od 320px telefonu po 4K monitor. W tej lekcji poznasz techniki, które to umożliwiają.
 
 ## Filozofia: mobile-first
 
-**Mobile-first** = zaczynaj projektowanie od najmniejszego ekranu, potem rozszerzaj. Odwrotnie niż "desktop z breakpoints w dół".
+<Term word="mobile-first">Mobile-first</Term> oznacza: zaczynasz projektowanie od najmniejszego ekranu, potem rozszerzasz na większe. Odwrotnie niż intuicja podpowiada.
 
-Dlaczego mobile-first:
+Dlaczego tak, a nie od desktopu:
 
-- Większość ruchu w sieci to mobile (Google indeksuje mobile).
-- Łatwiej upraszczać niż komplikować.
-- CSS ładuje się szybciej (mniej reguł na start).
+- Większość ruchu w sieci to telefony — Google indeksuje wersję mobilną strony.
+- Łatwiej *dodawać* złożoność na większych ekranach niż *upraszczać* z desktopu w dół.
+- CSS ładuje się szybciej — mniej reguł na start.
+
+Tak robisz dobrze — domyślne style dla mobile, potem rozszerzasz w górę:
 
 ```css
 /* Domyślne style — dla mobile */
@@ -20,56 +22,55 @@ Dlaczego mobile-first:
 }
 ```
 
-NIE tak:
+A tak NIE — desktop najpierw, potem "cofanie" na mobile:
 
 ```css
-/* Style desktopowe, a potem "cofaj" na mobile */
 .karta { padding: 24px; }
 @media (max-width: 768px) {
     .karta { padding: 12px; }
 }
 ```
 
-## Viewport meta — OBOWIĄZKOWE
+Zauważ różnicę: mobile-first używa `min-width` (od tej szerokości w górę), podejście desktop-first używa `max-width` (do tej szerokości w dół).
 
-Bez tego tagu strona na telefonie renderuje się jak na desktopie i user widzi miniaturę:
+## Viewport meta — bez tego nic nie zadziała
+
+To jedna linijka w `<head>`, którą musisz znać na pamięć. Bez niej strona na telefonie renderuje się jakby była na desktopie — i user widzi miniaturę:
 
 ```html
 <meta name="viewport" content="width=device-width, initial-scale=1">
 ```
 
-- `width=device-width` — strona dopasowana do szerokości urządzenia.
-- `initial-scale=1` — początkowe powiększenie 1 (bez zoomowania).
+- `width=device-width` — szerokość strony = szerokość urządzenia.
+- `initial-scale=1` — początkowe powiększenie 1 (bez auto-zoomu).
 
 <Callout type="exam">
-Na egzaminie INF.03 `<meta name="viewport" content="width=device-width, initial-scale=1">` to punkt obowiązkowy. Brak = strona się nie skaluje na telefonie = utrata punktów.
+Na egzaminie INF.03 `<meta name="viewport" content="width=device-width, initial-scale=1">` to punkt obowiązkowy. Brak tego tagu = strona się nie skaluje na telefonie = utrata punktów. Naucz się go na pamięć.
 </Callout>
 
 ## Media queries — kiedy zmienić układ
 
+<Term word="media query">Media query</Term> to reguła CSS, która stosuje style tylko przy określonym rozmiarze ekranu. Tak budujesz layout, który zmienia liczbę kolumn wraz z szerokością:
+
 ```css
-/* Domyślnie: mobile (pojedyncza kolumna) */
+/* Domyślnie: mobile (jedna kolumna) */
 .kontener {
     display: grid;
     grid-template-columns: 1fr;
     gap: 16px;
 }
 
-/* Tablet (>= 768px) */
+/* Tablet (>= 768px): dwie kolumny */
 @media (min-width: 768px) {
-    .kontener {
-        grid-template-columns: 1fr 1fr;
-    }
+    .kontener { grid-template-columns: 1fr 1fr; }
 }
 
-/* Desktop (>= 1024px) */
+/* Desktop (>= 1024px): trzy kolumny */
 @media (min-width: 1024px) {
-    .kontener {
-        grid-template-columns: 1fr 1fr 1fr;
-    }
+    .kontener { grid-template-columns: 1fr 1fr 1fr; }
 }
 
-/* Duży monitor (>= 1440px) */
+/* Duży monitor (>= 1440px): wycentruj kontener */
 @media (min-width: 1440px) {
     .kontener { max-width: 1400px; margin: 0 auto; }
 }
@@ -79,23 +80,21 @@ Popularne breakpointy (orientacyjnie):
 
 - `320px` — małe telefony
 - `480px` — telefony
-- `768px` — tablety (portrait)
-- `1024px` — tablety (landscape), małe laptopy
+- `768px` — tablety (pionowo)
+- `1024px` — tablety (poziomo), małe laptopy
 - `1280px` — desktop
 - `1440px` — duży desktop
-- `1920px` — Full HD
 
-Nie trzymaj się ich sztywno — dodawaj breakpoint gdy layout **naprawdę się psuje**.
+Nie trzymaj się ich sztywno. Dobra zasada: dodawaj breakpoint tam, gdzie layout **naprawdę się psuje**, a nie według magicznych liczb.
 
 ## Jednostki elastyczne
 
-Zamiast sztywnych `px`, używaj jednostek dopasowanych do ekranu:
+Zamiast sztywnych `px`, używaj jednostek dopasowujących się do ekranu:
 
 ```css
-/* Sekcja hero wypełniająca ekran */
 .hero {
-    min-height: 100vh;        /* pełna wysokość okna */
-    padding: 5vw;             /* odstęp 5% szerokości */
+    min-height: 100vh;   /* pełna wysokość okna */
+    padding: 5vw;        /* odstęp = 5% szerokości okna */
 }
 
 h1 {
@@ -103,26 +102,27 @@ h1 {
 }
 
 .karta {
-    width: 90%;               /* prawie cała szerokość na mobile */
-    max-width: 400px;         /* nie szersza niż 400 na desktop */
+    width: 90%;          /* prawie cała szerokość na mobile */
+    max-width: 400px;    /* ale nie szersza niż 400px na desktop */
 }
 ```
 
-`clamp(min, preferred, max)` — płynna typografia, idealna do nagłówków.
+`clamp(min, preferowane, max)` to płynna typografia: nagłówek rośnie razem z ekranem, ale nigdy nie zejdzie poniżej 1.5rem ani nie przekroczy 3rem. Idealne do nagłówków — bez media queries.
 
 ## Obrazy elastyczne
 
-Trzy techniki, żeby obrazki nie wychodziły poza ekran:
+Obrazek o stałej szerokości wyleje się poza ekran telefonu. Podstawowa ochrona to dwie linijki:
 
 ```css
 img {
-    max-width: 100%;       /* nie szerszy niż kontener */
-    height: auto;          /* zachowaj proporcje */
+    max-width: 100%;   /* nie szerszy niż kontener */
+    height: auto;      /* zachowaj proporcje */
 }
 ```
 
+Dla wydajności możesz podać różne pliki dla różnych ekranów — telefon nie pobiera obrazka 4K:
+
 ```html
-<!-- Różne rozmiary dla różnych ekranów -->
 <img src="hero-small.jpg"
      srcset="hero-small.jpg 480w,
              hero-medium.jpg 768w,
@@ -131,45 +131,46 @@ img {
      alt="...">
 ```
 
+A `object-fit: cover` przycina obrazek zachowując proporcje (jak `background-size: cover`):
+
 ```html
-<!-- Sztuczka aspect-ratio bez rozmiaru obrazu -->
 <img src="hero.jpg" style="aspect-ratio: 16/9; width: 100%; object-fit: cover;">
 ```
 
-`object-fit: cover` przycina obrazek zachowując proporcje (jak tło `background-size: cover`).
+## Ukrywanie i pokazywanie elementów
 
-## Ukrywanie/pokazywanie elementów
+Klasyczny wzorzec: inne menu na telefonie, inne na desktopie:
 
 ```css
-.menu-mobile { display: block; }
+.menu-mobile  { display: block; }
 .menu-desktop { display: none; }
 
 @media (min-width: 768px) {
-    .menu-mobile { display: none; }
+    .menu-mobile  { display: none; }
     .menu-desktop { display: flex; }
 }
 ```
 
 <Callout type="warning" title="Nie ukrywaj treści">
-Lepiej responsywnie zmienić układ niż ukrywać ważną treść. Wyszukiwarki i czytniki ekranu NIE lubią `display: none` na kluczowych rzeczach.
+Lepiej responsywnie zmienić układ niż ukrywać ważną treść. Wyszukiwarki i czytniki ekranu nie lubią `display: none` na kluczowych elementach — dla nich ta treść po prostu znika. Ukrywaj tylko dekoracje i alternatywne wersje nawigacji.
 </Callout>
 
-## Testowanie — DevTools
+## Testowanie w DevTools
 
-Chrome DevTools ma tryb responsywny (Ctrl+Shift+M / Cmd+Shift+M):
+Chrome DevTools ma tryb responsywny (Ctrl+Shift+M lub Cmd+Shift+M):
 
 - Lista popularnych urządzeń (iPhone, iPad, Pixel).
 - Dowolna szerokość — wpisz ręcznie.
-- Tryb portrait/landscape.
-- Throttling sieci — testuj na 3G.
+- Tryb pionowy/poziomy.
+- Throttling sieci — testuj jak strona ładuje się na 3G.
 
-Zawsze testuj:
+Zawsze sprawdź co najmniej cztery szerokości:
 
 1. Najmniejszy wspierany ekran (320px).
 2. Najpopularniejszy telefon (375–414px).
-3. Tablet portrait (768px).
+3. Tablet pionowo (768px).
 4. Desktop (1280–1920px).
 
 ## Podsumowanie
 
-`<meta name="viewport" content="width=device-width, initial-scale=1">` — obowiązkowe. Mobile-first: pisz style dla małych ekranów, rozszerzaj `@media (min-width: ...)`. Breakpointy: 768 (tablet), 1024 (laptop), 1280 (desktop), 1440 (duży ekran). Elastyczne jednostki: `clamp()`, `vw`, `%`, `min/max-width`. Obrazy: `max-width: 100%; height: auto` + `srcset`/`sizes`. Testuj w DevTools (Ctrl+Shift+M).
+`<meta name="viewport" content="width=device-width, initial-scale=1">` — obowiązkowe, ucz się na pamięć. <Term word="mobile-first">Mobile-first</Term>: pisz style dla małych ekranów, rozszerzaj przez `@media (min-width: ...)`. Breakpointy: 768 (tablet), 1024 (laptop), 1280 (desktop), 1440 (duży ekran) — ale dodawaj je tam, gdzie layout się psuje. Elastyczne jednostki: `clamp()`, `vw`, `%`, `min/max-width`. Obrazy: `max-width: 100%; height: auto` + `srcset`. Testuj w DevTools (Ctrl+Shift+M).

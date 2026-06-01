@@ -1,42 +1,47 @@
-CSS Grid to drugi (po Flexbox) system układu, ale działa w **dwóch wymiarach jednocześnie**: wiersze i kolumny. Gdy Flexbox wystarcza — używaj go. Gdy potrzebujesz pełnej siatki (np. layout strony, dashboard) — Grid jest królem.
+Flexbox świetnie radzi sobie z jednym wymiarem — rzędem albo kolumną. Ale gdy chcesz zbudować layout całej strony: header na górze, sidebar po lewej, treść w środku, footer na dole — i żeby wszystko było idealnie wyrównane w wierszach **i** kolumnach jednocześnie — Flexbox zaczyna walczyć. Tu wkracza <Term word="grid">CSS Grid</Term>: system zaprojektowany do układów dwuwymiarowych. W tej lekcji zbudujesz prawdziwy layout strony.
 
-## Flexbox vs Grid — kiedy czego
+## Flexbox vs Grid — kiedy czego używać
 
-- **Flexbox** = 1D. Elementy w jednym rzędzie LUB jednej kolumnie. Idealny do: pasków nawigacji, list, przycisków, centrowania.
-- **Grid** = 2D. Elementy na siatce wiersz × kolumna. Idealny do: layoutu strony (header/sidebar/main/footer), galerii, dashboardów, formularzy złożonych.
+To pytanie pada na egzaminie i w pracy. Zasada jest prosta:
 
-Nie ma jednej "lepszej" opcji — oba są dobre. Często łączysz: Grid na makro (layout strony), Flexbox wewnątrz (np. pasek nawigacji w headerze).
+- **<Term word="flexbox">Flexbox</Term>** = jeden wymiar. Elementy w rzędzie LUB kolumnie. Pasek nawigacji, lista przycisków, centrowanie.
+- **<Term word="grid">Grid</Term>** = dwa wymiary. Siatka wiersz × kolumna. Layout strony, galeria, dashboard, złożony formularz.
+
+Nie ma "lepszego" — oba są dobre do swoich zadań. W praktyce łączysz je: Grid na makro (layout całej strony), Flexbox wewnątrz (np. pasek nawigacji w nagłówku).
 
 ## Włączenie Grid
 
 ```css
 .kontener {
     display: grid;
-    /* lub: display: inline-grid; */
 }
 ```
 
-Domyślnie to jedna kolumna, tyle wierszy ile dzieci. Mało użyteczne — potrzebujemy zdefiniować siatkę.
+Samo `display: grid` daje jedną kolumnę i tyle wierszy ile dzieci — mało użyteczne. Siłę Grida odblokowujesz dopiero definiując siatkę.
 
 ## Definiowanie kolumn i wierszy
 
 ```css
 .kontener {
     display: grid;
-    grid-template-columns: 200px 1fr 200px;   /* 3 kolumny */
+    grid-template-columns: 200px 1fr 200px;  /* 3 kolumny */
     grid-template-rows: auto 1fr auto;       /* 3 wiersze */
-    gap: 16px;                                /* odstępy */
+    gap: 16px;                               /* odstępy */
 }
 ```
 
-### Jednostki
+Tu definiujesz siatkę: trzy kolumny (lewa 200px, środkowa elastyczna, prawa 200px) i trzy wiersze.
 
-- **`px`**, **`%`** — sztywne/procentowe.
-- **`fr`** — "fraction", kawałek wolnej przestrzeni. `1fr 1fr 1fr` = 3 równe kolumny. `1fr 2fr` = pierwsza połowa, druga całość.
+### Jednostki Grida
+
+- **`px`**, **`%`** — sztywne lub procentowe.
+- **`fr`** — "fraction", kawałek wolnej przestrzeni. `1fr 1fr 1fr` = trzy równe kolumny. `1fr 2fr` = druga dwa razy szersza.
 - **`auto`** — dopasuj do zawartości.
 - **`minmax(min, max)`** — zakres. `minmax(200px, 1fr)` = minimum 200px, rośnie do wypełnienia.
-- **`repeat(ile, wzorzec)`** — powtórzenie. `repeat(3, 1fr)` = trzy równe kolumny.
+- **`repeat(ile, wzorzec)`** — powtórzenie. `repeat(3, 1fr)` = `1fr 1fr 1fr`.
 - **`auto-fit` / `auto-fill`** — tyle kolumn ile się zmieści.
+
+`fr` to serce Grida. Zamiast liczyć procenty, mówisz "podziel wolne miejsce w tych proporcjach".
 
 ```css
 /* Responsywna galeria BEZ media queries */
@@ -47,11 +52,11 @@ Domyślnie to jedna kolumna, tyle wierszy ile dzieci. Mało użyteczne — potrz
 }
 ```
 
-`auto-fit` z `minmax` daje **tyle kolumn ile się zmieści**, każda minimum 250px. Magia responsywności.
+To połączenie `auto-fit` + `minmax` daje **tyle kolumn, ile się zmieści**, każda minimum 250px szerokości. Okno szersze — więcej kolumn. Węższe — mniej. Bez ani jednej <Term word="media query">media query</Term>. Naucz się tego wzorca, jest niezwykle praktyczny.
 
-## Named areas — czytelne nazwy siatki
+## Named areas — siatka z nazwami
 
-Zamiast numerów, nadajesz obszarom nazwy:
+Zamiast operować numerami linii, możesz nazwać obszary siatki słowami:
 
 ```css
 .layout {
@@ -59,74 +64,70 @@ Zamiast numerów, nadajesz obszarom nazwy:
     grid-template-columns: 200px 1fr;
     grid-template-rows: auto 1fr auto;
     grid-template-areas:
-        "header header"
+        "header  header"
         "sidebar main"
-        "footer footer";
+        "footer  footer";
     gap: 16px;
     min-height: 100vh;
 }
 
-header  { grid-area: header; }
-aside   { grid-area: sidebar; }
-main    { grid-area: main; }
-footer  { grid-area: footer; }
+header { grid-area: header; }
+aside  { grid-area: sidebar; }
+main   { grid-area: main; }
+footer { grid-area: footer; }
 ```
 
-Wizualnie widać układ strony. Gdy trzeba dostosować — zmieniasz tylko `grid-template-areas`. Łatwe do refaktoru i zrozumienia.
+Spójrz na `grid-template-areas` — widzisz układ strony wprost w kodzie. Header zajmuje całą górę, sidebar i main są obok siebie, footer na dole przez całą szerokość. Gdy chcesz zmienić układ — przesuwasz słowa. Czytelne i łatwe w utrzymaniu.
 
 ## Umieszczanie dzieci w siatce
 
 Trzy sposoby:
 
-### 1. Automatyczny (domyślny)
+### 1. Automatyczny
 
-Dzieci układają się w kolejności w wolne miejsca.
+Dzieci wypełniają wolne komórki po kolei. Nic nie robisz.
 
 ### 2. Numer linii
 
 ```css
 .dziecko {
-    grid-column: 1 / 3;    /* od linii 1 do linii 3 = 2 kolumny */
-    grid-row: 2 / 4;       /* od linii 2 do linii 4 = 2 wiersze */
+    grid-column: 1 / 3;  /* od linii 1 do 3 = 2 kolumny */
+    grid-row: 2 / 4;     /* od linii 2 do 4 = 2 wiersze */
 }
 ```
 
-Linie są numerowane od 1. Skrót `grid-column: 1 / -1` oznacza "od początku do końca" (cała szerokość).
+Linie numerowane są od 1. Skrót `grid-column: 1 / -1` znaczy "od początku do końca" — czyli cała szerokość siatki.
 
-### 3. Named area (z kontenera)
+### 3. Named area
 
 ```css
 .dziecko {
-    grid-area: header;     /* wpada w obszar "header" */
+    grid-area: header;  /* wpada w obszar nazwany "header" */
 }
 ```
 
-## Gap — odstępy
+## gap — odstępy
 
 ```css
 .kontener {
     display: grid;
-    gap: 16px;             /* wszędzie */
-    column-gap: 24px;      /* tylko między kolumnami */
-    row-gap: 12px;         /* tylko między wierszami */
-    gap: 12px 24px;        /* wiersze kolumny */
+    gap: 16px;          /* wszędzie */
+    column-gap: 24px;   /* tylko między kolumnami */
+    row-gap: 12px;      /* tylko między wierszami */
+    gap: 12px 24px;     /* wiersze | kolumny */
 }
 ```
 
-`gap` w Grid działa tak samo jak we Flexbox — w przeciwieństwie do starych `margin` nie wymaga hacków na ostatnim elemencie.
+`gap` w Grid działa tak samo jak we Flexbox — żadnych hacków z marginesami na ostatnim elemencie.
 
-## Wyrównanie dzieci wewnątrz komórki
+## Wyrównanie zawartości w komórkach
 
 ```css
 .kontener {
     display: grid;
-    justify-items: stretch;     /* domyślne: rozciągnij do szerokości komórki */
-    justify-items: center;      /* wyśrodkuj */
-    justify-items: start;       /* do lewej */
-
-    align-items: stretch;       /* domyślne: do wysokości */
-    align-items: center;        /* wyśrodkuj */
-    align-items: start;         /* do góry */
+    justify-items: stretch;  /* domyślne: rozciągnij do szerokości komórki */
+    justify-items: center;   /* wyśrodkuj poziomo */
+    align-items: center;     /* wyśrodkuj pionowo */
 }
 
 /* Dla konkretnego dziecka: */
@@ -136,22 +137,9 @@ Linie są numerowane od 1. Skrót `grid-column: 1 / -1` oznacza "od początku do
 }
 ```
 
-## Justify/align content — wyrównanie CAŁEJ siatki
+## Przykład — layout strony
 
-Gdy siatka jest mniejsza niż kontener:
-
-```css
-.kontener {
-    display: grid;
-    height: 100vh;
-    grid-template-rows: repeat(3, 100px);
-
-    justify-content: center;     /* wycentruj poziomo (jak w Flexbox) */
-    align-content: center;       /* wycentruj pionowo */
-}
-```
-
-## Kompletny przykład — layout strony
+To najczęstsze zastosowanie Grida na egzaminie:
 
 ```html
 <div class="layout">
@@ -159,19 +147,14 @@ Gdy siatka jest mniejsza niż kontener:
         <img src="logo.png" alt="Logo">
         <nav>...</nav>
     </header>
-
     <aside class="sidebar">
         <h3>Moduły</h3>
         <ul>...</ul>
     </aside>
-
     <main class="main">
         <article>...</article>
     </main>
-
-    <footer class="footer">
-        © 2026 Koło STEM
-    </footer>
+    <footer class="footer">© 2026 Koło STEM</footer>
 </div>
 ```
 
@@ -189,11 +172,12 @@ Gdy siatka jest mniejsza niż kontener:
     padding: 16px;
 }
 
-.header  { grid-area: header;   display: flex; align-items: center; gap: 16px; }
+.header  { grid-area: header; display: flex; align-items: center; gap: 16px; }
 .sidebar { grid-area: sidebar; }
 .main    { grid-area: main; }
 .footer  { grid-area: footer; }
 
+/* Na telefonie — wszystko w jednej kolumnie */
 @media (max-width: 768px) {
     .layout {
         grid-template-columns: 1fr;
@@ -206,13 +190,13 @@ Gdy siatka jest mniejsza niż kontener:
 }
 ```
 
-Na desktopie 2-kolumnowy (sidebar + main), na mobile jednokolumnowy (sidebar pod treścią).
+Zobacz, jak elegancko działa responsywność: na desktopie dwie kolumny, na telefonie jedna — zmieniasz tylko `grid-template-areas`. Header w nagłówku używa Flexboxa. Grid i Flexbox współpracują.
 
 <Callout type="exam">
-Na egzaminie INF.03 zadania z CSS często wymagają Grid do layoutu strony. Zapamiętaj: `grid-template-areas` + `grid-area` na dzieciach + responsywność przez zmianę `grid-template-areas` w media queries.
+Na egzaminie INF.03 zadania z CSS często wymagają Grida do layoutu strony. Zapamiętaj wzorzec: `grid-template-areas` na kontenerze + `grid-area` na dzieciach + responsywność przez zmianę `grid-template-areas` w media query. To trzy elementy, które musisz umieć napisać z pamięci.
 </Callout>
 
-## Kompletny przykład — dashboard z kartami
+## Przykład — dashboard z kartami różnej wielkości
 
 ```html
 <div class="dashboard">
@@ -232,17 +216,12 @@ Na egzaminie INF.03 zadania z CSS często wymagają Grid do layoutu strony. Zapa
     gap: 16px;
 }
 
-.karta {
-    background: #1a1a1a;
-    padding: 16px;
-}
-
-.duza { grid-column: span 2; grid-row: span 2; }    /* 2x2 */
-.szeroka { grid-column: span 3; }                    /* cała szerokość */
+.duza    { grid-column: span 2; grid-row: span 2; }  /* 2×2 */
+.szeroka { grid-column: span 3; }                     /* cała szerokość */
 ```
 
-`grid-column: span 2` = zajmij 2 kolumny. `grid-row: span 2` = 2 wiersze.
+`grid-column: span 2` = "zajmij 2 kolumny". `grid-row: span 2` = "zajmij 2 wiersze". Tak budujesz nieregularne układy, gdzie jedna karta jest większa od innych.
 
 ## Podsumowanie
 
-`display: grid` włącza Grid. `grid-template-columns` / `grid-template-rows` definiują siatkę. Jednostka `fr` dzieli wolną przestrzeń, `minmax()` daje zakres, `repeat(auto-fit, minmax(250px, 1fr))` robi responsywną galerię bez media queries. `grid-template-areas` + `grid-area` na dzieciach = czytelny layout. `gap` daje odstępy. Grid 2D (wiersze + kolumny), Flexbox 1D (rząd LUB kolumna) — łącz je świadomie.
+`display: grid` włącza <Term word="grid">Grid</Term>. `grid-template-columns` / `grid-template-rows` definiują siatkę. Jednostka `fr` dzieli wolną przestrzeń, `minmax()` daje zakres, `repeat(auto-fit, minmax(250px, 1fr))` robi responsywną galerię bez media queries. `grid-template-areas` + `grid-area` na dzieciach = czytelny layout. `gap` daje odstępy. Grid to dwa wymiary (wiersze + kolumny), Flexbox jeden (rząd LUB kolumna) — łącz je świadomie.

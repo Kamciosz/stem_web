@@ -1,8 +1,10 @@
-DOM (Document Object Model) to drzewo obiektów, które przeglądarka buduje z Twojego HTML. JavaScript może to drzewo czytać i zmieniać — i to jest serce interaktywnych stron. W tej lekcji nauczysz się: wybierać elementy, reagować na zdarzenia i dynamicznie zmieniać treść.
+Masz gotową stronę HTML. Wygląda świetnie. Ale gdy klikasz przycisk — nic. Gdy wpisujesz tekst — nic. Strona jest jak zdjęcie: możesz patrzeć, ale nie możesz dotknąć.
 
-## Czym jest DOM
+Żeby strona reagowała na użytkownika, JavaScript musi mieć dostęp do jej elementów. Ten dostęp daje <Term word="DOM">DOM</Term> — Document Object Model. To drzewo obiektów, które przeglądarka buduje z Twojego HTML. Każdy <Term word="znacznik">znacznik</Term> staje się obiektem, każdy <Term word="atrybut">atrybut</Term> staje się właściwością. JavaScript może to drzewo czytać, zmieniać i reagować na to, co robi użytkownik.
 
-Gdy przeglądarka parsuje HTML, buduje drzewo obiektów — każdy znacznik to obiekt, każdy atrybut to właściwość, każdy tekst to węzeł tekstowy. JavaScript ma do tego drzewa pełen dostęp przez globalny obiekt `document`.
+## Jak HTML staje się drzewem
+
+Gdy przeglądarka wczyta HTML, nie widzi tekstu — widzi strukturę. Każdy element ma swojego rodzica, swoje dzieci i swoich sąsiadów.
 
 ```html
 <html>
@@ -13,21 +15,25 @@ Gdy przeglądarka parsuje HTML, buduje drzewo obiektów — każdy znacznik to o
 </html>
 ```
 
-Staje się:
+W pamięci przeglądarki to wygląda tak:
 
 ```
 document
 └── html
     └── body
         ├── h1#tytul
-        │   └── "Cześć"           ← text node
+        │   └── "Cześć"           ← węzeł tekstowy
         └── p.opis
-            └── "Witaj na stronie" ← text node
+            └── "Witaj na stronie" ← węzeł tekstowy
 ```
 
-## Wybieranie elementów
+JavaScript ma do tego drzewa pełen dostęp przez globalny obiekt `document`. To punkt wejścia do całej strony.
 
-### `querySelector` — pierwszy pasujący
+## Wybieranie elementów — zanim cokolwiek zmienisz
+
+Żeby coś zmienić, musisz to najpierw znaleźć. Masz do tego dwie główne metody.
+
+### `querySelector` — pierwszy pasujący element
 
 ```js
 const tytul = document.querySelector("h1");
@@ -37,18 +43,18 @@ const input = document.querySelector('input[type="email"]'); // selektor CSS
 const button = document.querySelector("form button");     // zagnieżdżony
 ```
 
-Zwraca `null` gdy nic nie znajdzie.
+Używasz dokładnie tych samych selektorów co w CSS. Jeśli element nie istnieje, dostajesz `null` — warto to sprawdzić przed użyciem.
 
-### `querySelectorAll` — wszystkie pasujące (NodeList)
+### `querySelectorAll` — wszystkie pasujące
 
 ```js
 const wszystkieParagrafy = document.querySelectorAll("p");
 const inputy = document.querySelectorAll('input[type="text"]');
 ```
 
-Można iterować `forEach` lub klasycznym `for`.
+Zwraca NodeList — możesz po niej iterować `forEach` albo klasycznym `for`.
 
-### Starsze metody (nadal działają, ale nowsze lepsze)
+### Starsze metody — znaj, ale nie preferuj
 
 ```js
 document.getElementById("tytul");
@@ -56,9 +62,15 @@ document.getElementsByClassName("opis");     // HTMLCollection
 document.getElementsByTagName("p");
 ```
 
-Preferuj `querySelector*` — te same selektory co w CSS.
+Działają, ale `querySelector*` jest czytelniejszy i bardziej elastyczny. Zobaczysz te starsze w cudzym kodzie — rozumiej je, ale sam pisz nowocześnie.
 
-## Zmiana treści
+<Callout type="tip" title="querySelector to CSS w JS">
+Jeśli umiesz napisać selektor CSS, umiesz też wybrać element przez querySelector. To ta sama składnia — nie musisz uczyć się niczego nowego.
+</Callout>
+
+## Zmiana treści — co widzisz na stronie
+
+Gdy już masz element, możesz zmienić to, co wyświetla.
 
 ### `textContent` — bezpieczny tekst
 
@@ -68,40 +80,42 @@ tytul.textContent = "Nowy tytuł";
 console.log(tytul.textContent);   // "Nowy tytuł"
 ```
 
-`textContent` ustawia/pobiera **czysty tekst** — HTML w stringu jest widziany jako tekst, NIE jako znaczniki. **Bezpieczny przed XSS**.
+`textContent` ustawia i pobiera czysty tekst. Jeśli wstawisz tu coś, co wygląda jak HTML, zostanie wyświetlone dosłownie jako tekst — nie jako znaczniki. To czyni go **bezpiecznym przed <Term word="XSS">XSS</Term>**.
 
-### `innerHTML` — wstawia HTML
+### `innerHTML` — wstawia prawdziwy HTML
 
 ```js
 const kontener = document.querySelector("#app");
 kontener.innerHTML = "<strong>Ważne!</strong> Nowa treść.";
 ```
 
-`innerHTML` parsuje string jako HTML. **Niebezpieczny** jeśli wstawiasz dane od usera — ryzyko XSS. Używaj tylko z danymi, którym ufasz (stałe, dane z Twojego serwera po sanityzacji).
+`innerHTML` parsuje string jako HTML i wstawia go do elementu. Potężne, ale niebezpieczne — jeśli wstawisz tu dane od użytkownika bez oczyszczenia, otwierasz drzwi dla ataku <Term word="XSS">XSS</Term>. Używaj tylko z danymi, którym ufasz.
 
 ### `value` — wartość pola formularza
 
 ```js
 const input = document.querySelector("#email");
-console.log(input.value);          // pobierz
-input.value = "nowy@email.com";   // ustaw
+console.log(input.value);          // pobierz to, co wpisał użytkownik
+input.value = "nowy@email.com";   // ustaw wartość programowo
 ```
 
 ## Zmiana klas i atrybutów
+
+Często zamiast zmieniać treść, chcesz zmienić wygląd — a to robisz przez klasy CSS.
 
 ### `classList` — operacje na klasach
 
 ```js
 const box = document.querySelector(".box");
 
-box.classList.add("aktywna");            // dodaj
-box.classList.remove("aktywna");         // usuń
-box.classList.toggle("aktywna");         // przełącz (dodaj/usuń)
-box.classList.contains("aktywna");       // czy ma?
-box.classList.replace("stara", "nowa");  // zamień
+box.classList.add("aktywna");            // dodaj klasę
+box.classList.remove("aktywna");         // usuń klasę
+box.classList.toggle("aktywna");         // przełącz (dodaj jeśli nie ma, usuń jeśli jest)
+box.classList.contains("aktywna");       // sprawdź, czy ma
+box.classList.replace("stara", "nowa");  // zamień jedną na drugą
 ```
 
-`toggle` jest idealny do menu hamburgerowego, modali, motywów.
+`toggle` to złoto — jedną linią obsługujesz menu hamburgerowe, modal, przełącznik motywu. Nie musisz sprawdzać, czy klasa jest, czy jej nie ma.
 
 ### `setAttribute` / `getAttribute` / `removeAttribute`
 
@@ -114,21 +128,17 @@ console.log(link.getAttribute("href"));
 link.removeAttribute("target");
 ```
 
-Dla właściwości takich jak `id`, `href`, `src` lepiej używać **właściwości DOM** niż `setAttribute`:
-
-```js
-link.href = "https://example.com";   // właściwość, NIE atrybut
-```
-
-<Callout type="tip" title="Kiedy setAttribute, kiedy właściwość">
+<Callout type="tip" title="Kiedy setAttribute, kiedy właściwość DOM">
 - Atrybuty niestandardowe (`data-*`) — `setAttribute("data-id", 5)`.
 - Standardowe właściwości (`href`, `src`, `value`, `checked`) — bezpośrednio: `link.href = "..."`.
-- Właściwości lepiej oddają stan (`input.checked` zwraca boolean, `getAttribute("checked")` zwraca string).
+- Właściwości lepiej oddają aktualny stan: `input.checked` zwraca boolean, `getAttribute("checked")` zwraca string.
 </Callout>
 
-## Zdarzenia (events) — reagowanie na akcje
+## Zdarzenia — reagowanie na to, co robi użytkownik
 
-### `addEventListener` — nasłuchuj zdarzeń
+To serce interaktywności. Zdarzenie to sygnał: „coś się stało". Kliknięcie, wciśnięcie klawisza, wysłanie formularza, zmiana wartości pola — każde z nich to zdarzenie, na które możesz zareagować.
+
+### `addEventListener` — nasłuchuj i reaguj
 
 ```js
 const button = document.querySelector("#klik");
@@ -138,7 +148,7 @@ button.addEventListener("click", (event) => {
 });
 ```
 
-`event` to obiekt zdarzenia z informacjami: typ, cel (`event.target`), pozycja kursora, wciśnięte klawisze...
+Trzy elementy: element, który nasłuchujesz (`button`), nazwa zdarzenia (`"click"`) i funkcja, która się wykona gdy zdarzenie zajdzie. Obiekt `event` niesie szczegóły: typ zdarzenia, który element go wywołał (`event.target`), pozycja kursora, wciśnięte klawisze.
 
 ### Najczęstsze zdarzenia
 
@@ -150,9 +160,9 @@ button.addEventListener("click", (event) => {
 | `keydown` / `keyup` | Klawisz wciśnięty / puszczony |
 | `submit` | Formularz wysłany |
 | `input` | Wartość pola zmieniona (każdy znak) |
-| `change` | Wartość pola zmieniona (po blur) |
+| `change` | Wartość pola zmieniona (po opuszczeniu pola) |
 | `focus` / `blur` | Pole zyskało / straciło fokus |
-| `scroll` | Strona / element przescrollowany |
+| `scroll` | Strona lub element przescrollowany |
 
 ### Przykład — licznik kliknięć
 
@@ -167,7 +177,9 @@ button.addEventListener("click", () => {
 });
 ```
 
-### Przykład — toggle motywu ciemny/jasny
+Każde kliknięcie zwiększa licznik i natychmiast aktualizuje to, co widzi użytkownik. Żadnego przeładowania strony.
+
+### Przykład — przełącznik motywu ciemny/jasny
 
 ```js
 const themeBtn = document.querySelector("#theme");
@@ -177,22 +189,24 @@ themeBtn.addEventListener("click", () => {
 });
 ```
 
+`toggle` na klasie `dark` przełącza motyw. `localStorage` zapamiętuje wybór użytkownika między odświeżeniami strony.
+
 ## Tworzenie i usuwanie elementów
+
+Nie musisz pisać HTML z góry — możesz tworzyć elementy dynamicznie, gdy są potrzebne.
 
 ### `createElement` + `appendChild`
 
 ```js
-// Nowy element
+// Stwórz nowy element
 const li = document.createElement("li");
 li.textContent = "Nowy element listy";
 li.classList.add("item");
 
-// Dodaj do istniejącego
+// Dodaj do istniejącego elementu
 const lista = document.querySelector("#lista");
-lista.appendChild(li);
-
-// Dodaj na początku
-lista.prepend(li);
+lista.appendChild(li);    // na koniec
+lista.prepend(li);        // na początek
 
 // Wstaw przed konkretnym elementem
 const specjalny = document.querySelector("#specjalny");
@@ -206,17 +220,17 @@ const doUsuniecia = document.querySelector("#tymczasowy");
 doUsuniecia.remove();
 ```
 
-### `cloneNode` — klonuj
+### `cloneNode` — skopiuj element
 
 ```js
 const oryginal = document.querySelector(".karta");
-const kopia = oryginal.cloneNode(true);  // true = z dziećmi
-dokument.querySelector("#galeria").appendChild(kopia);
+const kopia = oryginal.cloneNode(true);  // true = kopiuj też dzieci
+document.querySelector("#galeria").appendChild(kopia);
 ```
 
-## Event delegation — zdarzenia na wielu elementach
+## Event delegation — jeden listener zamiast wielu
 
-Gdy masz wiele podobnych elementów (np. listę zadań), NIE dodawaj listenera do każdego. Dodaj do rodzica i sprawdź `event.target`:
+Wyobraź sobie listę zadań z setką pozycji. Możesz dodać listener do każdego przycisku „usuń" osobno — albo dodać jeden listener do rodzica i sprawdzić, który element wywołał zdarzenie.
 
 ```html
 <ul id="todo-list">
@@ -235,9 +249,17 @@ lista.addEventListener("click", (e) => {
 });
 ```
 
-Działa też dla **dynamicznie dodanych elementów** — nie musisz podpinać listenera po każdym `appendChild`.
+`e.target` to dokładnie ten element, który kliknął użytkownik. Sprawdzasz, czy ma klasę `delete` — jeśli tak, usuwasz jego rodzica (cały `<li>`).
+
+Dwie zalety: mniej kodu i obsługa elementów dodanych dynamicznie. Listener na rodzicu działa też dla `<li>`, które dopiero za chwilę stworzysz przez `appendChild`.
+
+<Callout type="info" title="Event delegation to wzorzec, nie trick">
+To standardowy sposób obsługi dynamicznych list w JavaScript. Zobaczysz go w każdym projekcie — naucz się go rozumieć i pisać z pamięci.
+</Callout>
 
 ## Zapobieganie domyślnym akcjom
+
+Przeglądarka ma swoje domyślne zachowania: formularz wysyła dane i przeładowuje stronę, link przenosi na inny adres. Czasem chcesz to przejąć i zrobić coś własnego.
 
 ```js
 // Formularz nie wysyła się, dopóki nie zwalidujesz
@@ -255,11 +277,11 @@ link.addEventListener("click", (e) => {
 });
 ```
 
-`e.preventDefault()` anuluje domyślną akcję przeglądarki.
+`e.preventDefault()` anuluje domyślną akcję przeglądarki. Bez niego formularz wysłałby się i strona by się przeładowała — straciłbyś kontrolę.
 
-## `DOMContentLoaded` — czekaj na HTML
+## `DOMContentLoaded` — czekaj, aż strona będzie gotowa
 
-Skrypty z `defer` wykonują się po sparsowaniu HTML, ale bez `defer` mogą się wykonać PRZED gotowością drzewa:
+Skrypt z `defer` wykonuje się po sparsowaniu HTML — to bezpieczne. Ale jeśli z jakiegoś powodu nie używasz `defer`, Twój kod może się wykonać, zanim przeglądarka zbuduje drzewo <Term word="DOM">DOM</Term>. Wtedy `querySelector` zwróci `null` i nic nie zadziała.
 
 ```js
 document.addEventListener("DOMContentLoaded", () => {
@@ -270,8 +292,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 ```
 
-Albo umieść `<script src="..." defer></script>` na końcu `<body>` — to samo bez listenera.
+Cały kod wewnątrz callbacku wykona się dopiero, gdy HTML jest w pełni sparsowany. Alternatywa: po prostu zawsze używaj `defer` na znaczniku `<script>` — efekt ten sam, bez dodatkowego kodu.
+
+<Callout type="exam">
+Na egzaminie INF.03 z DOM sprawdzają: poprawne użycie `querySelector` z selektorem CSS, zmianę `textContent` (nie `innerHTML` do zwykłego tekstu), podpięcie zdarzenia przez `addEventListener` (nie `onclick` w HTML), oraz `e.preventDefault()` przy obsłudze formularza. Pamiętaj też o różnicy między `textContent` (bezpieczny) a `innerHTML` (ryzykowny przy danych od użytkownika).
+</Callout>
 
 ## Podsumowanie
 
-`querySelector` / `querySelectorAll` do wybierania. `textContent` do tekstu (bezpieczny), `innerHTML` do HTML (ryzykowny). `classList` do klas, `setAttribute` do atrybutów. `addEventListener("click", fn)` do zdarzeń. `createElement` + `appendChild` do tworzenia, `.remove()` do usuwania. Event delegation na rodzicu = mniej listenerów i obsługa dynamicznej treści. `e.preventDefault()` anuluje domyślną akcję. `DOMContentLoaded` (albo `defer`) gwarantuje, że drzewo jest gotowe.
+`querySelector` / `querySelectorAll` do wybierania — te same selektory co w CSS. `textContent` do tekstu (bezpieczny przed <Term word="XSS">XSS</Term>), `innerHTML` do HTML (ostrożnie z danymi od użytkownika). `classList` do klas, `setAttribute` do atrybutów niestandardowych. `addEventListener("click", fn)` do zdarzeń — nie `onclick` w HTML. `createElement` + `appendChild` do tworzenia, `.remove()` do usuwania. Event delegation na rodzicu = jeden listener zamiast wielu, działa też dla dynamicznie dodanych elementów. `e.preventDefault()` anuluje domyślną akcję przeglądarki. `defer` na `<script>` gwarantuje, że drzewo jest gotowe — bez potrzeby `DOMContentLoaded`.

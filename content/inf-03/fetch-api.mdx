@@ -1,8 +1,12 @@
-`fetch()` pozwala przeglądarce rozmawiać z serwerem — pobierać dane, wysyłać formularze, ładować kolejne części strony bez przeładowania. W tej lekcji nauczysz się podstaw asynchroniczności, `fetch`, `async/await` i obsługi błędów.
+Wyobraź sobie, że otwierasz aplikację pogodową. Wpisujesz miasto i po chwili widzisz temperaturę, wiatr, prognozę na tydzień. Skąd te dane? Nie były zakodowane w HTML — aplikacja właśnie zapytała serwer i dostała odpowiedź. Bez przeładowania strony, bez czekania. To właśnie robi <Term word="fetch">fetch</Term>.
 
-## Czym jest asynchroniczność
+`fetch()` to wbudowana funkcja JavaScript, która pozwala przeglądarce rozmawiać z <Term word="serwer">serwerem</Term> — pobierać dane, wysyłać formularze, ładować kolejne fragmenty strony. Żeby to zrozumieć, musisz najpierw pojąć jedną rzecz: asynchroniczność.
 
-JavaScript domyślnie wykonuje kod linia po linii, synchronicznie. Ale niektóre operacje (pobieranie danych, timery) trwają długo — gdyby czekać, strona by "zamroziła". Asynchroniczność pozwala uruchomić taką operację i kontynuować pracę, a wynik odebrać gdy będzie gotowy.
+## Dlaczego JavaScript nie może po prostu czekać
+
+JavaScript w przeglądarce działa w jednym wątku. Gdy wykonuje kod, robi to linia po linii. Gdyby przy każdym zapytaniu do serwera zatrzymał się i czekał na odpowiedź — strona by zamarzła. Nie dałoby się kliknąć, przewinąć, nic.
+
+Dlatego operacje, które trwają — pobieranie danych, timery, odczyt pliku — są asynchroniczne. Uruchamiasz je i mówisz: „zrób to, a gdy skończysz, wywołaj tę funkcję". Tymczasem reszta kodu działa dalej.
 
 ```js
 // Synchronicznie — zatrzymuje na 2 sekundy
@@ -17,13 +21,17 @@ pobierzDane().then(data => {
 console.log("Koniec");             // wyświetli się NATYCHMIAST
 ```
 
-## Promise — obietnica wyniku
+W wersji asynchronicznej `"Koniec"` pojawi się przed danymi — bo przeglądarka nie czeka na odpowiedź serwera, tylko jedzie dalej.
 
-`fetch()` zwraca **Promise** — obiekt, który reprezentuje przyszły wynik. Promise ma 3 stany:
+## Promise — obietnica, że coś się stanie
 
-- **pending** — czeka na wynik.
-- **fulfilled** — sukces (mamy dane).
-- **rejected** — błąd (np. serwer nie odpowiada).
+`fetch()` zwraca <Term word="Promise">Promise</Term> — obiekt reprezentujący wynik operacji, która jeszcze się nie zakończyła. Możesz myśleć o nim jak o paragonie ze sklepu: dostajesz go od razu, ale towar odbierzesz za chwilę.
+
+Promise ma trzy stany:
+
+- **pending** — czeka na wynik (towar w drodze).
+- **fulfilled** — sukces, mamy dane (towar odebrany).
+- **rejected** — błąd, coś poszło nie tak (towar zaginął).
 
 ```js
 fetch("https://api.example.com/users")    // → Promise
@@ -32,7 +40,11 @@ fetch("https://api.example.com/users")    // → Promise
     .catch(error => console.error(error)); // .catch() obsługuje błąd
 ```
 
-## Pierwszy fetch
+Łańcuch `.then()` czyta się jak przepis: „pobierz dane, potem zamień na JSON, potem wyświetl. Jeśli cokolwiek się posypie — złap błąd".
+
+## Pierwszy fetch — krok po kroku
+
+Zacznijmy od prawdziwego przykładu z publicznym <Term word="API">API</Term>:
 
 ```js
 fetch("https://jsonplaceholder.typicode.com/users/1")
@@ -51,13 +63,15 @@ fetch("https://jsonplaceholder.typicode.com/users/1")
     });
 ```
 
-<Callout type="warning" title="fetch NIE rzuca na 404/500">
-`fetch()` rzuca odrzucenie (reject) tylko przy błędach sieci. HTTP 404 czy 500 to "udana" odpowiedź — musisz sam sprawdzić `response.ok` (true gdy status 200–299).
+Zwróć uwagę na `response.ok` — to ważne.
+
+<Callout type="warning" title="fetch NIE rzuca błędu na 404 ani 500">
+`fetch()` odrzuca Promise (reject) tylko przy błędach sieci — gdy serwer w ogóle nie odpowiada. Odpowiedź HTTP 404 (nie znaleziono) czy 500 (błąd serwera) to dla `fetch` „udana" odpowiedź. Musisz sam sprawdzić `response.ok` — jest `true` tylko gdy status to 200–299. Bez tego sprawdzenia Twój kod będzie próbował przetworzyć stronę błędu jako dane.
 </Callout>
 
-## `async / await` — czytelniejsza składnia
+## `async / await` — kod, który wygląda normalnie
 
-Zamiast łańcucha `.then()` możesz pisać kod, który **wygląda synchronicznie**:
+Łańcuchy `.then()` działają, ale przy złożonej logice robią się trudne do czytania. Dlatego masz <Term word="async/await">async/await</Term> — składnię, która sprawia, że asynchroniczny kod wygląda jak synchroniczny.
 
 ```js
 async function pobierzUsera(id) {
@@ -80,11 +94,13 @@ const user = await pobierzUsera(1);
 console.log(user?.name);
 ```
 
-`async` oznacza funkcję, która zwraca Promise. `await` czeka na Promise i zwraca wartość (lub rzuca błąd).
+`async` przed funkcją mówi: „ta funkcja zwraca Promise". `await` przed operacją mówi: „poczekaj na wynik, zanim przejdziesz dalej". Błędy łapiesz przez `try / catch` — tak samo jak przy synchronicznym kodzie.
 
-### Top-level await
+Efekt: kod czyta się z góry na dół, linia po linii, jak zwykły skrypt. Żadnych zagnieżdżonych callbacków.
 
-W modułach ES (`<script type="module">`) możesz używać `await` na najwyższym poziomie:
+### Top-level await — w modułach
+
+W modułach ES (`<script type="module">`) możesz używać `await` na najwyższym poziomie, bez owijania w funkcję:
 
 ```js
 // app.js (moduł)
@@ -93,9 +109,11 @@ const data = await response.json();
 console.log(data);
 ```
 
-W klasycznym skrypcie (nie module) musisz owinąć w `async` funkcję.
+W klasycznym skrypcie (nie module) musisz owinąć w `async` funkcję — `await` poza nią to błąd składni.
 
 ## Wysyłanie danych — POST, PUT, DELETE
+
+`fetch` domyślnie wysyła żądanie <Term word="GET">GET</Term> — pobiera dane. Gdy chcesz coś wysłać, musisz podać opcje:
 
 ```js
 async function utworzUsera(dane) {
@@ -122,15 +140,21 @@ async function utworzUsera(dane) {
 utworzUsera({ imie: "Anna", email: "anna@example.com" });
 ```
 
-Właściwości `fetch(url, options)`:
+Właściwości drugiego argumentu `fetch(url, options)`:
 
 - **`method`** — `GET` (domyślne), `POST`, `PUT`, `PATCH`, `DELETE`.
 - **`headers`** — dodatkowe nagłówki (np. `content-type`, `authorization`).
-- **`body`** — dane do wysłania (string, FormData, Blob, JSON).
+- **`body`** — dane do wysłania. Obiekty JS musisz zamienić na <Term word="JSON">JSON</Term> przez `JSON.stringify()`.
 - **`credentials`** — `include` jeśli chcesz wysyłać ciasteczka cross-origin.
-- **`signal`** — AbortSignal do anulowania requestu.
+- **`signal`** — AbortSignal do anulowania żądania.
+
+<Callout type="info" title="JSON.stringify i JSON.parse">
+`JSON.stringify(obiekt)` zamienia obiekt JS na tekst JSON — żeby go wysłać. `JSON.parse(tekst)` zamienia tekst JSON z powrotem na obiekt JS — żeby go użyć. `response.json()` robi to drugie automatycznie.
+</Callout>
 
 ## Przykład — wyświetlanie listy z API
+
+Połączmy wszystko: fetch, async/await, obsługę błędów i manipulację <Term word="DOM">DOM</Term>:
 
 ```html
 <ul id="users"></ul>
@@ -165,9 +189,11 @@ btn.addEventListener("click", renderUsers);
 renderUsers();   // od razu po załadowaniu
 ```
 
-## Promise.all — równoległe zapytania
+Zwróć uwagę na trzy rzeczy: pokazujesz „Ładowanie…" zanim dane przyjdą, obsługujesz błąd wyświetlając komunikat zamiast pustej listy, i używasz `textContent` (nie `innerHTML`) do wstawiania danych od serwera — bezpieczniej.
 
-Gdy potrzebujesz danych z kilku endpointów naraz:
+## Promise.all — kilka zapytań naraz
+
+Gdy potrzebujesz danych z kilku <Term word="endpoint">endpointów</Term> jednocześnie, nie czekaj na nie kolejno — odpytaj je równolegle:
 
 ```js
 async function pobierzWszystko() {
@@ -185,17 +211,17 @@ async function pobierzWszystko() {
 }
 ```
 
-`Promise.all` czeka na wszystkie. **Jeden błąd = cały Promise rzuca**. Użyj `Promise.allSettled` jeśli chcesz wynik nawet przy częściowym błędzie.
+`Promise.all` czeka na wszystkie Promise i zwraca tablicę wyników. Ważne: **jeden błąd = cały Promise rzuca**. Jeśli chcesz wynik nawet przy częściowym błędzie, użyj `Promise.allSettled` — zwraca status każdego Promise osobno.
 
-## AbortController — anulowanie requestu
+## AbortController — anulowanie zbędnych zapytań
 
-Gdy user anuluje wyszukiwanie (klawisz Escape, nowe litery w polu), warto przerwać stary request:
+Użytkownik wpisuje w wyszukiwarce „java" — wysyłasz zapytanie. Zanim odpowiedź wróci, dopisuje „script" — wysyłasz kolejne. Stare zapytanie jest już niepotrzebne. Możesz je anulować:
 
 ```js
 let controller = null;
 
 async function szukaj(query) {
-    // Anuluj poprzedni
+    // Anuluj poprzednie zapytanie
     if (controller) controller.abort();
     controller = new AbortController();
 
@@ -214,23 +240,29 @@ async function szukaj(query) {
 }
 ```
 
-## CORS — problem cross-origin
+`AbortController` tworzy sygnał, który przekazujesz do `fetch`. Gdy wywołasz `.abort()`, fetch natychmiast rzuca `AbortError`. Sprawdzasz nazwę błędu, żeby odróżnić anulowanie od prawdziwego problemu.
 
-Przeglądarka domyślnie blokuje fetch do innej domeny niż strona (np. strona na `example.com` nie odpytuje API na `api.example.org`). To **CORS** (Cross-Origin Resource Sharing).
+## CORS — gdy serwer mówi „nie"
+
+Przeglądarka domyślnie blokuje `fetch` do innej domeny niż ta, na której działa strona. To mechanizm bezpieczeństwa zwany CORS (Cross-Origin Resource Sharing).
 
 ```js
-// ❌ Zablokowane — inna domena bez pozwolenia
+// Zablokowane — inna domena bez pozwolenia
 fetch("https://api.inna-domena.pl/data");
 
-// ✅ OK — ten sam origin
+// OK — ten sam origin
 fetch("/api/data");
 
-// ✅ OK — API ma nagłówek Access-Control-Allow-Origin
+// OK — API ma nagłówek Access-Control-Allow-Origin
 // (konfigurowane po stronie serwera)
 ```
 
-Jeśli musisz testować bez serwera CORS, włącz w przeglądarce (Chrome: `--disable-web-security`, ale tylko do developmentu).
+Jeśli widzisz błąd CORS w konsoli, problem jest po stronie serwera — musi dodać odpowiedni nagłówek. Po stronie <Term word="client-side">klienta</Term> nic nie zrobisz. Podczas developmentu możesz uruchomić własny serwer proxy albo użyć publicznego API, które CORS ma skonfigurowany.
+
+<Callout type="exam">
+Na egzaminie INF.03 z fetch sprawdzają: poprawne użycie `async/await` z `try/catch`, sprawdzenie `response.ok` przed `.json()`, właściwe opcje dla POST (`method`, `headers`, `body` z `JSON.stringify`). Pamiętaj, że `fetch` nie rzuca błędu na 404 — to klasyczna pułapka egzaminacyjna.
+</Callout>
 
 ## Podsumowanie
 
-`fetch(url, options)` zwraca Promise. Pierwszy `.then` ma `Response` z `.json()` / `.text()` / `.blob()`. `async/await` zamienia łańcuch `.then()` w czytelny kod synchroniczny. **ZAWSZE** sprawdzaj `response.ok` — fetch NIE rzuca na 4xx/5xx. `POST`/`PUT`/`DELETE` wymagają `method` + `headers` + `body` (często `JSON.stringify`). `Promise.all` czeka na wiele requestów równolegle. `AbortController` anuluje zbędne requesty. CORS to ograniczenie cross-origin — po stronie klienta nic nie zrobisz, musi odpowiedzieć serwer.
+`fetch(url, options)` zwraca <Term word="Promise">Promise</Term>. Pierwsza odpowiedź to obiekt `Response` — wywołujesz na nim `.json()`, `.text()` albo `.blob()`, żeby dostać dane. <Term word="async/await">async/await</Term> zamienia łańcuch `.then()` w czytelny kod synchroniczny. Zawsze sprawdzaj `response.ok` — `fetch` nie rzuca na 4xx/5xx. <Term word="POST">POST</Term>/PUT/DELETE wymagają `method` + `headers` + `body` (często `JSON.stringify`). `Promise.all` czeka na wiele zapytań równolegle. `AbortController` anuluje zbędne zapytania. CORS to ograniczenie cross-origin — po stronie klienta nic nie zrobisz, musi odpowiedzieć serwer.

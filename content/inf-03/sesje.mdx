@@ -1,18 +1,20 @@
-Sesje to mechanizm, który pozwala stronie "pamiętać" użytkownika między kolejnymi żądaniami HTTP. Bez sesji każde kliknięcie to byłoby osobne, anonimowe połączenie. W tej lekcji nauczysz się logować, wylogowywać i zabezpieczać strony hasłem.
+Wchodzisz na Facebooka, logujesz się, przeglądasz posty, klikasz w profil znajomego — i przez cały czas strona wie, że to Ty. Jak? Przecież każde kliknięcie to osobne żądanie <Term word="HTTP">HTTP</Term>, a HTTP z natury nic nie pamięta. Odpowiedź to <Term word="sesja">sesja</Term>. To mechanizm, który daje serwerowi pamięć między żądaniami.
+
+W tej lekcji nauczysz się logować użytkownika, chronić strony przed nieautoryzowanym dostępem i zabezpieczać sesję przed atakami. To materiał egzaminacyjny — i codzienna robota każdego <Term word="backend">backend</Term>-developera.
 
 ## Problem: HTTP jest bezstanowy
 
-HTTP nie pamięta, kto właśnie odwiedził stronę. Każde żądanie (request) jest niezależne — serwer nie wie, że to ten sam user, który 2 sekundy temu pobrał `index.php`.
+<Term word="HTTP">HTTP</Term> nie pamięta, kto właśnie odwiedził stronę. Każde żądanie (request) jest niezależne — <Term word="serwer">serwer</Term> nie wie, że to ten sam użytkownik, który 2 sekundy temu pobrał `index.php`.
 
 Gdyby nie było sesji:
 
-- Nie dałoby się zrobić logowania (serwer zapomina po każdym żądaniu).
+- Nie dałoby się zrobić logowania — serwer zapomina po każdym żądaniu.
 - Koszyk w sklepie resetowałby się przy każdym kliknięciu.
 - Preferencje (motyw, język) musiałyby być przesyłane w każdym URL-u.
 
-## Czym jest sesja
+## Jak działa sesja — krok po kroku
 
-Sesja to **plik / wpis w pamięci serwera** przypisany do konkretnego usera. Przeglądarka dostaje **identyfikator sesji** (ciasteczko `PHPSESSID`) i wysyła go z każdym żądaniem. Serwer po identyfikatorze znajduje właściwe dane.
+Sesja to plik (lub wpis w pamięci) na serwerze, przypisany do konkretnego użytkownika. Przeglądarka dostaje **identyfikator sesji** jako <Term word="cookie">cookie</Term> o nazwie `PHPSESSID` i wysyła go z każdym kolejnym żądaniem. Serwer po tym identyfikatorze odnajduje właściwe dane.
 
 ```
 1. User loguje się → serwer tworzy sesję, zapisuje $_SESSION["user_id"] = 42
@@ -23,9 +25,11 @@ Sesja to **plik / wpis w pamięci serwera** przypisany do konkretnego usera. Prz
 6. User zalogowany ✓
 ```
 
+Klucz: dane sesji żyją **na serwerze**. Przeglądarka trzyma tylko identyfikator — nie same dane. Dlatego sesja jest bezpieczniejsza niż trzymanie wszystkiego w cookie.
+
 ## Włączenie sesji
 
-Na każdej stronie, która korzysta z sesji, wywołaj `session_start()` — **na samym początku pliku, przed jakimkolwiek wyjściem (echo, HTML)**:
+Na każdej stronie korzystającej z sesji wywołaj `session_start()` — **na samym początku pliku, przed jakimkolwiek wyjściem** (echo, HTML, nawet pusta linia przed `<?php`):
 
 ```php
 <?php
@@ -37,9 +41,11 @@ echo "Odwiedziłeś tę stronę {$_SESSION['counter']} razy.";
 ?>
 ```
 
-Jeśli w pliku jest `echo` albo `<html>` PRZED `session_start()` — błąd "headers already sent".
+Jeśli w pliku jest `echo` albo `<html>` PRZED `session_start()` — dostaniesz błąd "headers already sent". Nagłówki HTTP (w tym cookie sesji) muszą być wysłane przed treścią.
 
 ## Zapis i odczyt z sesji
+
+`$_SESSION` to zwykła tablica PHP. Możesz w niej trzymać cokolwiek — stringi, liczby, tablice:
 
 ```php
 <?php
@@ -64,8 +70,8 @@ if (array_key_exists("user_id", $_SESSION)) {
 }
 ```
 
-<Callout type="tip" title="Tablica $_SESSION">
-`$_SESSION` to zwykła tablica PHP. Działa jak `$_GET` / `$_POST` — możesz w niej trzymać cokolwiek (stringi, liczby, tablice, obiekty). Ale NIE hasła — do tego służy `password_hash` w bazie.
+<Callout type="tip" title="Co trzymać w sesji">
+W sesji trzymaj `user_id` i metadane (imię, rola). **Nigdy nie trzymaj hasła** — nawet zahashowanego. Hasło żyje tylko w bazie. Dzięki temu nawet wyciek sesji nie oznacza wycieku hasła.
 </Callout>
 
 ## Logowanie — kompletny przykład
@@ -84,7 +90,9 @@ if (array_key_exists("user_id", $_SESSION)) {
 </form>
 ```
 
-### Obsługa (login.php lub login-handler.php)
+### Obsługa logowania
+
+Teraz serce systemu. Zwróć uwagę na każdy krok — każdy ma swój powód:
 
 ```php
 <?php
@@ -133,9 +141,15 @@ header("Location: /panel.php");
 exit;
 ```
 
-`session_regenerate_id(true)` po udanym logowaniu — generuje nowy identyfikator sesji. Bez tego atakujący mógłby ukraść ID sesji z linku i przejąć konto po zalogowaniu ofiary.
+Dlaczego `session_regenerate_id(true)` po zalogowaniu? Bez tego atakujący mógłby podsunąć ofierze znany sobie identyfikator sesji (np. przez link), poczekać aż się zaloguje, a potem użyć tego samego ID do przejęcia konta. Po regeneracji stary ID przestaje działać.
+
+<Callout type="exam">
+Na egzaminie INF.03 sprawdzają: `password_verify()` do weryfikacji hasła (nie porównanie stringów!), `session_regenerate_id(true)` po zalogowaniu, `htmlspecialchars()` przy wyświetlaniu danych z sesji. Pominięcie któregokolwiek to błąd bezpieczeństwa.
+</Callout>
 
 ## Wylogowanie
+
+Wylogowanie to trzy kroki: wyczyść dane sesji, usuń cookie po stronie klienta, zniszcz sesję po stronie serwera. Wszystkie trzy — nie jeden, nie dwa:
 
 ```php
 <?php
@@ -171,9 +185,9 @@ header("Location: /");
 exit;
 ```
 
-## Zabezpieczanie stron — guard
+## Zabezpieczanie stron — wzorzec guard
 
-Wzorzec: plik `auth.php`, który sprawdza czy user jest zalogowany, lub przekierowuje na login:
+Masz panel użytkownika, który powinien być dostępny tylko po zalogowaniu. Zamiast kopiować sprawdzenie do każdego pliku, stwórz jeden plik `auth.php` z funkcją-strażnikiem:
 
 ```php
 <?php
@@ -203,7 +217,7 @@ function wymagajAdmina(): void {
 }
 ```
 
-Użycie:
+Użycie — dwie linijki na początku każdej chronionej strony:
 
 ```php
 <?php
@@ -227,7 +241,7 @@ echo "Panel administratora";
 ?>
 ```
 
-## Bezpieczeństwo sesji
+## Bezpieczeństwo sesji — cztery zasady
 
 ### 1. Session fixation — regeneruj ID po logowaniu
 
@@ -235,34 +249,33 @@ echo "Panel administratora";
 session_regenerate_id(true);
 ```
 
-Po zalogowaniu / zmianie uprawnień — nowy ID. Stary natychmiast nieważny.
+Po zalogowaniu i po każdej zmianie uprawnień — nowy ID. Stary natychmiast nieważny.
 
-### 2. Session hijacking — zabezpiecz ciasteczko
+### 2. Session hijacking — zabezpiecz cookie
 
-W `php.ini` lub na początku skryptu:
-
-```ini
-session.cookie_httponly = 1   // niedostępne dla JavaScript (XSS nie wykradnie)
-session.cookie_secure = 1     // tylko HTTPS
-session.cookie_samesite = Lax // nie wysyłane cross-site
-session.use_strict_mode = 1   // odrzuca nieznane ID
-```
-
-W PHP ustawiasz to też programowo przy `setcookie()` lub `session_set_cookie_params()`:
+Atakujący może próbować wykraść `PHPSESSID` przez <Term word="XSS">XSS</Term> lub podsłuch sieci. Trzy flagi cookie to blokują:
 
 ```php
 session_set_cookie_params([
     "lifetime" => 0,
     "path" => "/",
     "domain" => "",
-    "secure" => true,
-    "httponly" => true,
-    "samesite" => "Lax"
+    "secure" => true,      // tylko HTTPS
+    "httponly" => true,    // niedostępne dla JavaScript
+    "samesite" => "Lax"   // nie wysyłane cross-site
 ]);
 session_start();
 ```
 
+`httponly` sprawia, że JavaScript nie może odczytać cookie — nawet jeśli atakujący wstrzyknie skrypt przez XSS, nie wykradnie identyfikatora sesji. `secure` wymusza HTTPS — cookie nie leci przez niezaszyfrowane połączenie.
+
+<Callout type="warning" title="Kolejność ma znaczenie">
+`session_set_cookie_params()` musi być wywołane **przed** `session_start()`. Po odwróceniu kolejności ustawienia nie mają żadnego efektu — sesja już wystartowała ze starymi parametrami.
+</Callout>
+
 ### 3. Session timeout — wyloguj po bezczynności
+
+Użytkownik wychodzi od komputera bez wylogowania. Po 30 minutach bezczynności sesja powinna wygasnąć sama:
 
 ```php
 session_start();
@@ -284,9 +297,9 @@ $_SESSION["last_activity"] = time();
 
 ### 4. NIE przechowuj haseł w sesji
 
-W sesji trzymaj `user_id` i ewentualnie `name` / `email`. Hasło (zahashowane) żyje TYLKO w bazie. Dzięki temu nawet wyciek sesji nie oznacza wycieku haseł.
+W sesji trzymaj `user_id` i ewentualnie `name` / `email`. Hasło (zahashowane) żyje **tylko w bazie**. Nawet wyciek pliku sesji nie oznacza wtedy wycieku haseł.
 
-## Kompletny przykład — logowanie + guard
+## Kompletny przykład — logowanie z pełnym zabezpieczeniem
 
 ```php
 <?php
@@ -343,4 +356,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 ## Podsumowanie
 
-`session_start()` MUSI być na początku pliku, przed wyjściem. `$_SESSION` to zwykła tablica. Po udanym logowaniu zawsze `session_regenerate_id(true)` (session fixation). `password_verify($haslo, $hash)` do weryfikacji haseł. Wylogowanie = `$_SESSION = []` + `session_destroy()` + usunięcie ciasteczka. Guard = funkcja `wymagajLogowania()` na początku chronionych stron. Ciasteczko sesji: `httponly`, `secure`, `samesite=Lax`. Timeout sesji (np. 30 min) chroni przed zostawionym komputerem. W sesji NIE przechowuj haseł — tylko `user_id` i metadane.
+`session_start()` musi być na początku pliku, przed jakimkolwiek wyjściem. `$_SESSION` to zwykła tablica — trzymaj w niej `user_id` i metadane, nigdy hasła. Po udanym logowaniu zawsze `session_regenerate_id(true)` — to ochrona przed session fixation. `password_verify($haslo, $hash)` do weryfikacji, nie porównanie stringów. Wylogowanie = `$_SESSION = []` + `session_destroy()` + usunięcie <Term word="cookie">cookie</Term>. Guard = funkcja `wymagajLogowania()` na początku każdej chronionej strony. Cookie sesji: `httponly`, `secure`, `samesite=Lax` — ustaw przed `session_start()`. Timeout 30 minut chroni przed zostawionym komputerem. Dane z sesji wyświetlaj przez `htmlspecialchars()` — to nadal dane, którym nie ufasz w stu procentach.

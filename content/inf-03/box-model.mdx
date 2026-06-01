@@ -1,33 +1,35 @@
-Każdy element HTML to prostokąt. Box model mówi, jak ten prostokąt jest zbudowany: content, padding, border, margin. Poznanie go raz na zawsze rozwiązuje 90% problemów "dlaczego ten element jest za duży/za mały".
+Masz przycisk, który wygląda za ciasno. Dodajesz `padding: 20px` — i nagle jest za szeroki, wychodzi poza kontener. Albo dwa elementy stoją za blisko siebie, dodajesz `margin` — a odstęp jest inny niż oczekiwałeś. Jeśli to brzmi znajomo, to znaczy, że jeszcze nie poznałeś <Term word="box model">modelu pudełkowego</Term>. Po tej lekcji takie problemy przestaną być zagadką.
 
-## Anatomia pudełka
+## Każdy element to pudełko
 
-Każdy element to **pudełko** z czterema warstwami (od środka):
+W CSS każdy element HTML — niezależnie czy to `<p>`, `<button>`, czy `<div>` — jest prostokątem złożonym z czterech warstw (od środka na zewnątrz):
 
-1. **content** — właściwa treść (tekst, obrazek).
-2. **padding** — wewnętrzny odstęp treści od ramki.
+1. **content** — właściwa treść: tekst, obrazek, cokolwiek wewnątrz.
+2. **padding** — wewnętrzny odstęp między treścią a ramką.
 3. **border** — obramowanie.
 4. **margin** — zewnętrzny odstęp od sąsiednich elementów.
 
 ```
 ┌─────────── margin ───────────┐
-│ ┌──────── border ─────────┐ │
-│ │ ┌───── padding ─────┐   │ │
-│ │ │                     │   │ │
-│ │ │      CONTENT        │   │ │
-│ │ │                     │   │ │
-│ │ └─────────────────────┘   │ │
-│ └───────────────────────────┘ │
-└───────────────────────────────┘
+│ ┌──────── border ─────────┐  │
+│ │ ┌───── padding ─────┐   │  │
+│ │ │                   │   │  │
+│ │ │      CONTENT      │   │  │
+│ │ │                   │   │  │
+│ │ └───────────────────┘   │  │
+│ └─────────────────────────┘  │
+└──────────────────────────────┘
 ```
 
-## `box-sizing` — jak liczone są wymiary
+Zapamiętaj tę kolejność: content → padding → border → margin. Od środka na zewnątrz.
 
-**Domyślnie** (`content-box`): `width` i `height` dotyczą tylko **content**. Padding i border są DODAWANE.
+## `box-sizing` — jak przeglądarka liczy szerokość
+
+To jest źródło 90% problemów z rozmiarami. Domyślnie przeglądarka używa `content-box`:
 
 ```css
 .box {
-    box-sizing: content-box;   /* domyślne */
+    box-sizing: content-box;  /* domyślne */
     width: 200px;
     padding: 20px;
     border: 5px solid;
@@ -35,7 +37,9 @@ Każdy element to **pudełko** z czterema warstwami (od środka):
 }
 ```
 
-**Lepsze** (`border-box`): `width` i `height` obejmują **content + padding + border**. Łatwiej przewidzieć rozmiar.
+Ustawiasz `width: 200px`, ale element zajmuje 250px. Padding i border są **dodawane** do szerokości. Nielogiczne.
+
+Rozwiązanie: `border-box`. Wtedy `width` obejmuje content + padding + border:
 
 ```css
 .box {
@@ -47,118 +51,110 @@ Każdy element to **pudełko** z czterema warstwami (od środka):
 }
 ```
 
-<Callout type="tip" title="Reset globalny">
-Prawie każdy projekt zaczyna się od:
+Ustawiasz 200px — element zajmuje dokładnie 200px. Tak jak oczekujesz.
+
+<Callout type="tip" title="Reset globalny — stosuj zawsze">
+Prawie każdy projekt zaczyna się od tych trzech linii:
 ```css
 *, *::before, *::after {
     box-sizing: border-box;
 }
 ```
-Dzięki temu NIGDY nie musisz się zastanawiać, czy `width` to content czy całość. **Zapamiętaj, stosuj wszędzie.**
+Dzięki temu nigdy nie musisz się zastanawiać, czy `width` to content czy całość. Wklej to na samą górę każdego arkusza stylów.
 </Callout>
 
 ## Padding, border, margin — skróty
 
-Każdą z tych właściwości można zapisać skrótem z 1, 2, 3 lub 4 wartościami:
+Każdą z tych właściwości możesz zapisać skrótem z 1, 2, 3 lub 4 wartościami:
 
 ```css
 .box {
     /* 1 wartość: wszystkie 4 strony */
     padding: 10px;
 
-    /* 2 wartości: pion | poziom */
+    /* 2 wartości: góra+dół | lewo+prawo */
     margin: 10px 20px;
 
-    /* 3 wartości: góra | poziom | dół */
-    border: 5px solid;
-    border-width: 5px 10px 15px;
-
-    /* 4 wartości: góra | prawo | dół | lewo (z wskazówek zegara) */
+    /* 4 wartości: góra | prawo | dół | lewo (zgodnie z zegarem) */
     padding: 10px 20px 30px 40px;
 }
 ```
 
-Logika "zegar" — zacznij od góry i idź zgodnie z ruchem wskazówek: **górna, prawa, dolna, lewa**.
+Logika "zegar" — zacznij od góry i idź zgodnie z ruchem wskazówek: **góra, prawo, dół, lewo**. Jak kompas, ale zaczynasz od północy.
 
-## Margin — auto centrowanie
+Możesz też ustawiać każdą stronę osobno:
 
-Jedyny sposób na centrowanie elementu blokowego w poziomie:
+```css
+.box {
+    padding-top: 10px;
+    padding-right: 20px;
+    margin-left: 0;
+    border-bottom: 2px solid #333;
+}
+```
+
+## Margin auto — centrowanie bloku
+
+Jedyny sposób na wycentrowanie elementu blokowego w poziomie bez Flexboxa:
 
 ```css
 .karta {
     width: 600px;
-    margin: 0 auto;     /* 0 góra/dół, auto prawo/lewo */
+    margin: 0 auto;  /* 0 góra/dół, auto lewo/prawo */
 }
 ```
 
-Działa **tylko** gdy element ma określoną szerokość i jest blokowy.
+`auto` po lewej i prawej oznacza: "podziel wolne miejsce równo". Działa **tylko** gdy element ma określoną szerokość i jest blokowy (`display: block`).
 
-## Margin collapsing — pułapka
+## Margin collapsing — pułapka, którą musisz znać
 
-Górne i dolne marginesy **sąsiadujących elementów** się sklejają (collapse). Z dwóch marginesów wygrywa większy:
+Górne i dolne marginesy **sąsiadujących elementów** się sklejają. Z dwóch marginesów wygrywa większy:
 
 ```html
 <p style="margin: 20px 0">Akapit 1</p>
 <p style="margin: 30px 0">Akapit 2</p>
 ```
 
-```css
-/* Odstęp między akapitami = max(20, 30) = 30px, NIE 50px! */
-```
-
-Margin collapse NIE działa:
-
-- na elemencie z `display: flex/grid` (rodzic flex/grid)
-- na elemencie z `float`
-- na elemencie z `position: absolute/fixed`
-- gdy jeden z elementów ma `overflow` inne niż `visible`
-
-Aby uniknąć collapse w konkretnym przypadku:
-
-```css
-p {
-    margin: 20px 0;
-    /* display: flex;  ← wyłącza collapse dla tego elementu */
-    /* overflow: hidden; ← też wyłącza */
-}
-```
+Odstęp między akapitami = `max(20, 30)` = **30px**, nie 50px. Marginesy się nie sumują — większy pochłania mniejszy.
 
 <Callout type="exam">
-Na egzaminie pamiętaj: margin góra+dół się skleja, lewo+prawo NIE. Padding nigdy się nie skleja.
+Na egzaminie pamiętaj: margin góra+dół się skleja (collapse), lewo+prawo NIE. Padding nigdy się nie skleja. Margin collapse nie działa gdy rodzic ma `display: flex` lub `display: grid`.
 </Callout>
 
-## Jednostki — co wybrać
+Margin collapse wyłączają też: `overflow` inne niż `visible`, `float`, `position: absolute/fixed`.
+
+## Jednostki — co wybrać i kiedy
 
 ### Bezwzględne
 
-- **`px`** — piksele. Najpopularniejsza. Zawsze ten sam rozmiar.
+- **`px`** — piksele. Zawsze ten sam rozmiar, niezależnie od ustawień przeglądarki.
 
 ### Relatywne do fontu
 
-- **`em`** — względem `font-size` RODZICA. `2em` = 2x font rodzica.
-- **`rem`** — względem `font-size` `<html>`. **Preferowane**, bo nie zależy od zagnieżdżenia.
+- **`em`** — względem `font-size` **rodzica**. `2em` = 2× font rodzica. Uwaga: zagnieżdżone `em` się mnożą.
+- **`rem`** — względem `font-size` elementu `<html>`. **Preferowane** — nie zależy od zagnieżdżenia.
 - **`ch`** — szerokość znaku "0". Dobre dla `width` pól tekstowych.
 
-### Relatywne do viewportu
+### Relatywne do okna
 
-- **`vw`** — 1% szerokości okna.
+- **`vw`** — 1% szerokości okna przeglądarki.
 - **`vh`** — 1% wysokości okna.
 - **`vmin` / `vmax`** — mniejszy/większy z `vw` i `vh`.
 
 ### Procenty
 
-- **`%`** — względem RODZICA. Często mylące, bo rodzic też musi mieć określoną wysokość.
+- **`%`** — względem **rodzica**. Dla `width` działa świetnie, dla `height` — rodzic też musi mieć określoną wysokość.
 
 ```css
-h1 { font-size: 2rem; }       /* 32px jeśli html ma 16px */
+h1 { font-size: 2rem; }        /* 32px jeśli html ma 16px */
 .karta { width: 80%; }          /* 80% rodzica */
 .hero { min-height: 100vh; }    /* pełna wysokość okna */
 .tytul { font-size: 5vw; }      /* skaluje się z szerokością okna */
 ```
 
 <Callout type="tip" title="Kiedy rem, kiedy px">
-- `font-size`, `padding`, `margin` → **`rem`**. Skaluje się z ustawieniami przeglądarki (użytkownik zwiększy czcionkę — UI się powiększy).
-- `border-width`, `box-shadow`, drobne detale → **`px`**. Powinny być stałe.
+- `font-size`, `padding`, `margin` → `rem`. Skaluje się gdy użytkownik zmieni rozmiar czcionki w przeglądarce.
+- `border-width`, `box-shadow`, drobne detale → `px`. Powinny być stałe.
 - Szerokości layoutu → `%`, `vw`, `fr` (w Grid).
 </Callout>
 
@@ -167,31 +163,42 @@ h1 { font-size: 2rem; }       /* 32px jeśli html ma 16px */
 ```css
 .box {
     width: 50%;
-    min-width: 200px;   /* nie mniejszy niż */
-    max-width: 800px;   /* nie większy niż */
-    height: 100px;
+    min-width: 200px;   /* nie mniejszy niż 200px */
+    max-width: 800px;   /* nie większy niż 800px */
     min-height: 50px;
     max-height: 300px;
 }
 ```
 
-Idealne do tworzenia responsywnych kontenerów: rosną z ekranem, ale nie wychodzą poza rozsądne granice.
+Idealne do responsywnych kontenerów: rosną z ekranem, ale nie wychodzą poza rozsądne granice. `max-width: 1200px; margin: 0 auto` to klasyczny przepis na wycentrowany kontener strony.
 
 ## Overflow — co zrobić z wylewającą treścią
+
+Gdy treść jest większa niż pudełko, przeglądarka domyślnie ją pokazuje (wychodzi poza). Możesz to zmienić:
 
 ```css
 .box {
     width: 200px;
     height: 100px;
-    overflow: visible;   /* domyślne: treść wychodzi */
-    overflow: hidden;    /* obcinana */
-    overflow: scroll;    /* zawsze suwak */
-    overflow: auto;      /* suwak tylko gdy potrzebny */
+    overflow: visible;  /* domyślne: treść wychodzi */
+    overflow: hidden;   /* obcinana bez suwaka */
+    overflow: scroll;   /* zawsze suwak */
+    overflow: auto;     /* suwak tylko gdy potrzebny */
 }
 ```
 
-`text-overflow: ellipsis` + `white-space: nowrap` + `overflow: hidden` = obcięcie tekstu trzema kropkami.
+Klasyczny trik na obcięcie długiego tekstu trzema kropkami:
+
+```css
+.tytul {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+```
+
+Wszystkie trzy właściwości muszą być razem — bez jednej nie zadziała.
 
 ## Podsumowanie
 
-Box model = content + padding + border + margin. Domyślnie `width` to tylko content — ustaw `box-sizing: border-box` na `*` i zapomnij o problemie. Margin collapse skleja pionowe marginesy sąsiadów (lewo/prawo nie). Jednostki: `rem` do fontów i odstępów, `px` do detali, `%`/`vw`/`vh` do wymiarów layoutu. `margin: 0 auto` centruje blok z określoną szerokością.
+<Term word="box model">Box model</Term> = content + padding + border + margin. Domyślnie `width` to tylko content — ustaw `box-sizing: border-box` na `*` i zapomnij o problemie. Margin collapse skleja pionowe marginesy sąsiadów (lewo/prawo nie). Jednostki: `rem` do fontów i odstępów, `px` do detali, `%`/`vw`/`vh` do wymiarów layoutu. `margin: 0 auto` centruje blok z określoną szerokością.

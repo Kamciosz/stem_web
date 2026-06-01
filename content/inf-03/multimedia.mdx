@@ -1,47 +1,53 @@
-Strona to nie tylko tekst — to obrazy, filmy, dźwięki i linki do innych zasobów. W tej lekcji poznasz znaczniki, którymi wstawiasz multimedia w sposób dostępny i semantyczny.
+Wyobraź sobie stronę, na której jest sam tekst — żadnego zdjęcia produktu, żadnego logo, żadnego filmu instruktażowego, ani jednego linku do innej strony. Taki internet byłby jak gazeta wydrukowana na szaro: da się czytać, ale nic poza tym. To, co sprawia, że strona żyje, to multimedia — obrazy, filmy, dźwięki — i linki, które łączą ją z resztą sieci.
 
-## Obrazy — `<img>`
+W tej lekcji nauczysz się je wstawiać. I nie chodzi tylko o to, żeby "się pokazało" — chodzi o to, żeby działało dla każdego, łącznie z osobami korzystającymi z czytnika ekranu, i żeby nie zarzynało wydajności strony.
 
-Obrazki wstawiasz znacznikiem `<img>`. To znacznik pusty (nie ma treści wewnętrznej) — wystarczy jeden atrybut `src`.
+## Obrazy — znacznik `<img>`
+
+Obraz wstawiasz <Term word="znacznik">znacznikiem</Term> `<img>`. To znacznik pusty — nie ma treści w środku, nie ma znacznika zamykającego. Cała informacja siedzi w jego <Term word="atrybut">atrybutach</Term>.
 
 ```html
 <img src="/images/logo.png" alt="Logo Koła STEM" width="200">
 ```
 
-Najważniejsze atrybuty:
+Atrybuty, które musisz znać:
 
-- **`src`** — adres obrazka (URL, ścieżka względna lub bezwzględna).
-- **`alt`** — tekst alternatywny. OBOWIĄZKOWY dla dostępności. Opisuje co jest na obrazku.
-- **`width` / `height`** — wymiary w pikselach (pomagają przeglądarce zarezerwować miejsce, zmniejszają przeskakiwanie layoutu).
-- **`loading="lazy"`** — obrazek ładuje się dopiero gdy zbliżysz się do niego (przyspiesza stronę).
-- **`decoding="async"`** — przeglądarka nie czeka na obrazek, by pokazać resztę.
+- **`src`** — adres obrazka: pełny URL, ścieżka względna albo bezwzględna. To jedyny atrybut, bez którego nic się nie pokaże.
+- **`alt`** — tekst alternatywny. Obowiązkowy. Opisuje, co jest na obrazku — i za chwilę poświęcimy mu osobny fragment, bo to tu ludzie najczęściej popełniają błędy.
+- **`width` / `height`** — wymiary w pikselach. Podaj je, a przeglądarka zarezerwuje miejsce na obraz, zanim go pobierze. Dzięki temu treść pod spodem nie podskakuje w trakcie ładowania.
+- **`loading="lazy"`** — obraz ładuje się dopiero wtedy, gdy użytkownik dosunie się do niego scrollem. Strona z dziesiątkami zdjęć wczytuje się przez to dużo szybciej.
+- **`decoding="async"`** — przeglądarka nie wstrzymuje renderowania reszty strony, żeby najpierw przetworzyć ten obrazek.
 
-### Jak pisać `alt` — złota zasada
+### Jak pisać `alt` — to nie jest formalność
 
-**Dobry `alt`**: opisuje, co niesie obrazek dla rozumienia treści. Dla obrazka logo: "Logo Koła STEM". Dla wykresu: "Wykres sprzedaży Q1 2026: 12 000 zł, Q2: 18 000 zł".
+`alt` to nie jest pole "do wypełnienia, bo tak trzeba". To tekst, który usłyszy osoba niewidoma korzystająca z <Term word="czytnik ekranu">czytnika ekranu</Term>, i który zobaczysz Ty, jeśli obrazek się nie wczyta. Dlatego ma realnie nieść treść.
 
-**Zły `alt`**: pusty (gdy obrazek jest kluczowy), albo "obrazek1.png" (bez sensu).
+Dobry `alt` opisuje, co obrazek **wnosi** do strony. Dla logo: "Logo Koła STEM". Dla wykresu: "Wykres sprzedaży Q1 2026: 12 000 zł, Q2: 18 000 zł" — czyli przekazujesz dane, a nie piszesz "wykres".
 
-**Pusty `alt=""`**: używaj **tylko** gdy obrazek jest czysto dekoracyjny (np. tło ozdobne). Wtedy czytnik ekranu go pomija.
+Zły `alt` to taki, który niczego nie mówi: pusty przy ważnym obrazku albo "obrazek1.png". Czytnik ekranu przeczyta to na głos i użytkownik dowie się... nic.
+
+Pusty `alt=""` ma jedno konkretne zastosowanie: obrazek **czysto dekoracyjny** (ozdobne tło, kreska oddzielająca). Wtedy pusty `alt` mówi czytnikowi ekranu "pomiń to, nie niesie treści" — i to jest poprawne zachowanie.
 
 ```html
-<!-- Kluczowy: daj opis -->
+<!-- Kluczowy: daj opis niosący treść -->
 <img src="chart.png" alt="Wykres: sprzedaż wzrosła z 12 tys. do 18 tys. zł między Q1 a Q2 2026">
 
-<!-- Dekoracyjny: pusty alt -->
+<!-- Dekoracyjny: świadomie pusty alt -->
 <img src="ornament.png" alt="">
 
-<!-- Link-obrazek: alt opisuje CEL, nie wygląd -->
+<!-- Link-obrazek: alt opisuje CEL linku, nie wygląd obrazka -->
 <a href="/rejestracja"><img src="cta.png" alt="Zarejestruj się"></a>
 ```
 
+Zwróć uwagę na ostatni przykład: gdy obrazek jest jedyną treścią linku, `alt` opisuje, **dokąd link prowadzi**, a nie jak grafika wygląda. Dla użytkownika czytnika ekranu to jedyna informacja, w co właśnie kliknie.
+
 <Callout type="exam">
-Na egzaminie INF.03 obrazy wstawiasz `<img>` z `alt` (obowiązkowy), `width`/`height` (wymagane dla poprawnego layoutu), `loading="lazy"` dla wydajności. Brak `alt` = utrata punktów.
+Na egzaminie INF.03 obraz wstawiasz przez `<img>` z `alt` (obowiązkowy — jego brak to pewna utrata punktów), `width`/`height` dla stabilnego layoutu i `loading="lazy"` dla wydajności. Egzaminatorzy patrzą na obecność i sensowność `alt` w pierwszej kolejności.
 </Callout>
 
-### `<figure>` i `<figcaption>` — obrazek z opisem
+### `<figure>` i `<figcaption>` — obraz z podpisem
 
-Gdy obrazek potrzebuje rozbudowanego podpisu, użyj `<figure>`:
+Gdy obrazek potrzebuje widocznego podpisu (numer rysunku, wyjaśnienie), zamknij go w `<figure>`, a opis daj w `<figcaption>`:
 
 ```html
 <figure>
@@ -53,27 +59,29 @@ Gdy obrazek potrzebuje rozbudowanego podpisu, użyj `<figure>`:
 </figure>
 ```
 
-`<figcaption>` to opcjonalny podpis — renderuje się pod obrazkiem. Całość traktowana jest jako jedna jednostka, łatwa do stylizania.
+Różnica między `alt` a `<figcaption>`: `alt` to opis "techniczny" dla tych, którzy obrazka nie widzą; `<figcaption>` to widoczny podpis dla wszystkich. `<figure>` spina obraz i podpis w jedną całość — przeglądarka i czytnik ekranu traktują je jako jeden powiązany element.
 
-## Linki — `<a>`
+## Linki — znacznik `<a>`
 
-Link to najważniejszy element nawigacji. Pozwala przejść do innej strony, sekcji, pliku, albo wykonać akcję (e-mail, telefon).
+Link to fundament całej sieci — to dzięki niemu strony łączą się ze sobą. Pozwala przejść na inną stronę, przeskoczyć do sekcji niżej, pobrać plik albo otworzyć e-mail czy telefon.
 
 ```html
 <a href="https://example.com">Idź do przykładu</a>
 ```
 
-Atrybuty:
+Najważniejszy atrybut to **`href`** — adres, dokąd link prowadzi. Może przyjąć kilka form:
 
-- **`href`** — adres docelowy. Może być:
-  - **URL bezwzględny**: `https://google.com`
-  - **ścieżka względna**: `/kursy/inf-03` (od root), `kursy/inf-03` (od obecnej strony), `../o-nas` (poziom wyżej)
-  - **kotwica**: `#sekcja-2` (przewija do elementu o id="sekcja-2")
-  - **mailto**: `mailto:jan@example.com` (otwiera klienta poczty)
-  - **tel**: `tel:+48500100200` (na mobile — propozycja połączenia)
-- **`target="_blank"`** — otwiera w nowej karcie.
-- **`rel="noopener"`** — zabezpieczenie przed otwarciem w nowej karcie (z `target="_blank"`).
-- **`download`** — link do pobrania pliku zamiast otwarcia.
+- **URL bezwzględny**: `https://google.com` — pełny adres innej strony.
+- **ścieżka względna**: `/kursy/inf-03` (od głównego katalogu), `kursy/inf-03` (od bieżącej strony), `../o-nas` (jeden poziom wyżej).
+- **kotwica**: `#sekcja-2` — przewija stronę do elementu o `id="sekcja-2"`.
+- **mailto**: `mailto:jan@example.com` — otwiera program pocztowy z gotowym adresatem.
+- **tel**: `tel:+485****0200` — na telefonie proponuje wykonanie połączenia.
+
+Pozostałe atrybuty, które warto znać:
+
+- **`target="_blank"`** — otwiera link w nowej karcie.
+- **`rel="noopener"`** — zabezpieczenie, którego używasz razem z `target="_blank"` (wyjaśnienie w ramce niżej).
+- **`download`** — zamiast otwierać plik, każe przeglądarce go pobrać.
 
 ```html
 <!-- Zewnętrzny, w nowej karcie -->
@@ -85,20 +93,20 @@ Atrybuty:
 <a href="#kontakt">Przejdź do kontaktu</a>
 <section id="kontakt">...</section>
 
-<!-- E-mail -->
+<!-- E-mail (możesz od razu ustawić temat) -->
 <a href="mailto:biuro@example.com?subject=Zapytanie">Napisz do nas</a>
 
 <!-- Telefon -->
-<a href="tel:+48221234567">+48 22 123 45 67</a>
+<a href="tel:+482****4567">+48 22 123 45 67</a>
 ```
 
-<Callout type="warning" title='target="_blank" wymaga rel'>
-Linki otwierane w nowej karcie (`target="_blank"`) **muszą mieć `rel="noopener"`** — bez tego strona docelowa ma dostęp do obiektu `window.opener` i może np. przekierować oryginalną stronę na phishing.
+<Callout type="warning" title='target="_blank" wymaga rel="noopener"'>
+Gdy otwierasz link w nowej karcie przez `target="_blank"`, dodaj `rel="noopener"`. Bez tego nowo otwarta strona dostaje dostęp do obiektu `window.opener` i może podmienić Twoją oryginalną kartę na fałszywą stronę logowania (klasyczny atak phishingowy). Jeden atrybut, a zamyka realną dziurę bezpieczeństwa.
 </Callout>
 
-## Wideo — `<video>`
+## Wideo — znacznik `<video>`
 
-Wideo wstawiasz znacznikiem `<video>`. Pozwala na odtwarzanie plików MP4/WebM bez zewnętrznego playera.
+Film wstawiasz znacznikiem `<video>`. Przeglądarka odtworzy plik MP4 lub WebM sama, bez żadnego zewnętrznego odtwarzacza.
 
 ```html
 <video src="/videos/promo.mp4" controls width="640" poster="/videos/promo.jpg">
@@ -108,20 +116,20 @@ Wideo wstawiasz znacznikiem `<video>`. Pozwala na odtwarzanie plików MP4/WebM b
 
 Atrybuty:
 
-- **`src`** — adres pliku wideo (alternatywa: `<source>` wewnątrz — patrz niżej).
-- **`controls`** — pokazuje pasek sterowania (play, pauza, głośność, fullscreen).
-- **`width` / `height`** — wymiary.
-- **`autoplay`** — automatyczne odtwarzanie. **Wymaga `muted`** w większości przeglądarek (polityka anty-autoplay z dźwiękiem).
-- **`loop`** — zapętlenie.
-- **`muted`** — wyciszone.
-- **`poster`** — obrazek widoczny przed startem (thumbnail).
-- **`preload="metadata"`** — ładuje tylko metadane, nie cały film (szybsze).
+- **`src`** — adres pliku wideo (alternatywnie używasz `<source>` w środku — patrz niżej).
+- **`controls`** — pokazuje pasek sterowania: play, pauza, głośność, pełny ekran. Bez tego widz nie ma jak włączyć filmu.
+- **`width` / `height`** — wymiary odtwarzacza.
+- **`autoplay`** — automatyczne odtwarzanie po wczytaniu. **Wymaga `muted`** — przeglądarki blokują autoodtwarzanie z dźwiękiem, bo nikt nie lubi strony, która nagle zaczyna grać.
+- **`loop`** — film zapętla się w kółko.
+- **`muted`** — start bez dźwięku.
+- **`poster`** — obrazek (miniatura), który widać przed kliknięciem play.
+- **`preload="metadata"`** — pobiera tylko podstawowe dane (długość, wymiary), a nie cały film z góry. Szybciej i oszczędniej.
 
-Treść wewnątrz `<video>` (tekst) wyświetli się, gdy przeglądarka NIE obsługuje wideo — to fallback dla dostępności.
+Tekst wpisany **wewnątrz** `<video>` ("Twoja przeglądarka nie obsługuje wideo") pokaże się tylko wtedy, gdy przeglądarka nie poradzi sobie z odtwarzaniem. To zapasowy komunikat dla użytkownika.
 
-### Wiele formatów — `<source>`
+### Wiele formatów — znacznik `<source>`
 
-Różne przeglądarki wspierają różne formaty. Podaj kilka:
+Nie każda przeglądarka obsługuje te same formaty wideo. Zamiast jednego `src` możesz podać kilka źródeł, a przeglądarka wybierze pierwsze, które potrafi odtworzyć:
 
 ```html
 <video controls width="640" poster="/thumb.jpg">
@@ -131,11 +139,11 @@ Różne przeglądarki wspierają różne formaty. Podaj kilka:
 </video>
 ```
 
-Przeglądarka wybiera pierwszy format, który obsługuje.
+Kolejność ma znaczenie — przeglądarka idzie od góry i bierze pierwszy pasujący format.
 
-## Audio — `<audio>`
+## Audio — znacznik `<audio>`
 
-Działa tak samo jak `<video>`, tylko bez obrazu:
+`<audio>` działa dokładnie jak `<video>`, tylko bez obrazu — do podcastów, muzyki, efektów dźwiękowych:
 
 ```html
 <audio src="/audio/podcast.mp3" controls preload="metadata">
@@ -143,11 +151,11 @@ Działa tak samo jak `<video>`, tylko bez obrazu:
 </audio>
 ```
 
-Atrybuty jak w `<video>` (poza `width`/`height`/`poster`).
+Atrybuty masz te same co przy wideo, z wyjątkiem tych związanych z obrazem (`width`, `height`, `poster`) — z oczywistego powodu.
 
-## `<iframe>` — osadzanie zewnętrznych treści
+## `<iframe>` — osadzanie cudzych treści
 
-YouTube, Google Maps, CodePen — wszystko to iframe:
+Gdy chcesz wstawić na swoją stronę kawałek innej strony — film z YouTube, mapę Google, edytor CodePen — używasz `<iframe>`. To jakby okno w Twojej stronie, w którym wyświetla się zupełnie inna strona.
 
 ```html
 <iframe
@@ -161,18 +169,18 @@ YouTube, Google Maps, CodePen — wszystko to iframe:
 
 Atrybuty:
 
-- **`src`** — adres osadzanej strony.
-- **`width` / `height`** — wymiary.
-- **`title`** — obowiązkowy atrybut dostępności (opisuje zawartość ramki).
-- **`sandbox`** — ogranicza uprawnienia (bez skryptów, formularzy itp.).
-- **`allow`** — lista dozwolonych API (kamera, mikrofon, fullscreen...).
-- **`allowfullscreen`** — pozwala wejść w tryb pełnoekranowy.
-- **`loading="lazy"`** — ładuj dopiero gdy potrzebne.
+- **`src`** — adres strony, którą osadzasz.
+- **`width` / `height`** — wymiary okna.
+- **`title`** — obowiązkowy dla dostępności. Opisuje, co jest w ramce, żeby czytnik ekranu mógł to zapowiedzieć.
+- **`sandbox`** — ogranicza uprawnienia osadzonej strony (np. blokuje jej skrypty czy formularze).
+- **`allow`** — lista funkcji, na które pozwalasz osadzonej stronie (kamera, mikrofon, pełny ekran...).
+- **`allowfullscreen`** — pozwala przejść w tryb pełnoekranowy.
+- **`loading="lazy"`** — ładuj ramkę dopiero, gdy użytkownik do niej dotrze.
 
-<Callout type="warning" title="Bezpieczeństwo iframe">
-Nigdy nie osadzaj cudzej strony bez `sandbox`. Bez tego osadzona strona może np. uruchomić JS, otworzyć popup, przekierować rodzica. Zaufane serwisy (YouTube, Vimeo) — w porządku, ale nieznane — ryzyko.
+<Callout type="warning" title="iframe to cudzy kod na Twojej stronie">
+Nigdy nie osadzaj nieznanej strony bez atrybutu `sandbox`. Bez niego osadzona strona może uruchomić własny JavaScript, otworzyć wyskakujące okno, a nawet przekierować Twoją stronę gdzie indziej. Zaufanym serwisom (YouTube, Vimeo, Google Maps) możesz zaufać — ale przy czymkolwiek nieznanym `sandbox` to konieczność.
 </Callout>
 
 ## Podsumowanie
 
-`<img>` (z `alt`!) do obrazów, `<figure>` z `<figcaption>` do obrazów z podpisem, `<a href="...">` do linków (z `rel="noopener"` przy `target="_blank"`), `<video controls>` i `<audio controls>` do multimediów, `<iframe title="...">` do osadzania zewnętrznych treści. Każdy element z atrybutem `alt` / `title` / `<figcaption>` to dostępność — obowiązkowa na egzaminie.
+`<img>` (zawsze z sensownym `alt`!) wstawia obrazy; `<figure>` z `<figcaption>` dodaje do nich widoczny podpis. `<a href="...">` tworzy linki — a przy `target="_blank"` pamiętaj o `rel="noopener"`. `<video controls>` i `<audio controls>` odtwarzają multimedia bez zewnętrznego odtwarzacza, a `<source>` pozwala podać kilka formatów. `<iframe title="...">` osadza cudze treści — z `sandbox` przy nieznanych źródłach. Wspólny mianownik tego wszystkiego to <Term word="dostępność">dostępność</Term>: `alt`, `title`, `<figcaption>` to nie ozdobniki, tylko obowiązkowy element dobrego kodu — i na egzaminie, i w prawdziwej pracy.

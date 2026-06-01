@@ -1,6 +1,8 @@
-CSS to język, który mówi przeglądarce **jak ma wyglądać** strona. Reguły CSS wybierają elementy HTML (selektory) i nadają im style. Gdy dwie reguły mówią to samo, decyduje kaskada i specyficzność. W tej lekcji opanujesz oba mechanizmy.
+Wyobraź sobie, że masz sto elementów na stronie i chcesz zmienić kolor tylko tych, które są linkami w nawigacji. Możesz dodać `style=""` do każdego z osobna — albo napisać jeden selektor CSS, który trafi dokładnie w te elementy. To właśnie jest sedno CSS: zamiast stylować każdy element ręcznie, opisujesz *które* elementy chcesz zmienić, a przeglądarka robi resztę.
 
-## Jak działa reguła CSS
+## Jak wygląda reguła CSS
+
+Każda reguła to selektor + blok deklaracji:
 
 ```css
 selektor {
@@ -19,11 +21,11 @@ h1 {
 }
 ```
 
-Przeglądarka czyta Twój CSS, znajduje pasujące elementy, stosuje style. Proste — dopóki reguły nie zaczną się gryźć.
+Przeglądarka czyta Twój CSS, znajduje pasujące elementy w <Term word="DOM">drzewie DOM</Term> i stosuje style. Proste — dopóki reguły nie zaczną się gryźć. O tym za chwilę.
 
-## Sposoby dodawania CSS do HTML
+## Trzy sposoby dołączenia CSS do HTML
 
-### 1. Zewnętrzny arkusz (najlepsza praktyka)
+### 1. Zewnętrzny arkusz — zawsze tak
 
 ```html
 <head>
@@ -31,9 +33,9 @@ Przeglądarka czyta Twój CSS, znajduje pasujące elementy, stosuje style. Prost
 </head>
 ```
 
-CSS żyje w osobnym pliku. Można go reużyć na wielu stronach, łatwo cache'ować.
+CSS żyje w osobnym pliku. Jeden plik styluje wiele stron, przeglądarka go cache'uje — ładuje raz, używa wszędzie.
 
-### 2. Wewnątrz `<style>` (dla pojedynczej strony)
+### 2. Blok `<style>` — wyjątkowo
 
 ```html
 <head>
@@ -43,82 +45,93 @@ CSS żyje w osobnym pliku. Można go reużyć na wielu stronach, łatwo cache'ow
 </head>
 ```
 
-Dobre dla małych, jednorazowych stylów.
+Dobre dla małych, jednorazowych eksperymentów. Na produkcji — zewnętrzny arkusz.
 
-### 3. Inline `style=""` (ostateczność)
+### 3. Inline `style=""` — prawie nigdy
 
 ```html
 <h1 style="color: red;">Tytuł</h1>
 ```
 
-**Unikaj** — miesza HTML z CSS, trudno nadpisać, niespójne.
+Miesza HTML z CSS, trudno nadpisać, niespójne. Jedyny uzasadniony przypadek: dynamiczne style z JavaScriptu.
 
-<Callout type="tip" title="Zasada thumb-of-rule">
-Domyślnie: zewnętrzny arkusz. Wyjątkowo: `<style>` dla jednej strony. Inline tylko dla dynamicznych stylów z JavaScriptu.
+<Callout type="tip" title="Zasada kciuka">
+Domyślnie: zewnętrzny arkusz. Wyjątkowo: `<style>` dla jednej strony. Inline tylko gdy JavaScript musi zmienić styl w locie.
 </Callout>
 
-## Selektory — jak wybrać elementy
-
-### Selektory podstawowe
+## Selektory podstawowe — cztery typy
 
 ```css
-/* Znacznik */
+/* Znacznik — trafia we wszystkie <p> */
 p { color: #ccc; }
 
-/* Klasa (atrybut class="...") */
+/* Klasa — trafia w elementy z class="karta" */
 .karta { background: #222; }
 
-/* Id (atrybut id="...") */
+/* ID — trafia w element z id="menu" */
 #menu { position: fixed; top: 0; }
 
-/* Uniwersalny (wszystko) */
+/* Uniwersalny — trafia we wszystko */
 * { box-sizing: border-box; }
 ```
 
-### Selektory atrybutów
+Klasy możesz używać wielokrotnie na stronie. ID powinno być unikalne — jeden element, jeden ID. W praktyce do stylowania używaj klas, ID zostaw dla JavaScriptu i kotwic.
 
-Wybierają elementy na podstawie atrybutu lub jego wartości:
+## Selektory atrybutów
+
+Wybierają elementy na podstawie <Term word="atrybut">atrybutu</Term> lub jego wartości:
 
 ```css
 input[type="email"] { border: 2px solid blue; }
-input[required] { background: #fffacd; }
-a[href^="https://"] { color: green; }     /* zaczyna się od */
-a[href$=".pdf"] { color: red; }            /* kończy się na */
-a[href*="kontakt"] { font-weight: bold; }  /* zawiera */
+input[required]     { background: #fffacd; }
+
+a[href^="https://"] { color: green; }    /* zaczyna się od */
+a[href$=".pdf"]     { color: red; }      /* kończy się na */
+a[href*="kontakt"]  { font-weight: bold; } /* zawiera */
 ```
 
-### Pseudoklasy — stan elementu
+Przydatne gdy nie możesz dodać klasy do elementu (np. generowany HTML).
 
-Najczęstsze:
+## Pseudoklasy — stan elementu
+
+Pseudoklasa opisuje stan, w jakim element się znajduje. Piszesz `:nazwa` po selektorze:
 
 ```css
-a:hover { color: yellow; }            /* kursor nad */
-a:active { color: red; }              /* wciśnięty */
-a:visited { color: purple; }          /* odwiedzony */
-input:focus { border: 2px solid blue; } /* fokus (klawiatura/Tab) */
-button:disabled { opacity: 0.5; }     /* wyłączony */
-li:first-child { font-weight: bold; } /* pierwszy w rodzeństwie */
-li:last-child { }                     /* ostatni */
-li:nth-child(3) { }                   /* trzeci */
-li:nth-child(odd) { }                 /* nieparzyste */
-li:nth-child(even) { }                /* parzyste */
+a:hover   { color: yellow; }            /* kursor nad linkiem */
+a:active  { color: red; }               /* wciśnięty */
+a:visited { color: purple; }            /* odwiedzony */
+
+input:focus    { border: 2px solid blue; } /* fokus (Tab lub klik) */
+button:disabled { opacity: 0.5; }          /* wyłączony przycisk */
+
+li:first-child  { font-weight: bold; }  /* pierwszy w rodzeństwie */
+li:last-child   { border: none; }       /* ostatni */
+li:nth-child(3) { color: gold; }        /* trzeci */
+li:nth-child(odd)  { background: #111; } /* nieparzyste */
+li:nth-child(even) { background: #222; } /* parzyste */
 ```
 
-### Kombinatory — relacje między elementami
+`:nth-child(odd/even)` to klasyk przy stylowaniu tabel — naprzemienne kolory wierszy bez JavaScriptu.
+
+## Kombinatory — relacje między elementami
+
+Kombinatory pozwalają wybrać element na podstawie jego pozycji względem innych:
 
 ```css
-/* Potomek (gdziekolwiek w dół) */
+/* Potomek — a gdziekolwiek wewnątrz nav */
 nav a { color: white; }
 
-/* Dziecko (bezpośredni potomek) */
+/* Dziecko — li będące bezpośrednim dzieckiem ul */
 ul > li { list-style: square; }
 
-/* Brat (bezpośrednio po) */
+/* Brat bezpośredni — p tuż po h1 */
 h1 + p { font-size: 1.2em; }
 
-/* Brat (gdziekolwiek po) */
+/* Brat ogólny — wszystkie p po h1 (nie tylko pierwsze) */
 h1 ~ p { color: #888; }
 ```
+
+Najczęściej używasz `nav a` (potomek) i `ul > li` (dziecko). Reszta przydaje się rzadziej, ale warto znać.
 
 ### Grupowanie — wiele selektorów naraz
 
@@ -127,103 +140,89 @@ h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; }
 .btn, .button, a.btn { padding: 10px 20px; }
 ```
 
-## Kaskada — co wygrywa
+Przecinek = "i to, i tamto". Zamiast pisać tę samą deklarację trzy razy — piszesz raz.
 
-CSS to **Cascading Style Sheets** — "kaskadowe". Gdy kilka reguł dotyczy tego samego elementu, przeglądarka musi zdecydować, która wygrywa. Decydują trzy rzeczy (w kolejności):
+## Kaskada — co wygrywa gdy reguły się gryzą
 
-### 1. Pochodzenie (origin)
+CSS to *Cascading* Style Sheets — "kaskadowe". Gdy kilka reguł dotyczy tego samego elementu, przeglądarka musi zdecydować, która wygrywa. Decydują trzy rzeczy po kolei.
 
-- **Autor strony** — Twój CSS.
-- **Użytkownik** — np. własna karta stylów.
-- **Przeglądarka** — domyślne style (np. niebieskie linki).
+### 1. Specyficzność — waga selektora
 
-Autor wygrywa z domyślnymi, ale `!important` użytkownika przebije autora.
+To najważniejszy mechanizm. Każdy selektor ma wagę (a, b, c, d):
 
-### 2. Specyficzność (specificity) — NAJWAŻNIEJSZE
-
-Specyficzność to "waga" selektora. Wyższa waga wygrywa. Liczona jest jako (a, b, c):
-
-- **a** = inline style (`style="..."`) — liczy się za 1, 0, 0, 0
-- **b** = liczba ID
-- **c** = liczba klas, pseudoklas, atrybutów
-- **d** = liczba znaczników, pseudoelementów
+- **a** = inline `style=""` — najwyższa waga
+- **b** = liczba ID (`#menu`)
+- **c** = liczba klas, pseudoklas, atrybutów (`.karta`, `:hover`, `[type]`)
+- **d** = liczba znaczników i pseudoelementów (`p`, `::before`)
 
 ```css
-/* specyficzność (0, 0, 0, 1) */
-p { color: red; }
-
-/* specyficzność (0, 0, 1, 0) */
-.karta { color: green; }
-
-/* specyficzność (0, 1, 0, 0) */
-#menu { color: blue; }
-
-/* specyficzność (0, 0, 2, 1) */
-.karta p:hover { color: yellow; }
+p              { color: red; }    /* (0,0,0,1) */
+.karta         { color: green; }  /* (0,0,1,0) */
+#menu          { color: blue; }   /* (0,1,0,0) */
+.karta p:hover { color: yellow; } /* (0,0,2,1) */
 ```
 
-Wygrywa wyższa specyficzność. `#menu` (0,1,0,0) > `.karta` (0,0,1,0) > `p` (0,0,0,1).
+`#menu` (0,1,0,0) wygrywa z `.karta` (0,0,1,0), bo ID > klasa.
 
 <Callout type="warning" title="Inline vs ID">
-Inline `style="..."` ma specyficzność (1,0,0,0) — wygrywa z ID bez `!important`. Dlatego inline jest trudny do nadpisania — unikaj go.
+Inline `style=""` ma wagę (1,0,0,0) — wygrywa z każdym ID bez `!important`. Dlatego inline jest trudny do nadpisania w arkuszu stylów. Unikaj go w HTML.
 </Callout>
 
-### 3. Kolejność w kodzie (source order)
+### 2. Kolejność w kodzie
 
-Gdy specyficzność jest równa, wygrywa reguła **zdefiniowana później**:
+Gdy specyficzność jest równa, wygrywa reguła zdefiniowana **później**:
 
 ```css
 .btn { background: red; }
-.btn { background: blue; }  /* ← wygrywa (definiowana później) */
+.btn { background: blue; }  /* ← wygrywa */
 ```
 
-### `!important` — ostateczność
+Dlatego style ogólne piszesz na górze pliku, a nadpisania na dole.
+
+### 3. `!important` — ostateczność
 
 ```css
 .btn { background: red !important; }
 ```
 
-`!important` przebija WSZYSTKO. Używaj tylko gdy:
-- nadpisujesz style frameworka (Bootstrap, Tailwind reset)
-- tworzysz narzędzie deweloperskie
+Przebija WSZYSTKO. Używaj tylko gdy nadpisujesz style zewnętrznego <Term word="framework">frameworka</Term> (Bootstrap, Tailwind). W normalnym kodzie `!important` to sygnał, że architektura CSS jest zepsuta — zamiast naprawiać problem, zaklejasz go taśmą.
 
-W normalnym kodzie `!important` to sygnał, że architektura CSS jest zepsuta.
+## Dziedziczenie — co dziecko dostaje od rodzica
 
-## Dziedziczenie — co przejmuje dziecko
-
-Niektóre właściwości **dziedziczą się** z rodzica: `color`, `font-family`, `font-size`, `line-height`. Inne NIE: `background`, `border`, `padding`, `margin`.
+Niektóre właściwości **dziedziczą się** automatycznie: `color`, `font-family`, `font-size`, `line-height`. Inne NIE: `background`, `border`, `padding`, `margin`.
 
 ```css
 body {
-    color: #ccc;       /* dziedziczą <h1>, <p>, <a> */
-    font-family: sans-serif;  /* też dziedziczą */
-    background: #000;  /* NIE dziedziczy (background body = tło strony) */
+    color: #ccc;          /* dziedziczą <h1>, <p>, <a> */
+    font-family: sans-serif; /* też dziedziczą */
+    background: #000;     /* NIE dziedziczy */
 }
 ```
 
-Wymuszenie dziedziczenia:
+Możesz wymusić lub wyzerować dziedziczenie:
 
 ```css
-.btn { color: inherit; }   /* wymuś dziedziczenie koloru */
-.btn { background: initial; } /* wyzeruj */
+.btn { color: inherit; }      /* wymuś dziedziczenie koloru */
+.btn { background: initial; } /* wyzeruj do wartości domyślnej */
 ```
 
-## Debugowanie — narzędzia przeglądarki
+## Debugowanie w DevTools
 
-Gdy "coś nie działa":
+Gdy "coś nie działa" — nie zgaduj, sprawdź:
 
-1. **Otwórz DevTools** (F12 lub Cmd+Opt+I).
-2. Zakładka **Elements** — kliknij element, zobaczysz jego CSS po prawej.
-3. Reguły przekreślone = nadpisane przez inne.
-4. Na górze sekcji **Computed** — finalne wartości.
-5. Na górze sekcji **Styles** — kaskada z informacją, skąd każda wartość.
+1. Otwórz DevTools (F12 lub Cmd+Opt+I).
+2. Zakładka **Elements** — kliknij element, po prawej zobaczysz jego CSS.
+3. Reguły **przekreślone** = nadpisane przez inną regułę o wyższej specyficzności.
+4. Zakładka **Computed** — finalne wartości po zastosowaniu kaskady.
 
 <Callout type="tip" title="Triki DevTools">
-- Zaznacz element, kliknij jego `padding` w panelu Computed — zobaczysz wizualizację.
-- W zakładce Styles możesz edytować wartości na żywo (nie zapisuje się).
-- `Toggle element state` (ikona `:hov` w prawym górnym rogu Styles) wymusza `:hover` / `:focus`.
+Ikona `:hov` w panelu Styles wymusza stany `:hover` / `:focus` bez ruszania myszą. Przydatne gdy chcesz zobaczyć styl przycisku po najechaniu.
+</Callout>
+
+<Callout type="exam">
+Na egzaminie INF.03 pytają o specyficzność: inline > ID > klasa > znacznik. Pamiętaj też, że `!important` przebija wszystko, a przy równej specyficzności wygrywa późniejsza reguła. Umiej też wskazać, który selektor trafi w dany element HTML.
 </Callout>
 
 ## Podsumowanie
 
-Selektor wybiera elementy (znacznik, klasa, id, atrybut, pseudoklasa, kombinator). Właściwość + wartość = deklaracja. Gdy dwie reguły mówią to samo, decyduje specyficzność: inline > ID > klasa > znacznik. Przy równej specyficzności wygrywa późniejsza. Dziedziczenie działa dla koloru, fontu, line-height; nie działa dla tła, marginesu, paddingu. `!important` to ostateczność, nie styl pracy.
+Selektor wybiera elementy (znacznik, klasa, ID, atrybut, pseudoklasa, kombinator). Gdy dwie reguły mówią to samo, decyduje specyficzność: inline > ID > klasa > znacznik. Przy równej specyficzności wygrywa późniejsza. Dziedziczenie działa dla koloru i fontu — nie dla tła, marginesu, paddingu. `!important` to ostateczność, nie styl pracy. Gdy coś nie działa — DevTools, zakładka Elements, szukaj przekreślonych reguł.

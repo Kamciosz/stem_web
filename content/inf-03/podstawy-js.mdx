@@ -1,16 +1,24 @@
-JavaScript to język, który ożywia stronę. HTML daje strukturę, CSS wygląd, a JS zachowanie: reaguje na kliknięcia, zmienia treść, pobiera dane z serwera. W tej lekcji poznasz podstawy — wystarczą do pisania prostych interakcji.
+Wyobraź sobie stronę zbudowaną z samego HTML i CSS. Ładnie wygląda, da się ją czytać — ale jest martwa jak plakat na ścianie. Klikasz przycisk i nic. Wpisujesz coś do pola i nic. Brakuje jednej rzeczy: kogoś, kto zareaguje. Tym kimś jest JavaScript.
 
-## Jak dodać JavaScript do strony
+HTML daje stronie strukturę (co tu jest), CSS daje wygląd (jak to wygląda), a JavaScript daje zachowanie (co się dzieje, gdy użytkownik coś zrobi). Reaguje na kliknięcia, zmienia treść w locie, pobiera dane z <Term word="serwer">serwera</Term>. To dzięki niemu strona przestaje być plakatem, a staje się aplikacją.
 
-### Zewnętrzny plik (najlepsza praktyka)
+W tej lekcji poznasz fundamenty języka — tyle, ile potrzebujesz, żeby napisać pierwsze prawdziwe interakcje. Nie spiesz się. Każdy z tych elementów będzie wracał w kolejnych lekcjach setki razy.
+
+## Jak w ogóle dodać JavaScript do strony
+
+Zanim napiszesz pierwszą linię logiki, musisz powiedzieć przeglądarce, gdzie ten kod jest. Masz trzy sposoby — i nie są równorzędne.
+
+### Zewnętrzny plik — tak rób na co dzień
 
 ```html
 <script src="app.js" defer></script>
 ```
 
-`defer` mówi "pobierz równolegle, wykonaj po sparsowaniu HTML". Domyślnie `<script>` blokuje renderowanie strony — prawie zawsze używaj `defer`.
+Kod siedzi w osobnym pliku `.js`, a HTML tylko go podłącza. To najczystsze rozwiązanie: logika oddzielona od struktury, łatwo ją znaleźć i poprawić.
 
-### Wewnętrzny `<script>` (dla małych rzeczy)
+Słówko `defer` jest tu kluczowe. Mówi przeglądarce: „pobierz ten plik równolegle z HTML, ale wykonaj go dopiero, gdy cała strona zostanie wczytana". Bez `defer` znacznik `<script>` zatrzymuje budowanie strony, dopóki się nie wykona — strona „zacina się" na moment. Dlatego prawie zawsze dodawaj `defer`.
+
+### Wewnętrzny `<script>` — do drobiazgów
 
 ```html
 <script>
@@ -18,13 +26,23 @@ JavaScript to język, który ożywia stronę. HTML daje strukturę, CSS wygląd,
 </script>
 ```
 
-### Inline zdarzenie (raczej unikaj)
+Kod wpisany prosto w HTML. Wygodne do szybkiego testu albo malutkiego skryptu, ale przy większym projekcie szybko robi się bałagan.
+
+### Zdarzenie inline — raczej omijaj
 
 ```html
 <button onclick="alert('Klik!')">Klik</button>
 ```
 
-## Zmienne — `let`, `const`, `var`
+Logika wpleciona w atrybut znacznika. Działa, ale miesza zachowanie ze strukturą i źle się skaluje. Poznaj ten zapis, żeby go rozumieć w cudzym kodzie — ale sam pisz inaczej.
+
+<Callout type="tip" title="Złota zasada">
+Zewnętrzny plik z `defer` to domyślny wybór w 95% przypadków. Reszta to wyjątki.
+</Callout>
+
+## Zmienne — pudełka na dane
+
+Zmienna to nazwane pudełko, do którego wkładasz wartość, żeby później ją wyjąć. W JavaScript masz trzy słowa do ich tworzenia, ale tak naprawdę używasz dwóch.
 
 ```js
 const imie = "Anna";        // stała — nie można nadpisać
@@ -32,7 +50,9 @@ let wiek = 16;              // zmienna — można nadpisać
 var szkola = "TEB";         // STARY sposób, unikaj
 ```
 
-**`const` domyślnie**, `let` gdy musisz nadpisać. Zapomnij o `var`.
+Reguła jest prosta: **`const` domyślnie**, `let` tylko wtedy, gdy naprawdę musisz zmienić wartość później. O `var` po prostu zapomnij — pochodzi ze starego JavaScriptu i potrafi płatać figle.
+
+Dlaczego `const` na pierwszym miejscu? Bo gdy czytasz kod i widzisz `const`, od razu wiesz, że ta wartość się nie zmieni. Mniej rzeczy do śledzenia w głowie = mniej błędów.
 
 ```js
 let punkty = 0;
@@ -41,49 +61,64 @@ punkty += 5;                // 15 (skrót)
 punkty++;                   // 16
 ```
 
-<Callout type="warning" title="let vs const">
-- `const` nie znaczy "niezmienna wartość" — to **stała referencja**. Obiekt/tablica oznaczone const mogą zmieniać zawartość.
-- `const` pozwala debugować szybciej: gdy widzisz `const`, wiesz, że referencja się nie zmieni.
+<Callout type="warning" title="const nie znaczy 'zamrożone'">
+- `const` to **stała referencja**, a nie niezmienna wartość. Obiekt albo tablica zapisane przez `const` wciąż mogą zmieniać swoją zawartość — nie możesz im tylko przypisać zupełnie nowej wartości.
+- Mimo to `const` ułatwia debugowanie: widząc je, masz pewność, że samo pudełko nie zostanie podmienione.
 </Callout>
 
-## Typy danych
+## Typy danych — czym są Twoje wartości
+
+Każda wartość w JavaScript ma swój typ. Dzielą się na proste (prymitywne) i złożone.
 
 ```js
-// Primitiwne (proste)
-const tekst = "Ala ma kota";          // string
+// Prymitywne (proste)
+const tekst = "Ala ma kota";          // string (tekst)
 const liczba = 42;                     // number
-const innaLiczba = 3.14;               // number (też)
-const prawda = true;                   // boolean
+const innaLiczba = 3.14;               // number (też — JS nie rozróżnia całkowitych)
+const prawda = true;                   // boolean (prawda/fałsz)
 const nic = null;                      // "celowo puste"
 const niezdefiniowane = undefined;     // "nie przypisano"
 
 // Złożone
-const tablica = [1, 2, 3, "cztery"];   // array
+const tablica = [1, 2, 3, "cztery"];   // array (lista)
 const obiekt = { imie: "Anna", wiek: 16 };  // object
 ```
 
-Sprawdzanie typu: `typeof zmienna` (np. `"string"`, `"number"`).
+Zwróć uwagę na różnicę między `null` a `undefined`. `null` to świadoma decyzja — „tu celowo nic nie ma". `undefined` to brak decyzji — „nikt jeszcze nic tu nie wpisał".
 
-## Operatory
+Gdy chcesz sprawdzić, z jakim typem masz do czynienia, użyj `typeof`:
 
-Arytmetyczne: `+ - * / % **` (reszta z dzielenia, potęga).
+```js
+typeof "tekst"   // "string"
+typeof 42        // "number"
+```
 
-Porównania: `==` vs `===`.
+<Callout type="info" title="JS jest typowany dynamicznie">
+Ta sama zmienna może w jednej chwili trzymać tekst, a w następnej liczbę. JavaScript na to pozwala, ale to częste źródło błędów. Trzymaj się zasady: jedna zmienna — jeden typ przez całe życie.
+</Callout>
 
-- `==` porównuje z konwersją (`5 == "5"` → `true`).
-- `===` porównuje bez konwersji (`5 === "5"` → `false`).
+## Operatory — działania na danych
 
-**Zawsze `===`** (ścisłe porównanie). Unikasz niespodzianek.
+Arytmetyczne są intuicyjne: `+ - * / % **`. Dwa ostatnie warto zapamiętać: `%` to reszta z dzielenia (świetne do sprawdzania parzystości), a `**` to potęgowanie.
+
+Najważniejsza rzecz w tej sekcji to porównania — bo tu początkujący tracą najwięcej czasu na szukanie błędów.
 
 ```js
 console.log(5 === 5);       // true
 console.log(5 === "5");     // false
 console.log(null === undefined);  // false
 console.log(0 === false);   // false
-console.log(0 == false);    // true (oboje falsy)
+console.log(0 == false);    // true (oboje "falsy")
 ```
 
-Logiczne: `&&` (AND), `||` (OR), `!` (NOT).
+Masz dwa operatory równości i to nie jest kosmetyka:
+
+- `==` porównuje **z konwersją typów** — `5 == "5"` daje `true`, bo JS po cichu zamienia tekst na liczbę.
+- `===` porównuje **bez konwersji** — `5 === "5"` daje `false`, bo liczba to nie to samo co tekst.
+
+Zasada bez wyjątków: **zawsze używaj `===`**. Ścisłe porównanie nie robi niespodzianek za Twoimi plecami.
+
+Operatory logiczne łączą warunki: `&&` (oba muszą być prawdą), `||` (wystarczy jeden), `!` (zaprzeczenie).
 
 ```js
 if (wiek >= 13 && wiek < 18) {
@@ -91,7 +126,9 @@ if (wiek >= 13 && wiek < 18) {
 }
 ```
 
-## Warunek `if / else if / else`
+## Warunki — kod, który podejmuje decyzje
+
+`if / else if / else` to sposób, w jaki program wybiera, co zrobić, w zależności od sytuacji.
 
 ```js
 if (punkty >= 90) {
@@ -105,15 +142,21 @@ if (punkty >= 90) {
 }
 ```
 
-### Operator trójargumentowy
+Czyta się to z góry na dół jak listę pytań: „Czy 90 lub więcej? Nie. Czy 75 lub więcej? Nie..." — pierwszy pasujący warunek wygrywa, reszta jest pomijana.
+
+### Operator trójargumentowy — if w jednej linii
+
+Gdy decyzja jest banalna, pełny `if` to przerost formy. Masz skrót:
 
 ```js
 const poziom = wiek >= 18 ? "dorosły" : "dziecko";
 ```
 
-`warunek ? wartośćJeśliTrue : wartośćJeśliFalse` — skrót dla prostych ifów.
+Czytaj go tak: `warunek ? wartośćGdyPrawda : wartośćGdyFałsz`. Idealny do prostych przypisań, ale nie pakuj w niego złożonej logiki — wtedy `if` jest czytelniejszy.
 
-### `switch` — wiele przypadków
+### `switch` — gdy przypadków jest wiele
+
+Kiedy sprawdzasz jedną wartość wobec wielu możliwości, drabinka `else if` robi się męcząca. Wtedy lepszy jest `switch`:
 
 ```js
 switch (kolor) {
@@ -131,11 +174,15 @@ switch (kolor) {
 }
 ```
 
-Nie zapomnij `break` — bez niego wykonanie "przelatuje" do następnego case.
+<Callout type="warning" title="Nie zapomnij o break">
+Bez `break` wykonanie „przelatuje" do następnego `case` i wykonuje też jego kod — to jeden z klasycznych błędów. `default` to odpowiednik `else`: wykona się, gdy nic nie pasuje.
+</Callout>
 
-## Pętle
+## Pętle — powtarzanie bez przepisywania
 
-### `for` — klasyczna
+Gdy chcesz coś zrobić wielokrotnie, nie kopiujesz kodu — używasz pętli.
+
+### `for` — klasyka, gdy znasz liczbę powtórzeń
 
 ```js
 for (let i = 0; i < 5; i++) {
@@ -143,7 +190,9 @@ for (let i = 0; i < 5; i++) {
 }
 ```
 
-### `for...of` — po tablicy
+Trzy części w nawiasie: start (`let i = 0`), warunek kontynuacji (`i < 5`) i krok (`i++`). Pętla kręci się, dopóki warunek jest prawdą.
+
+### `for...of` — gdy przechodzisz po tablicy
 
 ```js
 const owoce = ["jabłko", "banan", "gruszka"];
@@ -152,7 +201,9 @@ for (const owoc of owoce) {
 }
 ```
 
-### `while` — dopóki warunek
+Czytelniejsza niż `for`, gdy nie potrzebujesz numeru indeksu — po prostu „dla każdego owocu z listy".
+
+### `while` — dopóki warunek jest prawdą
 
 ```js
 let paliwo = 100;
@@ -162,7 +213,9 @@ while (paliwo > 0) {
 }
 ```
 
-### `forEach` — metoda tablicy
+Używaj, gdy nie wiesz z góry, ile będzie powtórzeń — pętla kręci się, aż coś się zmieni. Uważaj tylko, żeby warunek kiedyś przestał być prawdą, bo inaczej zapętlisz przeglądarkę.
+
+### `forEach` — metoda samej tablicy
 
 ```js
 liczby.forEach((liczba, index) => {
@@ -170,7 +223,11 @@ liczby.forEach((liczba, index) => {
 });
 ```
 
-## Funkcje
+To pętla zapisana jako metoda tablicy. Dostajesz po kolei każdy element (i jego indeks, jeśli go potrzebujesz).
+
+## Funkcje — kod, który nazwiesz i wywołasz wiele razy
+
+Funkcja to opakowany kawałek logiki, któremu nadajesz nazwę. Raz piszesz, wielokrotnie używasz. Możesz jej coś podać (argumenty) i coś od niej dostać (`return`).
 
 ```js
 // Deklaracja
@@ -182,7 +239,9 @@ function przywitaj(imie) {
 console.log(przywitaj("Anna"));  // "Cześć, Anna!"
 ```
 
-### Funkcje strzałkowe (arrow functions)
+### Funkcje strzałkowe — krótszy zapis
+
+Nowoczesny JavaScript bardzo często używa krótszego zapisu — funkcji strzałkowych (arrow functions):
 
 ```js
 const przywitaj = (imie) => `Cześć, ${imie}!`;
@@ -194,9 +253,9 @@ const dodaj = (a, b) => {
 };
 ```
 
-Gdy ciało to jedno wyrażenie, można pominąć `{}` i `return`.
+Gdy całe ciało funkcji to jedno wyrażenie, możesz pominąć `{}` i `return` — wartość wraca automatycznie. Przy dłuższej logice używasz klamer i `return` jak normalnie.
 
-### Domyślne parametry
+### Domyślne parametry — wartość na wszelki wypadek
 
 ```js
 const przywitaj = (imie = "Gość") => `Cześć, ${imie}!`;
@@ -204,7 +263,11 @@ przywitaj();        // "Cześć, Gość!"
 przywitaj("Anna");  // "Cześć, Anna!"
 ```
 
-## Tablice — podstawowe metody
+Jeśli ktoś nie poda argumentu, funkcja użyje wartości domyślnej zamiast wpaść w błąd.
+
+## Tablice — listy danych i ich metody
+
+Tablica to uporządkowana lista. JavaScript daje gotowe metody do pracy z nią — naucz się ich, bo zastępują dziesiątki linii ręcznych pętli.
 
 ```js
 const owoce = ["jabłko", "banan"];
@@ -218,16 +281,20 @@ owoce.pop();                   // ostatni
 owoce.shift();                 // pierwszy
 
 // Szukanie
-owoce.indexOf("banan");        // 1 (indeks) lub -1
+owoce.indexOf("banan");        // 1 (indeks) lub -1, gdy nie ma
 owoce.includes("kiwi");        // false
 
 // Przekształcanie
-const duze = owoce.map(o => o.toUpperCase());   // nowa tablica
-const krotkie = owoce.filter(o => o.length < 6);
-const suma = [1,2,3].reduce((acc, n) => acc + n, 0);  // 6
+const duze = owoce.map(o => o.toUpperCase());   // nowa tablica wielkimi literami
+const krotkie = owoce.filter(o => o.length < 6);  // tylko krótkie nazwy
+const suma = [1,2,3].reduce((acc, n) => acc + n, 0);  // 6 — zwija do jednej wartości
 ```
 
-## Obiekty
+Zapamiętaj zwłaszcza trzy ostatnie: `map` (przekształć każdy element), `filter` (zostaw tylko pasujące) i `reduce` (zwiń całą listę do jednego wyniku). To codzienne narzędzia każdego programisty <Term word="frontend">frontendu</Term>.
+
+## Obiekty — dane z nazwami
+
+Tablica trzyma rzeczy po kolei (indeks 0, 1, 2...). Obiekt trzyma je pod nazwami — to wygodniejsze, gdy każda wartość znaczy coś innego.
 
 ```js
 const user = {
@@ -241,11 +308,13 @@ const user = {
 };
 
 console.log(user.imie);              // "Anna"
-console.log(user["email"]);          // "anna@example.com" (alternatywa)
+console.log(user["email"]);          // "anna@example.com" (alternatywny zapis)
 console.log(user.przywitaj());        // "Cześć, jestem Anna"
 ```
 
-### Destrukturyzacja
+Wartości w obiekcie nazywamy właściwościami, a funkcje w obiekcie — metodami. Słówko `this` wewnątrz metody wskazuje na sam obiekt.
+
+### Destrukturyzacja — szybkie wyciąganie wartości
 
 ```js
 const { imie, wiek } = user;
@@ -255,19 +324,23 @@ console.log(`${imie}, ${wiek}`);      // "Anna, 16"
 const przywitaj = ({ imie, wiek }) => `${imie} ma ${wiek} lat`;
 ```
 
-## Template strings
+Zamiast pisać `user.imie` i `user.wiek` osobno, wyciągasz kilka wartości naraz jedną linią. Zobaczysz to wszędzie w nowoczesnym kodzie.
+
+## Template strings — sklejanie tekstu bez bólu
+
+Łączenie tekstu plusami szybko robi się nieczytelne. Dlatego masz template strings — teksty w **backtickach** (`` ` ``), w które wstrzykujesz wartości przez `${...}`.
 
 ```js
 const imie = "Anna";
 const wiek = 16;
 
-// Zamiast:
+// Zamiast tego:
 console.log("Cześć, mam na imię " + imie + " i mam " + wiek + " lat.");
 
-// Użyj:
+// Pisz to:
 console.log(`Cześć, mam na imię ${imie} i mam ${wiek} lat.`);
 
-// Wieloliniowe
+// Bonus — tekst wieloliniowy
 const html = `
     <div>
         <h1>${imie}</h1>
@@ -276,13 +349,15 @@ const html = `
 `;
 ```
 
-Template strings używają **backticków** (`` ` ``) i pozwalają wstrzykiwać wyrażenia `${...}`.
+Mniej znaków, mniej pomyłek, a w środku `${...}` możesz wstawić dowolne wyrażenie. To standard — używaj template strings zamiast sklejania plusem.
 
-## Obsługa błędów
+## Obsługa błędów — gdy coś może pójść nie tak
+
+Niektóre operacje mogą się nie udać: parsowanie błędnego <Term word="JSON">JSON-a</Term>, dzielenie przez zero, brak danych z serwera. Zamiast pozwolić, by błąd wywalił całą stronę, otaczasz ryzykowny kod blokiem `try / catch`.
 
 ```js
 try {
-    const dane = JSON.parse(tekst);   // może rzucić
+    const dane = JSON.parse(tekst);   // może rzucić błąd
     console.log(dane.imie);
 } catch (error) {
     console.error("Błąd parsowania:", error);
@@ -291,7 +366,9 @@ try {
 }
 ```
 
-`throw new Error("...")` rzuca swój błąd:
+Czytaj to tak: „**spróbuj** wykonać kod w `try`; jeśli rzuci błąd, **złap** go w `catch` i obsłuż; a w `finally` zrób coś **niezależnie** od wyniku".
+
+Możesz też sam rzucić błąd, gdy wykryjesz sytuację, na którą się nie godzisz:
 
 ```js
 function podziel(a, b) {
@@ -300,6 +377,10 @@ function podziel(a, b) {
 }
 ```
 
+<Callout type="exam">
+Na egzaminie INF.03 z JavaScriptu sprawdzają fundamenty: poprawne `===` zamiast `==`, użycie `const`/`let` zamiast `var`, działającą pętlę z prawidłowym warunkiem oraz funkcję, która faktycznie zwraca wynik przez `return`. Brak `break` w `switch` i `==` zamiast `===` to klasyczne pułapki — łatwo o utratę punktów.
+</Callout>
+
 ## Podsumowanie
 
-`const` domyślnie, `let` do nadpisywania, `var` zapomnij. `===` do porównań. Template strings (`` ` ` ``) zamiast konkatenacji. Funkcje strzałkowe dla zwięzłości, `function` dla pełnej kontroli. `try/catch` do obsługi błędów. Tablice: `map`, `filter`, `reduce`, `forEach` zamiast ręcznych pętli. Obiekty: destrukturyzacja i metody skrótowe. Pamiętaj: JS jest typowany dynamicznie — ta sama zmienna może zmienić typ, ale lepiej tego unikać.
+`const` domyślnie, `let` do nadpisywania, `var` zapomnij. Zawsze `===` przy porównaniach. Template strings (`` ` ``) zamiast sklejania plusem. Funkcje strzałkowe dla zwięzłości, `function` dla pełnej kontroli. `try/catch` do obsługi błędów, które mogą wywrócić stronę. Tablice obrabiaj metodami `map`, `filter`, `reduce`, `forEach` zamiast ręcznych pętli. Obiekty czytaj przez destrukturyzację. I pamiętaj: JS jest typowany dynamicznie — ta sama zmienna może zmienić typ, ale dla własnego spokoju tego unikaj. To wszystko wróci w kolejnych lekcjach, gdy zaczniesz ruszać prawdziwą stronę przez <Term word="DOM">DOM</Term>.

@@ -1,13 +1,19 @@
-PHP to język programowania działający po stronie serwera. Kiedy użytkownik otwiera stronę .php, serwer wykonuje skrypt PHP i wysyła przeglądarce wynikowy HTML. W tej lekcji poznasz podstawy składni, zmiennych, formularzy i zabezpieczeń.
+Otwierasz w przeglądarce stronę sklepu. Widzisz swoje imię w prawym górnym rogu, liczbę produktów w koszyku, ceny przeliczone na złotówki. Nikt nie wpisał tego ręcznie w HTML — to <Term word="PHP">PHP</Term> wygenerował tę stronę chwilę wcześniej, na serwerze, specjalnie dla Ciebie. HTML jest jak wydrukowana ulotka: zawsze taka sama. PHP jest jak sprzedawca, który za każdym razem mówi coś innego, zależnie od tego, kto wszedł.
 
-## Czym jest PHP
+W tej lekcji poznasz fundament: jak PHP działa, jak pisać zmienne i warunki, jak odbierać dane z formularza i — to najważniejsze — jak nie dać się zhakować już na starcie.
 
-PHP (PHP: Hypertext Preprocessor) to język server-side, specjalnie popularny do budowy stron internetowych. Kod PHP:
+## Czym jest PHP i gdzie się wykonuje
 
-- Wykonuje się po stronie serwera.
-- Może generować HTML dynamicznie.
-- Może łączyć się z bazami danych, plikami, API.
-- Wbudowuje się w HTML za pomocą znaczników `<?php ... ?>`.
+Najpierw zrozum jedną rzecz, bo z niej wynika cała reszta. PHP to język <Term word="server-side">server-side</Term> — wykonuje się na <Term word="serwer">serwerze</Term>, nie w przeglądarce. Kiedy ktoś otwiera stronę `.php`, serwer uruchamia skrypt, a do przeglądarki wysyła **gotowy HTML**. Użytkownik nigdy nie widzi Twojego kodu PHP — widzi tylko wynik.
+
+PHP (PHP: Hypertext Preprocessor) potrafi:
+
+- Wykonać się po stronie serwera, zanim cokolwiek dotrze do użytkownika.
+- Generować HTML dynamicznie — inny dla każdego.
+- Łączyć się z bazami danych, plikami, <Term word="API">API</Term>.
+- Wbudowywać się wprost w HTML za pomocą znaczników `<?php ... ?>`.
+
+Spójrz, jak PHP miesza się z HTML-em. Wszystko poza `<?php ?>` to zwykły HTML, a w środku dzieje się magia:
 
 ```php
 <!DOCTYPE html>
@@ -23,13 +29,17 @@ PHP (PHP: Hypertext Preprocessor) to język server-side, specjalnie popularny do
 </html>
 ```
 
+Zwróć uwagę na `$imie ?? "Gość"` — jeśli zmienna `$imie` nie istnieje, użyj "Gość". To operator zwany null coalescing, będziesz go używać bez przerwy.
+
 <Callout type="tip" title="Środowisko lokalne">
-Do testowania PHP potrzebujesz serwera. Na macOS/Windows najłatwiej **XAMPP** (Apache + MySQL + PHP). Pliki umieszczaj w `htdocs/`, strony otwieraj `http://localhost/`.
+Do testowania PHP potrzebujesz serwera — sam plik otwarty z dysku nie zadziała. Na macOS/Windows najłatwiej **XAMPP** (Apache + MySQL + PHP). Pliki umieszczaj w `htdocs/`, strony otwieraj przez `http://localhost/`. Bez serwera przeglądarka pokaże Ci surowy kod zamiast wyniku.
 </Callout>
 
-## Składnia — podstawy
+## Składnia — to, od czego zaczynasz
 
 ### Znaczniki PHP
+
+Kod PHP zawsze żyje między tymi znacznikami:
 
 ```php
 <?php
@@ -37,7 +47,7 @@ Do testowania PHP potrzebujesz serwera. Na macOS/Windows najłatwiej **XAMPP** (
 ?>
 ```
 
-Krótki echo: `<?= $zmienna ?>` — to samo co `<?php echo $zmienna ?>`.
+Jest też skrót do wypisywania: `<?= $zmienna ?>` robi dokładnie to samo co `<?php echo $zmienna ?>`. Używaj go, gdy chcesz tylko wstawić wartość do HTML — jest krótszy i czytelniejszy.
 
 ### Komentarze
 
@@ -49,11 +59,11 @@ Krótki echo: `<?= $zmienna ?>` — to samo co `<?php echo $zmienna ?>`.
 
 ### Średnik
 
-Każda instrukcja kończy się średnikiem. Zapomnienie = biały ekran (parse error).
+Każda instrukcja kończy się średnikiem. To nie jest opcja — to wymóg. Zapomnisz średnika i dostaniesz biały ekran (parse error). Gdy coś nie działa, a ekran jest pusty, najpierw szukaj brakującego `;`.
 
 ## Zmienne
 
-W PHP zmienne zaczynają się od `$`:
+W PHP każda zmienna zaczyna się od `$`. Bez wyjątków:
 
 ```php
 $imie = "Anna";          // string
@@ -67,7 +77,7 @@ $kolory = ["czerwony", "zielony", "niebieski"];
 $osoba = ["imie" => "Anna", "wiek" => 16];
 ```
 
-PHP jest **słabo typowany** — typ zmiennej może się zmieniać. Dla bezpieczeństwa i czytelności deklaruj typy:
+Teraz uwaga na pułapkę. PHP jest **słabo typowany** — ta sama zmienna może raz trzymać liczbę, raz tekst. Brzmi wygodnie, ale prowadzi do trudnych błędów. Dlatego w funkcjach deklaruj typy — kod staje się czytelniejszy i bezpieczniejszy:
 
 ```php
 function przywitaj(string $imie, int $wiek): string {
@@ -75,7 +85,7 @@ function przywitaj(string $imie, int $wiek): string {
 }
 ```
 
-Stałe:
+Gdy wartość nigdy się nie zmienia (numer wersji, nazwa aplikacji), użyj stałej:
 
 ```php
 define("WERSJA", "1.0.0");
@@ -84,7 +94,7 @@ const NAZWA_APLIKACJI = "Koło STEM";
 
 ## Operatory
 
-Standardowe jak w innych językach:
+Większość znasz z innych języków, ale jeden zestaw musisz zapamiętać szczególnie dobrze — porównania:
 
 ```php
 $a + $b;          // dodawanie
@@ -105,7 +115,7 @@ $a || $b;         // OR
 ```
 
 <Callout type="warning" title="=== vs ==">
-W PHP `==` ma niespodzianki: `"0" == false` zwraca true (oba falsy). **Zawsze używaj `===`** do ścisłego porównania.
+W PHP `==` potrafi zaskoczyć: `"0" == false` zwraca `true`, bo PHP konwertuje typy w tle i uznaje oba za "fałszywe". To źródło prawdziwych dziur bezpieczeństwa — np. przy sprawdzaniu tokenów. **Zawsze używaj `===`** do ścisłego porównania. Trzy znaki równości to Twój domyślny wybór.
 </Callout>
 
 ## Warunki
@@ -130,7 +140,11 @@ $komunikat = match (true) {
 };
 ```
 
+`match` to nowszy, czystszy sposób na wiele warunków — warto go znać, bo nie wymaga `break` i porównuje przez `===`.
+
 ## Pętle
+
+Pętle robią to samo, co w każdym języku — powtarzają kod. W PHP najczęściej sięgniesz po `foreach`, bo świetnie chodzi po tablicach:
 
 ```php
 // for
@@ -159,6 +173,8 @@ foreach ($osoba as $klucz => $wartosc) {
 
 ## Tablice
 
+Tablica to pojemnik na wiele wartości. PHP ma dwa rodzaje: indeksowaną (numerowaną od zera) i asocjacyjną (klucz → wartość). Tej drugiej będziesz używać przy danych z bazy i formularzy, więc poznaj ją dobrze:
+
 ```php
 // Indeksowana
 $kolory = ["czerwony", "zielony", "niebieski"];
@@ -185,9 +201,11 @@ if (in_array("Anna", $osoba)) {
 }
 ```
 
-## Formularze — odbieranie danych
+## Formularze — tu zaczyna się prawdziwa robota
 
-Formularz HTML:
+Do tej pory dane wpisywałeś sam w kodzie. Teraz przychodzą one od użytkownika — przez formularz. To moment, w którym PHP staje się interaktywny.
+
+Najpierw formularz po stronie HTML (metoda <Term word="POST">POST</Term>, bo wysyłamy hasło):
 
 ```html
 <form action="/login.php" method="post">
@@ -201,7 +219,7 @@ Formularz HTML:
 </form>
 ```
 
-Obsługa w PHP (`/login.php`):
+A teraz odbiór danych w PHP. Zauważ, że sięgamy po dane przez `$_POST["nazwa_pola"]` — gdzie "nazwa_pola" to dokładnie ten `name` z formularza:
 
 ```php
 <?php
@@ -220,9 +238,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 ### `$_GET` vs `$_POST`
 
-- **`$_GET`** — dane z URL (`?klucz=wartość`). Widoczne w pasku adresu. Do wyszukiwarek, filtrów.
-- **`$_POST`** — dane w body requestu. Ukryte. Do formularzy z danymi wrażliwymi.
-- **`$_REQUEST`** — połączenie obu (mieszane, raczej unikaj).
+To pytanie pada na egzaminie i w każdej rozmowie o pracę. Zapamiętaj różnicę:
+
+- **`$_GET`** — dane z URL (`?klucz=wartość`). Widoczne w pasku adresu. Metoda <Term word="GET">GET</Term> służy do wyszukiwarek, filtrów, sortowania.
+- **`$_POST`** — dane w body żądania. Niewidoczne w URL. Do formularzy z danymi wrażliwymi: logowanie, rejestracja.
+- **`$_REQUEST`** — połączenie obu. Mieszane i nieprzewidywalne — raczej unikaj.
 
 ```php
 // URL: /szukaj.php?q=php
@@ -230,11 +250,13 @@ $query = $_GET["q"] ?? "brak";
 echo "Szukasz: $query";
 ```
 
-## Bezpieczeństwo — XSS i walidacja
+## Bezpieczeństwo — to jest punktowane na egzaminie
 
-### XSS — wyświetlanie danych od usera
+Teraz najważniejsza część całej lekcji. Zapamiętaj złotą zasadę backendu: **nigdy nie ufaj danym od użytkownika**. Użytkownik to nie zawsze grzeczny gość — czasem to ktoś, kto celowo wpisuje w pole imienia kawałek kodu, żeby przejąć Twoją stronę. Twoim zadaniem jest go zatrzymać.
 
-**NIGDY** nie wstawiaj danych od usera bezpośrednio do HTML. Zawsze `htmlspecialchars()`:
+### XSS — gdy użytkownik wstrzykuje kod do Twojej strony
+
+<Term word="XSS">XSS</Term> (Cross-Site Scripting) to atak, w którym ktoś wpisuje w pole formularza nie tekst, a kod JavaScript. Jeśli wyświetlisz to bez zabezpieczenia, ten kod **wykona się w przeglądarce każdego, kto wejdzie na stronę**. Lekarstwo jest proste i ma jedno nazwisko: `htmlspecialchars()`.
 
 ```php
 $imie = $_GET["name"] ?? "Gość";
@@ -248,9 +270,15 @@ echo "Witaj, " . htmlspecialchars($imie, ENT_QUOTES, "UTF-8");
 // echo "Witaj, " . htmlspecialchars($imie);
 ```
 
-`htmlspecialchars()` zamienia `<` na `&lt;`, `>` na `&gt;`, `"` na `&quot;` itd. Bez tego user wpisując `<script>alert('XSS')</script>` w polu name wykonałby JavaScript na Twojej stronie.
+`htmlspecialchars()` zamienia `<` na `&lt;`, `>` na `&gt;`, `"` na `&quot;`. Dzięki temu, gdy ktoś wpisze `<script>alert('XSS')</script>`, przeglądarka **wyświetli to jako zwykły tekst** zamiast wykonać. Bez tej funkcji haker uruchomiłby swój JavaScript u każdego odwiedzającego.
+
+<Callout type="exam">
+Na egzaminie INF.03 oceniający szukają `htmlspecialchars()` przy KAŻDYM wyświetlaniu danych pochodzących od użytkownika (z `$_GET`, `$_POST`, z bazy). Pominięcie go to nie drobiazg — to błąd bezpieczeństwa, za który tracisz punkty. Wpisz to sobie w nawyk: dane od usera na ekran = `htmlspecialchars()`.
+</Callout>
 
 ### Walidacja danych
+
+<Term word="walidacja">Walidacja</Term> to sprawdzanie, czy dane mają sens, zanim cokolwiek z nimi zrobisz. PHP daje gotowe narzędzia:
 
 ```php
 function walidujEmail(string $email): bool {
@@ -265,11 +293,13 @@ function walidujWiek(mixed $wiek): ?int {
 }
 ```
 
-### SQL injection — zabezpieczenie
+### SQL injection — krótka zapowiedź
 
-**NIGDY** nie wstawiaj danych od usera bezpośrednio do zapytania SQL. Zawsze prepared statements (patrz lekcja `php-mysql`).
+Drugi wielki atak to <Term word="SQL injection">SQL injection</Term> — wstrzyknięcie złośliwego kodu <Term word="SQL">SQL</Term> przez dane od usera. **Nigdy** nie sklejaj zapytania SQL ze zmiennej od użytkownika. Obroną są <Term word="prepared statements">prepared statements</Term>, którym poświęcona jest osobna lekcja (`php-mysql`). Na razie zapamiętaj samo ostrzeżenie — wrócimy do tego z konkretnym kodem.
 
-## Funkcje wbudowane — przydatne
+## Funkcje wbudowane — Twój codzienny zestaw
+
+PHP ma setki gotowych funkcji. Tych użyjesz najczęściej:
 
 ```php
 // Stringi
@@ -304,7 +334,11 @@ htmlspecialchars("<script>");
 filter_var("anna@example.com", FILTER_VALIDATE_EMAIL);
 ```
 
+Zwróć uwagę na dwie ostatnie z sekcji bezpieczeństwa: `password_hash()` zamienia hasło w nieczytelny skrót przed zapisem do bazy, a `password_verify()` sprawdza, czy wpisane hasło pasuje do tego skrótu. **Nigdy nie zapisuj hasła jako zwykłego tekstu** — zawsze przez `password_hash`.
+
 ## Dołączanie plików
+
+Po co kopiować ten sam nagłówek do dziesięciu plików, skoro można go napisać raz i dołączać? Do tego służą `include` i `require`:
 
 ```php
 // Wstawia i wykonuje plik. UWAGA na zmienne!
@@ -314,7 +348,9 @@ include_once "config.php";   // tylko raz (zapobiega ponownemu)
 require_once "db.php";       // połączenie z bazą raz
 ```
 
-Typowy layout:
+Różnica jest prosta: `require` przy błędzie zatrzymuje cały skrypt (użyj go do rzeczy krytycznych, np. połączenia z bazą), `include` tylko ostrzega. Wersje `_once` gwarantują, że plik wczyta się najwyżej raz — kluczowe przy połączeniu z bazą.
+
+Typowy układ projektu wygląda tak:
 
 ```
 /index.php
@@ -334,4 +370,4 @@ Typowy layout:
 
 ## Podsumowanie
 
-PHP to język server-side ze składnią podobną do C. Zmienne `$nazwa`. Słabe typowanie — ale `declare(strict_types=1)` + sygnatury typów w funkcjach pomagają. `$_GET` / `$_POST` do odbierania danych z formularzy. `htmlspecialchars()` przy KAŻDYM wyświetlaniu danych od usera (XSS!). `password_hash` / `password_verify` do haseł. `require_once` do współdzielenia plików. Prepared statements (PDO) do SQL — patrz lekcja `php-mysql`.
+PHP to język <Term word="server-side">server-side</Term> ze składnią podobną do C — wykonuje się na serwerze, a użytkownik dostaje gotowy HTML. Zmienne zaczynają się od `$`. PHP jest słabo typowany, więc deklaruj typy w funkcjach i porównuj przez `===`, nie `==`. Dane z formularzy odbierasz przez `$_GET` (URL, wyszukiwanie) i `$_POST` (body, dane wrażliwe). I dwie zasady, które ratują Ci skórę na egzaminie i w prawdziwej pracy: `htmlspecialchars()` przy KAŻDYM wyświetlaniu danych od użytkownika (ochrona przed XSS) oraz `password_hash` / `password_verify` do haseł. Do bezpiecznego SQL-a służą prepared statements — to temat następnej lekcji (`php-mysql`).

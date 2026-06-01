@@ -1,15 +1,19 @@
-PHP bez bazy danych to jak kuchnia bez lodówki — niby działa, ale rzeczywiste aplikacje (logowanie, sklepy, blogi, panele administracyjne) potrzebują trwałego przechowywania danych. W tej lekcji nauczysz się łączyć PHP z MySQL przez PDO i bezpiecznie wykonywać zapytania.
+Wyobraź sobie, że budujesz sklep internetowy. Produkty, zamówienia, użytkownicy — to wszystko musi gdzieś żyć między wizytami. Plik tekstowy odpada przy tysiącu rekordów. Potrzebujesz bazy danych. <Term word="PHP">PHP</Term> bez bazy to jak kuchnia bez lodówki — niby działa, ale nic nie przechowasz na dłużej.
 
-## PDO vs mysqli
+W tej lekcji nauczysz się łączyć PHP z MySQL przez PDO i wykonywać wszystkie cztery operacje <Term word="CRUD">CRUD</Term> (Create, Read, Update, Delete) w jedyny bezpieczny sposób — przez <Term word="prepared statements">prepared statements</Term>.
 
-PHP ma dwa główne interfejsy do baz danych:
+## PDO vs mysqli — co wybrać
 
-- **mysqli** — stary, specyficzny dla MySQL.
-- **PDO** (PHP Data Objects) — abstrakcja nad wieloma bazami (MySQL, PostgreSQL, SQLite). **Preferowany.**
+PHP ma dwa interfejsy do baz danych. Zapamiętaj, który jest lepszy:
 
-PDO jest bardziej elastyczny i ma czytelniejszy interfejs prepared statements.
+- **mysqli** — stary, działa tylko z MySQL.
+- **PDO** (PHP Data Objects) — nowszy, działa z MySQL, PostgreSQL, SQLite i innymi. **Używaj PDO.**
+
+PDO ma czytelniejszy interfejs do prepared statements i nie przywiązuje Cię do jednej bazy. Jeśli kiedyś zmienisz MySQL na coś innego, zmienisz tylko jeden wiersz w konfiguracji.
 
 ## Połączenie z bazą
+
+Zacznij od pliku `db.php`, który będziesz dołączać przez `require_once` do każdego skryptu wymagającego bazy:
 
 ```php
 <?php
@@ -35,17 +39,19 @@ try {
 }
 ```
 
-Kluczowe flagi:
+Trzy flagi, które musisz rozumieć:
 
-- `ERRMODE_EXCEPTION` — zamiast cichych warningów dostajesz wyjątki. Łatwiej debugować.
-- `FETCH_ASSOC` — `fetch()` zwraca `["kolumna" => wartość]` zamiast indeksowanej.
-- `EMULATE_PREPARES => false` — PDO nie emuluje prepared statements po stronie PHP, tylko wysyła je prawdziwie do MySQL.
+- `ERRMODE_EXCEPTION` — zamiast cichych warningów dostajesz wyjątki. Łatwiej debugować, bo błąd nie przemknie niezauważony.
+- `FETCH_ASSOC` — `fetch()` zwraca `["kolumna" => wartość]` zamiast tablicy indeksowanej. Czytelniejszy kod.
+- `EMULATE_PREPARES => false` — PDO wysyła prepared statements prawdziwie do MySQL, nie emuluje ich po stronie PHP. To ważne dla bezpieczeństwa.
 
 <Callout type="tip" title="require_once">
-Dołączaj plik połączenia przez `require_once` — po pierwszym wczytaniu kolejne `require_once` są ignorowane. Nie ma ryzyka ponownego połączenia.
+Dołączaj plik połączenia przez `require_once` — po pierwszym wczytaniu kolejne wywołania są ignorowane. Nie ma ryzyka podwójnego połączenia ani nadpisania zmiennej `$pdo`.
 </Callout>
 
 ## Tworzenie tabeli
+
+Zanim zaczniesz pisać PHP, stwórz tabelę w MySQL. Zwróć uwagę na `password_hash` — hasło nigdy nie trafia do bazy jako zwykły tekst:
 
 ```sql
 CREATE TABLE users (
@@ -57,7 +63,37 @@ CREATE TABLE users (
 );
 ```
 
-## INSERT — wstawianie danych
+## Dlaczego prepared statements — to jest serce tej lekcji
+
+Zanim przejdziesz do kodu CRUD, zrozum, dlaczego prepared statements są obowiązkowe. Oto co się dzieje bez nich:
+
+```php
+// ❌ SQL injection — NIGDY tak nie rób
+$email = $_POST["email"];
+$stmt = $pdo->query("SELECT * FROM users WHERE email = '$email'");
+// User wpisuje: ' OR '1'='1 → zapytanie zwraca WSZYSTKICH userów
+// User wpisuje: '; DROP TABLE users; -- → usuwa całą tabelę
+```
+
+Atakujący wpisuje w pole formularza fragment <Term word="SQL">SQL</Term>, który zmienia sens całego zapytania. To właśnie <Term word="SQL injection">SQL injection</Term> — jeden z najczęstszych ataków na aplikacje webowe.
+
+Rozwiązanie: oddziel kod SQL od danych. `prepare()` wysyła szablon zapytania do MySQL, `execute()` wstawia dane osobno. MySQL traktuje je jako wartość, nie jako część kodu:
+
+```php
+// ✅ Prepared statement — bezpiecznie
+$stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
+$stmt->execute([":email" => $_POST["email"]]);
+```
+
+Nawet jeśli ktoś wpisze `' OR '1'='1`, MySQL potraktuje to jako dosłowny ciąg znaków szukany w kolumnie email — nie jako kod SQL.
+
+<Callout type="exam">
+Na egzaminie INF.03 każde zapytanie z danymi od użytkownika musi używać prepared statements. Sklejanie stringa SQL z `$_POST` lub `$_GET` to błąd bezpieczeństwa, który kosztuje punkty. Wzorzec: `prepare()` + `execute([":param" => $wartosc])`.
+</Callout>
+
+## INSERT — dodawanie danych
+
+Dodajemy nowego użytkownika. Hasło hashujemy **przed** zapisem — do bazy trafia tylko skrót, nigdy oryginał:
 
 ```php
 function utworzUsera(PDO $pdo, string $email, string $haslo, string $imie): int {
@@ -78,22 +114,7 @@ function utworzUsera(PDO $pdo, string $email, string $haslo, string $imie): int 
 }
 ```
 
-`prepare()` przygotowuje zapytanie (wysyła szablon do MySQL), `execute()` wstawia wartości. MySQL sam escapuje — **nie da się wstrzyknąć SQL-a**.
-
-### Dlaczego prepared statements
-
-```php
-// ❌ SQL injection — NIGDY tak nie rób
-$email = $_POST["email"];
-$stmt = $pdo->query("SELECT * FROM users WHERE email = '$email'");
-// User wpisuje: ' OR '1'='1 → zapytanie zwraca wszystkich userów
-
-// ✅ Prepared statement — bezpiecznie
-$stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
-$stmt->execute([":email" => $_POST["email"]]);
-```
-
-Prepared statements oddzielają **kod SQL** od **danych**. Dane wstawiane przez `execute()` są traktowane jako wartość, nie jako część zapytania.
+`lastInsertId()` zwraca ID właśnie wstawionego <Term word="rekord">rekordu</Term> — przydatne, gdy od razu chcesz coś z nim zrobić.
 
 ## SELECT — pobieranie danych
 
@@ -114,7 +135,7 @@ function znajdzUseraPoEmail(PDO $pdo, string $email): ?array {
 }
 ```
 
-`fetch()` zwraca jeden wiersz (lub `false` gdy brak). `fetchAll()` zwraca tablicę wszystkich wierszy.
+`fetch()` zwraca jeden wiersz jako tablicę asocjacyjną (lub `false` gdy brak). `LIMIT 1` przyspiesza zapytanie — MySQL przestaje szukać po znalezieniu pierwszego dopasowania.
 
 ### Wiele rekordów
 
@@ -129,7 +150,7 @@ foreach (wszyscyUserzy($pdo) as $user) {
 }
 ```
 
-`query()` używaj **tylko dla stałych zapytań** (bez danych od usera).
+`query()` używaj **tylko dla stałych zapytań** — bez żadnych danych od użytkownika. Gdy tylko pojawia się zmienna od usera, wracasz do `prepare()` + `execute()`.
 
 ### Filtrowanie
 
@@ -146,7 +167,7 @@ function szukajUserow(PDO $pdo, string $szukane): array {
 }
 ```
 
-`%` to wildcard — `Anna%` znajdzie wszystko zaczynające się od "Anna".
+`%` to wildcard — `%Anna%` znajdzie wszystko zawierające "Anna". Zwróć uwagę: `%` doklejasz do wartości w PHP, nie w SQL. Dzięki temu prepared statement nadal działa poprawnie.
 
 ## UPDATE — aktualizacja
 
@@ -160,7 +181,7 @@ function zmienEmail(PDO $pdo, int $id, string $nowyEmail): bool {
 }
 ```
 
-`execute()` zwraca `true`/`false`. Dla pewności sprawdź `rowCount()`:
+`execute()` zwraca `true`/`false`. Jeśli chcesz wiedzieć, czy cokolwiek faktycznie się zmieniło, sprawdź `rowCount()`:
 
 ```php
 $stmt->execute([":email" => $nowyEmail, ":id" => $id]);
@@ -180,12 +201,12 @@ function usunUsera(PDO $pdo, int $id): bool {
 ```
 
 <Callout type="warning" title="DELETE jest nieodwracalny">
-Przed usuwaniem w aplikacji zawsze pytaj usera o potwierdzenie ("Czy na pewno?"). W bazie używaj miękkiego usuwania (kolumna `deleted_at`) tam, gdzie to możliwe — łatwiej cofnąć.
+Przed usuwaniem w aplikacji zawsze pytaj użytkownika o potwierdzenie ("Czy na pewno?"). W poważniejszych projektach stosuje się miękkie usuwanie — kolumna `deleted_at` zamiast fizycznego DELETE. Łatwiej cofnąć, łatwiej audytować.
 </Callout>
 
-## Transakcje — grupa operacji atomowo
+## Transakcje — albo wszystko, albo nic
 
-Gdy musisz wykonać kilka operacji, z których albo wszystkie się powiodą, albo żadna:
+Wyobraź sobie przelew bankowy: odejmujesz pieniądze z konta A i dodajesz do konta B. Co jeśli aplikacja padnie między tymi dwoma operacjami? Pieniądze znikają. Transakcja rozwiązuje ten problem — albo obie operacje się powiodą, albo żadna:
 
 ```php
 function przeniesSrodki(PDO $pdo, int $zId, int $doId, float $kwota): void {
@@ -208,9 +229,11 @@ function przeniesSrodki(PDO $pdo, int $zId, int $doId, float $kwota): void {
 }
 ```
 
-Bez transakcji: jeśli aplikacja padnie między krokiem 1 a 2, pieniądze znikają. Z transakcją: oba albo żadne.
+`commit()` zatwierdza obie zmiany naraz. `rollBack()` cofa wszystko do stanu sprzed `beginTransaction()`. Bez transakcji awaria między krokiem 1 a 2 zostawia bazę w niespójnym stanie.
 
 ## Kompletny przykład — prosty CRUD
+
+Wszystko razem: formularz, INSERT, SELECT, wyświetlanie z `htmlspecialchars()`:
 
 ```php
 <?php
@@ -256,6 +279,8 @@ $users = $stmt->fetchAll();
 </table>
 ```
 
+Zwróć uwagę na dwie rzeczy: `password_hash()` przy INSERT i `htmlspecialchars()` przy każdym wyświetleniu. To nie jest opcja — to obowiązek.
+
 ## Podsumowanie
 
-PDO + prepared statements to jedyny bezpieczny sposób na SQL w PHP. `prepare("SQL")` + `execute([":name" => $wartosc])`. Fetch_assoc zwraca wiersze jako tablice asocjacyjne. `lastInsertId()` daje ID ostatniego INSERT. `rowCount()` mówi ile wierszy dotknięto (UPDATE/DELETE). Transakcje (`beginTransaction` / `commit` / `rollBack`) gwarantują atomowość grupy operacji. **Zawsze** `htmlspecialchars()` przy wyświetlaniu danych z bazy. **Zawsze** `password_hash` + `password_verify` do haseł. **Nigdy** nie wstawiaj danych od usera do SQL bez prepared statements.
+PDO + prepared statements to jedyny bezpieczny sposób na <Term word="SQL">SQL</Term> w PHP. Wzorzec: `prepare("SQL z :param")` + `execute([":param" => $wartosc])`. `fetch()` zwraca jeden wiersz, `fetchAll()` — wszystkie. `lastInsertId()` daje ID ostatniego INSERT. `rowCount()` mówi ile wierszy dotknięto przy UPDATE/DELETE. Transakcje (`beginTransaction` / `commit` / `rollBack`) gwarantują atomowość grupy operacji. **Zawsze** `htmlspecialchars()` przy wyświetlaniu danych z bazy — to ochrona przed <Term word="XSS">XSS</Term>. **Zawsze** `password_hash` + `password_verify` do haseł. **Nigdy** nie wstawiaj danych od usera do <Term word="query">query</Term> bez prepared statements — to <Term word="SQL injection">SQL injection</Term>.

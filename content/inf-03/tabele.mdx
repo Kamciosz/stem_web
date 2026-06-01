@@ -1,16 +1,20 @@
-Tabele w HTML to nie "siatka do rysowania layoutu" — służą do prezentowania **danych tabelarycznych** (rozkład jazdy, cennik, wyniki sportowe). W tej lekcji poznasz znaczniki, które sprawiają, że tabela jest dostępna i czytelna dla każdego.
+Wyobraź sobie rozkład jazdy autobusu na przystanku: godziny w jednej kolumnie, kierunki w drugiej, częstotliwość w trzeciej. Wodczytujesz go w sekundę, bo dane są ułożone w wierszach i kolumnach — wiesz, że liczba w danej rubryce odnosi się do tej godziny i tego kierunku. Dokładnie po to są tabele w HTML: do pokazywania **danych tabelarycznych**, gdzie sens bierze się z przecięcia wiersza i kolumny.
 
-## Po co tabele (a po co NIE)
+I tu od razu najważniejsza rzecz, którą musisz zapamiętać: tabela to narzędzie do **danych**, a nie do rysowania wyglądu strony.
 
-**Używaj tabel do:** rozkładów jazdy, zestawień produktów, statystyk, ocen, list pracowników, kalendarzy.
+## Po co tabele — a po co absolutnie NIE
 
-**NIE używaj tabel do:** budowania layoutu strony, układania formularzy, galerii obrazków. Do tego służy CSS (Flexbox / Grid). Historycznie tabele były używane do layoutu (przed Flexbox/Grid), ale to stara, niedostępna praktyka.
+Tabeli używasz, gdy masz dane, które naturalnie układają się w siatkę: rozkład jazdy, cennik, wyniki sportowe, zestawienie produktów, oceny, lista pracowników, kalendarz. Jeśli potrafisz powiedzieć "to jest wiersz X w kolumnie Y" — to są dane do tabeli.
 
-<Callout type="warning" title="Layout vs dane">
-Tabele-layout zostawiają czytniki ekranu bezradne. Użytkownik niewidomy słyszy "komórka 1, komórka 2, komórka 3..." w losowej kolejności, bez sensu. Do layoutu zawsze CSS Grid lub Flexbox.
+Czego do tabeli **nie** wrzucasz: układu strony (menu z boku, treść w środku, stopka na dole), rozmieszczenia pól formularza, galerii zdjęć. Kiedyś, zanim powstały nowoczesne narzędzia, programiści naprawdę budowali całe strony z tabel — i był to koszmar. Dziś od układania elementów na stronie masz CSS: <Term word="grid">grid</Term> i <Term word="flexbox">flexbox</Term>.
+
+<Callout type="warning" title="Layout vs dane — dlaczego to nie jest drobiazg">
+Gdy zbudujesz layout z tabeli, <Term word="czytnik ekranu">czytnik ekranu</Term> osoby niewidomej zacznie czytać "komórka 1, komórka 2, komórka 3..." w kolejności, która nie ma żadnego sensu — bo dla niego to są dane, a nie dekoracja. Strona staje się dla takiej osoby bezużyteczna. Do układu strony zawsze CSS Grid albo Flexbox, nigdy tabela.
 </Callout>
 
-## Anatomia tabeli
+## Najpierw zobacz całość — anatomia tabeli
+
+Zanim rozłożymy tabelę na części, popatrz na kompletny przykład. Każdy <Term word="znacznik">znacznik</Term> ma tu swoją rolę — za chwilę przejdziemy po nich po kolei.
 
 ```html
 <table>
@@ -44,17 +48,17 @@ Tabele-layout zostawiają czytniki ekranu bezradne. Użytkownik niewidomy słysz
 </table>
 ```
 
-Każdy element ma swoją rolę — to ważne dla dostępności.
+Wygląda na dużo znaczników, ale każdy z nich coś znaczy — i to znaczenie odczytuje przeglądarka oraz czytnik ekranu. Rozbierzmy to.
 
 ## Znaczniki — co oznacza co
 
-### `<table>` — korzeń tabeli
+### `<table>` — korzeń całej tabeli
 
-Nie wymaga żadnych atrybutów, ale warto dodać `aria-describedby` lub `<caption>` dla dostępności.
+To kontener, w którym mieszka wszystko inne. Sam w sobie nie wymaga żadnego <Term word="atrybut">atrybutu</Term>, ale prawie zawsze dodasz mu `<caption>` (za chwilę), żeby tabela była zrozumiała.
 
-### `<caption>` — opis tabeli
+### `<caption>` — tytuł tabeli
 
-Pojawia się nad tabelą. Krótko opisuje, co tabela zawiera. **Zastępuje alt-a** dla tabel.
+`<caption>` to opis, który pojawia się nad tabelą i jednym zdaniem mówi, co tu znajdziesz. Pomyśl o nim jak o `alt` dla tabeli — to on sprawia, że ktoś korzystający z czytnika ekranu wie, na co patrzy, zanim zacznie słuchać danych.
 
 ```html
 <table>
@@ -63,25 +67,27 @@ Pojawia się nad tabelą. Krótko opisuje, co tabela zawiera. **Zastępuje alt-a
 </table>
 ```
 
-### `<thead>`, `<tbody>`, `<tfoot>` — sekcje tabeli
+### `<thead>`, `<tbody>`, `<tfoot>` — trzy sekcje tabeli
 
-- **`<thead>`** — nagłówek tabeli (wiersz z etykietami kolumn). Pojawia się raz.
-- **`<tbody>`** — właściwe dane. Może być kilka (np. osobne sekcje dla różnych grup).
-- **`<tfoot>`** — stopka (np. suma, średnia). Pojawia się raz, ale renderuje się **na dole** niezależnie od pozycji w kodzie.
+Tabelę dzielisz na trzy logiczne części, tak jak dokument dzielisz na nagłówek, treść i stopkę:
 
-Te znaczniki nie są obowiązkowe (przeglądarka i tak zgaduje), ale są kluczowe dla czytników ekranu.
+- **`<thead>`** — wiersz (lub wiersze) z nazwami kolumn. Pojawia się raz, na górze.
+- **`<tbody>`** — właściwe dane. Możesz mieć kilka `<tbody>`, jeśli chcesz pogrupować wiersze w osobne sekcje.
+- **`<tfoot>`** — stopka, na przykład suma albo średnia. Ciekawostka: niezależnie od tego, gdzie wpiszesz `<tfoot>` w kodzie, przeglądarka i tak wyrenderuje go **na dole** tabeli.
 
-### `<tr>` — wiersz tabeli
+Przeglądarka poradzi sobie nawet bez tych znaczników (sama zgaduje strukturę), ale dla czytnika ekranu to one robią różnicę między "stosem komórek" a "tabelą z nagłówkiem i danymi". Używaj ich.
 
-Wiersz w tabeli. Zawiera komórki (`<th>` lub `<td>`).
+### `<tr>` — wiersz
 
-### `<th>` — komórka nagłówka
+`<tr>` (table row) to poziomy wiersz tabeli. W środku siedzą komórki — albo nagłówkowe `<th>`, albo zwykłe `<td>`.
 
-Nagłówek kolumny lub wiersza. Atrybut **`scope`** mówi, czy nagłówek dotyczy kolumny, wiersza, czy grupy:
+### `<th>` — komórka nagłówka (i jej kluczowy atrybut)
+
+`<th>` to komórka, która jest **nagłówkiem** — opisuje kolumnę albo wiersz. I tu pojawia się najważniejszy atrybut całej lekcji: **`scope`**. Mówi on, czego ten nagłówek dotyczy:
 
 - `scope="col"` — nagłówek kolumny
 - `scope="row"` — nagłówek wiersza
-- `scope="colgroup"` / `scope="rowgroup"` — nagłówek grupy
+- `scope="colgroup"` / `scope="rowgroup"` — nagłówek całej grupy kolumn lub wierszy
 
 ```html
 <tr>
@@ -94,36 +100,38 @@ Nagłówek kolumny lub wiersza. Atrybut **`scope`** mówi, czy nagłówek dotycz
 </tr>
 ```
 
-Dzięki `scope` czytnik ekranu powie "Warszawa, populacja: 1 800 000" zamiast "komórka 2, komórka 3".
+Dlaczego to ważne? Dzięki `scope` czytnik ekranu przeczyta "Warszawa, populacja: 1 800 000" — czyli powiąże dane z nagłówkiem. Bez `scope` usłyszysz tylko "komórka, 1 800 000", bez żadnego kontekstu, co ta liczba w ogóle oznacza.
 
 ### `<td>` — zwykła komórka danych
 
-Standardowa komórka tabeli.
+`<td>` (table data) to standardowa komórka z wartością — liczba, tekst, cokolwiek, co nie jest nagłówkiem.
 
-## Atrybuty dostępności
+## Atrybuty dostępności — żeby tabela działała dla każdego
 
-### `scope` (na `<th>`)
+### `scope` na `<th>` — fundament
 
-Poznaliśmy wyżej. To **najważniejszy atrybut dostępności tabeli**.
+Poznałeś go wyżej, ale powtórzę, bo to najważniejszy atrybut <Term word="dostępność">dostępności</Term> w tabelach. Jeśli zapamiętasz z tej lekcji jedną rzecz, niech to będzie `scope` na każdym `<th>`.
 
-### `headers` i `id` (zaawansowane)
+### `id` i `headers` — dla skomplikowanych tabel
 
-Gdy nagłówek jest daleko lub komórka odwołuje się do kilku nagłówków (np. tabela krzyżowa), użyj `id` + `headers`:
+Czasem nagłówek jest daleko od komórki albo jedna komórka odnosi się do kilku nagłówków naraz (np. tabela krzyżowa: dzień × godzina). Wtedy łączysz je ręcznie przez `id` na nagłówku i `headers` na komórce:
 
 ```html
 <th id="r1">Pon</th>
 <td headers="r1 c1">8:00</td>
 ```
 
-W praktyce `scope` wystarcza w 99% przypadków.
+W praktyce `scope` wystarcza w 99% przypadków — `headers` zostaw na naprawdę złożone zestawienia.
 
-### `aria-label` / `<caption>`
+### `<caption>` lub `aria-label` — zawsze, gdy tabela ma stać sama
 
-Dodaj `<caption>` lub `aria-label` zawsze, gdy tabela ma być zrozumiała bez kontekstu.
+Jeśli tabela ma być zrozumiała bez otaczającego tekstu, dodaj jej `<caption>` albo `aria-label`. Bez tego użytkownik czytnika ekranu wpada w środek danych, nie wiedząc, czego dotyczą.
 
 ## Łączenie komórek — `colspan` i `rowspan`
 
-Czasem potrzebujesz komórki rozciągniętej na kilka kolumn lub wierszy:
+Nie każda tabela to idealna krata. Czasem jedna komórka ma się rozciągać na kilka kolumn lub wierszy — na przykład wspólny nagłówek nad dwiema rubrykami.
+
+`colspan` rozciąga komórkę w **poziomie** (na kilka kolumn):
 
 ```html
 <table>
@@ -140,6 +148,8 @@ Czasem potrzebujesz komórki rozciągniętej na kilka kolumn lub wierszy:
     </tr>
 </table>
 ```
+
+`rowspan` rozciąga komórkę w **pionie** (na kilka wierszy):
 
 ```html
 <table>
@@ -160,9 +170,11 @@ Czasem potrzebujesz komórki rozciągniętej na kilka kolumn lub wierszy:
 </table>
 ```
 
-## Stylowanie tabeli — minimum CSS
+Prosty sposób na zapamiętanie: **col**span jak kolumny (w bok), **row**span jak rzędy (w dół).
 
-Tabela bez CSS wygląda surowo. Minimum do czytelności:
+## Stylowanie tabeli — minimum, które robi robotę
+
+Tabela bez CSS wygląda surowo: linie się dublują, wszystko się zlewa. Oto minimum, które zamienia ją w czytelne zestawienie:
 
 ```css
 table {
@@ -183,13 +195,15 @@ tbody tr:nth-child(even) {
 }
 ```
 
-`border-collapse: collapse` jest **obowiązkowe** — bez niego obramowania się podwajają.
+Zapamiętaj `border-collapse: collapse` — bez niego każda komórka ma własną ramkę i obramowania podwajają się, tworząc brzydkie podwójne kreski. To pierwsza rzecz, którą ustawiasz w każdej tabeli.
 
-<Callout type="tip" title="Sticky header">
-Dla długich tabel dodaj `position: sticky; top: 0;` na `thead th` — nagłówek zostaje na górze ekranu przy scrollowaniu.
+<Callout type="tip" title="Sticky header — nagłówek, który nie ucieka">
+Przy długiej tabeli, którą trzeba przewijać, dodaj `position: sticky; top: 0;` na `thead th`. Nagłówek przyklei się do górnej krawędzi ekranu i będziesz cały czas widzieć, w której kolumnie jesteś — nawet 200 wierszy niżej.
 </Callout>
 
 ## Kompletny przykład — rozkład jazdy
+
+Złóżmy to wszystko w jedną sensowną tabelę. Zauważ: jest `<caption>`, jest `<thead>` z `scope="col"`, a pierwsza komórka każdego wiersza to `<th scope="row">` — bo godzina jest tu nagłówkiem wiersza, nie zwykłą daną.
 
 ```html
 <table>
@@ -221,6 +235,10 @@ Dla długich tabel dodaj `position: sticky; top: 0;` na `thead th` — nagłówe
 </table>
 ```
 
+<Callout type="exam">
+Na egzaminie INF.03 przy tabelach sprawdzają konkretne rzeczy: poprawną strukturę (`<table>` z `<caption>`, podział na `<thead>`/`<tbody>`), `scope` na nagłówkach `<th>`, oraz to, czy nie używasz tabeli do budowania layoutu strony. Brak `scope` i tabela-layout to typowe miejsca, gdzie traci się punkty. Naucz się odruchowo dawać `scope="col"` w nagłówku kolumny i `scope="row"` w pierwszej komórce wiersza.
+</Callout>
+
 ## Podsumowanie
 
-Tabela to `<table>` + `<caption>` + `<thead>`/`<tbody>`/`<tfoot>` + `<tr>` + `<th>` (z `scope`) + `<td>`. Atrybut `scope` na nagłówkach to podstawa dostępności. `colspan` / `rowspan` łączą komórki. Do stylowania minimum: `border-collapse: collapse` + naprzemienne wiersze. Do layoutu **nie używaj tabel** — służy do tego CSS Grid / Flexbox.
+Tabela to `<table>` + `<caption>` + sekcje `<thead>`/`<tbody>`/`<tfoot>` + wiersze `<tr>` + komórki `<th>` (z `scope`) i `<td>`. Atrybut `scope` na nagłówkach to fundament dostępności — bez niego dane tracą sens dla czytnika ekranu. `colspan` i `rowspan` łączą komórki w poziomie i pionie. Do stylowania zaczynasz od `border-collapse: collapse` i naprzemiennych wierszy. I najważniejsze, o czym nie wolno zapomnieć: tabela jest do **danych**, a do układu strony służy CSS Grid albo Flexbox.

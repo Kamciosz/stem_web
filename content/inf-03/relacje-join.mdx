@@ -1,8 +1,8 @@
-W prawdziwej bazie danych rzadko pracujesz na jednej tabeli. Userzy, zamówienia, produkty, kategorie — to osobne tabele, połączone **relacjami**. W tej lekcji nauczysz się: kluczy obcych, typów relacji i magicznego słowa `JOIN`.
+Wyobraź sobie sklep internetowy. Masz klientów, zamówienia i produkty. Możesz trzymać wszystko w jednej gigantycznej tabeli — ale wtedy imię klienta powtarza się przy każdym jego zamówieniu. Zmienił nazwisko? Musisz poprawić w stu miejscach. To właśnie problem, który rozwiązuje <Term word="normalizacja">normalizacja</Term>: dane trzymasz w osobnych tabelach i **łączysz je gdy potrzebujesz**. Do łączenia służy `JOIN`.
 
-## Klucz obcy (Foreign Key)
+## Klucz obcy — spinacz między tabelami
 
-Klucz obcy to kolumna, która wskazuje na `PRIMARY KEY` w innej tabeli. Dzięki niemu łączysz rekordy z dwóch tabel.
+<Term word="klucz_obcy">Klucz obcy</Term> to kolumna, która wskazuje na `PRIMARY KEY` w innej tabeli. Dzięki niemu baza wie, że `orders.customer_id = 1` to konkretny klient z tabeli `customers`.
 
 ```sql
 CREATE TABLE customers (
@@ -22,33 +22,33 @@ CREATE TABLE orders (
 );
 ```
 
-`FOREIGN KEY (customer_id) REFERENCES customers(id)` = kolumna `orders.customer_id` MUSI wskazywać na istniejący `customers.id`. Bez tego mógłbyś wpisać `customer_id = 99999` do zamówienia, a taki user nie istnieje — niespójność.
+`FOREIGN KEY (customer_id) REFERENCES customers(id)` mówi bazie: "wartość w `orders.customer_id` MUSI istnieć w `customers.id`". Bez tego mógłbyś wpisać `customer_id = 99999` do zamówienia, a taki klient nie istnieje — niespójność danych.
 
-### Akcje `ON DELETE` / `ON UPDATE`
+### Co się dzieje gdy usuniesz rodzica — ON DELETE / ON UPDATE
 
-Co się stanie, gdy rodzic zostanie usunięty / zaktualizowany?
-
-- **`RESTRICT`** (domyślne) — zablokuj operację, jeśli istnieją dzieci.
-- **`CASCADE`** — usuń / zaktualizuj dzieci razem z rodzicem.
-- **`SET NULL`** — ustaw `NULL` w dzieciach (wymaga, by kolumna dopuszczała NULL).
-- **`NO ACTION`** — jak `RESTRICT`, ale sprawdzane na końcu transakcji.
+| Akcja | Efekt |
+|-------|-------|
+| `RESTRICT` (domyślne) | Zablokuj operację, jeśli istnieją powiązane wiersze |
+| `CASCADE` | Usuń / zaktualizuj powiązane wiersze razem z rodzicem |
+| `SET NULL` | Ustaw `NULL` w powiązanych wierszach (kolumna musi dopuszczać NULL) |
+| `NO ACTION` | Jak `RESTRICT`, ale sprawdzane na końcu transakcji |
 
 ```sql
--- Usuń usera → usuń wszystkie jego zamówienia
+-- Usuń klienta → usuń wszystkie jego zamówienia
 FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
 
--- Usuń usera → zablokuj (dopóki nie usuniesz zamówień)
+-- Usuń klienta → zablokuj (dopóki nie usuniesz zamówień)
 FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE RESTRICT
 
--- Usuń usera → zamówienia zostają, ale customer_id = NULL
+-- Usuń klienta → zamówienia zostają, ale customer_id = NULL
 FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL
 ```
 
-## Typy relacji
+## Typy relacji — jak tabele się łączą
 
 ### Jeden do wielu (1:N) — najczęstsza
 
-Jeden rekord w tabeli A → wiele rekordów w tabeli B.
+Jeden klient → wiele zamówień. Klucz obcy jest zawsze po stronie "wielu".
 
 ```
 customers                orders
@@ -58,17 +58,15 @@ customers                orders
 |  1 | Anna     |◄───────|  1 |      1      | 50.00  |
 |  2 | Jan      |◄───────|  2 |      1      | 30.00  |
 +----+----------+        +----+-------------+--------+
-                              │       2      | 120.00 | (Jan)
-                              └──────────────+--------+
+                              |      2      | 120.00 | (Jan)
+                              +─────────────+--------+
 ```
 
-Klucz obcy jest po stronie "wielu" (orders). Realizacja: `orders.customer_id → customers.id`.
+Realizacja: `orders.customer_id → customers.id`.
 
 ### Wiele do wielu (N:M) — tabela łącząca
 
-Jeden rekord w A → wiele w B, **i na odwrót**. Realizacja: dodatkowa tabela łącząca.
-
-Przykład: studenci i kursy. Każdy student może być na wielu kursach, każdy kurs ma wielu studentów.
+Jeden student może być na wielu kursach, jeden kurs ma wielu studentów. Nie da się tego zrobić samymi kluczami obcymi — potrzebujesz **tabeli łączącej**.
 
 ```sql
 CREATE TABLE students (
@@ -83,16 +81,16 @@ CREATE TABLE courses (
 
 -- Tabela łącząca
 CREATE TABLE enrollments (
-    student_id INT NOT NULL,
-    course_id  INT NOT NULL,
+    student_id  INT NOT NULL,
+    course_id   INT NOT NULL,
     enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (student_id, course_id),
     FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+    FOREIGN KEY (course_id)  REFERENCES courses(id)  ON DELETE CASCADE
 );
 ```
 
-Zapis `INSERT INTO enrollments (student_id, course_id) VALUES (1, 5)` = student 1 zapisany na kurs 5.
+`INSERT INTO enrollments (student_id, course_id) VALUES (1, 5)` = student 1 zapisany na kurs 5.
 
 ### Jeden do jednego (1:1) — rzadka
 
@@ -100,18 +98,18 @@ Np. user i jego profil. Realizacja: klucz obcy z `UNIQUE`.
 
 ```sql
 CREATE TABLE profiles (
-    id      INT PRIMARY KEY,
-    bio     TEXT,
-    avatar  VARCHAR(255),
+    id     INT PRIMARY KEY,
+    bio    TEXT,
+    avatar VARCHAR(255),
     FOREIGN KEY (id) REFERENCES users(id) ON DELETE CASCADE
 );
 ```
 
-## JOIN — łączenie tabel
+## JOIN — łączenie tabel w zapytaniu
 
-`JOIN` łączy wiersze z dwóch (lub więcej) tabel na podstawie warunku.
+Masz dane w osobnych tabelach — <Term word="JOIN">JOIN</Term> łączy je w jednym `SELECT`. Warunek `ON` mówi, które kolumny mają pasować.
 
-### INNER JOIN — tylko pasujące
+### INNER JOIN — tylko pasujące wiersze
 
 ```sql
 SELECT customers.name, orders.amount, orders.created_at
@@ -128,9 +126,9 @@ Wynik:
 | Anna   | 30.00  | 2026-05-29 15:30:00 |
 | Jan    | 120.00 | 2026-05-28 09:00:00 |
 
-`INNER JOIN` zwraca **tylko te wiersze, dla których istnieje dopasowanie**. Anna ma 2 zamówienia, Jan 1. Wszyscy userzy bez zamówień **nie pojawiają się**.
+`INNER JOIN` zwraca **tylko te wiersze, dla których istnieje dopasowanie**. Klienci bez zamówień nie pojawiają się w ogóle.
 
-### LEFT JOIN — wszyscy z lewej + pasujący
+### LEFT JOIN — wszyscy z lewej + pasujący z prawej
 
 ```sql
 SELECT customers.name, COUNT(orders.id) AS liczba_zamowien
@@ -143,34 +141,34 @@ ORDER BY liczba_zamowien DESC;
 Wynik:
 
 | name   | liczba_zamowien |
-|--------|------------------|
-| Anna   | 2                |
-| Jan    | 1                |
-| Ola    | 0                |  ← LEFT JOIN pokazuje Olę mimo braku zamówień
+|--------|-----------------|
+| Anna   | 2               |
+| Jan    | 1               |
+| Ola    | 0               |  ← LEFT JOIN pokazuje Olę mimo braku zamówień
 
 `LEFT JOIN` zwraca **wszystkie wiersze z lewej tabeli** + dopasowane z prawej. Gdy brak dopasowania, prawe kolumny = `NULL`.
 
 ### RIGHT JOIN — odwrotność LEFT
 
-`RIGHT JOIN` zwraca wszystkie z prawej + dopasowane z lewej. Rzadko używany — wygodniej zamienić kolejność tabel i użyć LEFT.
+`RIGHT JOIN` zwraca wszystkie z prawej + dopasowane z lewej. Rzadko używany — wygodniej zamienić kolejność tabel i użyć LEFT JOIN.
 
-### FULL OUTER JOIN — wszystko z obu (MySQL 8+)
+### FULL OUTER JOIN — wszystko z obu stron
 
 ```sql
 SELECT * FROM customers
 FULL OUTER JOIN orders ON customers.id = orders.customer_id;
 ```
 
-Zwraca wszystkie wiersze z obu tabel. W MySQL domyślnie nieobsługiwane (trzeba emulować `UNION` dwóch LEFT JOIN-ów).
+Zwraca wszystkie wiersze z obu tabel. W MySQL domyślnie nieobsługiwane — trzeba emulować przez `UNION` dwóch LEFT JOIN-ów.
 
-<Callout type="tip" title="Który JOIN?">
+<Callout type="tip" title="Który JOIN wybrać?">
 - `INNER JOIN` — "pokaż mi tylko tych, co mają powiązanie".
 - `LEFT JOIN` — "pokaż wszystkich z lewej, nawet bez powiązania".
-- `RIGHT JOIN` — rzadko. Zamień kolejność i użyj LEFT.
+- `RIGHT JOIN` — rzadko. Zamień kolejność tabel i użyj LEFT.
 - `FULL OUTER JOIN` — "wszystko z obu stron". Używaj rzadko.
 </Callout>
 
-### Składnia JOIN — pełna
+### Pełna składnia SELECT z JOIN
 
 ```sql
 SELECT [DISTINCT] kolumny
@@ -184,28 +182,30 @@ ORDER BY kolumny [ASC|DESC]
 LIMIT N OFFSET M;
 ```
 
-## JOIN 3 tabel — przykład
+## JOIN 3 tabel — aliasy ratują czytelność
+
+Gdy łączysz wiele tabel, pełne nazwy (`customers.name`, `order_items.price`) robią się długie. Aliasy skracają zapis.
 
 ```sql
 SELECT
-    c.name AS klient,
-    o.id AS zamowienie_id,
-    p.name AS produkt,
+    c.name      AS klient,
+    o.id        AS zamowienie_id,
+    p.name      AS produkt,
     oi.quantity AS ilosc,
-    oi.price AS cena
+    oi.price    AS cena
 FROM customers c
-INNER JOIN orders o ON c.id = o.customer_id
-INNER JOIN order_items oi ON o.id = oi.order_id
-INNER JOIN products p ON oi.product_id = p.id
+INNER JOIN orders o      ON c.id  = o.customer_id
+INNER JOIN order_items oi ON o.id  = oi.order_id
+INNER JOIN products p    ON oi.product_id = p.id
 WHERE c.email = 'anna@example.com'
 ORDER BY o.created_at DESC;
 ```
 
-`c`, `o`, `oi`, `p` to **aliasy** — krótsze niż pełne nazwy. Aliasy definiujesz w `FROM customers c` (bez `AS`).
+`FROM customers c` definiuje alias `c` (bez `AS`). Potem używasz `c.name` zamiast `customers.name`.
 
 ## Samo-złączenie (self join)
 
-Tabela połączona z samą sobą — przydatne np. do hierarchii (pracownik → manager):
+Tabela połączona z samą sobą — przydatne np. do hierarchii pracownik → manager:
 
 ```sql
 SELECT
@@ -215,6 +215,12 @@ FROM employees e
 LEFT JOIN employees m ON e.manager_id = m.id;
 ```
 
+Dwa aliasy (`e` i `m`) na tę samą tabelę — baza traktuje je jak dwie osobne.
+
+<Callout type="exam">
+Na egzaminie INF.03 najczęściej pytają o: różnicę INNER JOIN vs LEFT JOIN, poprawną składnię `FOREIGN KEY ... REFERENCES`, akcje `ON DELETE CASCADE` vs `RESTRICT`, oraz relację 1:N (klucz obcy po stronie "wielu"). Naucz się tych czterech rzeczy na pamięć.
+</Callout>
+
 ## Podsumowanie
 
-Klucz obcy (`FOREIGN KEY`) łączy tabele i gwarantuje spójność. `ON DELETE CASCADE` usuwa dzieci z rodzicem, `RESTRICT` blokuje, `SET NULL` zeruje. Relacja 1:N (najczęstsza) = klucz obcy po stronie "wielu". N:M = tabela łącząca z dwoma FK. `INNER JOIN` = tylko pasujące. `LEFT JOIN` = wszyscy z lewej + dopasowani. `RIGHT JOIN` = odwrotność. Aliasy (`SELECT ... FROM tabela t`) skracają składnię. JOIN może łączyć 3, 4, 5 tabel naraz — ale im więcej, tym wolniej. Indeksy na kluczach obcych (`FOREIGN KEY (customer_id)` → `CREATE INDEX idx_orders_customer ON orders(customer_id)`) przyspieszają JOIN.
+Klucz obcy (`FOREIGN KEY`) łączy tabele i gwarantuje spójność danych. `ON DELETE CASCADE` usuwa powiązane wiersze razem z rodzicem, `RESTRICT` blokuje usunięcie, `SET NULL` zeruje. Relacja 1:N (najczęstsza) = klucz obcy po stronie "wielu". N:M = tabela łącząca z dwoma FK. `INNER JOIN` = tylko pasujące wiersze. `LEFT JOIN` = wszyscy z lewej + dopasowani z prawej. Aliasy (`FROM tabela t`) skracają składnię przy wielu tabelach. Indeksy na kolumnach klucza obcego przyspieszają JOIN.
