@@ -27,7 +27,9 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
     const member = getTeamMemberBySlug(slug);
     if (!member) notFound();
 
-    const memberProjects = projects.filter((p) => p.authorSlug === member.slug);
+    const m = member as NonNullable<typeof member>;
+
+    const memberProjects = projects.filter((p) => p.authorSlug === m.slug);
 
     return (
         <section className="team-member-page section-shell" aria-labelledby="member-name">
@@ -35,31 +37,31 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
                 <p className="font-mono-industrial body-muted" style={{ marginBottom: "48px" }}>
                     <Link href="/zespol" className="terminal-link">ZESPÓŁ</Link>
                     {" / "}
-                    {member.role.toUpperCase()}
+                    {m.role.toUpperCase()}
                 </p>
 
                 <div className="member-hero">
                     <div className="member-portrait-frame grain-image">
                         <Image
-                            src={member.image}
-                            alt={`${member.name} — portret`}
+                            src={m.image}
+                            alt={`${m.name} — portret`}
                             fill
                             sizes="(max-width: 900px) 240px, 320px"
                             unoptimized
                         />
                     </div>
                     <div className="member-info-block">
-                        <span className="member-role-tag font-mono-industrial">{member.role}</span>
-                        <h1 id="member-name">{member.name}</h1>
-                        <p className="member-description">{member.description}</p>
-                        <nav className="member-links" aria-label={`Linki: ${member.name}`}>
-                            {member.github && (
-                                <TerminalLink href={`https://github.com/${member.github}`} external>
+                        <span className="member-role-tag font-mono-industrial">{m.role}</span>
+                        <h1 id="member-name">{m.name}</h1>
+                        <p className="member-description">{m.description}</p>
+                        <nav className="member-links" aria-label={`Linki: ${m.name}`}>
+                            {m.github && (
+                                <TerminalLink href={`https://github.com/${m.github}`} external>
                                     GITHUB →
                                 </TerminalLink>
                             )}
-                            {member.linkedin && (
-                                <TerminalLink href={member.linkedin} external>
+                            {m.linkedin && (
+                                <TerminalLink href={m.linkedin} external>
                                     LINKEDIN →
                                 </TerminalLink>
                             )}

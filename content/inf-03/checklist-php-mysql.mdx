@@ -1,0 +1,646 @@
+Zadanie egzaminacyjne INF.03 to prawie zawsze **PHP + MySQL + HTML + CSS** w jednym projekcie. W tej lekcji masz checklistę kroków, którą warto przejść przy każdym takim zadaniu — od zera do działającej aplikacji z bazą.
+
+## Faza 0: Przygotowanie środowiska
+
+```bash
+# 1. XAMPP zainstalowany (Apache + MySQL + PHP)
+# 2. Start Apache i MySQL w panelu XAMPP
+# 3. Pliki projektu w C:\xampp\htdocs\nazwa-zadania\
+# 4. phpMyAdmin: http://localhost/phpmyadmin — utwórz bazę
+
+mkdir -p C:\xampp\htdocs\rezerwacje
+# utwórz: db.php, index.php, styles.css, .gitignore
+```
+
+## Faza 1: Struktura plików
+
+```
+/rezerwacje
+  /css
+    style.css
+  /includes
+    db.php             ← połączenie z bazą
+    header.php         ← górny HTML + nawigacja
+    footer.php         ← stopka
+    helpers.php        ← walidacja, funkcje pomocnicze
+  index.php            ← strona główna
+  rezerwacja.php       ← formularz + obsługa
+  admin.php            ← panel administracyjny
+  anuluj.php           ← akcja usuwania
+  .htaccess            ← (opcjonalnie) ładne URL-e
+```
+
+Nawet proste zadanie zyskuje na podziale na pliki. Egzaminator widzi, że rozumiesz architekturę.
+
+## Faza 2: Baza danych (15-20 min)
+
+### Schemat (dla przykładu: system rezerwacji sal)
+
+```sql
+CREATE DATABASE IF NOT EXISTS rezerwacje
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+USE rezerwacje;
+
+CREATE TABLE sale (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    nazwa       VARCHAR(100) NOT NULL,
+    pojemnosc   INT NOT NULL CHECK (pojemnosc > 0),
+    opis        TEXT,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE rezerwacje (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    sala_id     INT NOT NULL,
+    imie        VARCHAR(100) NOT NULL,
+    email       VARCHAR(255) NOT NULL,
+    data        DATE NOT NULL,
+    godzina_od  TIME NOT NULL,
+    godzina_do  TIME NOT NULL,
+    status      ENUM('aktywna', 'anulowana') NOT NULL DEFAULT 'aktywna',
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sala_id) REFERENCES sale(id) ON DELETE RESTRICT,
+    CHECK (godzina_do > godzina_od),
+    INDEX idx_rezerwacje_sala_data (sala_id, data)
+);
+
+-- Dane testowe
+INSERT INTO sale (nazwa, pojemnosc, opis) VALUES
+    ('Sala konferencyjna A', 20, 'Projektor, tablica, klimatyzacja'),
+    ('Sala konferencyjna B', 50, 'Duża sala, rzutnik, nagłośnienie'),
+    ('Sala kameralna', 8, 'Mała sala do spotkań 1-on-1');
+
+INSERT INTO rezerwacje (sala_id, imie, email, data, godzina_od, godzina_do) VALUES
+    (1, 'Anna Nowak', 'anna@example.com', '2026-06-15', '10:00', '12:00'),
+    (2, 'Jan Kowalski', 'jan@example.com', '2026-06-15', '14:00', '16:00');
+```
+
+### Sprawdź w phpMyAdmin
+
+- Wszystkie tabele utworzone? ✓
+- Dane testowe wstawione? ✓
+- FOREIGN KEY działają? (spróbuj wstawić `sala_id = 999` — powinno rzucić błąd) ✓
+
+## Faza 3: `db.php` (5 min)
+
+```php
+<?php
+// db.php — jedyne miejsce z konfiguracją połączenia
+$host = "localhost";
+$dbname = "rezerwacje";
+$user = "root";
+$pass = "";
+
+try {
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+        $user,
+        $pass,
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false
+        ]
+    );
+} catch (PDOException $e) {
+    // W produkcji: loguj, nie pokazuj szczegółów userowi
+    die("Błąd połączenia z bazą danych: " . htmlspecialchars($e->getMessage()));
+}
+```
+
+## Faza 4: `helpers.php` — walidacja i funkcje (10 min)
+
+```php
+<?php
+// helpers.php
+require_once __DIR__ . "/db.php";
+
+function walidujRezerwacje(array $dane): array {
+    $bledy = [];
+
+    if (empty($dane["sala_id"])) {
+        $bledy[] = "Wybierz salę.";
+    } elseif (!is_numeric($dane["sala_id"])) {
+        $bledy[] = "Nieprawidłowa sala.";
+    }
+
+    if (empty($dane["imie"])) {
+        $bledy[] = "Imię jest wymagane.";
+    } elseif (mb_strlen($dane["imie"]) < 2) {
+        $bledy[] = "Imię musi mieć co najmniej 2 znaki.";
+    }
+
+    if (empty($dane["email"])) {
+        $bledy[] = "E-mail jest wymagany.";
+    } elseif (!filter_var($dane["email"], FILTER_VALIDATE_EMAIL)) {
+        $bledy[] = "Nieprawidłowy format e-mail.";
+    }
+
+    $dzis = date("Y-m-d");
+    if (empty($dane["data"])) {
+        $bledy[] = "Data jest wymagana.";
+    } elseif ($dane["data"] < $dzis) {
+        $bledy[] = "Data musi być w przyszłości.";
+    }
+
+    if (empty($dane["godzina_od"]) || empty($dane["godzina_do"])) {
+        $bledy[] = "Godziny są wymagane.";
+    } elseif ($dane["godzina_do"] <= $dane["godzina_od"]) {
+        $bledy[] = "Godzina zakończenia musi być po godzinie rozpoczęcia.";
+    }
+
+    return $bledy;
+}
+
+function czyWolna(PDO $pdo, int $salaId, string $data, string $od, string $do): bool {
+    $stmt = $pdo->prepare("
+        SELECT COUNT(*) FROM rezerwacje
+        WHERE sala_id = :sala_id
+          AND data = :data
+          AND status = 'aktywna'
+          AND (
+              (godzina_od < :do AND godzina_do > :od)
+          )
+    ");
+    $stmt->execute([
+        ":sala_id" => $salaId,
+        ":data" => $data,
+        ":od" => $od,
+        ":do" => $do
+    ]);
+    return $stmt->fetchColumn() == 0;
+}
+
+function pobierzSale(PDO $pdo): array {
+    return $pdo->query("SELECT id, nazwa, pojemnosc, opis FROM sale ORDER BY nazwa")->fetchAll();
+}
+
+function pobierzRezerwacje(PDO $pdo, ?int $salaId = null): array {
+    if ($salaId) {
+        $stmt = $pdo->prepare("
+            SELECT r.*, s.nazwa AS sala_nazwa
+            FROM rezerwacje r
+            JOIN sale s ON s.id = r.sala_id
+            WHERE r.sala_id = :id
+            ORDER BY r.data DESC, r.godzina_od DESC
+        ");
+        $stmt->execute([":id" => $salaId]);
+    } else {
+        $stmt = $pdo->query("
+            SELECT r.*, s.nazwa AS sala_nazwa
+            FROM rezerwacje r
+            JOIN sale s ON s.id = r.sala_id
+            ORDER BY r.data DESC, r.godzina_od DESC
+        ");
+    }
+    return $stmt->fetchAll();
+}
+```
+
+## Faza 5: Header / footer (5 min)
+
+```php
+<?php
+// header.php
+$current = basename($_SERVER["PHP_SELF"]);
+?>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?= htmlspecialchars($title ?? "Rezerwacje sal") ?></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header class="topbar">
+        <h1 class="logo">Rezerwacje</h1>
+        <nav>
+            <a href="/index.php" class="<?= $current === "index.php" ? "active" : "" ?>">Sale</a>
+            <a href="/rezerwacja.php" class="<?= $current === "rezerwacja.php" ? "active" : "" ?>">Rezerwuj</a>
+            <a href="/admin.php" class="<?= $current === "admin.php" ? "active" : "" ?>">Panel</a>
+        </nav>
+    </header>
+    <main class="container">
+```
+
+```php
+<?php
+// footer.php
+?>
+    </main>
+    <footer>
+        <p>© 2026 Rezerwacje sal</p>
+    </footer>
+</body>
+</html>
+```
+
+## Faza 6: Strona główna `index.php` (10 min)
+
+```php
+<?php
+require_once "includes/db.php";
+require_once "includes/helpers.php";
+
+$sale = pobierzSale($pdo);
+$title = "Dostępne sale";
+include "includes/header.php";
+?>
+
+<h2>Dostępne sale</h2>
+
+<?php if (empty($sale)): ?>
+    <p>Brak sal w systemie.</p>
+<?php else: ?>
+    <div class="grid">
+        <?php foreach ($sale as $s): ?>
+            <article class="card">
+                <h3><?= htmlspecialchars($s["nazwa"]) ?></h3>
+                <p>Pojemność: <?= (int)$s["pojemnosc"] ?> osób</p>
+                <?php if (!empty($s["opis"])): ?>
+                    <p><?= htmlspecialchars($s["opis"]) ?></p>
+                <?php endif; ?>
+                <a href="/rezerwacja.php?sala_id=<?= (int)$s["id"] ?>" class="btn">Zarezerwuj</a>
+            </article>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+
+<?php include "includes/footer.php"; ?>
+```
+
+## Faza 7: Formularz rezerwacji (15-20 min)
+
+```php
+<?php
+require_once "includes/db.php";
+require_once "includes/helpers.php";
+
+$title = "Nowa rezerwacja";
+$bledy = [];
+$stare = [
+    "sala_id" => $_GET["sala_id"] ?? "",
+    "imie" => "",
+    "email" => "",
+    "data" => "",
+    "godzina_od" => "",
+    "godzina_do" => ""
+];
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $stare = array_merge($stare, $_POST);
+    $bledy = walidujRezerwacje($stare);
+
+    if (empty($bledy) && czyWolna($pdo, (int)$stare["sala_id"], $stare["data"], $stare["godzina_od"], $stare["godzina_do"]) === false) {
+        $bledy[] = "Sala jest już zarezerwowana w tym terminie.";
+    }
+
+    if (empty($bledy)) {
+        $stmt = $pdo->prepare("
+            INSERT INTO rezerwacje (sala_id, imie, email, data, godzina_od, godzina_do)
+            VALUES (:sala_id, :imie, :email, :data, :od, :do)
+        ");
+        $stmt->execute([
+            ":sala_id" => (int)$stare["sala_id"],
+            ":imie" => $stare["imie"],
+            ":email" => $stare["email"],
+            ":data" => $stare["data"],
+            ":od" => $stare["godzina_od"],
+            ":do" => $stare["godzina_do"]
+        ]);
+
+        // PRG (Post/Redirect/Get) — zapobiega ponownemu wysłaniu
+        header("Location: /admin.php?success=1");
+        exit;
+    }
+}
+
+$sale = pobierzSale($pdo);
+include "includes/header.php";
+?>
+
+<h2>Nowa rezerwacja</h2>
+
+<?php if (!empty($bledy)): ?>
+    <div class="alert alert-error">
+        <ul>
+            <?php foreach ($bledy as $blad): ?>
+                <li><?= htmlspecialchars($blad) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
+<form method="post" class="form">
+    <div class="form-row">
+        <label for="sala_id">Sala</label>
+        <select id="sala_id" name="sala_id" required>
+            <option value="">-- wybierz --</option>
+            <?php foreach ($sale as $s): ?>
+                <option value="<?= (int)$s["id"] ?>"
+                    <?= (int)$stare["sala_id"] === (int)$s["id"] ? "selected" : "" ?>>
+                    <?= htmlspecialchars($s["nazwa"]) ?> (<?= (int)$s["pojemnosc"] ?> os.)
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <label for="imie">Imię i nazwisko</label>
+        <input id="imie" name="imie" type="text" required
+               minlength="2" maxlength="100"
+               value="<?= htmlspecialchars($stare["imie"]) ?>">
+    </div>
+
+    <div class="form-row">
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" required
+               value="<?= htmlspecialchars($stare["email"]) ?>">
+    </div>
+
+    <div class="form-row">
+        <label for="data">Data</label>
+        <input id="data" name="data" type="date" required
+               min="<?= date("Y-m-d") ?>"
+               value="<?= htmlspecialchars($stare["data"]) ?>">
+    </div>
+
+    <div class="form-row-inline">
+        <div>
+            <label for="godzina_od">Godzina od</label>
+            <input id="godzina_od" name="godzina_od" type="time" required
+                   value="<?= htmlspecialchars($stare["godzina_od"]) ?>">
+        </div>
+        <div>
+            <label for="godzina_do">Godzina do</label>
+            <input id="godzina_do" name="godzina_do" type="time" required
+                   value="<?= htmlspecialchars($stare["godzina_do"]) ?>">
+        </div>
+    </div>
+
+    <button type="submit" class="btn">Zarezerwuj</button>
+</form>
+
+<?php include "includes/footer.php"; ?>
+```
+
+## Faza 8: CSS (15-20 min)
+
+```css
+/* style.css */
+:root {
+    --primary: #7c3aed;
+    --bg: #0f0f10;
+    --surface: #1a1a1c;
+    --text: #f5f5f7;
+    --muted: #9ca3af;
+    --border: #2a2a2d;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.topbar h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: var(--primary);
+}
+
+.topbar nav a {
+    margin-left: 24px;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+}
+
+.topbar nav a:hover,
+.topbar nav a.active {
+    color: var(--text);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px;
+    border-radius: 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+}
+
+.form {
+    max-width: 600px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px;
+}
+
+.form-row,
+.form-row-inline {
+    margin-bottom: 16px;
+}
+
+.form-row-inline {
+    display: flex;
+    gap: 16px;
+}
+
+.form-row-inline > div {
+    flex: 1;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: -1px;
+}
+
+.alert {
+    padding: 16px;
+    margin-bottom: 24px;
+    border: 1px solid;
+}
+
+.alert-error {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+@media (max-width: 768px) {
+    .topbar {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .topbar nav a {
+        margin: 0 12px;
+    }
+    .form-row-inline {
+        flex-direction: column;
+    }
+}
+```
+
+## Faza 9: Panel `admin.php` (10 min)
+
+```php
+<?php
+require_once "includes/db.php";
+require_once "includes/helpers.php";
+
+$rezerwacje = pobierzRezerwacje($pdo);
+$title = "Panel rezerwacji";
+include "includes/header.php";
+?>
+
+<h2>Wszystkie rezerwacje</h2>
+
+<?php if (isset($_GET["success"])): ?>
+    <div class="alert alert-success">Rezerwacja zapisana.</div>
+<?php endif; ?>
+
+<?php if (empty($rezerwacje)): ?>
+    <p>Brak rezerwacji.</p>
+<?php else: ?>
+    <table>
+        <thead>
+            <tr>
+                <th>Sala</th>
+                <th>Data</th>
+                <th>Godziny</th>
+                <th>Rezerwujący</th>
+                <th>Status</th>
+                <th>Akcja</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($rezerwacje as $r): ?>
+                <tr>
+                    <td><?= htmlspecialchars($r["sala_nazwa"]) ?></td>
+                    <td><?= htmlspecialchars($r["data"]) ?></td>
+                    <td><?= htmlspecialchars($r["godzina_od"]) ?>–<?= htmlspecialchars($r["godzina_do"]) ?></td>
+                    <td>
+                        <?= htmlspecialchars($r["imie"]) ?><br>
+                        <small><?= htmlspecialchars($r["email"]) ?></small>
+                    </td>
+                    <td>
+                        <span class="status status-<?= htmlspecialchars($r["status"]) ?>">
+                            <?= htmlspecialchars($r["status"]) ?>
+                        </span>
+                    </td>
+                    <td>
+                        <?php if ($r["status"] === "aktywna"): ?>
+                            <a href="/anuluj.php?id=<?= (int)$r["id"] ?>"
+                               onclick="return confirm('Na pewno anulować?')"
+                               class="btn btn-danger">Anuluj</a>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
+
+<?php include "includes/footer.php"; ?>
+```
+
+## Faza 10: `anuluj.php` (5 min)
+
+```php
+<?php
+require_once "includes/db.php";
+
+if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
+    header("Location: /admin.php");
+    exit;
+}
+
+$id = (int)$_GET["id"];
+
+$stmt = $pdo->prepare("UPDATE rezerwacje SET status = 'anulowana' WHERE id = :id");
+$stmt->execute([":id" => $id]);
+
+header("Location: /admin.php?cancelled=1");
+exit;
+```
+
+## Faza 11: Testy (30 min)
+
+Przejdź CAŁY arkusz i sprawdź:
+
+- [ ] Połączenie z bazą działa (otwórz każdą stronę).
+- [ ] Wszystkie formularze HTML5 (required, type, pattern, min/max).
+- [ ] Walidacja PHP łapie puste / niepoprawne dane.
+- [ ] Prepared statements WSZĘDZIE (wyszukaj w kodzie: `->query(` — powinno być TYLKO w stałych zapytaniach jak `SELECT * FROM sale`).
+- [ ] `htmlspecialchars()` przy KAŻDYM `<?= ?>` z danymi.
+- [ ] Filtrowanie `$_GET["id"]` przez `is_numeric` + `(int)`.
+- [ ] Po `INSERT` jest `header("Location: ...")` + `exit`.
+- [ ] Responsywność (Ctrl+Shift+M w przeglądarce, sprawdź mobile).
+- [ ] Brak `var_dump` / `console.log` w produkcyjnym kodzie.
+
+<Callout type="exam">
++5 pkt: działające PDO z prepared statements. +5 pkt: walidacja HTML5 i PHP. +3 pkt: poprawne wyświetlanie danych (htmlspecialchars). +5 pkt: pełna funkcjonalność CRUD. Te 18 pkt to fundament — reszta to UI i dodatki.
+</Callout>
+
+## Podsumowanie
+
+Workflow egzaminacyjny: DB → `db.php` → helpery → header/footer → strony → CSS → testy. **Zawsze** `db.php` na początku, **zawsze** prepared statements, **zawsze** `htmlspecialchars()` przy wyjściu. PRG (Post/Redirect/Get) po każdym INSERT/UPDATE/DELETE. Walidacja po obu stronach (HTML5 + PHP). Struktura plików: `includes/` + `css/` + strony. Testuj w przeglądarce: formularz, prepared statement, walidacja, mobilna responsywność. 30 minut na koniec = review kryteriów, nie nowe funkcje.

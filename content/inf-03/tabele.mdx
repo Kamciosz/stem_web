@@ -1,0 +1,226 @@
+Tabele w HTML to nie "siatka do rysowania layoutu" — służą do prezentowania **danych tabelarycznych** (rozkład jazdy, cennik, wyniki sportowe). W tej lekcji poznasz znaczniki, które sprawiają, że tabela jest dostępna i czytelna dla każdego.
+
+## Po co tabele (a po co NIE)
+
+**Używaj tabel do:** rozkładów jazdy, zestawień produktów, statystyk, ocen, list pracowników, kalendarzy.
+
+**NIE używaj tabel do:** budowania layoutu strony, układania formularzy, galerii obrazków. Do tego służy CSS (Flexbox / Grid). Historycznie tabele były używane do layoutu (przed Flexbox/Grid), ale to stara, niedostępna praktyka.
+
+<Callout type="warning" title="Layout vs dane">
+Tabele-layout zostawiają czytniki ekranu bezradne. Użytkownik niewidomy słyszy "komórka 1, komórka 2, komórka 3..." w losowej kolejności, bez sensu. Do layoutu zawsze CSS Grid lub Flexbox.
+</Callout>
+
+## Anatomia tabeli
+
+```html
+<table>
+    <caption>Oceny końcowe, klasa 3TA</caption>
+    <thead>
+        <tr>
+            <th scope="col">Uczeń</th>
+            <th scope="col">Matematyka</th>
+            <th scope="col">Informatyka</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">Anna Nowak</th>
+            <td>5</td>
+            <td>6</td>
+        </tr>
+        <tr>
+            <th scope="row">Jan Kowalski</th>
+            <td>4</td>
+            <td>5</td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <th scope="row">Średnia</th>
+            <td>4,5</td>
+            <td>5,5</td>
+        </tr>
+    </tfoot>
+</table>
+```
+
+Każdy element ma swoją rolę — to ważne dla dostępności.
+
+## Znaczniki — co oznacza co
+
+### `<table>` — korzeń tabeli
+
+Nie wymaga żadnych atrybutów, ale warto dodać `aria-describedby` lub `<caption>` dla dostępności.
+
+### `<caption>` — opis tabeli
+
+Pojawia się nad tabelą. Krótko opisuje, co tabela zawiera. **Zastępuje alt-a** dla tabel.
+
+```html
+<table>
+    <caption>Rozkład jazdy autobusu 521 (poniedziałek–piątek)</caption>
+    ...
+</table>
+```
+
+### `<thead>`, `<tbody>`, `<tfoot>` — sekcje tabeli
+
+- **`<thead>`** — nagłówek tabeli (wiersz z etykietami kolumn). Pojawia się raz.
+- **`<tbody>`** — właściwe dane. Może być kilka (np. osobne sekcje dla różnych grup).
+- **`<tfoot>`** — stopka (np. suma, średnia). Pojawia się raz, ale renderuje się **na dole** niezależnie od pozycji w kodzie.
+
+Te znaczniki nie są obowiązkowe (przeglądarka i tak zgaduje), ale są kluczowe dla czytników ekranu.
+
+### `<tr>` — wiersz tabeli
+
+Wiersz w tabeli. Zawiera komórki (`<th>` lub `<td>`).
+
+### `<th>` — komórka nagłówka
+
+Nagłówek kolumny lub wiersza. Atrybut **`scope`** mówi, czy nagłówek dotyczy kolumny, wiersza, czy grupy:
+
+- `scope="col"` — nagłówek kolumny
+- `scope="row"` — nagłówek wiersza
+- `scope="colgroup"` / `scope="rowgroup"` — nagłówek grupy
+
+```html
+<tr>
+    <th scope="col">Miasto</th>      <!-- nagłówek kolumny -->
+    <th scope="col">Populacja</th>
+</tr>
+<tr>
+    <th scope="row">Warszawa</th>    <!-- nagłówek wiersza -->
+    <td>1 800 000</td>
+</tr>
+```
+
+Dzięki `scope` czytnik ekranu powie "Warszawa, populacja: 1 800 000" zamiast "komórka 2, komórka 3".
+
+### `<td>` — zwykła komórka danych
+
+Standardowa komórka tabeli.
+
+## Atrybuty dostępności
+
+### `scope` (na `<th>`)
+
+Poznaliśmy wyżej. To **najważniejszy atrybut dostępności tabeli**.
+
+### `headers` i `id` (zaawansowane)
+
+Gdy nagłówek jest daleko lub komórka odwołuje się do kilku nagłówków (np. tabela krzyżowa), użyj `id` + `headers`:
+
+```html
+<th id="r1">Pon</th>
+<td headers="r1 c1">8:00</td>
+```
+
+W praktyce `scope` wystarcza w 99% przypadków.
+
+### `aria-label` / `<caption>`
+
+Dodaj `<caption>` lub `aria-label` zawsze, gdy tabela ma być zrozumiała bez kontekstu.
+
+## Łączenie komórek — `colspan` i `rowspan`
+
+Czasem potrzebujesz komórki rozciągniętej na kilka kolumn lub wierszy:
+
+```html
+<table>
+    <tr>
+        <th colspan="2">Dane kontaktowe</th>  <!-- rozciąga na 2 kolumny -->
+    </tr>
+    <tr>
+        <th scope="row">Telefon</th>
+        <td>500 100 200</td>
+    </tr>
+    <tr>
+        <th scope="row">E-mail</th>
+        <td>anna@example.com</td>
+    </tr>
+</table>
+```
+
+```html
+<table>
+    <tr>
+        <th rowspan="2">Klasa</th>             <!-- rozciąga na 2 wiersze -->
+        <th scope="col">Pon</th>
+        <th scope="col">Wt</th>
+    </tr>
+    <tr>
+        <td>Mat</td>
+        <td>Inf</td>
+    </tr>
+    <tr>
+        <th scope="row">3TA</th>
+        <td>8:00</td>
+        <td>9:00</td>
+    </tr>
+</table>
+```
+
+## Stylowanie tabeli — minimum CSS
+
+Tabela bez CSS wygląda surowo. Minimum do czytelności:
+
+```css
+table {
+    border-collapse: collapse;        /* skleja obramowania komórek */
+    width: 100%;
+}
+th, td {
+    border: 1px solid #555;
+    padding: 8px 12px;
+    text-align: left;
+}
+thead th {
+    background: #222;
+    color: #fff;
+}
+tbody tr:nth-child(even) {
+    background: #1a1a1a;              /* zebra — naprzemienne wiersze */
+}
+```
+
+`border-collapse: collapse` jest **obowiązkowe** — bez niego obramowania się podwajają.
+
+<Callout type="tip" title="Sticky header">
+Dla długich tabel dodaj `position: sticky; top: 0;` na `thead th` — nagłówek zostaje na górze ekranu przy scrollowaniu.
+</Callout>
+
+## Kompletny przykład — rozkład jazdy
+
+```html
+<table>
+    <caption>Autobus 521 — odjazdy z pętli Centrum</caption>
+    <thead>
+        <tr>
+            <th scope="col">Godzina</th>
+            <th scope="col">Kierunek</th>
+            <th scope="col">Co ile min</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">6:00 – 9:00</th>
+            <td>Ochota</td>
+            <td>co 10</td>
+        </tr>
+        <tr>
+            <th scope="row">9:00 – 15:00</th>
+            <td>Ochota</td>
+            <td>co 20</td>
+        </tr>
+        <tr>
+            <th scope="row">15:00 – 22:00</th>
+            <td>Ochota</td>
+            <td>co 15</td>
+        </tr>
+    </tbody>
+</table>
+```
+
+## Podsumowanie
+
+Tabela to `<table>` + `<caption>` + `<thead>`/`<tbody>`/`<tfoot>` + `<tr>` + `<th>` (z `scope`) + `<td>`. Atrybut `scope` na nagłówkach to podstawa dostępności. `colspan` / `rowspan` łączą komórki. Do stylowania minimum: `border-collapse: collapse` + naprzemienne wiersze. Do layoutu **nie używaj tabel** — służy do tego CSS Grid / Flexbox.

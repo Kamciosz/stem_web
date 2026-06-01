@@ -1,0 +1,337 @@
+PHP to język programowania działający po stronie serwera. Kiedy użytkownik otwiera stronę .php, serwer wykonuje skrypt PHP i wysyła przeglądarce wynikowy HTML. W tej lekcji poznasz podstawy składni, zmiennych, formularzy i zabezpieczeń.
+
+## Czym jest PHP
+
+PHP (PHP: Hypertext Preprocessor) to język server-side, specjalnie popularny do budowy stron internetowych. Kod PHP:
+
+- Wykonuje się po stronie serwera.
+- Może generować HTML dynamicznie.
+- Może łączyć się z bazami danych, plikami, API.
+- Wbudowuje się w HTML za pomocą znaczników `<?php ... ?>`.
+
+```php
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>PHP Demo</title>
+</head>
+<body>
+    <h1>Witaj, <?= htmlspecialchars($imie ?? "Gość") ?>!</h1>
+    <p>Aktualny czas: <?= date("Y-m-d H:i:s") ?></p>
+</body>
+</html>
+```
+
+<Callout type="tip" title="Środowisko lokalne">
+Do testowania PHP potrzebujesz serwera. Na macOS/Windows najłatwiej **XAMPP** (Apache + MySQL + PHP). Pliki umieszczaj w `htdocs/`, strony otwieraj `http://localhost/`.
+</Callout>
+
+## Składnia — podstawy
+
+### Znaczniki PHP
+
+```php
+<?php
+// Kod PHP
+?>
+```
+
+Krótki echo: `<?= $zmienna ?>` — to samo co `<?php echo $zmienna ?>`.
+
+### Komentarze
+
+```php
+// jednolinijkowy (C++)
+# jednolinijkowy (shell)
+/* wielolinijkowy (C) */
+```
+
+### Średnik
+
+Każda instrukcja kończy się średnikiem. Zapomnienie = biały ekran (parse error).
+
+## Zmienne
+
+W PHP zmienne zaczynają się od `$`:
+
+```php
+$imie = "Anna";          // string
+$wiek = 16;              // int
+$średnia = 4.5;          // float
+$aktywny = true;          // bool
+$pusta = null;            // null (jak undefined)
+
+// Tablica
+$kolory = ["czerwony", "zielony", "niebieski"];
+$osoba = ["imie" => "Anna", "wiek" => 16];
+```
+
+PHP jest **słabo typowany** — typ zmiennej może się zmieniać. Dla bezpieczeństwa i czytelności deklaruj typy:
+
+```php
+function przywitaj(string $imie, int $wiek): string {
+    return "Cześć, mam na imię $imie i mam $wiek lat.";
+}
+```
+
+Stałe:
+
+```php
+define("WERSJA", "1.0.0");
+const NAZWA_APLIKACJI = "Koło STEM";
+```
+
+## Operatory
+
+Standardowe jak w innych językach:
+
+```php
+$a + $b;          // dodawanie
+$a - $b;          // odejmowanie
+$a * $b;          // mnożenie
+$a / $b;          // dzielenie
+$a % $b;          // modulo (reszta)
+$a ** $b;         // potęga
+
+$a == $b;         // równe (z konwersją typów)
+$a === $b;        // identyczne (typ + wartość) — PREFEROWANE
+$a != $b;         // różne
+$a !== $b;        // nieidentyczne
+
+$a && $b;         // AND
+$a || $b;         // OR
+!$a;              // NOT
+```
+
+<Callout type="warning" title="=== vs ==">
+W PHP `==` ma niespodzianki: `"0" == false` zwraca true (oba falsy). **Zawsze używaj `===`** do ścisłego porównania.
+</Callout>
+
+## Warunki
+
+```php
+if ($wiek >= 18) {
+    echo "Pełnoletni";
+} elseif ($wiek >= 13) {
+    echo "Nastolatek";
+} else {
+    echo "Dziecko";
+}
+
+// Trójargumentowy
+$kategoria = ($wiek >= 18) ? "dorosły" : "dziecko";
+
+// Match (PHP 8+)
+$komunikat = match (true) {
+    $wiek >= 18 => "Pełnoletni",
+    $wiek >= 13 => "Nastolatek",
+    default     => "Dziecko",
+};
+```
+
+## Pętle
+
+```php
+// for
+for ($i = 0; $i < 5; $i++) {
+    echo "Iteracja $i";
+}
+
+// while
+$count = 0;
+while ($count < 5) {
+    echo $count++;
+}
+
+// foreach — po tablicy
+$owoce = ["jabłko", "banan", "gruszka"];
+foreach ($owoce as $owoc) {
+    echo $owoc;
+}
+
+// foreach — klucz + wartość
+$osoba = ["imie" => "Anna", "wiek" => 16];
+foreach ($osoba as $klucz => $wartosc) {
+    echo "$klucz: $wartosc\n";
+}
+```
+
+## Tablice
+
+```php
+// Indeksowana
+$kolory = ["czerwony", "zielony", "niebieski"];
+echo $kolory[0];                    // "czerwony"
+array_push($kolory, "żółty");       // dodaj na koniec
+
+// Asocjacyjna (klucz => wartość)
+$osoba = ["imie" => "Anna", "wiek" => 16, "email" => "anna@example.com"];
+echo $osoba["imie"];                // "Anna"
+
+// Iteracja
+foreach ($osoba as $klucz => $wartosc) {
+    echo "$klucz: $wartosc\n";
+}
+
+// Sprawdzenie czy klucz istnieje
+if (array_key_exists("email", $osoba)) {
+    echo $osoba["email"];
+}
+
+// Sprawdzenie czy wartość istnieje
+if (in_array("Anna", $osoba)) {
+    echo "Anna jest w tablicy";
+}
+```
+
+## Formularze — odbieranie danych
+
+Formularz HTML:
+
+```html
+<form action="/login.php" method="post">
+    <label for="email">E-mail</label>
+    <input id="email" name="email" type="email" required>
+
+    <label for="pass">Hasło</label>
+    <input id="pass" name="password" type="password" required>
+
+    <button type="submit">Zaloguj</button>
+</form>
+```
+
+Obsługa w PHP (`/login.php`):
+
+```php
+<?php
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = $_POST["email"] ?? "";
+    $haslo = $_POST["password"] ?? "";
+
+    if (empty($email) || empty($haslo)) {
+        echo "Uzupełnij wszystkie pola.";
+    } else {
+        // Logika logowania
+        echo "Próba logowania: $email";
+    }
+}
+```
+
+### `$_GET` vs `$_POST`
+
+- **`$_GET`** — dane z URL (`?klucz=wartość`). Widoczne w pasku adresu. Do wyszukiwarek, filtrów.
+- **`$_POST`** — dane w body requestu. Ukryte. Do formularzy z danymi wrażliwymi.
+- **`$_REQUEST`** — połączenie obu (mieszane, raczej unikaj).
+
+```php
+// URL: /szukaj.php?q=php
+$query = $_GET["q"] ?? "brak";
+echo "Szukasz: $query";
+```
+
+## Bezpieczeństwo — XSS i walidacja
+
+### XSS — wyświetlanie danych od usera
+
+**NIGDY** nie wstawiaj danych od usera bezpośrednio do HTML. Zawsze `htmlspecialchars()`:
+
+```php
+$imie = $_GET["name"] ?? "Gość";
+// ❌ Niebezpieczne — user może wstrzyknąć <script>
+echo "Witaj, $imie";
+
+// ✅ Bezpieczne — encje HTML
+echo "Witaj, " . htmlspecialchars($imie, ENT_QUOTES, "UTF-8");
+
+// Skrót:
+// echo "Witaj, " . htmlspecialchars($imie);
+```
+
+`htmlspecialchars()` zamienia `<` na `&lt;`, `>` na `&gt;`, `"` na `&quot;` itd. Bez tego user wpisując `<script>alert('XSS')</script>` w polu name wykonałby JavaScript na Twojej stronie.
+
+### Walidacja danych
+
+```php
+function walidujEmail(string $email): bool {
+    return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+}
+
+function walidujWiek(mixed $wiek): ?int {
+    if (!is_numeric($wiek)) return null;
+    $int = (int)$wiek;
+    if ($int < 0 || $int > 150) return null;
+    return $int;
+}
+```
+
+### SQL injection — zabezpieczenie
+
+**NIGDY** nie wstawiaj danych od usera bezpośrednio do zapytania SQL. Zawsze prepared statements (patrz lekcja `php-mysql`).
+
+## Funkcje wbudowane — przydatne
+
+```php
+// Stringi
+strlen("Ala ma kota");                  // 11
+strtoupper("cześć");                    // "CZEŚĆ"
+strtolower("CZEŚĆ");                    // "cześć"
+str_replace("kota", "psa", "Ala ma kota");  // "Ala ma psa"
+trim("  tekst  ");                      // "tekst"
+substr("Ala ma kota", 0, 3);            // "Ala"
+str_contains("Ala ma kota", "kot");     // true (PHP 8+)
+
+// Tablice
+count([1, 2, 3]);                       // 3
+array_merge([1, 2], [3, 4]);            // [1, 2, 3, 4]
+array_filter([1, 2, 3, 4], fn($x) => $x > 2);  // [3, 4]
+array_map(fn($x) => $x * 2, [1, 2, 3]); // [2, 4, 6]
+sort([3, 1, 2]);                        // sortuje w miejscu
+
+// Daty
+date("Y-m-d");                          // "2026-06-01"
+date("Y-m-d H:i:s");                    // "2026-06-01 14:30:00"
+time();                                 // Unix timestamp
+
+// JSON
+json_encode(["imie" => "Anna"]);        // '{"imie":"Anna"}'
+json_decode('{"imie":"Anna"}', true);   // ["imie" => "Anna"]
+
+// Bezpieczeństwo
+password_hash("haslo", PASSWORD_DEFAULT);
+password_verify("haslo", $hash);
+htmlspecialchars("<script>");
+filter_var("anna@example.com", FILTER_VALIDATE_EMAIL);
+```
+
+## Dołączanie plików
+
+```php
+// Wstawia i wykonuje plik. UWAGA na zmienne!
+include "header.php";        // błąd → warning, skrypt działa dalej
+require "header.php";        // błąd → fatal error
+include_once "config.php";   // tylko raz (zapobiega ponownemu)
+require_once "db.php";       // połączenie z bazą raz
+```
+
+Typowy layout:
+
+```
+/index.php
+/header.php    ← górna część HTML + nawigacja
+/footer.php    ← stopka
+/db.php        ← połączenie z bazą (require_once)
+```
+
+```php
+<?php require_once "header.php"; ?>
+
+<h1>Witaj</h1>
+<p>Treść strony</p>
+
+<?php require_once "footer.php"; ?>
+```
+
+## Podsumowanie
+
+PHP to język server-side ze składnią podobną do C. Zmienne `$nazwa`. Słabe typowanie — ale `declare(strict_types=1)` + sygnatury typów w funkcjach pomagają. `$_GET` / `$_POST` do odbierania danych z formularzy. `htmlspecialchars()` przy KAŻDYM wyświetlaniu danych od usera (XSS!). `password_hash` / `password_verify` do haseł. `require_once` do współdzielenia plików. Prepared statements (PDO) do SQL — patrz lekcja `php-mysql`.

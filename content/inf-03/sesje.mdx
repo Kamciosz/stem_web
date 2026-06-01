@@ -1,0 +1,346 @@
+Sesje to mechanizm, który pozwala stronie "pamiętać" użytkownika między kolejnymi żądaniami HTTP. Bez sesji każde kliknięcie to byłoby osobne, anonimowe połączenie. W tej lekcji nauczysz się logować, wylogowywać i zabezpieczać strony hasłem.
+
+## Problem: HTTP jest bezstanowy
+
+HTTP nie pamięta, kto właśnie odwiedził stronę. Każde żądanie (request) jest niezależne — serwer nie wie, że to ten sam user, który 2 sekundy temu pobrał `index.php`.
+
+Gdyby nie było sesji:
+
+- Nie dałoby się zrobić logowania (serwer zapomina po każdym żądaniu).
+- Koszyk w sklepie resetowałby się przy każdym kliknięciu.
+- Preferencje (motyw, język) musiałyby być przesyłane w każdym URL-u.
+
+## Czym jest sesja
+
+Sesja to **plik / wpis w pamięci serwera** przypisany do konkretnego usera. Przeglądarka dostaje **identyfikator sesji** (ciasteczko `PHPSESSID`) i wysyła go z każdym żądaniem. Serwer po identyfikatorze znajduje właściwe dane.
+
+```
+1. User loguje się → serwer tworzy sesję, zapisuje $_SESSION["user_id"] = 42
+2. Serwer wysyła Set-Cookie: PHPSESSID=abc123
+3. Przeglądarka zapisuje ciasteczko PHPSESSID=abc123
+4. Przy następnym żądaniu przeglądarka wysyła Cookie: PHPSESSID=abc123
+5. Serwer widzi PHPSESSID, ładuje $_SESSION["user_id"] = 42
+6. User zalogowany ✓
+```
+
+## Włączenie sesji
+
+Na każdej stronie, która korzysta z sesji, wywołaj `session_start()` — **na samym początku pliku, przed jakimkolwiek wyjściem (echo, HTML)**:
+
+```php
+<?php
+session_start();    // MUSI być przed wyjściem
+
+// teraz można używać $_SESSION
+$_SESSION["counter"] = ($_SESSION["counter"] ?? 0) + 1;
+echo "Odwiedziłeś tę stronę {$_SESSION['counter']} razy.";
+?>
+```
+
+Jeśli w pliku jest `echo` albo `<html>` PRZED `session_start()` — błąd "headers already sent".
+
+## Zapis i odczyt z sesji
+
+```php
+<?php
+session_start();
+
+// Zapis
+$_SESSION["user_id"] = 42;
+$_SESSION["user_name"] = "Anna";
+$_SESSION["koszyk"] = [1, 5, 12];
+
+// Odczyt
+if (isset($_SESSION["user_id"])) {
+    echo "Zalogowany jako: " . htmlspecialchars($_SESSION["user_name"]);
+}
+
+// Usuwanie konkretnego klucza
+unset($_SESSION["koszyk"]);
+
+// Sprawdzanie czy klucz istnieje
+if (array_key_exists("user_id", $_SESSION)) {
+    // ...
+}
+```
+
+<Callout type="tip" title="Tablica $_SESSION">
+`$_SESSION` to zwykła tablica PHP. Działa jak `$_GET` / `$_POST` — możesz w niej trzymać cokolwiek (stringi, liczby, tablice, obiekty). Ale NIE hasła — do tego służy `password_hash` w bazie.
+</Callout>
+
+## Logowanie — kompletny przykład
+
+### Formularz (login.php)
+
+```html
+<form action="login.php" method="post">
+    <label for="email">E-mail</label>
+    <input id="email" name="email" type="email" required>
+
+    <label for="pass">Hasło</label>
+    <input id="pass" name="password" type="password" required>
+
+    <button type="submit">Zaloguj</button>
+</form>
+```
+
+### Obsługa (login.php lub login-handler.php)
+
+```php
+<?php
+require_once "db.php";
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    // Pokaż formularz
+    include "login-form.php";
+    exit;
+}
+
+$email = $_POST["email"] ?? "";
+$haslo = $_POST["password"] ?? "";
+
+if (empty($email) || empty($haslo)) {
+    $error = "Uzupełnij e-mail i hasło.";
+    include "login-form.php";
+    exit;
+}
+
+$stmt = $pdo->prepare("
+    SELECT id, email, password_hash, name
+    FROM users
+    WHERE email = :email
+    LIMIT 1
+");
+$stmt->execute([":email" => $email]);
+$user = $stmt->fetch();
+
+if (!$user || !password_verify($haslo, $user["password_hash"])) {
+    $error = "Nieprawidłowy e-mail lub hasło.";
+    include "login-form.php";
+    exit;
+}
+
+// Sukces — ustaw sesję
+$_SESSION["user_id"] = $user["id"];
+$_SESSION["user_name"] = $user["name"];
+$_SESSION["user_email"] = $user["email"];
+
+// Regeneruj ID sesji (zabezpieczenie przed session fixation)
+session_regenerate_id(true);
+
+header("Location: /panel.php");
+exit;
+```
+
+`session_regenerate_id(true)` po udanym logowaniu — generuje nowy identyfikator sesji. Bez tego atakujący mógłby ukraść ID sesji z linku i przejąć konto po zalogowaniu ofiary.
+
+## Wylogowanie
+
+```php
+<?php
+session_start();
+
+// Opcjonalnie: tylko dla zalogowanych
+if (!isset($_SESSION["user_id"])) {
+    header("Location: /login.php");
+    exit;
+}
+
+// Wyczyść dane sesji
+$_SESSION = [];
+
+// Usuń ciasteczko sesji po stronie klienta
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(
+        session_name(),
+        "",
+        time() - 42000,
+        $params["path"],
+        $params["domain"],
+        $params["secure"],
+        $params["httponly"]
+    );
+}
+
+// Zniszcz sesję po stronie serwera
+session_destroy();
+
+header("Location: /");
+exit;
+```
+
+## Zabezpieczanie stron — guard
+
+Wzorzec: plik `auth.php`, który sprawdza czy user jest zalogowany, lub przekierowuje na login:
+
+```php
+<?php
+// auth.php
+session_start();
+
+function wymagajLogowania(): array {
+    if (!isset($_SESSION["user_id"])) {
+        // Zapamiętaj dokąd user chciał iść
+        $_SESSION["redirect_after_login"] = $_SERVER["REQUEST_URI"];
+        header("Location: /login.php");
+        exit;
+    }
+    return [
+        "id" => $_SESSION["user_id"],
+        "name" => $_SESSION["user_name"] ?? "",
+        "email" => $_SESSION["user_email"] ?? ""
+    ];
+}
+
+function wymagajAdmina(): void {
+    $user = wymagajLogowania();
+    if (($user["role"] ?? "user") !== "admin") {
+        http_response_code(403);
+        die("Brak dostępu");
+    }
+}
+```
+
+Użycie:
+
+```php
+<?php
+// panel.php
+require_once "auth.php";
+$user = wymagajLogowania();
+
+echo "Witaj, " . htmlspecialchars($user["name"]);
+?>
+
+<h1>Panel użytkownika</h1>
+```
+
+```php
+<?php
+// admin.php
+require_once "auth.php";
+wymagajAdmina();
+
+echo "Panel administratora";
+?>
+```
+
+## Bezpieczeństwo sesji
+
+### 1. Session fixation — regeneruj ID po logowaniu
+
+```php
+session_regenerate_id(true);
+```
+
+Po zalogowaniu / zmianie uprawnień — nowy ID. Stary natychmiast nieważny.
+
+### 2. Session hijacking — zabezpiecz ciasteczko
+
+W `php.ini` lub na początku skryptu:
+
+```ini
+session.cookie_httponly = 1   // niedostępne dla JavaScript (XSS nie wykradnie)
+session.cookie_secure = 1     // tylko HTTPS
+session.cookie_samesite = Lax // nie wysyłane cross-site
+session.use_strict_mode = 1   // odrzuca nieznane ID
+```
+
+W PHP ustawiasz to też programowo przy `setcookie()` lub `session_set_cookie_params()`:
+
+```php
+session_set_cookie_params([
+    "lifetime" => 0,
+    "path" => "/",
+    "domain" => "",
+    "secure" => true,
+    "httponly" => true,
+    "samesite" => "Lax"
+]);
+session_start();
+```
+
+### 3. Session timeout — wyloguj po bezczynności
+
+```php
+session_start();
+
+$timeout = 1800; // 30 minut
+
+if (isset($_SESSION["last_activity"])) {
+    if (time() - $_SESSION["last_activity"] > $timeout) {
+        // Sesja wygasła — wyloguj
+        $_SESSION = [];
+        session_destroy();
+        header("Location: /login.php?expired=1");
+        exit;
+    }
+}
+
+$_SESSION["last_activity"] = time();
+```
+
+### 4. NIE przechowuj haseł w sesji
+
+W sesji trzymaj `user_id` i ewentualnie `name` / `email`. Hasło (zahashowane) żyje TYLKO w bazie. Dzięki temu nawet wyciek sesji nie oznacza wycieku haseł.
+
+## Kompletny przykład — logowanie + guard
+
+```php
+<?php
+// login.php
+require_once "db.php";
+session_set_cookie_params(["secure" => true, "httponly" => true, "samesite" => "Lax"]);
+session_start();
+
+$error = null;
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = trim($_POST["email"] ?? "");
+    $haslo = $_POST["password"] ?? "";
+
+    if ($email === "" || $haslo === "") {
+        $error = "Uzupełnij pola.";
+    } else {
+        $stmt = $pdo->prepare("SELECT id, name, email, password_hash FROM users WHERE email = :e LIMIT 1");
+        $stmt->execute([":e" => $email]);
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($haslo, $user["password_hash"])) {
+            session_regenerate_id(true);
+            $_SESSION["user_id"] = $user["id"];
+            $_SESSION["user_name"] = $user["name"];
+
+            $redirect = $_SESSION["redirect_after_login"] ?? "/";
+            unset($_SESSION["redirect_after_login"]);
+
+            header("Location: $redirect");
+            exit;
+        } else {
+            $error = "Nieprawidłowy e-mail lub hasło.";
+        }
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="pl">
+<head><meta charset="UTF-8"><title>Logowanie</title></head>
+<body>
+    <h1>Logowanie</h1>
+    <?php if ($error): ?>
+        <p style="color:red"><?= htmlspecialchars($error) ?></p>
+    <?php endif; ?>
+    <form method="post">
+        <input name="email" type="email" placeholder="E-mail" required>
+        <input name="password" type="password" placeholder="Hasło" required>
+        <button>Zaloguj</button>
+    </form>
+</body>
+</html>
+```
+
+## Podsumowanie
+
+`session_start()` MUSI być na początku pliku, przed wyjściem. `$_SESSION` to zwykła tablica. Po udanym logowaniu zawsze `session_regenerate_id(true)` (session fixation). `password_verify($haslo, $hash)` do weryfikacji haseł. Wylogowanie = `$_SESSION = []` + `session_destroy()` + usunięcie ciasteczka. Guard = funkcja `wymagajLogowania()` na początku chronionych stron. Ciasteczko sesji: `httponly`, `secure`, `samesite=Lax`. Timeout sesji (np. 30 min) chroni przed zostawionym komputerem. W sesji NIE przechowuj haseł — tylko `user_id` i metadane.

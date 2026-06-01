@@ -43,23 +43,25 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         notFound();
     }
 
-    const stats = await getGithubStats(project);
-    const author = getTeamMemberBySlug(project.authorSlug);
+    const proj = project as NonNullable<typeof project>;
+
+    const stats = await getGithubStats(proj);
+    const author = getTeamMemberBySlug(proj.authorSlug);
 
     return (
         <article className="project-detail-page">
             <figure className="project-detail-hero grain-image">
-                <Image src={project.image} alt={`${project.title} — obraz projektu`} fill sizes="100vw" priority unoptimized />
+                <Image src={proj.image} alt={`${proj.title} — obraz projektu`} fill sizes="100vw" priority unoptimized />
             </figure>
             <section className="section-shell project-detail-shell" aria-labelledby="project-detail-title">
                 <div className="section-inner project-detail-frame bracket-active">
                     <CornerBrackets />
                     <ScrollReveal as="div" className="project-detail-copy">
-                        <p className="font-mono-industrial body-muted">{project.category}</p>
+                        <p className="font-mono-industrial body-muted">{proj.category}</p>
                         <h1 className="headline-large" id="project-detail-title">
-                            {project.title}
+                            {proj.title}
                         </h1>
-                        <p>{project.description}</p>
+                        <p>{proj.description}</p>
                     </ScrollReveal>
                     <ScrollReveal as="aside" className="project-sidebar" delay={0.15}>
                         <dl className="terminal-feed detail-terminal">
@@ -79,11 +81,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                         {author && (
                             <TerminalLink href={`/zespol#${author.slug}`} className="detail-author-link">
                                 <Image src={author.image} alt="" width={40} height={40} unoptimized />
-                                {project.author}
+                                {proj.author}
                             </TerminalLink>
                         )}
-                        {project.githubUrl && (
-                            <TerminalLink href={project.githubUrl} external>
+                        {proj.githubUrl && (
+                            <TerminalLink href={proj.githubUrl} external>
                                 REPOZYTORIUM →
                             </TerminalLink>
                         )}

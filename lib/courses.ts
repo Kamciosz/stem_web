@@ -2,6 +2,17 @@
  * Rejestr kursów: kurs → moduły → lekcje.
  * Treść lekcji żyje w plikach .mdx (content/<courseId>/<lessonSlug>.mdx).
  * Tu jest tylko struktura i metadane — co istnieje, w jakiej kolejności, czy gotowe.
+ *
+ * PYTANIA QUIZU:
+ *   * Standardowo: pytania żyją w bazie Supabase (tabela `questions`).
+ *   * `hasQuiz: true` oznacza, że lekcja MA pulę pytań w Supabase i strona
+ *     /quiz powinna istnieć. `hasQuiz: false` = brak quizu (generuje 404).
+ *   * `quizPoolSize` (opcjonalne) to orientacyjna wielkość puli — UI
+ *     może to pokazać ("5 z 20 losowych pytań"). Jeśli null, UI
+ *     pokaże ogólny opis.
+ *   * Stare pole `quiz` (z pytaniami w kodzie) zostawiam jako fallback
+ *     developerski — używane TYLKO gdy Supabase nie jest podpięte.
+ *     W produkcji pytania lecą z bazy.
  */
 
 export type QuizQuestion = {
@@ -24,7 +35,18 @@ export type Lesson = {
     minutes?: number;
     /** Cele lekcji — "czego się nauczysz". Pokazywane na górze strony lekcji. */
     objectives?: string[];
-    /** Quiz sprawdzający wiedzę. Żyje na osobnej podstronie /quiz, nie w treści lekcji. */
+    /**
+     * Czy lekcja ma quiz (osobna podstrona /quiz). Źródło prawdy o istnieniu
+     * strony /quiz — generateStaticParams ją pominie jeśli false.
+     * Pytania lecą z Supabase, nie stąd.
+     */
+    hasQuiz?: boolean;
+    /** Orientacyjna wielkość puli (do UI: "5 z N losowych") */
+    quizPoolSize?: number;
+    /**
+     * Fallback developerski: pytania w kodzie. Używane TYLKO gdy
+     * Supabase nie zwróci puli. Produkcja powinna mieć pytania w bazie.
+     */
     quiz?: QuizQuestion[];
 };
 
@@ -59,7 +81,7 @@ export const courseDetails: CourseDetail[] = [
                 id: "html",
                 title: "HTML — struktura strony",
                 description:
-                    "Budowa dokumentu, znaczniki semantyczne, formularze, tabele. Fundament każdej strony.",
+                    "Budowa dokumentu, znaczniki semantyczne, formularze, tabele, multimedia. Fundament każdej strony.",
                 lessons: [
                     {
                         slug: "html-semantyczny",
@@ -67,19 +89,63 @@ export const courseDetails: CourseDetail[] = [
                         summary:
                             "Czym jest semantyka znaczników i dlaczego <nav>, <article>, <section> są lepsze od samych <div>.",
                         published: true,
-                        minutes: 12
+                        minutes: 12,
+                        objectives: [
+                            "Rozróżnisz znaczniki semantyczne od neutralnych pojemników div",
+                            "Poznasz header, nav, main, article, section, aside i footer oraz ich role",
+                            "Zbudujesz poprawny szkielet strony, w którym każdy blok ma znaczenie",
+                            "Zrozumiesz hierarchię nagłówków h1–h6 i dlaczego nie wolno jej łamać"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     },
                     {
                         slug: "formularze",
                         title: "Formularze i pola",
-                        summary: "input, label, select, walidacja po stronie HTML.",
-                        published: false
+                        summary:
+                            "<form>, <input>, <label>, <select>, <textarea>, walidacja po stronie HTML.",
+                        published: true,
+                        minutes: 15,
+                        objectives: [
+                            "Zbudujesz formularz z polami tekstowymi, selectem, checkboxami i radio",
+                            "Powiążesz <label> z <input> przez id/for dla dostępności",
+                            "Poznasz atrybuty walidacji HTML5 (required, type, pattern, min/max)",
+                            "Zrozumiesz metodę GET vs POST i kiedy ich używać"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     },
                     {
                         slug: "tabele",
                         title: "Tabele danych",
-                        summary: "table, thead, tbody, scope — poprawne tabele dostępne dla wszystkich.",
-                        published: false
+                        summary:
+                            "<table>, <thead>, <tbody>, <tfoot>, scope, atrybuty dostępności.",
+                        published: true,
+                        minutes: 10,
+                        objectives: [
+                            "Zbudujesz poprawną tabelę z thead/tbody/tfoot",
+                            "Dodasz atrybut scope (col/row) dla dostępności",
+                            "Rozróżnisz tabele danych od layoutu (kiedy NIE używać tabel)",
+                            "Zastosujesz <caption> jako opis tabeli"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
+                    },
+                    {
+                        slug: "multimedia",
+                        title: "Multimedia i linki",
+                        summary:
+                            "<img>, <a>, <video>, <audio>, atrybut alt, linkowanie wewnętrzne i zewnętrzne.",
+                        published: true,
+                        minutes: 10,
+                        objectives: [
+                            "Dodasz obrazy z opisowym atrybutem alt",
+                            "Zbudujesz linki zewnętrzne (target=_blank, rel=noopener) i wewnętrzne (#kotwica)",
+                            "Osadzisz wideo i audio z kontrolkami",
+                            "Zrozumiesz kiedy użyć <figure> i <figcaption>"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     }
                 ]
             },
@@ -93,19 +159,76 @@ export const courseDetails: CourseDetail[] = [
                         slug: "selektory",
                         title: "Selektory i kaskada",
                         summary: "Jak CSS wybiera elementy i co wygrywa, gdy reguły się gryzą.",
-                        published: false
+                        published: true,
+                        minutes: 12,
+                        objectives: [
+                            "Poznasz selektory: element, klasa, id, atrybut, pseudoklasy",
+                            "Zrozumiesz specyficzność i kaskadę — co wygrywa w konflikcie",
+                            "Użyjesz dziedziczenia i kaskady świadomie",
+                            "Zdebugujesz konflikt reguł DevTools-em"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     },
                     {
-                        slug: "flexbox-grid",
-                        title: "Flexbox i Grid",
-                        summary: "Dwa systemy układu, które rozwiązują 90% problemów z layoutem.",
-                        published: false
+                        slug: "box-model",
+                        title: "Box model i jednostki",
+                        summary: "content/padding/border/margin, px vs em vs rem, box-sizing.",
+                        published: true,
+                        minutes: 10,
+                        objectives: [
+                            "Zrozumiesz różnicę content-box vs border-box",
+                            "Dobierzesz jednostki (px, em, rem, %, vw/vh) do kontekstu",
+                            "Policzysz rzeczywisty rozmiar elementu",
+                            "Poznasz collapse marginów i jak go unikać"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
+                    },
+                    {
+                        slug: "flexbox",
+                        title: "Flexbox — układ w 1D",
+                        summary: "Elastyczny układ w jednym kierunku: display:flex i właściwości.",
+                        published: true,
+                        minutes: 18,
+                        objectives: [
+                            "Wystylujesz pasek nawigacji, listę kart i centrowanie",
+                            "Poznasz justify-content, align-items, flex-wrap",
+                            "Użyjesz flex-grow/shrink/basis do elastycznych kolumn",
+                            "Rozwiążesz typowe problemy layoutu"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
+                    },
+                    {
+                        slug: "grid",
+                        title: "CSS Grid — układ w 2D",
+                        summary: "Siatka: display:grid, template-columns/rows, gap, named areas.",
+                        published: true,
+                        minutes: 18,
+                        objectives: [
+                            "Zbudujesz layout strony z header/sidebar/main/footer w Grid",
+                            "Użyjesz fr, repeat(), minmax() i named areas",
+                            "Rozróżnisz Flexbox (1D) od Grid (2D) i dobierzesz narzędzie",
+                            "Zrobisz responsywny grid bez media queries (auto-fit/minmax)"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     },
                     {
                         slug: "rwd",
                         title: "Responsywność (RWD)",
-                        summary: "Media queries i strona, która działa na telefonie i monitorze.",
-                        published: false
+                        summary: "Media queries, mobile-first, breakpointy, viewport meta.",
+                        published: true,
+                        minutes: 12,
+                        objectives: [
+                            "Zastosujesz podejście mobile-first",
+                            "Napiszesz media queries (min-width) dla typowych breakpointów",
+                            "Dodasz viewport meta i zrozumiesz jego rolę",
+                            "Zamienisz layout desktopowy na mobilny"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     }
                 ]
             },
@@ -118,14 +241,47 @@ export const courseDetails: CourseDetail[] = [
                     {
                         slug: "podstawy-js",
                         title: "Podstawy JavaScriptu",
-                        summary: "Zmienne, typy, operatory, instrukcje warunkowe i pętle.",
-                        published: false
+                        summary: "let/const, typy, operatory, if/for, funkcje strzałkowe.",
+                        published: true,
+                        minutes: 18,
+                        objectives: [
+                            "Deklarujesz zmienne let/const i rozróżniasz od var",
+                            "Poznasz typy: string, number, boolean, array, object",
+                            "Napiszesz if/else, pętle for/while, funkcje (w tym strzałkowe)",
+                            "Użyjesz template stringów i destrukturyzacji"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     },
                     {
                         slug: "dom-zdarzenia",
                         title: "DOM i zdarzenia",
-                        summary: "Wybieranie elementów, reagowanie na kliknięcia, zmiana treści.",
-                        published: false
+                        summary: "querySelector, addEventListener, manipulacja treścią i klasami.",
+                        published: true,
+                        minutes: 18,
+                        objectives: [
+                            "Wybierzesz elementy querySelector/querySelectorAll",
+                            "Dodasz reakcję na click/input/submit (addEventListener)",
+                            "Zmienisz treść (textContent) i klasy (classList)",
+                            "Zbudujesz prosty interaktywny komponent (np. toggle, modal, lista)"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
+                    },
+                    {
+                        slug: "fetch-api",
+                        title: "Fetch i asynchroniczność",
+                        summary: "fetch, Promise, async/await, obsługa błędów.",
+                        published: true,
+                        minutes: 15,
+                        objectives: [
+                            "Wysyłasz zapytanie fetch() i czytasz JSON",
+                            "Obsłużysz błędy (try/catch, response.ok)",
+                            "Użyjesz async/await zamiast .then()",
+                            "Wyświetlisz dane z API na stronie"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     }
                 ]
             },
@@ -138,14 +294,47 @@ export const courseDetails: CourseDetail[] = [
                     {
                         slug: "podstawy-php",
                         title: "Podstawy PHP",
-                        summary: "Składnia, zmienne, funkcje, obsługa formularzy metodą POST/GET.",
-                        published: false
+                        summary: "Składnia, zmienne, funkcje, formularze metodą GET/POST.",
+                        published: true,
+                        minutes: 18,
+                        objectives: [
+                            "Zapiszesz skrypt PHP i uruchomisz go na serwerze (XAMPP)",
+                            "Odbierzesz dane z $_GET i $_POST",
+                            "Zastosujesz htmlspecialchars() przy wyświetlaniu danych",
+                            "Napiszesz prosty handler formularza kontaktowego"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     },
                     {
                         slug: "php-mysql",
                         title: "PHP + baza danych",
-                        summary: "Połączenie z MySQL, zapytania, bezpieczne przekazywanie danych.",
-                        published: false
+                        summary: "mysqli/PDO, prepared statements, bezpieczne zapytania.",
+                        published: true,
+                        minutes: 20,
+                        objectives: [
+                            "Połączysz się z MySQL przez PDO",
+                            "Użyjesz prepared statements (ochrona przed SQL injection)",
+                            "Wyciągniesz dane (SELECT) i wyświetlisz je w HTML",
+                            "Wstawisz rekord (INSERT) i obsłużysz błędy"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
+                    },
+                    {
+                        slug: "sesje",
+                        title: "Sesje i logowanie",
+                        summary: "session_start(), $_SESSION, hashowanie haseł, prosta autoryzacja.",
+                        published: true,
+                        minutes: 18,
+                        objectives: [
+                            "Użyjesz sesji do zapamiętania zalogowanego usera",
+                            "Zahaszujesz hasło (password_hash) i zweryfikujesz (password_verify)",
+                            "Zabezpieczysz stronę przed wejściem niezalogowanego",
+                            "Wylogujesz usera (session_destroy)"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     }
                 ]
             },
@@ -158,14 +347,47 @@ export const courseDetails: CourseDetail[] = [
                     {
                         slug: "podstawy-sql",
                         title: "Podstawy SQL",
-                        summary: "Tabele, typy danych, CRUD — pierwsze zapytania.",
-                        published: false
+                        summary: "CREATE TABLE, typy, klucz główny, INSERT/SELECT/UPDATE/DELETE.",
+                        published: true,
+                        minutes: 18,
+                        objectives: [
+                            "Utworzysz tabelę z odpowiednimi typami i kluczem głównym",
+                            "Wstawisz dane (INSERT) i odczytasz (SELECT)",
+                            "Przefiltrujesz (WHERE), posortujesz (ORDER BY), ograniczysz (LIMIT)",
+                            "Zaktualizujesz i usuniesz rekordy (UPDATE/DELETE)"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     },
                     {
                         slug: "relacje-join",
                         title: "Relacje i JOIN",
-                        summary: "Klucze obce i łączenie danych z wielu tabel.",
-                        published: false
+                        summary: "Klucz obcy, relacje 1:N, INNER/LEFT JOIN, normalizacja.",
+                        published: true,
+                        minutes: 20,
+                        objectives: [
+                            "Zaprojektujesz relację 1:N (klucz obcy)",
+                            "Połączysz dane z dwóch tabel (INNER JOIN)",
+                            "Rozróżnisz INNER od LEFT JOIN",
+                            "Wybierzesz dane z 3 tabel (JOIN × 2)"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
+                    },
+                    {
+                        slug: "agregacje",
+                        title: "Agregacje i GROUP BY",
+                        summary: "COUNT, SUM, AVG, GROUP BY, HAVING, podzapytania.",
+                        published: true,
+                        minutes: 18,
+                        objectives: [
+                            "Użyjesz COUNT, SUM, AVG, MIN, MAX",
+                            "Pogrupujesz wyniki (GROUP BY) i odfiltrujesz grupy (HAVING)",
+                            "Napiszesz podzapytanie (subquery)",
+                            "Zbudujesz raport sprzedaży / statystykę"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     }
                 ]
             },
@@ -179,7 +401,31 @@ export const courseDetails: CourseDetail[] = [
                         slug: "anatomia-zadania",
                         title: "Anatomia zadania INF.03",
                         summary: "Jak czytać arkusz, jak rozłożyć czas, na co patrzy egzaminator.",
-                        published: false
+                        published: true,
+                        minutes: 15,
+                        objectives: [
+                            "Rozłożysz arkusz egzaminacyjny na sekcje",
+                            "Zaplanujesz czas (ile minut na pytanie zamknięte / otwarte)",
+                            "Rozpoznasz typowe pułapki punktowe",
+                            "Zastosujesz zasadę 'najpierw łatwe punkty'"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
+                    },
+                    {
+                        slug: "checklist-php-mysql",
+                        title: "Checklist: PHP + MySQL",
+                        summary: "Lista kontrolna kroków przy zadaniu z PHP i bazą danych.",
+                        published: true,
+                        minutes: 12,
+                        objectives: [
+                            "Wymienisz kroki konfiguracji połączenia z bazą",
+                            "Zidentyfikujesz punkty za prepared statements",
+                            "Dodasz walidację formularza po stronie serwera",
+                            "Zastosujesz konwencję nazewnictwa plików (index.php, dane.php)"
+                        ],
+                        hasQuiz: true,
+                        quizPoolSize: 20
                     }
                 ]
             }
@@ -208,4 +454,10 @@ export function getFlatLessons(courseId: string) {
     return course.modules.flatMap((module) =>
         module.lessons.map((lesson) => ({ module, lesson }))
     );
+}
+
+/** Czy lekcja ma quiz (osobna podstrona /quiz). Źródło prawdy: hasQuiz. */
+export function lessonHasQuiz(courseId: string, lessonSlug: string) {
+    const found = getLesson(courseId, lessonSlug);
+    return Boolean(found?.lesson.hasQuiz);
 }

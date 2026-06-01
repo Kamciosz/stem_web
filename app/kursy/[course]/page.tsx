@@ -34,8 +34,10 @@ export default async function CoursePage({ params }: CoursePageProps) {
         notFound();
     }
 
-    const totalLessons = course.modules.reduce((acc, m) => acc + m.lessons.length, 0);
-    const publishedLessons = course.modules.reduce(
+    const detail = course as NonNullable<typeof course>;
+
+    const totalLessons = detail.modules.reduce((acc, m) => acc + m.lessons.length, 0);
+    const publishedLessons = detail.modules.reduce(
         (acc, m) => acc + m.lessons.filter((l) => l.published).length,
         0
     );
@@ -44,15 +46,15 @@ export default async function CoursePage({ params }: CoursePageProps) {
         <section className="course-overview section-shell" aria-labelledby="course-overview-title">
             <div className="section-inner">
                 <header className="page-header">
-                    <p className="font-mono-industrial body-muted">KNOWLEDGE BASE / {course.badge}</p>
+                    <p className="font-mono-industrial body-muted">KNOWLEDGE BASE / {detail.badge}</p>
                     <h1 className="headline-large" id="course-overview-title">
-                        {course.title}
+                        {detail.title}
                     </h1>
-                    <p className="course-overview-subtitle">{course.subtitle}</p>
-                    <p className="course-overview-intro">{course.intro}</p>
+                    <p className="course-overview-subtitle">{detail.subtitle}</p>
+                    <p className="course-overview-intro">{detail.intro}</p>
                     <div className="course-overview-stats">
                         <span>
-                            <strong>{course.modules.length}</strong> MODUŁÓW
+                            <strong>{detail.modules.length}</strong> MODUŁÓW
                         </span>
                         <span>
                             <strong>{publishedLessons}</strong> / {totalLessons} LEKCJI GOTOWYCH
@@ -61,7 +63,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                 </header>
 
                 <ol className="module-list">
-                    {course.modules.map((module, mi) => (
+                    {detail.modules.map((module, mi) => (
                         <ScrollReveal as="li" key={module.id} delay={mi * 0.05} className="module-item">
                             <div className="module-head">
                                 <span className="module-index">{String(mi + 1).padStart(2, "0")}</span>
@@ -98,7 +100,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                                         >
                                             {lesson.published ? (
                                                 <Link
-                                                    href={`/kursy/${course.id}/${lesson.slug}`}
+                                                    href={`/kursy/${detail.id}/${lesson.slug}`}
                                                     className="lesson-link"
                                                 >
                                                     {inner}

@@ -1,0 +1,243 @@
+Formularze to jedyne miejsce na stronie, gdzie użytkownik **wysyła dane do serwera** — loguje się, dodaje produkt do koszyka, wypełnia ankietę. W tej lekcji poznasz znaczniki, których się do tego używa, i nauczysz się robić formularze dostępne dla każdego.
+
+## Czym jest formularz HTML
+
+Formularz to blok znaczników, które zbierają dane od użytkownika i wysyłają je na serwer po kliknięciu przycisku "Wyślij". Najprostszy formularz wygląda tak:
+
+```html
+<form action="/login" method="post">
+    <label for="email">E-mail</label>
+    <input id="email" name="email" type="email" required>
+
+    <label for="pass">Hasło</label>
+    <input id="pass" name="password" type="password" required>
+
+    <button type="submit">Zaloguj</button>
+</form>
+```
+
+Każdy fragment ma swoje zadanie. Przejdźmy po kolei.
+
+## Znacznik `<form>` — kontener formularza
+
+`<form>` to obowiązkowy wrapper. Bez niego `<input>`y nie zostaną wysłane.
+
+Najważniejsze atrybuty:
+
+- **`action`** — adres URL, pod który formularz wysyła dane. Jeśli puste — wysyłamy na tę samą stronę.
+- **`method`** — HTTP metoda: `GET` (dane w URL) lub `POST` (dane w body). GET do wyszukiwarek i filtrów, POST do logowania, rejestracji, zamówień.
+- **`enctype`** — jak zakodować dane. Domyślnie `application/x-www-form-urlencoded`. Przy uploadzie plików musi być `multipart/form-data`.
+
+```html
+<!-- Szukaj w URL: /szukaj?q=html -->
+<form action="/szukaj" method="get">
+    <input name="q">
+    <button>Szukaj</button>
+</form>
+
+<!-- Wyślij zamówienie (ukryte w body) -->
+<form action="/api/order" method="post">
+    ...
+</form>
+```
+
+## Pole tekstowe — `<input type="text">`
+
+Najczęstsze pole. Pozwala wpisać jedną linię tekstu.
+
+```html
+<label for="name">Imię</label>
+<input id="name" name="name" type="text" placeholder="np. Anna" maxlength="50" required>
+```
+
+Atrybuty, które warto znać:
+
+- **`type`** — `text`, `email`, `password`, `number`, `tel`, `url`, `date`, `color`, `range`...
+- **`name`** — klucz pod jakim pole jest wysyłane na serwer (`?name=Anna`).
+- **`placeholder`** — szary tekst znikający po kliknięciu (nie zastępuje `<label>`!).
+- **`value`** — wartość domyślna.
+- **`required`** — pole musi być wypełnione.
+- **`maxlength` / `minlength`** — ograniczenie długości.
+- **`pattern`** — wyrażenie regularne do walidacji (np. `pattern="[0-9]{9}"` dla PESEL).
+- **`disabled`** / **`readonly`** — pole nieedytowalne.
+
+## Etykieta `<label>` — dlaczego MUSI być
+
+`<label>` to tekst opisujący pole. Kliknięcie w label fokusuje input, a czytnik ekranu czyta label zamiast pustego inputa.
+
+```html
+<!-- DOBRZE: label powiązany przez for=id -->
+<label for="email">E-mail</label>
+<input id="email" name="email" type="email">
+
+<!-- TEŻ DOBRZE: label otacza input -->
+<label>
+    E-mail:
+    <input name="email" type="email">
+</label>
+
+<!-- ŹLE: sam placeholder, brak labela -->
+<input placeholder="E-mail">
+```
+
+<Callout type="warning" title="Placeholder ≠ label">
+Placeholder to podpowiedź, nie etykieta. Gdy użytkownik zacznie pisać — znika. Czytnik ekranu go nie czyta jako nazwę pola. ZAWSZE dawaj `<label>`.
+</Callout>
+
+## Inne typy pól
+
+### `<input type="email">` / `password` / `number` / `tel`
+
+Przeglądarka sama sprawdza format na telefonie (inna klawiatura) i desktopie (walidacja przed wysłaniem).
+
+```html
+<input type="email" name="email" required>
+<input type="password" name="pass" minlength="8" required>
+<input type="number" name="age" min="13" max="120">
+<input type="tel" name="phone" pattern="[0-9]{9}">
+```
+
+### `<input type="checkbox">` — pole wyboru (wielokrotne)
+
+```html
+<label><input type="checkbox" name="hobby" value="sport"> Sport</label>
+<label><input type="checkbox" name="hobby" value="music"> Muzyka</label>
+<label><input type="checkbox" name="hobby" value="games"> Gry</label>
+```
+
+Checkbox **wysyła wartość tylko gdy zaznaczony**. Pamiętaj o `value` — inaczej dostaniesz "on".
+
+### `<input type="radio">` — pole jednokrotnego wyboru
+
+```html
+<p>Płeć:</p>
+<label><input type="radio" name="gender" value="f" required> Kobieta</label>
+<label><input type="radio" name="gender" value="m"> Mężczyzna</label>
+<label><input type="radio" name="gender" value="o"> Inna</label>
+```
+
+**Ta sama `name`** = grupa (tylko jeden wybrany).
+
+### `<select>` + `<option>` — lista rozwijana
+
+```html
+<label for="city">Miasto</label>
+<select id="city" name="city">
+    <option value="">-- wybierz --</option>
+    <option value="warszawa">Warszawa</option>
+    <option value="krakow">Kraków</option>
+    <option value="gdansk">Gdańsk</option>
+</select>
+```
+
+Atrybut `selected` na `<option>` ustawia wartość domyślną. `<optgroup>` grupuje opcje w podkategorie.
+
+### `<textarea>` — pole wieloliniowe
+
+```html
+<label for="msg">Wiadomość</label>
+<textarea id="msg" name="message" rows="5" cols="40" maxlength="500"></textarea>
+```
+
+Atrybut `rows` to początkowa wysokość w liniach. Resize jest domyślnie włączony (CSS: `resize: vertical` ogranicza do pionu).
+
+## Przycisk `<button>`
+
+```html
+<button type="submit">Wyślij</button>     <!-- wysyła formularz -->
+<button type="reset">Wyczyść</button>     <!-- resetuje pola -->
+<button type="button">Zamknij</button>    <!-- nic nie robi (dodajesz JS) -->
+```
+
+Domyślny `type` w `<form>` to `submit` — przycisk w formularzu **wysyła dane** po kliknięciu.
+
+<Callout type="exam">
+Na egzaminie INF.03 zadania z formularzami sprawdzają: poprawne powiązanie `<label for="id">` z `<input id>`, użycie `required`/`pattern` zamiast pustej walidacji, właściwą metodę (POST do wysyłki danych, GET do wyszukiwania).
+</Callout>
+
+## Walidacja HTML5 — bez JavaScriptu
+
+Przeglądarka sama sprawdzi poprawność przed wysłaniem, jeśli dasz jej atrybuty:
+
+```html
+<form>
+    <input type="email" required>
+    <input type="number" min="1" max="100" required>
+    <input type="text" pattern="[A-Z]{3}" title="Trzy wielkie litery" required>
+    <input type="text" minlength="3" maxlength="20" required>
+    <button>Wyślij</button>
+</form>
+```
+
+Atrybuty walidacji:
+
+- **`required`** — pole wymagane.
+- **`type="email"`** — musi zawierać `@` i domenę.
+- **`min` / `max`** — dla number, date, range.
+- **`minlength` / `maxlength`** — dla text, textarea, password.
+- **`pattern`** — wyrażenie regularne (np. kod pocztowy: `pattern="[0-9]{2}-[0-9]{3}"`).
+
+Dodaj `title` przy `pattern` — przeglądarka pokaże go jako podpowiedź.
+
+## GET vs POST — kiedy czego
+
+**GET** (parametry w URL):
+- Wyszukiwarki, filtry, sortowania.
+- Parametry w `?klucz=wartość&klucz2=wartość2`.
+- Można dodać do zakładek.
+- **NIE wysyłaj haseł ani danych wrażliwych** — zostaną w historii przeglądarki.
+
+**POST** (dane w body):
+- Logowanie, rejestracja, zamówienia, upload.
+- Parametry NIE są w URL — ukryte przed wzrokiem, ale **dalej widoczne w narzędziach developerskich**.
+- Prawdziwe bezpieczeństwo daje szyfrowanie (HTTPS) i walidacja po stronie serwera.
+
+## Kompletny przykład
+
+Formularz kontaktowy z walidacją, etykietami i dobrymi praktykami:
+
+```html
+<form action="/kontakt" method="post" novalidate>
+    <div>
+        <label for="k-name">Imię i nazwisko</label>
+        <input id="k-name" name="name" type="text"
+               minlength="2" maxlength="100" required>
+    </div>
+
+    <div>
+        <label for="k-email">E-mail</label>
+        <input id="k-email" name="email" type="email" required>
+    </div>
+
+    <div>
+        <label for="k-topic">Temat</label>
+        <select id="k-topic" name="topic" required>
+            <option value="">-- wybierz --</option>
+            <option value="pytanie">Pytanie ogólne</option>
+            <option value="wspolpraca">Współpraca</option>
+            <option value="blad">Zgłoszenie błędu</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="k-msg">Wiadomość</label>
+        <textarea id="k-msg" name="message" rows="6"
+                  minlength="10" maxlength="2000" required></textarea>
+    </div>
+
+    <div>
+        <label>
+            <input type="checkbox" name="rodo" value="yes" required>
+            Zgadzam się na przetwarzanie danych zgodnie z polityką prywatności
+        </label>
+    </div>
+
+    <button type="submit">Wyślij wiadomość</button>
+</form>
+```
+
+Atrybut `novalidate` wyłącza wbudowaną walidację przeglądarki — przydatne, gdy walidujesz w JavaScript po swojemu. Bez niego przeglądarka sama pokaże błędy przed wysłaniem.
+
+## Podsumowanie
+
+Formularz to `<form>` + pola + `<button type="submit">`. Każde pole musi mieć `<label>`. Walidacja HTML5 (required, type, pattern) załatwia 80% przypadków bez pisania JavaScriptu. Pamiętaj: GET do wyszukiwania, POST do wysyłki danych, a prawdziwe bezpieczeństwo daje walidacja po stronie serwera + HTTPS.

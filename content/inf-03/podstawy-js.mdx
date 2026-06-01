@@ -1,0 +1,305 @@
+JavaScript to język, który ożywia stronę. HTML daje strukturę, CSS wygląd, a JS zachowanie: reaguje na kliknięcia, zmienia treść, pobiera dane z serwera. W tej lekcji poznasz podstawy — wystarczą do pisania prostych interakcji.
+
+## Jak dodać JavaScript do strony
+
+### Zewnętrzny plik (najlepsza praktyka)
+
+```html
+<script src="app.js" defer></script>
+```
+
+`defer` mówi "pobierz równolegle, wykonaj po sparsowaniu HTML". Domyślnie `<script>` blokuje renderowanie strony — prawie zawsze używaj `defer`.
+
+### Wewnętrzny `<script>` (dla małych rzeczy)
+
+```html
+<script>
+    console.log("Witaj, świecie!");
+</script>
+```
+
+### Inline zdarzenie (raczej unikaj)
+
+```html
+<button onclick="alert('Klik!')">Klik</button>
+```
+
+## Zmienne — `let`, `const`, `var`
+
+```js
+const imie = "Anna";        // stała — nie można nadpisać
+let wiek = 16;              // zmienna — można nadpisać
+var szkola = "TEB";         // STARY sposób, unikaj
+```
+
+**`const` domyślnie**, `let` gdy musisz nadpisać. Zapomnij o `var`.
+
+```js
+let punkty = 0;
+punkty = punkty + 10;       // 10
+punkty += 5;                // 15 (skrót)
+punkty++;                   // 16
+```
+
+<Callout type="warning" title="let vs const">
+- `const` nie znaczy "niezmienna wartość" — to **stała referencja**. Obiekt/tablica oznaczone const mogą zmieniać zawartość.
+- `const` pozwala debugować szybciej: gdy widzisz `const`, wiesz, że referencja się nie zmieni.
+</Callout>
+
+## Typy danych
+
+```js
+// Primitiwne (proste)
+const tekst = "Ala ma kota";          // string
+const liczba = 42;                     // number
+const innaLiczba = 3.14;               // number (też)
+const prawda = true;                   // boolean
+const nic = null;                      // "celowo puste"
+const niezdefiniowane = undefined;     // "nie przypisano"
+
+// Złożone
+const tablica = [1, 2, 3, "cztery"];   // array
+const obiekt = { imie: "Anna", wiek: 16 };  // object
+```
+
+Sprawdzanie typu: `typeof zmienna` (np. `"string"`, `"number"`).
+
+## Operatory
+
+Arytmetyczne: `+ - * / % **` (reszta z dzielenia, potęga).
+
+Porównania: `==` vs `===`.
+
+- `==` porównuje z konwersją (`5 == "5"` → `true`).
+- `===` porównuje bez konwersji (`5 === "5"` → `false`).
+
+**Zawsze `===`** (ścisłe porównanie). Unikasz niespodzianek.
+
+```js
+console.log(5 === 5);       // true
+console.log(5 === "5");     // false
+console.log(null === undefined);  // false
+console.log(0 === false);   // false
+console.log(0 == false);    // true (oboje falsy)
+```
+
+Logiczne: `&&` (AND), `||` (OR), `!` (NOT).
+
+```js
+if (wiek >= 13 && wiek < 18) {
+    console.log("Nastolatek");
+}
+```
+
+## Warunek `if / else if / else`
+
+```js
+if (punkty >= 90) {
+    ocena = "5";
+} else if (punkty >= 75) {
+    ocena = "4";
+} else if (punkty >= 50) {
+    ocena = "3";
+} else {
+    ocena = "2";
+}
+```
+
+### Operator trójargumentowy
+
+```js
+const poziom = wiek >= 18 ? "dorosły" : "dziecko";
+```
+
+`warunek ? wartośćJeśliTrue : wartośćJeśliFalse` — skrót dla prostych ifów.
+
+### `switch` — wiele przypadków
+
+```js
+switch (kolor) {
+    case "czerwony":
+        console.log("Stop!");
+        break;
+    case "żółty":
+        console.log("Uwaga");
+        break;
+    case "zielony":
+        console.log("Jedź");
+        break;
+    default:
+        console.log("Nieznany kolor");
+}
+```
+
+Nie zapomnij `break` — bez niego wykonanie "przelatuje" do następnego case.
+
+## Pętle
+
+### `for` — klasyczna
+
+```js
+for (let i = 0; i < 5; i++) {
+    console.log(i);  // 0, 1, 2, 3, 4
+}
+```
+
+### `for...of` — po tablicy
+
+```js
+const owoce = ["jabłko", "banan", "gruszka"];
+for (const owoc of owoce) {
+    console.log(owoc);
+}
+```
+
+### `while` — dopóki warunek
+
+```js
+let paliwo = 100;
+while (paliwo > 0) {
+    console.log("Jadę...");
+    paliwo -= 10;
+}
+```
+
+### `forEach` — metoda tablicy
+
+```js
+liczby.forEach((liczba, index) => {
+    console.log(`${index}: ${liczba}`);
+});
+```
+
+## Funkcje
+
+```js
+// Deklaracja
+function przywitaj(imie) {
+    return `Cześć, ${imie}!`;
+}
+
+// Wywołanie
+console.log(przywitaj("Anna"));  // "Cześć, Anna!"
+```
+
+### Funkcje strzałkowe (arrow functions)
+
+```js
+const przywitaj = (imie) => `Cześć, ${imie}!`;
+
+// Wersja wieloliniowa
+const dodaj = (a, b) => {
+    const suma = a + b;
+    return suma;
+};
+```
+
+Gdy ciało to jedno wyrażenie, można pominąć `{}` i `return`.
+
+### Domyślne parametry
+
+```js
+const przywitaj = (imie = "Gość") => `Cześć, ${imie}!`;
+przywitaj();        // "Cześć, Gość!"
+przywitaj("Anna");  // "Cześć, Anna!"
+```
+
+## Tablice — podstawowe metody
+
+```js
+const owoce = ["jabłko", "banan"];
+
+// Dodawanie
+owoce.push("gruszka");         // na koniec
+owoce.unshift("truskawka");    // na początek
+
+// Usuwanie
+owoce.pop();                   // ostatni
+owoce.shift();                 // pierwszy
+
+// Szukanie
+owoce.indexOf("banan");        // 1 (indeks) lub -1
+owoce.includes("kiwi");        // false
+
+// Przekształcanie
+const duze = owoce.map(o => o.toUpperCase());   // nowa tablica
+const krotkie = owoce.filter(o => o.length < 6);
+const suma = [1,2,3].reduce((acc, n) => acc + n, 0);  // 6
+```
+
+## Obiekty
+
+```js
+const user = {
+    imie: "Anna",
+    wiek: 16,
+    email: "anna@example.com",
+    przedmioty: ["matematyka", "informatyka"],
+    przywitaj() {
+        return `Cześć, jestem ${this.imie}`;
+    }
+};
+
+console.log(user.imie);              // "Anna"
+console.log(user["email"]);          // "anna@example.com" (alternatywa)
+console.log(user.przywitaj());        // "Cześć, jestem Anna"
+```
+
+### Destrukturyzacja
+
+```js
+const { imie, wiek } = user;
+console.log(`${imie}, ${wiek}`);      // "Anna, 16"
+
+// W funkcji
+const przywitaj = ({ imie, wiek }) => `${imie} ma ${wiek} lat`;
+```
+
+## Template strings
+
+```js
+const imie = "Anna";
+const wiek = 16;
+
+// Zamiast:
+console.log("Cześć, mam na imię " + imie + " i mam " + wiek + " lat.");
+
+// Użyj:
+console.log(`Cześć, mam na imię ${imie} i mam ${wiek} lat.`);
+
+// Wieloliniowe
+const html = `
+    <div>
+        <h1>${imie}</h1>
+        <p>Wiek: ${wiek}</p>
+    </div>
+`;
+```
+
+Template strings używają **backticków** (`` ` ``) i pozwalają wstrzykiwać wyrażenia `${...}`.
+
+## Obsługa błędów
+
+```js
+try {
+    const dane = JSON.parse(tekst);   // może rzucić
+    console.log(dane.imie);
+} catch (error) {
+    console.error("Błąd parsowania:", error);
+} finally {
+    console.log("Zawsze się wykonam");
+}
+```
+
+`throw new Error("...")` rzuca swój błąd:
+
+```js
+function podziel(a, b) {
+    if (b === 0) throw new Error("Nie dziel przez zero!");
+    return a / b;
+}
+```
+
+## Podsumowanie
+
+`const` domyślnie, `let` do nadpisywania, `var` zapomnij. `===` do porównań. Template strings (`` ` ` ``) zamiast konkatenacji. Funkcje strzałkowe dla zwięzłości, `function` dla pełnej kontroli. `try/catch` do obsługi błędów. Tablice: `map`, `filter`, `reduce`, `forEach` zamiast ręcznych pętli. Obiekty: destrukturyzacja i metody skrótowe. Pamiętaj: JS jest typowany dynamicznie — ta sama zmienna może zmienić typ, ale lepiej tego unikać.

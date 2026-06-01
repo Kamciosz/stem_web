@@ -1,6 +1,17 @@
 Strona zbudowana z samych <Term word="znacznik">znaczników</Term> `<div>` działa, ale nikt — ani przeglądarka, ani wyszukiwarka, ani czytnik ekranu — nie wie, co który fragment znaczy. HTML <Term word="semantyczny">semantyczny</Term> rozwiązuje ten problem: zamiast neutralnego pudełka używasz znacznika, który opisuje rolę treści.
 
-## Czym różni się div od znacznika semantycznego
+## Czym jest semantyka i dlaczego ma znaczenie
+
+Semantyka to przypisywanie znaczenia fragmentom strony. Przeglądarka, wyszukiwarka i czytnik ekranu czytają Twój kod i na jego podstawie decydują, co jest nawigacją, co jest artykułem, co jest stopką. Jeśli wszystko opakujesz w `<div>` — traktują stronę jak jedno wielkie, nic-nie-mówiące pudełko.
+
+Konkretne korzyści:
+
+- **Wyszukiwarki** (Google, Bing) lepiej indeksują treść w `<main>`, wyżej oceniają nagłówek `<h1>`, wyróżniają `<article>` jako samodzielne jednostki. To bezpośrednio wpływa na pozycję w wynikach.
+- **Czytniki ekranu** (używane przez niewidomych) pozwalają przeskakiwać skrótami: z menu od razu do `<main>`, do `<nav>`, do następnego `<h1>`. Bez semantyki muszą czytać wszystko po kolei.
+- **Inne narzędzia** (rozszerzenia przeglądarki, czytniki RSS, archiwizery) wiedzą, co wyciągnąć ze strony. `<article>` da się np. udostępnić jako samodzielny wpis.
+- **Ty sam** za pół roku zrozumiesz swój kod szybciej, bo zobaczysz `<nav>` zamiast `<div class="menu">`.
+
+## `<div>` vs znaczniki semantyczne — przykład
 
 `<div>` to pojemnik bez znaczenia. Mówi „tu jest jakiś blok” i nic więcej. Znacznik semantyczny mówi, czym ten blok jest:
 
@@ -30,15 +41,15 @@ Wyszukiwarka indeksuje treść w `<main>` wyżej niż losowy `<div>`. Czytnik ek
 
 ## Najważniejsze znaczniki semantyczne
 
-Te elementy pokrywają strukturę prawie każdej strony:
+Te elementy pokrywają strukturę prawie każdej strony. Każdy z nich to "punkt orientacyjny" (ang. *landmark*) — czytnik ekranu może po nich skakać.
 
-- `<header>` — nagłówek strony lub sekcji (logo, tytuł, nawigacja górna)
-- `<nav>` — blok nawigacji, czyli zestaw linków do innych części serwisu
-- `<main>` — główna, unikalna treść strony. Na stronie powinien być tylko jeden
-- `<article>` — samodzielny fragment treści, który ma sens w oderwaniu (wpis, artykuł, komentarz)
-- `<section>` — tematyczna sekcja treści, zwykle z własnym nagłówkiem
-- `<aside>` — treść poboczna (panel boczny, powiązane linki, reklama)
-- `<footer>` — stopka strony lub sekcji (prawa autorskie, kontakt, linki)
+- **`<header>`** — nagłówek strony lub sekcji (logo, tytuł, nawigacja górna). Może wystąpić w `<body>` (główny nagłówek) i w każdym `<article>`/`<section>` (nagłówek sekcji).
+- **`<nav>`** — blok nawigacji, czyli zestaw linków do innych części serwisu. Strona może mieć kilka `<nav>` (np. główne menu + nawigacja w stopce).
+- **`<main>`** — główna, unikalna treść strony. Na stronie powinien być tylko jeden `<main>`. Wszystko inne (menu, stopka) jest obok.
+- **`<article>`** — samodzielny fragment treści, który ma sens w oderwaniu (wpis, artykuł, komentarz, post, karta produktu). Można go np. udostępnić w RSS lub wyrwać z kontekstu.
+- **`<section>`** — tematyczna sekcja treści, zwykle z własnym nagłówkiem. Używaj, gdy grupa treści ma wspólny temat (np. "O nas", "Usługi", "Opinie klientów").
+- **`<aside>`** — treść poboczna (panel boczny, powiązane linki, cytaty, reklamy). Powiązana z główną, ale nie kluczowa.
+- **`<footer>`** — stopka strony lub sekcji (prawa autorskie, kontakt, linki, data publikacji). Może być w `<body>` lub wewnątrz `<article>`/`<section>`.
 
 ## Pełny szkielet strony
 
@@ -86,38 +97,33 @@ Na egzaminie INF.03 zadania z HTML często wymagają poprawnej struktury semanty
 
 Semantyka to nie tylko bloki, ale też nagłówki `<h1>`–`<h6>`. Tworzą one spis treści strony:
 
-- Jeden `<h1>` na stronę — główny temat
-- `<h2>` to podrozdziały, `<h3>` to punkty wewnątrz nich, i tak dalej
-- Nie przeskakuj poziomów (po `<h1>` nie dawaj od razu `<h4>`) tylko dla efektu wizualnego — od wyglądu jest CSS
+- **Jeden `<h1>` na stronę** — główny temat
+- **`<h2>` to podrozdziały**, `<h3>` to punkty wewnątrz nich, i tak dalej
+- **Nie przeskakuj poziomów** (po `<h1>` nie dawaj od razu `<h4>`) tylko dla efektu wizualnego — od wyglądu jest CSS
 
 Czytnik ekranu buduje z nagłówków nawigację. Połamana hierarchia psuje ją tak samo, jak losowo ponumerowane rozdziały w książce.
+
+### Przykład poprawnej hierarchii
+
+```html
+<h1>Przepis na ciasto</h1>
+<h2>Składniki</h2>
+<h3>Ciasto</h3>
+<h3>Krem</h3>
+<h2>Przygotowanie</h2>
+<h3>Krok 1: Mieszanie</h3>
+<h3>Krok 2: Pieczenie</h3>
+```
+
+## Kiedy NIE używać semantyki
+
+`<div>` i `<span>` NIE są złe — mają swoje miejsce:
+
+- `<div>` — grupowanie elementów **bez własnej roli** (np. kontener do stylowania).
+- `<span>` — wyróżnienie fragmentu tekstu **wewnątrz linii** (np. zmiana koloru jednego słowa).
+
+Praktyczna zasada: jeśli blok ma **konkretną rolę** (nawigacja, artykuł, stopka) — użyj znacznika semantycznego. Jeśli to **pojemnik do stylowania** — zostaw `<div>`.
 
 ## Podsumowanie
 
 HTML semantyczny nic nie kosztuje — piszesz tyle samo kodu, tylko dobierasz właściwy znacznik. W zamian dostajesz lepsze pozycjonowanie, dostępność dla czytników ekranu i czytelniejszy kod, w którym od razu widać strukturę.
-
-<Quiz questions={[
-    {
-        question: "Który znacznik powinien zawierać główną, unikalną treść strony?",
-        options: ["<section>", "<main>", "<div>", "<article>"],
-        correct: 1,
-        explanation: "<main> oznacza główną treść strony i powinien wystąpić tylko raz. Czytniki ekranu pozwalają przeskoczyć bezpośrednio do niego."
-    },
-    {
-        question: "Czym różni się <article> od <section>?",
-        options: [
-            "Niczym, to synonimy",
-            "<article> to samodzielna treść mająca sens w oderwaniu, <section> to tematyczny fragment większej całości",
-            "<section> jest tylko do nagłówków",
-            "<article> nie może mieć nagłówka"
-        ],
-        correct: 1,
-        explanation: "<article> ma sens samodzielnie (wpis, komentarz), <section> grupuje tematycznie powiązaną treść wewnątrz strony."
-    },
-    {
-        question: "Ile znaczników <h1> powinno być na jednej stronie?",
-        options: ["Dokładnie jeden", "Co najmniej trzy", "Dowolnie wiele", "Żadnego"],
-        correct: 0,
-        explanation: "Jeden <h1> wyznacza główny temat strony. Kolejne poziomy (<h2>, <h3>) budują hierarchię podrozdziałów."
-    }
-]} />

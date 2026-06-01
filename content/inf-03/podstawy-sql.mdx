@@ -1,0 +1,271 @@
+SQL (Structured Query Language) to język do rozmawiania z bazą danych. Pozwala tworzyć tabele, wstawiać dane, wyciągać je w złożony sposób i zarządzać uprawnieniami. W tej lekcji opanujesz absolutne podstawy, które wystarczą do 90% zadań INF.03.
+
+## Czym jest relacyjna baza danych
+
+Baza relacyjna przechowuje dane w **tabelach** (jak arkusze Excela), które mogą być ze sobą powiązane (relacje). Każda tabela ma **wiersze** (rekordy) i **kolumny** (pola).
+
+```
+users                          orders
++----+---------+----+         +----+---------+--------+
+| id | name    | age|         | id | user_id | amount |
++----+---------+----+         +----+---------+--------+
+|  1 | Anna    | 16 |         |  1 |    1    | 50.00  |
+|  2 | Jan     | 17 |         |  2 |    1    | 30.00  |
+|  3 | Ola     | 16 |         |  3 |    2    | 120.00 |
++----+---------+----+         +----+---------+--------+
+```
+
+`orders.user_id` wskazuje na `users.id` — relacja jeden-do-wielu (jeden user, wiele zamówień).
+
+## CREATE TABLE — tworzenie tabeli
+
+```sql
+CREATE TABLE users (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    email       VARCHAR(255) NOT NULL UNIQUE,
+    name        VARCHAR(100) NOT NULL,
+    age         INT CHECK (age >= 0 AND age <= 150),
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### Typy danych
+
+| Typ | Co przechowuje | Przykład |
+|-----|---------------|----------|
+| `INT` | liczba całkowita | `42`, `-5` |
+| `DECIMAL(p, s)` | liczba dziesiętna (precyzyjna) | `DECIMAL(10, 2)` = do 99999999.99 |
+| `FLOAT` / `DOUBLE` | zmiennoprzecinkowa | `3.14` |
+| `VARCHAR(n)` | tekst do n znaków | `VARCHAR(255)` |
+| `TEXT` | długi tekst | opis produktu |
+| `DATE` | data | `2026-06-01` |
+| `TIME` | czas | `14:30:00` |
+| `DATETIME` / `TIMESTAMP` | data + czas | `2026-06-01 14:30:00` |
+| `BOOLEAN` / `TINYINT(1)` | true/false | `TRUE`, `FALSE` |
+| `ENUM` | jedna z listy | `ENUM('user', 'admin')` |
+| `JSON` | dane JSON | MySQL 5.7+ |
+
+### Ograniczenia (constraints)
+
+- **`PRIMARY KEY`** — unikalny identyfikator wiersza. Zwykle `id` AUTO_INCREMENT.
+- **`NOT NULL`** — pole wymagane.
+- **`UNIQUE`** — wartość nie może się powtórzyć w tabeli.
+- **`DEFAULT wartość`** — wartość domyślna gdy nie podano.
+- **`CHECK (warunek)`** — walidacja (MySQL 8+).
+- **`FOREIGN KEY`** — klucz obcy, łączy z inną tabelą (patrz lekcja `relacje-join`).
+
+```sql
+CREATE TABLE products (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(200) NOT NULL,
+    price       DECIMAL(10, 2) NOT NULL CHECK (price > 0),
+    stock       INT NOT NULL DEFAULT 0,
+    category    ENUM('elektronika', 'odzież', 'jedzenie') NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+<Callout type="tip" title="AUTO_INCREMENT">
+`AUTO_INCREMENT` = baza sama nadaje kolejne numery. Po `INSERT` bez podania `id`, baza wpisze następny wolny numer. W innych bazach (PostgreSQL) to `SERIAL` lub `INT GENERATED ALWAYS AS IDENTITY`.
+</Callout>
+
+## INSERT — wstawianie danych
+
+```sql
+-- Pełna forma
+INSERT INTO users (name, email, age)
+VALUES ('Anna Nowak', 'anna@example.com', 16);
+
+-- Wiele rekordów naraz
+INSERT INTO users (name, email, age) VALUES
+    ('Jan Kowalski', 'jan@example.com', 17),
+    ('Ola Wiśniewska', 'ola@example.com', 16),
+    ('Piotr Zieliński', 'piotr@example.com', 18);
+
+-- Bez podawania kolumn — musisz wstawić wszystkie (w kolejności)
+INSERT INTO users VALUES
+    (NULL, 'test@example.com', 'Test User', 20, NOW());
+```
+
+## SELECT — pobieranie danych
+
+### Podstawowy SELECT
+
+```sql
+SELECT * FROM users;                          -- wszystkie kolumny
+SELECT name, email FROM users;                -- wybrane kolumny
+SELECT name AS imie, email FROM users;        -- alias kolumny
+```
+
+### WHERE — filtrowanie
+
+```sql
+SELECT * FROM users WHERE age >= 18;
+SELECT * FROM users WHERE age BETWEEN 13 AND 17;
+SELECT * FROM users WHERE name LIKE 'A%';           -- zaczyna się od "A"
+SELECT * FROM users WHERE name LIKE '%nowak%';       -- zawiera "nowak"
+SELECT * FROM users WHERE name LIKE '_____';         -- dokładnie 5 znaków
+SELECT * FROM users WHERE email IS NULL;             -- NULL specjalnie, nie = NULL
+SELECT * FROM users WHERE age IN (15, 16, 17);       -- wartość z listy
+SELECT * FROM users WHERE age != 18;                 -- różne
+```
+
+### Operatory logiczne
+
+```sql
+SELECT * FROM users
+WHERE age >= 16
+  AND (name LIKE 'A%' OR email LIKE '%@example.com');
+```
+
+### ORDER BY — sortowanie
+
+```sql
+SELECT * FROM users ORDER BY name ASC;             -- A-Z (domyślne)
+SELECT * FROM users ORDER BY name DESC;            -- Z-A
+SELECT * FROM users ORDER BY age DESC, name ASC;   -- wielopoziomowe
+```
+
+### LIMIT i OFFSET — stronicowanie
+
+```sql
+SELECT * FROM users ORDER BY id LIMIT 10;                 -- pierwsze 10
+SELECT * FROM users ORDER BY id LIMIT 10 OFFSET 20;       -- pomiń 20, weź 10
+-- (strona 3, po 10 na stronę)
+SELECT * FROM users ORDER BY id LIMIT 10 OFFSET 20;
+```
+
+<Callout type="exam">
+Na egzaminie INF.03 `LIMIT` i `OFFSET` to standard stronicowania. Pamiętaj: `LIMIT 10` = 10 rekordów, `OFFSET 20` = pomiń pierwszych 20.
+</Callout>
+
+### DISTINCT — unikalne wartości
+
+```sql
+SELECT DISTINCT age FROM users;       -- tylko unikalne wieki
+SELECT DISTINCT category FROM products;
+```
+
+## UPDATE — aktualizacja
+
+```sql
+UPDATE users
+SET age = 17
+WHERE id = 1;
+
+-- Wiele kolumn
+UPDATE users
+SET name = 'Anna K.', age = 17
+WHERE id = 1;
+
+-- BEZ WHERE = WSZYSTKIE wiersze (częsty błąd!)
+UPDATE users SET age = 18;   -- ⚠️ ustawia WSZYSTKIM userom wiek 18
+```
+
+<Callout type="warning" title="UPDATE bez WHERE = katastrofa">
+Zawsze testuj `WHERE` przez `SELECT` z tym samym warunkiem:
+```sql
+-- najpierw sprawdź
+SELECT * FROM users WHERE age < 13;
+-- potem aktualizuj
+UPDATE users SET status = 'minor' WHERE age < 13;
+```
+</Callout>
+
+## DELETE — usuwanie
+
+```sql
+DELETE FROM users WHERE id = 5;
+DELETE FROM users WHERE created_at < '2024-01-01';
+
+-- BEZ WHERE = usuwa WSZYSTKO
+DELETE FROM users;   -- ⚠️ kasuje CAŁĄ tabelę
+```
+
+Bezpieczniejsza wersja: `TRUNCATE TABLE users;` — też kasuje wszystko, ale szybciej (nie loguje zmian).
+
+## DROP TABLE — usuwanie tabeli
+
+```sql
+DROP TABLE users;        -- usuwa tabelę (NIEODWRACALNIE)
+DROP TABLE IF EXISTS users;  -- nie rzuca błędu gdy tabeli nie ma
+```
+
+`IF EXISTS` to dobra praktyka w migracjach.
+
+## ALTER TABLE — zmiana struktury
+
+```sql
+-- Dodaj kolumnę
+ALTER TABLE users ADD COLUMN phone VARCHAR(20);
+
+-- Zmień typ
+ALTER TABLE users MODIFY COLUMN age SMALLINT;
+
+-- Usuń kolumnę
+ALTER TABLE users DROP COLUMN phone;
+
+-- Zmień nazwę
+ALTER TABLE users RENAME TO app_users;
+```
+
+## Indeksy — przyspieszanie zapytań
+
+```sql
+-- Indeks na pojedynczej kolumnie
+CREATE INDEX idx_users_email ON users(email);
+
+-- Unikalny indeks
+CREATE UNIQUE INDEX idx_users_email ON users(email);
+
+-- Indeks złożony
+CREATE INDEX idx_users_age_name ON users(age, name);
+
+-- Usunięcie indeksu
+DROP INDEX idx_users_email ON users;
+```
+
+Indeks przyspiesza `WHERE`, `ORDER BY`, `JOIN` na danej kolumnie. **ALE** spowalnia `INSERT` / `UPDATE` (bo trzeba aktualizować indeks). Dodawaj indeksy tam, gdzie NAPRAWDĘ pomagają.
+
+## Kompletny przykład — sklep
+
+```sql
+-- Tabele
+CREATE TABLE customers (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(100) NOT NULL,
+    email       VARCHAR(255) NOT NULL UNIQUE,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE orders (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    amount      DECIMAL(10, 2) NOT NULL,
+    status      ENUM('pending', 'paid', 'shipped', 'cancelled') NOT NULL DEFAULT 'pending',
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_orders_customer ON orders(customer_id);
+CREATE INDEX idx_orders_status ON orders(status);
+
+-- Dane
+INSERT INTO customers (name, email) VALUES
+    ('Anna Nowak', 'anna@example.com'),
+    ('Jan Kowalski', 'jan@example.com');
+
+INSERT INTO orders (customer_id, amount, status) VALUES
+    (1, 50.00, 'paid'),
+    (1, 30.00, 'pending'),
+    (2, 120.00, 'shipped');
+
+-- Zapytania
+SELECT * FROM customers ORDER BY name;
+SELECT * FROM orders WHERE status = 'pending' ORDER BY created_at DESC;
+SELECT AVG(amount) FROM orders WHERE status = 'paid';
+```
+
+## Podsumowanie
+
+`CREATE TABLE` tworzy tabelę z typami (`INT`, `VARCHAR`, `DECIMAL`, `TIMESTAMP`, `ENUM`) i ograniczeniami (`PRIMARY KEY`, `NOT NULL`, `UNIQUE`, `DEFAULT`, `CHECK`). `INSERT INTO ... VALUES` wstawia. `SELECT ... FROM ... WHERE ... ORDER BY ... LIMIT ... OFFSET` pobiera z filtrami i stronicowaniem. `UPDATE ... SET ... WHERE` aktualizuje. `DELETE FROM ... WHERE` usuwa. `ALTER TABLE` zmienia strukturę. Indeksy przyspieszają zapytania kosztem INSERT/UPDATE. ZAWSZE `WHERE` w `UPDATE`/`DELETE` — bez niego zmienisz wszystkie wiersze.

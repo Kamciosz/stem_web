@@ -1,0 +1,254 @@
+Flexbox to pierwszy system układu w CSS, który naprawdę rozwiązuje problemy z wyrównywaniem. Zastąpił stare triki z `float` i `inline-block`. W tej lekcji nauczysz się go od zera — i nigdy nie wrócisz do poprzedniego sposobu.
+
+## Czym jest Flexbox
+
+Flexbox to **jednokierunkowy** system układu: elementy ułożone w **rzędzie** (domyślnie) lub **kolumnie**. Każdy kontener Flexbox ma oś główną (main axis) i oś poprzeczną (cross axis).
+
+- `flex-direction: row` (domyślne) → oś główna pozioma, poprzeczna pionowa.
+- `flex-direction: column` → oś główna pionowa, poprzeczna pozioma.
+
+To jedno zdanie jest kluczem do całego Flexboxa: **wszystkie właściwości dotyczą osi (głównej lub poprzecznej), nie konkretnej strony (góra/dół/lewo/prawo)**.
+
+## Włączenie Flexboxa
+
+```css
+.kontener {
+    display: flex;          /* dzieci ułożone w rzędzie */
+    /* lub: display: inline-flex; */
+}
+```
+
+To wystarczy. Dzieci stają się "flex items" i same z siebie układają się w rzędzie.
+
+## Flex direction — kierunek osi
+
+```css
+.kontener {
+    display: flex;
+    flex-direction: row;             /* domyślne: rząd */
+    flex-direction: row-reverse;     /* rząd od prawej */
+    flex-direction: column;          /* kolumna */
+    flex-direction: column-reverse;  /* kolumna od dołu */
+}
+```
+
+## Justify content — wyrównanie na OSI GŁÓWNEJ
+
+Dystrybuje elementy wzdłuż głównej osi (domyślnie poziomej):
+
+```css
+.kontener {
+    display: flex;
+    justify-content: flex-start;    /* domyślne: do lewej */
+    justify-content: flex-end;      /* do prawej */
+    justify-content: center;        /* wyśrodkowane */
+    justify-content: space-between; /* równe odstępy między (pierwszy na lewo, ostatni na prawo) */
+    justify-content: space-around;  /* równe odstępy wokół każdego */
+    justify-content: space-evenly;  /* identyczne odstępy wszędzie */
+}
+```
+
+Najczęściej używane: `space-between` (menu: logo-lewo, linki-prawo), `center` (wyśrodkowanie), `space-around` (galerie).
+
+## Align items — wyrównanie na OSI POPRZECZNEJ
+
+Wyrównuje elementy w poprzek (domyślnie pionowo):
+
+```css
+.kontener {
+    display: flex;
+    align-items: stretch;    /* domyślne: rozciągnięte do wysokości kontenera */
+    align-items: flex-start; /* do góry */
+    align-items: flex-end;   /* do dołu */
+    align-items: center;     /* wyśrodkowane pionowo */
+    align-items: baseline;   /* linia bazowa tekstu */
+}
+```
+
+`align-items: center` to magiczny sposób na **centrowanie w pionie** — wiek problem rozwiązany w jednej linii.
+
+## Centrowanie idealne
+
+Klasyka — wycentruj element zarówno poziomo jak i pionowo:
+
+```css
+.kontener {
+    display: flex;
+    justify-content: center;   /* poziomo */
+    align-items: center;       /* pionowo */
+    height: 100vh;             /* pełna wysokość okna */
+}
+```
+
+```html
+<div class="kontener">
+    <h1>Wycentrowany tytuł</h1>
+</div>
+```
+
+## Flex wrap — zawijanie
+
+Domyślnie elementy NIE zawijają się — wszystkie w jednej linii (nawet jeśli nie mieszczą się). `flex-wrap` to zmienia:
+
+```css
+.kontener {
+    display: flex;
+    flex-wrap: nowrap;       /* domyślne */
+    flex-wrap: wrap;         /* zawijaj do nowej linii */
+    flex-wrap: wrap-reverse; /* zawijaj, ale odwróć kolejność linii */
+}
+```
+
+```css
+/* Skrót */
+.kontener {
+    flex-flow: row wrap;     /* direction + wrap */
+}
+```
+
+## Gap — odstępy między elementami
+
+Najprostszy sposób na równe odstępy (działa też w Grid):
+
+```css
+.kontener {
+    display: flex;
+    gap: 16px;            /* 16px w pionie i poziomie */
+    gap: 16px 24px;       /* 16px w pionie, 24px w poziomie */
+}
+```
+
+`gap` jest lepszy niż margines na dzieciach — nie wymaga ostatniego dziecka z `margin: 0`.
+
+## Właściwości dzieci — flex grow, shrink, basis
+
+Każdy flex item ma trzy właściwości kontrolujące jego rozmiar:
+
+### `flex-grow` — ile "zjada" wolnego miejsca
+
+```css
+.dziecko-1 { flex-grow: 1; }   /* rośnie */
+.dziecko-2 { flex-grow: 0; }   /* NIE rośnie (domyślne) */
+.dziecko-3 { flex-grow: 2; }   /* rośnie 2x tyle co dziecko-1 */
+```
+
+Przykład — kolumna główna zajmuje całą wolną przestrzeń, sidebar ma stały rozmiar:
+
+```css
+.sidebar  { flex: 0 0 200px; }   /* nie rośnie, nie kurczy, 200px */
+.main     { flex: 1 1 auto; }    /* rośnie, kurczy, bazowo auto */
+```
+
+### `flex-shrink` — ile "kurczy się" przy braku miejsca
+
+Domyślnie `1` — elementy kurczą się. Ustaw `0` jeśli element ma być sztywny (np. logo nie mniejsze niż oryginał).
+
+### `flex-basis` — bazowy rozmiar
+
+Domyślnie `auto` (czyli rozmiar z `width`/`height`). Można podać konkretnie: `flex-basis: 200px`.
+
+### Skrót `flex`
+
+```css
+.dziecko {
+    flex: grow shrink basis;
+    flex: 1;            /* = 1 1 0% — rośnie, kurczy, bazowo 0 */
+    flex: auto;         /* = 1 1 auto — rośnie, kurczy, bazowo auto */
+    flex: none;         /* = 0 0 auto — sztywne */
+    flex: 0 0 200px;    /* sztywne 200px */
+}
+```
+
+## Align self — indywidualne wyrównanie dziecka
+
+```css
+.dziecko-specjalne {
+    align-self: flex-end;   /* tylko to jedno na dole */
+}
+```
+
+Nadpisuje `align-items` z kontenera.
+
+## Order — zmiana kolejności wizualnej
+
+```css
+.trzeci-wizualnie {
+    order: -1;   /* przesuń na początek */
+}
+.piąty {
+    order: 99;   /* przesuń na koniec */
+}
+```
+
+`order` zmienia kolejność **wizualną** (nie w DOM). Przydatne do responsywnych zmian kolejności, ale NIE nadużywaj — psuje dostępność (kolejność czytania).
+
+## Kompletny przykład — pasek nawigacji
+
+```html
+<nav class="topbar">
+    <img src="logo.png" alt="Logo" class="logo">
+    <ul class="menu">
+        <li><a href="/">Start</a></li>
+        <li><a href="/kursy">Kursy</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+    </ul>
+    <a href="/login" class="btn">Zaloguj</a>
+</nav>
+```
+
+```css
+.topbar {
+    display: flex;
+    align-items: center;       /* logo, linki, przycisk w jednej linii */
+    padding: 16px 24px;
+    gap: 24px;
+}
+
+.menu {
+    display: flex;
+    list-style: none;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    flex: 1;                   /* menu rośnie — wypycha przycisk na prawo */
+}
+
+.btn {
+    margin-left: auto;         /* alternatywa: przypnij do prawej */
+}
+```
+
+<Callout type="tip" title="Logo-lewo, linki-prawo">
+Dwa triki na klasyczny układ:
+1. `justify-content: space-between` na kontenerze z dwoma dziećmi (logo, grupa linków).
+2. `flex: 1` na środkowym dziecku (rozpycha).
+3. `margin-left: auto` na prawym dziecku (odpycha w prawo).
+</Callout>
+
+## Kompletny przykład — karty w galerii
+
+```html
+<div class="galeria">
+    <div class="karta">...</div>
+    <div class="karta">...</div>
+    <div class="karta">...</div>
+</div>
+```
+
+```css
+.galeria {
+    display: flex;
+    flex-wrap: wrap;          /* nowy wiersz gdy nie mieszczą się */
+    gap: 16px;
+}
+
+.karta {
+    flex: 1 1 280px;          /* rośnie, kurczy, bazowo 280px */
+    /* Ale nie więcej niż 1/3 kontenera gdy są 3+ */
+    max-width: calc(33.333% - 11px);
+}
+```
+
+## Podsumowanie
+
+`display: flex` włącza Flexboxa. `flex-direction` zmienia oś główną. `justify-content` wyrównuje na osi głównej, `align-items` na poprzecznej. `flex-wrap: wrap` zawija do nowej linii. `gap` daje odstępy. Flex item ma `flex-grow` / `flex-shrink` / `flex-basis` (skrót `flex: 1` = rośnie, `flex: 0 0 200px` = sztywne 200px). `align-self` nadpisuje wyrównanie dla jednego dziecka. `order` zmienia kolejność wizualną.

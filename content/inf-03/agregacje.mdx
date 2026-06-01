@@ -1,0 +1,250 @@
+Agregacje to funkcje, które "zwijają" wiele wierszy w jedną wartość: ile, suma, średnia, min, max. W połączeniu z `GROUP BY` dają potężne narzędzie do raportów, statystyk i analizy danych. W tej lekcji opanujesz oba.
+
+## Funkcje agregujące
+
+SQL ma pięć klasycznych funkcji:
+
+```sql
+SELECT
+    COUNT(*)              AS liczba_rekordow,  -- liczba wierszy
+    COUNT(email)          AS z_emailem,        -- z niepustym emailem
+    COUNT(DISTINCT email) AS unikalne_emaile,  -- unikalne wartości
+    SUM(amount)           AS suma,             -- suma wartości
+    AVG(amount)           AS srednia,          -- średnia
+    MIN(amount)           AS minimum,          -- minimum
+    MAX(amount)           AS maksimum          -- maksimum
+FROM orders;
+```
+
+Przykład z danymi:
+
+```
+orders
++----+---------+--------+
+| id | user_id | amount |
++----+---------+--------+
+|  1 |    1    | 50.00  |
+|  2 |    1    | 30.00  |
+|  3 |    2    | 120.00 |
+|  4 |    2    | 80.00  |
+|  5 |    3    | 200.00 |
++----+---------+--------+
+```
+
+```sql
+SELECT
+    COUNT(*)      AS liczba_zamowien,   -- 5
+    COUNT(amount) AS z_kwota,           -- 5 (amount nie ma NULL)
+    SUM(amount)   AS suma,              -- 480.00
+    AVG(amount)   AS srednia,           -- 96.00
+    MIN(amount)   AS minimum,           -- 30.00
+    MAX(amount)   AS maksimum           -- 200.00
+FROM orders;
+```
+
+<Callout type="tip" title="COUNT(*) vs COUNT(kolumna)">
+- `COUNT(*)` liczy wszystkie wiersze, nawet z NULL-ami w kolumnach.
+- `COUNT(kolumna)` liczy wiersze, gdzie ta kolumna NIE jest NULL.
+- `COUNT(DISTINCT kolumna)` liczy unikalne wartości (bez NULL-i).
+</Callout>
+
+## GROUP BY — grupowanie
+
+`GROUP BY` dzieli wiersze na grupy (np. per user, per kategoria, per miesiąc) i stosuje agregację do każdej grupy osobno.
+
+```sql
+SELECT
+    user_id,
+    COUNT(*)  AS liczba_zamowien,
+    SUM(amount) AS suma_zamowien
+FROM orders
+GROUP BY user_id
+ORDER BY suma_zamowien DESC;
+```
+
+Wynik:
+
+| user_id | liczba_zamowien | suma_zamowien |
+|---------|------------------|----------------|
+| 3       | 1                | 200.00         |
+| 2       | 2                | 200.00         |
+| 1       | 2                | 80.00          |
+
+### GROUP BY z JOIN — praktyczny przykład
+
+```sql
+SELECT
+    customers.name,
+    COUNT(orders.id)    AS liczba_zamowien,
+    SUM(orders.amount)  AS suma,
+    AVG(orders.amount)  AS srednia
+FROM customers
+LEFT JOIN orders ON customers.id = orders.customer_id
+GROUP BY customers.id, customers.name
+ORDER BY suma DESC;
+```
+
+Wynik:
+
+| name | liczba_zamowien | suma   | srednia |
+|------|------------------|--------|---------|
+| Jan  | 2                | 200.00 | 100.00  |
+| Ola  | 1                | 200.00 | 200.00  |
+| Anna | 2                | 80.00  | 40.00   |
+| Piotr| 0                | NULL   | NULL    |  ← LEFT JOIN pokazuje też userów bez zamówień
+
+## HAVING — filtrowanie PO grupowaniu
+
+`WHERE` filtruje wiersze **przed** grupowaniem. `HAVING` filtruje **grupy po** agregacji.
+
+```sql
+-- Tylko userzy z więcej niż 1 zamówieniem
+SELECT
+    user_id,
+    COUNT(*) AS liczba,
+    SUM(amount) AS suma
+FROM orders
+GROUP BY user_id
+HAVING COUNT(*) > 1
+ORDER BY suma DESC;
+```
+
+```sql
+-- Tylko kategorie, w których suma > 1000
+SELECT
+    category,
+    SUM(price * stock) AS wartosc_magazynu
+FROM products
+GROUP BY category
+HAVING wartosc_magazynu > 1000;
+```
+
+<Callout type="warning" title="WHERE vs HAVING">
+- **WHERE** — przed grupowaniem, na surowych wierszach. Nie może używać funkcji agregujących.
+- **HAVING** — po grupowaniu, na zagregowanych grupach. Może używać `COUNT`, `SUM` itd.
+
+```sql
+-- ❌ Błąd: WHERE nie może używać agregacji
+SELECT user_id, SUM(amount) FROM orders WHERE SUM(amount) > 100 GROUP BY user_id;
+
+-- ✅ OK: HAVING filtruje po grupowaniu
+SELECT user_id, SUM(amount) FROM orders GROUP BY user_id HAVING SUM(amount) > 100;
+```
+</Callout>
+
+## Kolejność klauzul SQL
+
+Zapamiętaj tę kolejność (i nie zmieniaj — SQL nie pozwala):
+
+```
+SELECT kolumny, agregacje
+FROM tabela
+[JOIN ... ON ...]
+WHERE filtr_wierszy          ← przed grupowaniem
+GROUP BY kolumny
+HAVING filtr_grup            ← po grupowaniu
+ORDER BY kolumny [ASC|DESC]
+LIMIT N OFFSET M;
+```
+
+## Przykład — raport sprzedaży miesięcznie
+
+```sql
+SELECT
+    DATE_FORMAT(created_at, '%Y-%m') AS miesiac,
+    COUNT(*)           AS liczba_zamowien,
+    SUM(amount)        AS przychod,
+    AVG(amount)        AS srednia_zamowienie,
+    COUNT(DISTINCT customer_id) AS unikalni_klienci
+FROM orders
+WHERE status = 'paid'
+  AND created_at >= '2026-01-01'
+GROUP BY DATE_FORMAT(created_at, '%Y-%m')
+HAVING przychod > 0
+ORDER BY miesiac DESC;
+```
+
+Funkcje daty (`DATE_FORMAT`, `YEAR()`, `MONTH()`) są specyficzne dla MySQL. W PostgreSQL byłoby `TO_CHAR(created_at, 'YYYY-MM')`.
+
+## Podzapytania (subqueries)
+
+Zapytanie w zapytaniu. Przydatne gdy potrzebujesz tymczasowego wyniku.
+
+### Skalarne (zwraca jedną wartość)
+
+```sql
+SELECT name
+FROM customers
+WHERE id = (SELECT customer_id FROM orders ORDER BY amount DESC LIMIT 1);
+```
+
+Wewnętrzne zapytanie: ID klienta z największym zamówieniem. Zewnętrzne: imię tego klienta.
+
+### W `FROM` — derived table
+
+```sql
+SELECT AVG(suma_per_user) AS srednia_suma_wszystkich_userow
+FROM (
+    SELECT user_id, SUM(amount) AS suma_per_user
+    FROM orders
+    GROUP BY user_id
+) AS per_user;
+```
+
+### W `IN` — czy wartość jest w zbiorze
+
+```sql
+SELECT name FROM customers
+WHERE id IN (SELECT DISTINCT customer_id FROM orders WHERE amount > 100);
+```
+
+Klienci, którzy złożyli zamówienie > 100.
+
+### `EXISTS` — czy podzapytanie zwraca cokolwiek
+
+```sql
+SELECT name FROM customers c
+WHERE EXISTS (
+    SELECT 1 FROM orders o WHERE o.customer_id = c.id AND o.amount > 100
+);
+```
+
+Dla każdego klienta sprawdź: czy istnieje choć jedno jego zamówienie > 100? `EXISTS` jest często szybsze niż `IN`.
+
+## `WITH` (CTE) — czytelniejsze podzapytania
+
+CTE (Common Table Expression) to nazwane podzapytanie. Od MySQL 8+.
+
+```sql
+WITH top_customers AS (
+    SELECT
+        customer_id,
+        SUM(amount) AS total
+    FROM orders
+    WHERE status = 'paid'
+    GROUP BY customer_id
+    HAVING total > 500
+)
+SELECT
+    c.name,
+    tc.total
+FROM top_customers tc
+JOIN customers c ON tc.customer_id = c.id
+ORDER BY tc.total DESC;
+```
+
+`WITH top_customers AS (...)` definiuje "tymczasową tabelę" do użycia w głównym zapytaniu. Czytelniejsze niż podzapytania w `FROM`.
+
+## UNION — łączenie wyników zapytań
+
+```sql
+SELECT name, email FROM customers
+UNION
+SELECT name, email FROM newsletter_subscribers;
+```
+
+`UNION` łączy wyniki dwóch `SELECT` (kolumny muszą mieć zgodne typy). `UNION ALL` zachowuje duplikaty (szybsze).
+
+## Podsumowanie
+
+`COUNT`, `SUM`, `AVG`, `MIN`, `MAX` to pięć funkcji agregujących. `GROUP BY` dzieli wiersze na grupy. `WHERE` filtruje przed grupowaniem, `HAVING` po. Kolejność klauzul: `SELECT ... FROM ... WHERE ... GROUP BY ... HAVING ... ORDER BY ... LIMIT`. Podzapytania w `WHERE` / `FROM` / `SELECT` pozwalają budować złożone zapytania. `EXISTS` często szybsze niż `IN`. `WITH ... AS` (CTE) to czytelniejsza alternatywa dla podzapytań w `FROM`. `UNION` łączy wyniki z dwóch zapytań.
