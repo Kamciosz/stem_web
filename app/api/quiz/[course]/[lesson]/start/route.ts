@@ -53,23 +53,51 @@ export async function GET(_req: Request, ctx: RouteContext) {
 
     // 1) Pobierz pulę przez ANON client — RLS odsiewa nieaktywne,
     //    widok public_questions odsiewa poprawne odpowiedzi.
-    const anon = getAnonClient();
-    const { data: pool, error: poolErr } = await anon
-        .from("public_questions")
-        .select("id, course_id, lesson_slug, prompt, options")
-        .eq("course_id", courseId)
-        .eq("lesson_slug", lessonSlug);
+    let pool: Array<{
+        id: string;
+        course_id: string;
+        lesson_slug: string;
+        prompt: string;
+        options: Array<{ idx: number; label: string }>;
+    }> | null = null;
+    let poolErr: { message: string; cause?: unknown; code?: string } | null = null;
+    let poolErrStack: string | undefined;
+
+    try {
+        const anon = getAnonClient();
+        const result = await anon
+            .from("public_questions")
+            .select("id, course_id, lesson_slug, prompt, options")
+            .eq("course_id", courseId)
+            .eq("lesson_slug", lessonSlug);
+        pool = result.data as typeof pool;
+        poolErr = result.error as typeof poolErr;
+    } catch (e) {
+        // getAnonClient może rzucić jeśli brak env vars (build/runtime check)
+        const err = e as Error;
+        poolErr = {
+            message: err.message,
+            cause: (err as { cause?: unknown }).cause,
+            code: (err as { code?: string }).code
+        };
+        poolErrStack = err.stack;
+    }
 
     if (poolErr) {
         // Rozszerzony log dla debugu — fetch failed w Vercel często znaczy
         // problem z DNS/egress, nie z Supabase samym.
-        const cause = (poolErr as { cause?: unknown }).cause;
         return NextResponse.json(
             {
                 error: "Błąd odczytu puli pytań.",
                 detail: poolErr.message,
-                cause: cause ? String(cause) : undefined,
-                code: (poolErr as { code?: string }).code
+                cause: poolErr.cause ? String(poolErr.cause) : undefined,
+                code: poolErr.code,
+                stack: poolErrStack,
+                env: {
+                    url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+                    anon: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+                    service: !!process.env.SUPABASE_SERVICE_ROLE_KEY
+                }
             },
             { status: 500 }
         );
