@@ -3150,8 +3150,218 @@ a.lesson-nav-link:hover {
     font-size: 0.85rem;
 }
 
+/* ============================================================
+   STRONA LEKCJI — layout dwukolumnowy (sidebar + treść)
+   ============================================================ */
+.lesson-container {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+}
+
+.lesson-sidebar {
+    position: sticky;
+    top: 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-right: 24px;
+    border-right: 1px solid #1f1f1f;
+}
+
+.lesson-sidebar .lesson-breadcrumb {
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.lesson-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.lesson-meta-module {
+    color: var(--clinical);
+    font-weight: 700;
+}
+
+.lesson-meta-time {
+    color: var(--laser);
+}
+
+.lesson-module-nav-title {
+    margin: 0 0 12px;
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--recede);
+}
+
+.lesson-module-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.lesson-module-list li {
+    border-left: 2px solid transparent;
+}
+
+.lesson-module-list a {
+    display: block;
+    padding: 7px 0 7px 14px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: var(--recede);
+    transition: color 0.2s ease;
+}
+
+.lesson-module-list a:hover {
+    color: var(--clinical);
+}
+
+.lesson-module-list li.active {
+    border-left-color: var(--laser);
+}
+
+.lesson-module-list li.active a {
+    color: var(--clinical);
+    font-weight: 700;
+}
+
+.lesson-main {
+    max-width: 760px;
+    min-width: 0;
+}
+
+.lesson-objectives {
+    margin: 32px 0 8px;
+    padding: 24px 28px;
+    background: var(--lower);
+    border: 1px solid #1f1f1f;
+    border-left: 3px solid var(--laser);
+}
+
+.lesson-objectives-title {
+    margin: 0 0 16px;
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--laser);
+}
+
+.lesson-objectives-list {
+    margin: 0;
+    padding-left: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: var(--on-surface-variant);
+    line-height: 1.6;
+}
+
+.lesson-objectives-list li::marker {
+    color: var(--laser);
+}
+
+.lesson-video {
+    margin: 32px 0 40px;
+}
+
+.lesson-quiz-cta {
+    margin: 56px 0 8px;
+    padding: 32px;
+    background: rgba(124, 58, 237, 0.04);
+    border: 1px solid rgba(124, 58, 237, 0.25);
+    text-align: center;
+}
+
+.lesson-quiz-cta-label {
+    display: block;
+    margin-bottom: 12px;
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--laser);
+}
+
+.lesson-quiz-cta-title {
+    margin: 0 0 10px;
+    font-family: var(--font-space-grotesk), sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--clinical);
+}
+
+.lesson-quiz-cta-desc {
+    max-width: 520px;
+    margin: 0 auto 24px;
+    color: var(--on-surface-variant);
+    line-height: 1.6;
+}
+
+.lesson-quiz-cta-btn {
+    display: inline-block;
+    padding: 14px 32px;
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--void);
+    background: var(--laser);
+    border: 1px solid var(--laser);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.lesson-quiz-cta-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.quiz-pending h3 {
+    margin: 0 0 8px;
+    font-family: var(--font-space-grotesk), sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--clinical);
+}
+
+.quiz-pending p {
+    margin: 0;
+    color: var(--on-surface-variant);
+    line-height: 1.6;
+}
+
 /* === RESPONSYWNOŚĆ === */
 @media (max-width: 768px) {
+    .lesson-container {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .lesson-sidebar {
+        position: static;
+        padding-right: 0;
+        padding-bottom: 24px;
+        border-right: 0;
+        border-bottom: 1px solid #1f1f1f;
+    }
+
     .module-head {
         gap: 16px;
     }

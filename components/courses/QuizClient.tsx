@@ -37,9 +37,9 @@ export function QuizClient({
     lessonSlug: string;
     lessonTitle: string;
 }) {
-    const [phase, setPhase] = useState<"loading" | "taking" | "blocked" | "submitted" | "error">(
-        "loading"
-    );
+    const [phase, setPhase] = useState<
+        "loading" | "taking" | "blocked" | "pending" | "submitted" | "error"
+    >("loading");
     const [error, setError] = useState<string | null>(null);
     const [attemptId, setAttemptId] = useState<string | null>(null);
     const [questions, setQuestions] = useState<QuizQuestion[]>([]);
@@ -70,7 +70,9 @@ export function QuizClient({
                 if (!res.ok) {
                     const data = await res.json().catch(() => ({}));
                     setError(data.error ?? `HTTP ${res.status}`);
-                    setPhase(res.status === 503 ? "blocked" : "error");
+                    // 503 = pula pytań jeszcze nie zaseedowana dla tej lekcji.
+                    // To NIE jest oszustwo ucznia — pokazujemy "w przygotowaniu".
+                    setPhase(res.status === 503 ? "pending" : "error");
                     return;
                 }
                 const data = (await res.json()) as {
@@ -208,6 +210,20 @@ export function QuizClient({
         return (
             <div className="quiz">
                 <p className="quiz-loading">Ładowanie pytań z bazy…</p>
+            </div>
+        );
+    }
+
+    if (phase === "pending") {
+        return (
+            <div className="quiz">
+                <div className="quiz-pending">
+                    <h3>Quiz w przygotowaniu</h3>
+                    <p>
+                        Pytania do tej lekcji nie są jeszcze gotowe. Materiał wideo i quiz dodajemy
+                        sukcesywnie — wróć tu za jakiś czas. Sama lekcja jest w pełni dostępna powyżej.
+                    </p>
+                </div>
             </div>
         );
     }

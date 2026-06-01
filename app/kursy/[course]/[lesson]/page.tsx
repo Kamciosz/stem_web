@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { courseDetails, getLesson, getFlatLessons, lessonHasQuiz } from "@/lib/courses";
+import { VideoEmbed } from "@/components/courses/VideoEmbed";
 
 type LessonPageProps = {
     params: Promise<{ course: string; lesson: string }>;
@@ -102,23 +103,49 @@ export default async function LessonPage({ params }: LessonPageProps) {
                         </div>
                     )}
 
+                    {/*
+                      WIDEO WYJAŚNIAJĄCE — miejsce przygotowane na przyszłość.
+                      Renderuje się TYLKO gdy lekcja ma ustawione pole `video`
+                      w lib/courses.ts. Dopóki żadna lekcja go nie ma, nic się
+                      nie pokazuje, ale layout i styl (.lesson-video + .video-embed)
+                      są gotowe — wystarczy dopisać { provider, id } w courses.ts.
+
+                      PLAN (do zrobienia PÓŹNIEJ, nie teraz):
+                        - Dostawca jeszcze nieustalony: YouTube (nocookie) albo
+                          Cloudflare Stream. Komponent <VideoEmbed> obsługuje OBA.
+                        - Gdy wejdą KONTA użytkowników: na wideo nakładamy nick
+                          zalogowanego ucznia jako watermark (półprzezroczysta
+                          warstwa nad <iframe>, pozycja zmieniana co kilka sekund)
+                          — zabezpieczenie przed nagrywaniem ekranu i kradzieżą
+                          materiału. To wymaga warstwy logowania (jeszcze jej nie ma).
+                    */}
+                    {lesson.video && (
+                        <div className="lesson-video">
+                            <VideoEmbed
+                                provider={lesson.video.provider}
+                                id={lesson.video.id}
+                                customerCode={lesson.video.customerCode}
+                                title={`Wideo: ${lesson.title}`}
+                            />
+                        </div>
+                    )}
+
                     <div className="lesson-content">
                         <LessonContent />
                     </div>
 
                     {hasQuiz && (
                         <div className="lesson-quiz-cta">
-                            <div className="lesson-quiz-cta-inner">
-                                <span className="lesson-quiz-cta-label">SPRAWDŹ WIEDZĘ</span>
-                                <h3 className="lesson-quiz-cta-title">Gotowy na quiz?</h3>
-                                <p className="lesson-quiz-cta-desc">
-                                    Sprawdź, czy opanowałeś materiał. Quiz składa się z {lesson.quiz?.length || 0}{" "}
-                                    pytań i trwa około 3–5 minut.
-                                </p>
-                                <Link href={`/kursy/${course.id}/${lessonSlug}/quiz`} className="lesson-quiz-cta-btn">
-                                    ROZPOCZNIJ QUIZ →
-                                </Link>
-                            </div>
+                            <span className="lesson-quiz-cta-label">SPRAWDŹ WIEDZĘ</span>
+                            <h3 className="lesson-quiz-cta-title">Gotowy na quiz?</h3>
+                            <p className="lesson-quiz-cta-desc">
+                                5 losowych pytań z puli {lesson.quizPoolSize ?? "kilkunastu"}. Wynik liczy
+                                serwer, trwa około 3–5 minut. Możesz podchodzić wielokrotnie — za każdym
+                                razem losujemy inny zestaw.
+                            </p>
+                            <Link href={`/kursy/${course.id}/${lessonSlug}/quiz`} className="lesson-quiz-cta-btn">
+                                ROZPOCZNIJ QUIZ →
+                            </Link>
                         </div>
                     )}
 

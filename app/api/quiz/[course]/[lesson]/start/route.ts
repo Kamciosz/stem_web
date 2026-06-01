@@ -53,13 +53,14 @@ export async function GET(_req: Request, ctx: RouteContext) {
 
     // 1) Pobierz pulę przez ANON client — RLS odsiewa nieaktywne,
     //    widok public_questions odsiewa poprawne odpowiedzi.
-    let pool: Array<{
+    type PoolRow = {
         id: string;
         course_id: string;
         lesson_slug: string;
         prompt: string;
         options: Array<{ idx: number; label: string }>;
-    }> | null = null;
+    };
+    let pool: PoolRow[] | null = null;
     let poolErr: { message: string; cause?: unknown; code?: string } | null = null;
     let poolErrStack: string | undefined;
 
@@ -70,7 +71,7 @@ export async function GET(_req: Request, ctx: RouteContext) {
             .select("id, course_id, lesson_slug, prompt, options")
             .eq("course_id", courseId)
             .eq("lesson_slug", lessonSlug);
-        pool = result.data as typeof pool;
+        pool = (result.data as PoolRow[] | null) ?? null;
         poolErr = result.error as typeof poolErr;
     } catch (e) {
         // getAnonClient może rzucić jeśli brak env vars (build/runtime check)
@@ -84,31 +85,19 @@ export async function GET(_req: Request, ctx: RouteContext) {
     }
 
     if (poolErr) {
-        // Rozszerzony log dla debugu — fetch failed w Vercel często znaczy
-        // problem z DNS/egress, nie z Supabase samym.
+        // Błąd po stronie serwera logujemy, ale do klienta NIE wysyłamy
+        // stack trace ani flag env — to wyciek informacji. Klient dostaje
+        // ogólny komunikat, szczegóły idą do logów Vercel.
+        console.error("[quiz/start] błąd odczytu puli:", {
+            message: poolErr.message,
+            cause: poolErr.cause ? String(poolErr.cause) : undefined,
+            code: poolErr.code,
+            stack: poolErrStack
+        });
         return NextResponse.json(
-            {
-                error: "Błąd odczytu puli pytań.",
-                detail: poolErr.message,
-                cause: poolErr.cause ? String(poolErr.cause) : undefined,
-                code: poolErr.code,
-                stack: poolErrStack,
-                env: {
-                    url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-                    anon: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-                    service: !!process.env.SUPABASE_SERVICE_ROLE_KEY
-                }
-            },
+            { error: "Błąd odczytu puli pytań. Spróbuj ponownie później." },
             { status: 500 }
         );
-    }
-
-    // DEBUG: wypisz szczegóły błędu fetch żeby zobaczyć prawdziwą przyczynę
-    if (!pool && process.env.NODE_ENV !== "production") {
-        console.log("Pool is null/empty, envs:", {
-            url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-            anon: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-        });
     }
 
     if (!pool || pool.length < MIN_POOL) {

@@ -79,9 +79,9 @@ export default async function QuizPage({ params }: QuizPageProps) {
                     <p className="font-mono-industrial body-muted">{module.title}</p>
                     <h1 className="headline-large quiz-page-title">Quiz: {lesson.title}</h1>
                     <p className="quiz-page-desc">
-                        5 losowych pytań z puli {lesson.quiz?.length ?? "..."}. Wynik weryfikowany
-                        po stronie serwera. Przełączanie okna / DevTools / kopiowanie = automatyczne
-                        zakończenie quizu.
+                        5 losowych pytań z puli {lesson.quizPoolSize ?? "kilkunastu"}. Wynik
+                        weryfikowany po stronie serwera. Przełączanie okna / DevTools / kopiowanie =
+                        automatyczne zakończenie quizu.
                     </p>
                 </header>
 

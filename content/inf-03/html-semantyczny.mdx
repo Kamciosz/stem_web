@@ -1,22 +1,19 @@
-Strona zbudowana z samych <Term word="znacznik">znaczników</Term> `<div>` działa, ale nikt — ani przeglądarka, ani wyszukiwarka, ani czytnik ekranu — nie wie, co który fragment znaczy. HTML <Term word="semantyczny">semantyczny</Term> rozwiązuje ten problem: zamiast neutralnego pudełka używasz znacznika, który opisuje rolę treści.
+Wyobraź sobie, że dostajesz do przeczytania książkę, w której każdy rozdział, każdy akapit i każdy nagłówek jest opisany tylko jako "blok tekstu". Nie wiesz, co jest tytułem, co przypisem, co cytatem. Dokładnie tak wygląda strona zbudowana z samych `<div>`-ów dla przeglądarki, wyszukiwarki i czytnika ekranu. HTML <Term word="semantyczny">semantyczny</Term> to rozwiązanie: zamiast neutralnego pudełka używasz <Term word="znacznik">znacznika</Term>, który opisuje, czym dany fragment jest.
 
-## Czym jest semantyka i dlaczego ma znaczenie
+## Dlaczego to ważne — konkretne korzyści
 
-Semantyka to przypisywanie znaczenia fragmentom strony. Przeglądarka, wyszukiwarka i czytnik ekranu czytają Twój kod i na jego podstawie decydują, co jest nawigacją, co jest artykułem, co jest stopką. Jeśli wszystko opakujesz w `<div>` — traktują stronę jak jedno wielkie, nic-nie-mówiące pudełko.
+Nie chodzi o estetykę kodu. Chodzi o realne efekty:
 
-Konkretne korzyści:
+- **Wyszukiwarki** (Google, Bing) lepiej indeksują treść w `<main>`, wyżej oceniają nagłówek `<h1>`, wyróżniają `<article>` jako samodzielne jednostki. To bezpośrednio wpływa na pozycję w wynikach wyszukiwania.
+- **<Term word="czytnik ekranu">Czytniki ekranu</Term>** (używane przez osoby niewidome) pozwalają przeskakiwać skrótami: z menu od razu do `<main>`, do `<nav>`, do następnego `<h1>`. Bez semantyki muszą czytać wszystko po kolei — od pierwszego linku w nawigacji do ostatniego słowa w stopce.
+- **Ty sam** za pół roku zrozumiesz swój kod szybciej, bo zobaczysz `<nav>` zamiast `<div class="menu-wrapper-top">`.
 
-- **Wyszukiwarki** (Google, Bing) lepiej indeksują treść w `<main>`, wyżej oceniają nagłówek `<h1>`, wyróżniają `<article>` jako samodzielne jednostki. To bezpośrednio wpływa na pozycję w wynikach.
-- **Czytniki ekranu** (używane przez niewidomych) pozwalają przeskakiwać skrótami: z menu od razu do `<main>`, do `<nav>`, do następnego `<h1>`. Bez semantyki muszą czytać wszystko po kolei.
-- **Inne narzędzia** (rozszerzenia przeglądarki, czytniki RSS, archiwizery) wiedzą, co wyciągnąć ze strony. `<article>` da się np. udostępnić jako samodzielny wpis.
-- **Ty sam** za pół roku zrozumiesz swój kod szybciej, bo zobaczysz `<nav>` zamiast `<div class="menu">`.
+## `<div>` vs znaczniki semantyczne — co się naprawdę zmienia
 
-## `<div>` vs znaczniki semantyczne — przykład
-
-`<div>` to pojemnik bez znaczenia. Mówi „tu jest jakiś blok” i nic więcej. Znacznik semantyczny mówi, czym ten blok jest:
+`<div>` to pojemnik bez znaczenia. Mówi "tu jest jakiś blok" i nic więcej. Znacznik semantyczny mówi, czym ten blok jest:
 
 ```html
-<!-- Niesemantycznie: same pudełka -->
+<!-- Niesemantycznie: same pudełka, zero informacji -->
 <div class="top">
     <div class="menu">...</div>
 </div>
@@ -33,23 +30,23 @@ Konkretne korzyści:
 </main>
 ```
 
-Oba dają ten sam wygląd po ostylowaniu CSS. Różnica jest w znaczeniu, które odczytują maszyny.
+Oba wyglądają identycznie po ostylowaniu CSS. Różnica jest w znaczeniu, które odczytują maszyny — i w tym, jak szybko Ty sam rozumiesz kod.
 
 <Callout type="info" title="Dlaczego to ważne">
-Wyszukiwarka indeksuje treść w `<main>` wyżej niż losowy `<div>`. Czytnik ekranu pozwala niewidomemu użytkownikowi przeskoczyć od razu do `<nav>` albo `<main>`. Bez semantyki te skróty nie istnieją.
+Wyszukiwarka indeksuje treść w `<main>` wyżej niż losowy `<div>`. Czytnik ekranu pozwala niewidomemu użytkownikowi przeskoczyć od razu do `<nav>` albo `<main>`. Bez semantyki te skróty nie istnieją — użytkownik musi słuchać całej strony od początku.
 </Callout>
 
-## Najważniejsze znaczniki semantyczne
+## Najważniejsze znaczniki — każdy ma swoją rolę
 
-Te elementy pokrywają strukturę prawie każdej strony. Każdy z nich to "punkt orientacyjny" (ang. *landmark*) — czytnik ekranu może po nich skakać.
+Te elementy pokrywają strukturę prawie każdej strony. Każdy z nich to "punkt orientacyjny" — czytnik ekranu może po nich skakać jak po rozdziałach książki.
 
-- **`<header>`** — nagłówek strony lub sekcji (logo, tytuł, nawigacja górna). Może wystąpić w `<body>` (główny nagłówek) i w każdym `<article>`/`<section>` (nagłówek sekcji).
+- **`<header>`** — nagłówek strony lub sekcji (logo, tytuł, nawigacja górna). Może wystąpić w `<body>` (główny nagłówek) i w każdym `<article>`/`<section>` (nagłówek tej sekcji).
 - **`<nav>`** — blok nawigacji, czyli zestaw linków do innych części serwisu. Strona może mieć kilka `<nav>` (np. główne menu + nawigacja w stopce).
-- **`<main>`** — główna, unikalna treść strony. Na stronie powinien być tylko jeden `<main>`. Wszystko inne (menu, stopka) jest obok.
-- **`<article>`** — samodzielny fragment treści, który ma sens w oderwaniu (wpis, artykuł, komentarz, post, karta produktu). Można go np. udostępnić w RSS lub wyrwać z kontekstu.
+- **`<main>`** — główna, unikalna treść strony. Na stronie powinien być **tylko jeden** `<main>`. Wszystko inne (menu, stopka) jest obok.
+- **`<article>`** — samodzielny fragment treści, który ma sens w oderwaniu (wpis blogowy, artykuł, komentarz, karta produktu). Możesz go wyrwać z kontekstu i nadal będzie zrozumiały.
 - **`<section>`** — tematyczna sekcja treści, zwykle z własnym nagłówkiem. Używaj, gdy grupa treści ma wspólny temat (np. "O nas", "Usługi", "Opinie klientów").
 - **`<aside>`** — treść poboczna (panel boczny, powiązane linki, cytaty, reklamy). Powiązana z główną, ale nie kluczowa.
-- **`<footer>`** — stopka strony lub sekcji (prawa autorskie, kontakt, linki, data publikacji). Może być w `<body>` lub wewnątrz `<article>`/`<section>`.
+- **`<footer>`** — stopka strony lub sekcji (prawa autorskie, kontakt, linki, data publikacji).
 
 ## Pełny szkielet strony
 
@@ -89,41 +86,41 @@ Tak wygląda poprawnie zbudowany dokument, gdzie każdy blok ma swoją rolę:
 </html>
 ```
 
+Zwróć uwagę: `<nav>` jest wewnątrz `<header>`, `<article>` i `<aside>` są wewnątrz `<main>`. To nie przypadek — zagnieżdżenie odzwierciedla hierarchię treści.
+
 <Callout type="exam">
-Na egzaminie INF.03 zadania z HTML często wymagają poprawnej struktury semantycznej. Użycie `<div>` tam, gdzie pasuje `<nav>` czy `<main>`, bywa punktowane jako błąd jakości kodu. Naucz się rozróżniać te znaczniki na pamięć.
+Na egzaminie INF.03 zadania z HTML często wymagają poprawnej struktury semantycznej. Użycie `<div>` tam, gdzie pasuje `<nav>` czy `<main>`, bywa punktowane jako błąd jakości kodu. Naucz się rozróżniać te znaczniki na pamięć — to kilka minut nauki, a punkty na egzaminie.
 </Callout>
 
-## Hierarchia nagłówków
+## Hierarchia nagłówków — spis treści strony
 
-Semantyka to nie tylko bloki, ale też nagłówki `<h1>`–`<h6>`. Tworzą one spis treści strony:
+Semantyka to nie tylko bloki, ale też nagłówki `<h1>`–`<h6>`. Tworzą one spis treści strony, po którym czytnik ekranu pozwala skakać:
 
 - **Jeden `<h1>` na stronę** — główny temat
 - **`<h2>` to podrozdziały**, `<h3>` to punkty wewnątrz nich, i tak dalej
-- **Nie przeskakuj poziomów** (po `<h1>` nie dawaj od razu `<h4>`) tylko dla efektu wizualnego — od wyglądu jest CSS
-
-Czytnik ekranu buduje z nagłówków nawigację. Połamana hierarchia psuje ją tak samo, jak losowo ponumerowane rozdziały w książce.
-
-### Przykład poprawnej hierarchii
+- **Nie przeskakuj poziomów** — po `<h1>` nie dawaj od razu `<h4>` tylko dlatego, że tak wygląda ładniej. Od wyglądu jest CSS.
 
 ```html
 <h1>Przepis na ciasto</h1>
-<h2>Składniki</h2>
-<h3>Ciasto</h3>
-<h3>Krem</h3>
-<h2>Przygotowanie</h2>
-<h3>Krok 1: Mieszanie</h3>
-<h3>Krok 2: Pieczenie</h3>
+    <h2>Składniki</h2>
+        <h3>Ciasto</h3>
+        <h3>Krem</h3>
+    <h2>Przygotowanie</h2>
+        <h3>Krok 1: Mieszanie</h3>
+        <h3>Krok 2: Pieczenie</h3>
 ```
 
-## Kiedy NIE używać semantyki
+Połamana hierarchia nagłówków psuje nawigację czytnika ekranu tak samo, jak losowo ponumerowane rozdziały w książce.
 
-`<div>` i `<span>` NIE są złe — mają swoje miejsce:
+## Kiedy `<div>` i `<span>` są właściwe
 
-- `<div>` — grupowanie elementów **bez własnej roli** (np. kontener do stylowania).
+`<div>` i `<span>` nie są złe — mają swoje miejsce:
+
+- `<div>` — grupowanie elementów **bez własnej roli** (np. kontener do stylowania, wrapper do flexboxa).
 - `<span>` — wyróżnienie fragmentu tekstu **wewnątrz linii** (np. zmiana koloru jednego słowa).
 
 Praktyczna zasada: jeśli blok ma **konkretną rolę** (nawigacja, artykuł, stopka) — użyj znacznika semantycznego. Jeśli to **pojemnik do stylowania** — zostaw `<div>`.
 
 ## Podsumowanie
 
-HTML semantyczny nic nie kosztuje — piszesz tyle samo kodu, tylko dobierasz właściwy znacznik. W zamian dostajesz lepsze pozycjonowanie, dostępność dla czytników ekranu i czytelniejszy kod, w którym od razu widać strukturę.
+HTML semantyczny nic nie kosztuje — piszesz tyle samo kodu, tylko dobierasz właściwy znacznik. W zamian dostajesz lepsze pozycjonowanie w Google, <Term word="dostępność">dostępność</Term> dla czytników ekranu i czytelniejszy kod. `<header>`, `<nav>`, `<main>`, `<article>`, `<section>`, `<aside>`, `<footer>` — naucz się ich ról na pamięć. To fundament każdej strony.

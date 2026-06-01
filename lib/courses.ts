@@ -48,6 +48,22 @@ export type Lesson = {
      * Supabase nie zwróci puli. Produkcja powinna mieć pytania w bazie.
      */
     quiz?: QuizQuestion[];
+    /**
+     * WIDEO WYJAŚNIAJĄCE — miejsce przygotowane na przyszłość.
+     * Gdy lekcja dostanie nagranie, dopisujesz tu obiekt i wideo
+     * automatycznie wyświetli się nad treścią lekcji.
+     *   - provider: "youtube" (nocookie) albo "cloudflare" (Stream).
+     *     Dostawca jeszcze nieustalony — komponent obsługuje OBA.
+     *   - customerCode: tylko dla Cloudflare (subdomena z dashboardu).
+     * PLAN: gdy wejdą konta użytkowników, na wideo nałożymy nick
+     * zalogowanego ucznia (watermark) jako zabezpieczenie przed
+     * kradzieżą materiału. To dojdzie razem z warstwą logowania.
+     */
+    video?: {
+        provider: "youtube" | "cloudflare";
+        id: string;
+        customerCode?: string;
+    };
 };
 
 export type Module = {
