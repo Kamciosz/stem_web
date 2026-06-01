@@ -1,121 +1,97 @@
-Egzamin INF.03 to nie jest zwykły sprawdzian — to **arkusz z konkretnym zadaniem praktycznym**, które symuluje prawdziwy projekt webowy. W tej lekcji poznasz strukturę arkusza, na co patrzy egzaminator i jak rozłożyć czas, żeby nie zabrakło go na końcu.
+Siedzisz przy komputerze, masz 150 minut, przed Tobą arkusz z zadaniem, które wygląda jak projekt od klienta — baza danych, strona PHP, CSS, wszystko od zera. Brzmi strasznie? Nie, jeśli wiesz, co Cię czeka. W tej lekcji rozłożymy arkusz na części, żebyś wiedział, za co są punkty i jak nie stracić czasu na rzeczy, które ich nie wnoszą.
 
-## Struktura arkusza INF.03
+## Jak wygląda egzamin — struktura
 
-Egzamin składa się z dwóch części:
+Egzamin INF.03 ma dwie części, zdawane **niezależnie** (jedna nie wpływa na drugą):
 
-1. **Część pisemna (40 pytań)** — testy zamknięte z zakresu: HTML, CSS, JavaScript, PHP, SQL, bazy danych, administracja serwerami, bezpieczeństwo. Czas: 60 minut. Za każdą poprawną odpowiedź 1 punkt.
+1. **Część pisemna** — 40 pytań zamkniętych z HTML, CSS, JS, PHP, SQL, baz danych, bezpieczeństwa. Czas: 60 minut. Za każdą poprawną odpowiedź 1 punkt.
+2. **Część praktyczna** — jedno duże zadanie: strona + baza + <Term word="backend">backend</Term>. Czas: 150 minut. Punkty za konkretne elementy.
 
-2. **Część praktyczna (zadanie)** — realizacja projektu: strona + baza danych + backend. Czas: 240 minut. Punkty za konkretne elementy (np. 3 pkt za poprawne połączenie z bazą, 5 pkt za formularz z walidacją).
+Możesz nie zdać pisemnej i zdać praktyczną — i odwrotnie. Końcowy wynik to suma.
 
-ZDAJESZ obie części niezależnie — możesz nie zdać pisemnej i zdać praktyczną (albo odwrotnie). Końcowy wynik to suma punktów.
+## Co dostajesz w części praktycznej
 
-## Co zobaczysz w części praktycznej
+Typowe zadanie to prosty system webowy — rezerwacje, sklep, ogłoszenia, rejestr klientów. Zawsze dostajesz:
 
-Typowe zadanie egzaminacyjne INF.03 to realizacja **prostego systemu webowego**, np.:
+- **Wymagania** — co system ma robić.
+- **Makiety** — jak ma wyglądać (kolory, layout, sekcje).
+- **Schemat bazy** — tabele, kolumny, relacje.
+- **Kryteria oceniania** — dokładna punktacja za każdy element.
 
-- System rezerwacji (np. sali, książek w bibliotece, wizyty u lekarza)
-- Sklep internetowy (katalog + koszyk + zamówienie)
-- System ogłoszeń (lista + dodawanie + edycja + usuwanie)
-- Rejestr (np. klientów, pracowników, uczniów)
-- Prosty CMS (blog, portfolio)
+Egzaminator porównuje Twój wynik z wzorcem punkt po punkcie. Nie ma "za aestetykę" — jest "za poprawne połączenie z bazą", "za prepared statements", "za walidację".
 
-Zawsze dostajesz:
+## Jak rozłożyć 150 minut
 
-- **Wymagania funkcjonalne** — co system ma robić.
-- **Wymagania niefunkcjonalne** — technologie (PHP + MySQL), wersje, ograniczenia.
-- **Makiety / screeny** — jak ma wyglądać interfejs.
-- **Schemat bazy danych** — jakie tabele i kolumny (czasem trzeba zaproponować własne).
-- **Kryteria oceniania** — konkretna punktacja za każdy element.
-
-## Anatomia typowego zadania
-
-```
-ZADANIE: System rezerwacji sal konferencyjnych
-
-Wymagania:
-1. Strona główna z listą sal i dostępnością.
-2. Formularz rezerwacji (data, godzina, sala, dane rezerwującego).
-3. Walidacja po stronie klienta i serwera.
-4. Baza danych MySQL: tabele `sale`, `rezerwacje`.
-5. Panel administracyjny: lista rezerwacji, anulowanie.
-6. Responsywność (mobile-first).
-
-Kryteria:
-- Połączenie z bazą (PDO, prepared statements) — 5 pkt
-- Formularz rezerwacji z walidacją HTML5 — 5 pkt
-- Wyświetlanie dostępnych sal — 5 pkt
-- Dodawanie rezerwacji do bazy — 5 pkt
-- Wyświetlanie historii rezerwacji — 3 pkt
-- Anulowanie rezerwacji (DELETE) — 3 pkt
-- Style CSS (responsywne) — 5 pkt
-- Bezpieczeństwo (htmlspecialchars, prepared statements) — 5 pkt
-- ...
-```
-
-## Strategia rozłożenia czasu
-
-**240 minut = 4 godziny**. Typowy podział:
+Największy błąd: od razu rzucasz się na kod. A powinieneś zacząć od czytania.
 
 | Etap | Czas | Co robisz |
 |------|------|-----------|
-| **1. Analiza arkusza** | 20 min | Przeczytaj CAŁY arkusz, podkreśl wymagania, zaplanuj strukturę plików |
-| **2. Baza danych** | 30 min | CREATE TABLE, FK, INSERT przykładowych danych do testów |
-| **3. Backend PHP** | 90 min | db.php, formularze, logika, walidacja |
-| **4. Frontend HTML+CSS** | 60 min | Szablony, style, responsywność |
-| **5. Testy i poprawki** | 30 min | Sprawdź każdy wymóg, przetestuj formularze, popraw błędy |
-| **6. Sprzątanie kodu** | 10 min | Komentarze, formatowanie, usunięcie debugów |
+| **1. Czytam arkusz** | 10 min | Przeczytaj CAŁY arkusz, podkreśl wymagania, zaplanuj pliki |
+| **2. Baza danych** | 20 min | CREATE TABLE, FK, INSERT danych testowych |
+| **3. Backend PHP** | 60 min | db.php, formularze, logika, <Term word="walidacja">walidacja</Term> |
+| **4. Frontend HTML+CSS** | 40 min | Struktura, style, <Term word="responsive">responsywność</Term> |
+| **5. Testy i poprawki** | 15 min | Sprawdź KAŻDY wymóg, przetestuj formularze |
+| **6. Sprzątanie** | 5 min | Usuń var_dump, dodaj brakujące htmlspecialchars |
 
-<Callout type="tip" title="Najpierw łatwe punkty">
-Zacznij od elementów wartych najwięcej punktów, które są dla Ciebie najłatwiejsze. Po co tracić 40 minut na zaawansowany panel administracyjny (5 pkt), gdy brakuje Ci czasu na poprawne połączenie z bazą (5 pkt)? Te 5 pkt z PDO to 10 minut.
+<Callout type="tip" title="Zasada: najpierw łatwe punkty">
+Zacznij od rzeczy, które dają najwięcej punktów za najmniej pracy. Połączenie z bazą (PDO) = 5 pkt za 10 minut. Responsywność (jeden media query) = 3 pkt za 2 minuty. Za to zaawansowany panel admina może kosztować 40 minut za te same 5 pkt.
 </Callout>
 
-## Techniki zwiększające punkty
+## Szablony punktowane na każdym egzaminie
 
-### 1. Zawsze zacznij od `db.php`
+Niezależnie od tematu zadania, te rzeczy są punktowane ZAWSZE:
+
+### 1. Połączenie z bazą (3-5 pkt)
 
 ```php
 <?php
-// db.php — jedyny plik z konfiguracją bazy
+// db.php — jedyny plik z konfiguracją
 $host = "localhost";
 $dbname = "egzamin";
 $user = "root";
 $pass = "";
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false
-    ]);
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
+        $user, $pass,
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false
+        ]
+    );
 } catch (PDOException $e) {
-    die("Błąd połączenia: " . htmlspecialchars($e->getMessage()));
+    die("Błąd: " . htmlspecialchars($e->getMessage()));
 }
 ```
 
-+5 pkt za samo działające połączenie. Używaj `require_once "db.php"` w każdym pliku, który potrzebuje bazy.
+W każdym pliku: `require_once "db.php";`. Gotowe, 5 punktów.
 
-### 2. Prepared statements WSZĘDZIE
+### 2. Prepared statements WSZĘDZIE (3-5 pkt)
 
 ```php
+// Zamiast:
+$pdo->query("SELECT * FROM users WHERE email = '$email'");  // ❌ SQL injection!
+
+// Użyj:
 $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
 $stmt->execute([":email" => $_GET["email"]]);
-$user = $stmt->fetch();
 ```
 
-Egzaminator sprawdza to **osobno** — potrafi dać 5 pkt tylko za poprawne prepared statements we wszystkich miejscach.
+<Term word="SQL injection">SQL injection</Term> = natychmiastowa utrata punktów. Egzaminator sprawdza to jako **osobne kryterium**.
 
-### 3. `htmlspecialchars()` przy KAŻDYM wyjściu
+### 3. htmlspecialchars() przy KAŻDYM echo (2-3 pkt)
 
 ```php
-<!-- W każdym echo/print danych z bazy lub formularza -->
+<!-- NIGDY nie wyświetlaj danych bezpośrednio -->
 <?= htmlspecialchars($user["name"]) ?>
 <?= htmlspecialchars($_POST["email"] ?? "") ?>
 ```
 
-Zapominanie o tym = punkty ujemne (aktywnie karane).
+<Term word="XSS">XSS</Term> = punkty ujemne. To dwie sekundy, żeby zawinąć w htmlspecialchars.
 
-### 4. Walidacja HTML5 w formularzach
+### 4. Walidacja HTML5 (2-3 pkt za darmo)
 
 ```html
 <form method="post">
@@ -126,88 +102,54 @@ Zapominanie o tym = punkty ujemne (aktywnie karane).
 </form>
 ```
 
-+2-3 pkt praktycznie za darmo.
-
-### 5. Walidacja PHP (server-side)
+### 5. Walidacja PHP po stronie serwera (3-5 pkt)
 
 ```php
-function walidujRezerwacje(array $dane): array {
-    $bledy = [];
-
-    if (empty($dane["data"])) $bledy[] = "Data jest wymagana";
-    if (strtotime($dane["data"]) < strtotime("today")) $bledy[] = "Data musi być w przyszłości";
-    if (!isset($dane["sala_id"]) || !is_numeric($dane["sala_id"])) $bledy[] = "Nieprawidłowa sala";
-    if (empty($dane["imie"])) $bledy[] = "Imię jest wymagane";
-
-    return $bledy;
-}
+$bledy = [];
+if (empty($_POST["data"])) $bledy[] = "Data jest wymagana";
+if (!is_numeric($_POST["sala_id"] ?? "")) $bledy[] = "Nieprawidłowa sala";
+if (empty($_POST["imie"])) $bledy[] = "Imię jest wymagane";
 ```
 
-Egzaminator sprawdza czy walidacja jest po **obu** stronach. Samo HTML5 to za mało.
+Egzaminator sprawdza obie strony. Sama walidacja HTML5 = za mało.
 
-### 6. Responsywność minimum
+### 6. Responsywność minimum (2-3 pkt)
 
 ```css
-/* Minimum: jeden breakpoint */
 .karta { width: 100%; }
 @media (min-width: 768px) {
     .karta { width: 50%; }
 }
 ```
 
-+2-3 pkt.
-
-### 7. Komentarze w kodzie
-
-```php
-// Połączenie z bazą danych — PDO z obsługą wyjątków
-$pdo = new PDO(...);
-
-// Pobierz aktywne rezerwacje dla wybranej sali
-$stmt = $pdo->prepare("
-    SELECT id, data, godzina_od, godzina_do, imie
-    FROM rezerwacje
-    WHERE sala_id = :sala_id
-      AND data >= CURDATE()
-    ORDER BY data, godzina_od
-");
-$stmt->execute([":sala_id" => $salaId]);
-```
-
-Nie przesadzaj, ale komentarze przy nietrywialnych blokach = lepsze wrażenie.
-
-## Na co patrzy egzaminator — kryteria punktacji
-
-Najczęstsze kryteria (z arkuszy CKE):
+## Na co patrzy egzaminator — tabela punktacji
 
 | Element | Typowe punkty |
 |---------|---------------|
-| Działające połączenie z bazą (PDO) | 3-5 |
-| Tabele w bazie zgodne ze schematem | 3-5 |
-| Prepared statements (wszędzie) | 3-5 |
-| `htmlspecialchars()` przy wyświetlaniu | 2-3 |
-| Walidacja HTML5 (required, type, pattern) | 2-3 |
-| Walidacja PHP (server-side) | 3-5 |
-| Formularz (action, method, label, name) | 2-3 |
-| SELECT/INSERT/UPDATE/DELETE w kodzie | po 2-4 za każdy |
-| Wyświetlanie danych z bazy | 3-5 |
-| Stylowanie CSS | 3-5 |
+| Połączenie z bazą (PDO) | 3-5 |
+| Tabele zgodne ze schematem | 3-5 |
+| <Term word="prepared statements">Prepared statements</Term> | 3-5 |
+| `htmlspecialchars()` | 2-3 |
+| Walidacja HTML5 | 2-3 |
+| Walidacja PHP | 3-5 |
+| Formularz (action, method, label) | 2-3 |
+| SELECT/INSERT/UPDATE/DELETE | po 2-4 |
+| Wyświetlanie danych | 3-5 |
+| CSS | 3-5 |
 | Responsywność | 2-3 |
-| Struktura plików (require_once, podział) | 2-3 |
-| Komentarze w kodzie | 1-2 |
+| Struktura plików | 2-3 |
 
-**Wniosek**: połowę punktów dostajesz za **podstawy dobrze zrobione** (DB, prepared statements, walidacja, htmlspecialchars). Druga połowa to funkcjonalność i UI.
+**Wniosek:** połowę punktów dostajesz za PODSTAWY dobrze zrobione — połączenie, prepared statements, htmlspecialchars, walidacja. Nie musisz robić nic genialnego.
 
-## Częste błędy egzaminacyjne
+## 5 błędów, które powtarzają się na każdym egzaminie
 
-### 1. Brak `WHERE` w UPDATE/DELETE
+### 1. Brak WHERE w UPDATE/DELETE
 
 ```php
-// ❌ Katastrofa
+// ❌ Wszyscy userzy = admin
 $pdo->exec("UPDATE users SET role = 'admin'");
-// Wszyscy userzy = admin
 
-// ✅ Poprawnie
+// ✅ Tylko ten jeden
 $stmt = $pdo->prepare("UPDATE users SET role = 'admin' WHERE id = :id");
 $stmt->execute([":id" => $userId]);
 ```
@@ -216,7 +158,6 @@ $stmt->execute([":id" => $userId]);
 
 ```php
 // ❌ SQL injection
-$email = $_POST["email"];
 $pdo->query("SELECT * FROM users WHERE email = '$email'");
 
 // ✅ Prepared statement
@@ -224,7 +165,7 @@ $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
 $stmt->execute([":email" => $_POST["email"]]);
 ```
 
-### 3. Brak `htmlspecialchars()` w wyjściu
+### 3. Brak htmlspecialchars()
 
 ```php
 // ❌ XSS
@@ -234,58 +175,46 @@ echo "Witaj, $imie";
 echo "Witaj, " . htmlspecialchars($imie);
 ```
 
-### 4. `session_start()` po wyjściu
+### 4. session_start() po HTML
 
 ```php
-<!-- ❌ Błąd: HTML przed session_start -->
+<!-- ❌ Błąd headers already sent -->
 <html>
-<body>
 <?php session_start(); ?>
-</body>
-</html>
 
-<!-- ✅ session_start na samej górze -->
+<!-- ✅ session_start na samej górze pliku -->
 <?php session_start(); ?>
 <html>
-<body>
 ```
 
-### 5. Mieszanie PHP i HTML bez logiki
+### 5. Brak redirect po POST
 
 ```php
-<!-- ❌ Cały HTML w jednym stringu -->
-echo "<table>";
-foreach ($users as $u) {
-    echo "<tr><td>" . $u["name"] . "</td></tr>";
-}
-echo "</table>";
+// ❌ F5 = ponowne wysłanie formularza
+$pdo->prepare("INSERT INTO rezerwacje ...")->execute([...]);
+echo "Zapisano!";
 
-<!-- ✅ PHP wplatane w HTML, czytelniej -->
-<table>
-    <?php foreach ($users as $u): ?>
-        <tr>
-            <td><?= htmlspecialchars($u["name"]) ?></td>
-        </tr>
-    <?php endforeach; ?>
-</table>
+// ✅ Post/Redirect/Get
+$pdo->prepare("INSERT INTO rezerwacje ...")->execute([...]);
+header("Location: index.php");
+exit;
 ```
-
-## Strategia na ostatnie 30 minut
-
-Gdy czas się kończy, **NIE zaczynaj nowych rzeczy**. Zamiast tego:
-
-1. **Przejdź CAŁY arkusz** i sprawdź checkboxy przy każdym wymogu — czy zrobiłeś?
-2. **Sprawdź każdy formularz** — submit, czy działa, czy waliduje.
-3. **Sprawdź każde wyjście HTML** — czy dane od usera są escapowane.
-4. **Sprawdź każde zapytanie SQL** — czy prepared statements.
-5. **Uzupełnij brakujące `htmlspecialchars`** — to 5 sekund, a może dać punkt.
-6. **Usuń `var_dump` / `console.log`** z produkcyjnego kodu.
-7. **Dodaj `header("Location: ...")`** po każdym POST, żeby uniknąć ponownego wysłania formularza (Post/Redirect/Get).
 
 <Callout type="exam">
-Post/Redirect/Get (PRG) wzorzec: po `INSERT` / `UPDATE` / `DELETE` zawsze rób `header("Location: ...")` + `exit`. Dzięki temu odświeżenie strony (F5) NIE powtórzy operacji.
+Post/Redirect/Get (PRG) = po INSERT/UPDATE/DELETE zawsze rób `header("Location: ...")` + `exit`. Bez tego F5 powtarza operację.
 </Callout>
+
+## Ostatnie 15 minut — NIE pisz nowego kodu
+
+Gdy czas się kończy:
+
+1. Przejdź CAŁY arkusz — czy spełniłeś każdy wymóg?
+2. Sprawdź każdy formularz — czy działa, czy waliduje.
+3. Sprawdź każde echo — czy htmlspecialchars.
+4. Sprawdź każde zapytanie SQL — czy prepared statement.
+5. Usuń var_dump / console.log / die("test").
+6. Upewnij się, że db.php jest require_once, nie require.
 
 ## Podsumowanie
 
-Egzamin INF.03 = 40 pytań pisemnych + zadanie praktyczne (240 min). Czytaj CAŁY arkusz przed pisaniem kodu. Zacznij od bazy danych (`db.php` + `CREATE TABLE`). Prepared statements + `htmlspecialchars()` + walidacja po obu stronach = 30-50% punktów praktycznie za darmo. Rozdziel czas: 20 min analiza, 30 min DB, 90 min PHP, 60 min HTML+CSS, 30 min testy, 10 min sprzątanie. Unikaj: brak `WHERE`, SQL injection, brak `htmlspecialchars`, `session_start` po wyjściu. Ostatnie 30 min = review, nie nowe funkcje.
+Czytaj arkusz zanim napiszesz linię kodu. 10 minut analizy oszczędza 30 minut poprawek. Połowę punktów masz za podstawy: PDO, <Term word="prepared statements">prepared statements</Term>, htmlspecialchars, walidacja po obu stronach. Ostatnie 15 minut = review, nie nowe funkcje. I pamiętaj: egzaminator nie ocenia "czy ładny kod" — ocenia checklistę punktów. Zrób wszystko na liście i masz zdane.

@@ -408,20 +408,20 @@ export const courseDetails: CourseDetail[] = [
                 ]
             },
             {
-                id: "projekt",
-                title: "Projekt egzaminacyjny",
+                id: "egzaminy",
+                title: "Egzaminy praktyczne INF.03",
                 description:
-                    "Przejście pełnego zadania typu egzaminacyjnego: od makiety do działającej aplikacji z bazą.",
+                    "Realne arkusze egzaminacyjne z rozwiązaniami, omówieniem i wnioskami. Nowe sesje dopisywane na bieżąco.",
                 lessons: [
                     {
                         slug: "anatomia-zadania",
-                        title: "Anatomia zadania INF.03",
-                        summary: "Jak czytać arkusz, jak rozłożyć czas, na co patrzy egzaminator.",
+                        title: "Jak czytać arkusz INF.03",
+                        summary: "Struktura arkusza, podział czasu, na co patrzy egzaminator, typowe pułapki.",
                         published: true,
                         minutes: 15,
                         objectives: [
                             "Rozłożysz arkusz egzaminacyjny na sekcje",
-                            "Zaplanujesz czas (ile minut na pytanie zamknięte / otwarte)",
+                            "Zaplanujesz czas (ile minut na SQL / PHP / CSS)",
                             "Rozpoznasz typowe pułapki punktowe",
                             "Zastosujesz zasadę 'najpierw łatwe punkty'"
                         ],
@@ -429,19 +429,52 @@ export const courseDetails: CourseDetail[] = [
                         quizPoolSize: 20
                     },
                     {
-                        slug: "checklist-php-mysql",
-                        title: "Checklist: PHP + MySQL",
-                        summary: "Lista kontrolna kroków przy zadaniu z PHP i bazą danych.",
+                        slug: "egzamin-php-styczen-2026",
+                        title: "Egzamin PHP+MySQL — styczeń 2026",
+                        summary: "Arkusz INF.03-01-26.01-SG: baza 'samochody', JOIN, obliczenia w PHP, losowanie rekordów.",
                         published: true,
-                        minutes: 12,
+                        minutes: 45,
                         objectives: [
-                            "Wymienisz kroki konfiguracji połączenia z bazą",
-                            "Zidentyfikujesz punkty za prepared statements",
-                            "Dodasz walidację formularza po stronie serwera",
-                            "Zastosujesz konwencję nazewnictwa plików (index.php, dane.php)"
+                            "Przejdziesz pełne rozwiązanie arkusza krok po kroku",
+                            "Zrozumiesz punktację za JOIN, prepared statements, CSS flex",
+                            "Poznasz wnioski z tej sesji (co nowego vs poprzednie lata)"
                         ],
                         hasQuiz: true,
                         quizPoolSize: 20
+                    },
+                    /*
+                     * PLAN: kolejne lekcje egzaminacyjne dopisywane po każdej sesji CKE.
+                     * Wzorzec: egzamin-{jezyk}-{miesiac}-{rok}.mdx
+                     * Przykłady do dodania:
+                     *   - egzamin-js-styczen-2026 (arkusz z czystym JS, np. INF.03-05-26.01-SG)
+                     *   - egzamin-php-js-styczen-2026 (arkusz łączony PHP+JS)
+                     *   - egzamin-php-czerwiec-2026 (po sesji czerwcowej)
+                     *
+                     * Każda lekcja egzaminacyjna ma sekcje:
+                     *   1. Treść zadania (z arkusza CKE)
+                     *   2. Rozwiązanie krok po kroku
+                     *   3. Omówienie punktacji
+                     *   4. Wnioski z sesji (co nowego, czego nie było wcześniej)
+                     */
+                    {
+                        slug: "egzamin-js-styczen-2026",
+                        title: "Egzamin JavaScript — styczeń 2026",
+                        summary: "Arkusz z czystym JS z sesji styczeń 2026 — rozwiązanie i omówienie.",
+                        published: false, // do uzupełnienia gdy znajdziemy arkusz JS
+                        minutes: 40,
+                        objectives: [],
+                        hasQuiz: false,
+                        quizPoolSize: 0
+                    },
+                    {
+                        slug: "egzamin-php-js-styczen-2026",
+                        title: "Egzamin PHP + JS — styczeń 2026",
+                        summary: "Arkusz łączony PHP+JS z sesji styczeń 2026 — rozwiązanie i omówienie.",
+                        published: false, // do uzupełnienia
+                        minutes: 50,
+                        objectives: [],
+                        hasQuiz: false,
+                        quizPoolSize: 0
                     }
                 ]
             }

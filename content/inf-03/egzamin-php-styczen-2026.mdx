@@ -1,0 +1,256 @@
+Ten arkusz to Twój pierwszy pełny egzamin do przejścia. Nie czytaj go jak podręcznik — czytaj jak zadanie, które masz 150 minut na rozwiązanie. Potem przeczytaj moje rozwiązanie i porównaj ze swoim. Na końcu — wnioski: co w tej sesji było nowe i na co zwrócić uwagę.
+
+## Arkusz: INF.03-01-26.01-SG (styczeń 2026)
+
+**Temat:** Salon samochodowy — baza `samochody`, strona PHP z tabelą pojazdów, konfiguratorem i kontaktem.
+
+**Czas:** 150 minut. **Język:** PHP. **Baza:** MariaDB/MySQL.
+
+## Baza danych — co dostajesz
+
+Dwie tabele połączone <Term word="klucz_obcy">kluczem obcym</Term>:
+
+```sql
+CREATE TABLE kolory (
+  id      INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  nazwa   VARCHAR(20) NOT NULL,
+  doplata DECIMAL(10,2) UNSIGNED DEFAULT NULL
+);
+
+CREATE TABLE pojazdy (
+  id    INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  marka VARCHAR(20) NOT NULL,
+  model VARCHAR(20) NOT NULL,
+  cena  DECIMAL(15,0) UNSIGNED NOT NULL,
+  kolor INT UNSIGNED NOT NULL,
+  FOREIGN KEY (kolor) REFERENCES kolory(id)
+);
+```
+
+**Dane:** 8 kolorów (4 bazowe z dopłatą 0, 4 metalik z dopłatą 1000). 62 pojazdy, marki `BM`/`AM`, modele `alfa`/`beta`/`meta`.
+
+Kluczowa informacja: **cena finalna = pojazdy.cena + kolory.doplata**. To obliczenie robisz w PHP, nie w SQL.
+
+## Zadanie 1 — Zapytania SQL
+
+Egzaminator daje 4 zapytania. Oto one z rozwiązaniem:
+
+### Zapytanie 1: 15 najdroższych pojazdów marki BM
+
+```sql
+SELECT marka, model, cena
+FROM pojazdy
+WHERE marka = 'BM'
+ORDER BY cena DESC
+LIMIT 15;
+```
+
+<Callout type="tip" title="Punkty za kolejność">
+`ORDER BY` MUSI być przed `LIMIT`. Odwrotna kolejność = błąd składni = 0 punktów za to zapytanie.
+</Callout>
+
+### Zapytanie 2: średnia i maksymalna cena modelu "meta"
+
+```sql
+SELECT AVG(cena) AS 'Średnia cena', MAX(cena) AS 'Maksymalna cena'
+FROM pojazdy
+WHERE model = 'meta';
+```
+
+Aliasy (`AS`) muszą być **dokładnie** takie jak w poleceniu. Egzaminator porównuje wynik z wzorcem.
+
+### Zapytanie 3: pojazdy "alfa" z danymi koloru (JOIN)
+
+```sql
+SELECT marka, model, cena, nazwa, doplata
+FROM pojazdy
+INNER JOIN kolory ON pojazdy.kolor = kolory.id
+WHERE model = 'alfa';
+```
+
+<Callout type="exam">
+<Term word="JOIN">JOIN</Term> na kluczu obcym to **najczęściej punktowane zapytanie** na egzaminie INF.03. Jeśli nie umiesz pisać JOIN-ów z pamięci — wróć do lekcji "Relacje i JOIN" i ćwicz do skutku.
+</Callout>
+
+### Zapytanie 4: 2 losowe pojazdy
+
+```sql
+SELECT marka, model, cena
+FROM pojazdy
+ORDER BY RAND()
+LIMIT 2;
+```
+
+`ORDER BY RAND()` — sortuje losowo, `LIMIT 2` bierze dwa pierwsze. Proste, ale trzeba znać.
+
+## Zadanie 2 — Skrypt PHP (index.php)
+
+Strona ma strukturę: `header` → `nav` → `main` (3 sekcje flex) → `footer`.
+
+### Połączenie z bazą
+
+```php
+<?php
+$conn = new mysqli("localhost", "root", "", "samochody");
+$conn->set_charset("utf8");
+```
+
+<Callout type="warning" title="set_charset">
+Bez `set_charset("utf8")` polskie znaki w bazie (np. "niebieski") mogą się wyświetlić jako krzaki. Egzaminator to widzi i odejmuje punkt.
+</Callout>
+
+### Sekcja #lewa — tabela pojazdów "alfa" z ceną całkowitą
+
+Tu łączysz `pojazdy` z `kolory` i obliczasz cenę w PHP:
+
+```php
+$query = "SELECT marka, model, cena, nazwa, doplata
+          FROM pojazdy
+          INNER JOIN kolory ON kolor = kolory.id
+          WHERE model = 'alfa'";
+$result = $conn->query($query);
+
+echo "<table>";
+echo "<tr><th>Marka</th><th>Model</th><th>Kolor</th><th>Cena całkowita</th></tr>";
+
+while ($row = $result->fetch_assoc()) {
+    $cena_calkowita = $row['cena'] + $row['doplata'];
+    echo "<tr>";
+    echo "<td>" . $row['marka'] . "</td>";
+    echo "<td>" . $row['model'] . "</td>";
+    echo "<td>" . $row['nazwa'] . "</td>";
+    echo "<td>" . $cena_calkowita . "</td>";
+    echo "</tr>";
+}
+echo "</table>";
+```
+
+**Dlaczego obliczenie w PHP a nie w SQL?** Bo polecenie mówi "oblicz cenę całkowitą w skrypcie". Egzaminator sprawdza, CZY robisz to w PHP. Gdybyś zrobił `SELECT cena + doplata AS cena_calkowita` w SQL — technicznie działa, ale tracisz punkt za "realizację w skrypcie".
+
+### Sekcja #srodkowa — 2 losowe pojazdy z obrazkami
+
+```php
+$query = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
+$result = $conn->query($query);
+$nr = 1;
+
+while ($row = $result->fetch_assoc()) {
+    echo "<img src='a{$nr}.jpg' alt='Pojazd {$nr}'>";
+    echo "<table>";
+    echo "<tr><td rowspan='2'>" . $row['cena'] . "</td>";
+    echo "<td>Marka: " . $row['marka'] . "</td></tr>";
+    echo "<tr><td>Model: " . $row['model'] . "</td></tr>";
+    echo "</table>";
+    $nr++;
+}
+```
+
+<Callout type="tip" title="rowspan/colspan">
+`rowspan='2'` oznacza, że komórka zajmuje 2 wiersze. Egzaminator patrzy na to w źródle HTML — jeśli brakuje, tracisz punkt za "zgodność z makietą".
+</Callout>
+
+### Sekcja #prawa — statyczna
+
+```php
+echo "<p>Telefon: 111 222 444</p>";
+echo "<img src='a3.png' alt='Kontakt'>";
+```
+
+### Zamknięcie
+
+```php
+$conn->close();
+```
+
+## Zadanie 3 — CSS (styl.css)
+
+Kluczowe reguły, które egzaminator sprawdza:
+
+```css
+* {
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+}
+
+header, footer {
+    background-color: DarkGreen;
+    color: white;
+}
+
+nav {
+    background-color: ForestGreen;
+}
+
+main {
+    display: flex;
+}
+
+section {
+    background-color: LightGreen;
+    width: 33.3%;
+    height: 550px;
+    overflow: auto;
+}
+
+table {
+    width: 90%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid DarkGreen;
+}
+
+#lewa tr:hover {
+    background-color: ForestGreen;
+}
+
+#srodkowa img {
+    width: 95%;
+    border-radius: 8px;
+}
+```
+
+<Callout type="exam">
+`display: flex` na `main` + `width: 33.3%` na `section` = trzy kolumny obok siebie. To najczęstszy layout na egzaminie INF.03. Naucz się go na pamięć.
+</Callout>
+
+## Omówienie punktacji
+
+| Element | Punkty | Na co patrzy egzaminator |
+|---------|--------|--------------------------|
+| Zapytania SQL (4 szt.) | ~8 pkt | Poprawność składni, aliasy, kolejność klauzul |
+| Połączenie z bazą | ~2 pkt | mysqli, charset, close() |
+| Skrypt #1 (JOIN + obliczenie) | ~6 pkt | JOIN w PHP, obliczenie w PHP (nie SQL), pętla while |
+| Skrypt #2 (losowanie) | ~4 pkt | ORDER BY RAND(), rowspan, dynamiczne obrazki |
+| HTML struktura | ~4 pkt | Semantyka (header/nav/main/footer), zgodność z makietą |
+| CSS | ~6 pkt | flex, kolory, hover, border-collapse, overflow |
+
+**Łącznie:** ~30 punktów. Próg zdania: 75% = 22-23 punkty.
+
+## Wnioski z sesji styczeń 2026
+
+Co nowego / nietypowego w porównaniu z poprzednimi latami:
+
+1. **Obliczenie w PHP zamiast SQL** — wcześniej (2024-2025) cena finalna była liczona w zapytaniu SQL (`SELECT cena + doplata`). Teraz egzaminator wymaga, żebyś to zrobił w pętli PHP. Czytaj polecenie dosłownie.
+
+2. **ORDER BY RAND()** — pojawiło się po raz pierwszy w sesji głównej (wcześniej było tylko w próbnych). Zapamiętaj składnię.
+
+3. **rowspan w dynamicznej tabeli** — generujesz HTML z `rowspan` wewnątrz pętli `while`. To trudniejsze niż statyczny rowspan, bo musisz pilnować, który `<tr>` ma `<td rowspan>` a który nie.
+
+4. **Motyw kolorystyczny z nazwami CSS** — `DarkGreen`, `ForestGreen`, `LightGreen`. Egzaminator akceptuje zarówno nazwy jak i hex, ale nazwy są szybsze do wpisania i mniej podatne na literówki.
+
+5. **overflow: auto na section** — gdy tabela jest dłuższa niż 550px, pojawia się scroll. Bez tego treść wylewa się poza sekcję i tracisz punkt za "zgodność z makietą".
+
+---
+
+{/*
+  STRUKTURA DLA PRZYSZŁYCH SESJI:
+  Gdy pojawi się nowy arkusz (np. czerwiec 2026), skopiuj ten plik jako
+  egzamin-php-czerwiec-2026.mdx i podmień:
+    1. Treść zadania (baza, zapytania, skrypt)
+    2. Rozwiązanie krok po kroku
+    3. Punktację
+    4. Wnioski ("co nowego w tej sesji")
+  Dodaj wpis w lib/courses.ts w module "egzaminy".
+*/}
