@@ -416,7 +416,7 @@ export const courseDetails: CourseDetail[] = [
                 hidden: true,
                 lessons: [
                     { slug: "anatomia-zadania", title: "Jak czytać arkusz INF.03", summary: "Struktura arkusza, podział czasu, na co patrzy egzaminator.", published: true, minutes: 15, hasQuiz: true, quizPoolSize: 20 },
-                    { slug: "egzamin-01-styczen-2026", title: "Arkusz 01 — Portal samochodowy", summary: "PHP+SQL", published: true, minutes: 40 },
+                    { slug: "egzamin-01-styczen-2026", title: "Arkusz 01 — Portal samochodowy", summary: "Interaktywny przewodnik egzaminacyjny: SQL, PHP, CSS, punktacja i checklista.", published: true, minutes: 150 },
                     { slug: "egzamin-02-styczen-2026", title: "Arkusz 02 — Zdrowy bazarek", summary: "PHP+SQL", published: true, minutes: 40 },
                     { slug: "egzamin-03-styczen-2026", title: "Arkusz 03 — Pola figur", summary: "JavaScript", published: true, minutes: 40 },
                     { slug: "egzamin-04-styczen-2026", title: "Arkusz 04 — Portal maturzystów", summary: "PHP+SQL", published: true, minutes: 45 },

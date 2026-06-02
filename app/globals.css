@@ -4344,6 +4344,470 @@ a.lesson-nav-link:hover {
     .exam-final-checklist label { grid-template-columns: 34px 1fr; }
 }
 
+
+/* ============================================================
+   EXAM GUIDE — interactive exam lesson mode
+   Scope: only inside .exam-lesson-page
+   ============================================================ */
+.exam-lesson-page .exam-guide {
+    --exam-guide-radius: clamp(16px, 2vw, 28px);
+    --exam-guide-gap: clamp(14px, 2vw, 24px);
+    container-type: inline-size;
+    max-width: 1160px;
+    margin-inline: auto;
+}
+
+.exam-lesson-page .exam-guide :target {
+    scroll-margin-top: clamp(88px, 12svh, 140px);
+}
+
+.exam-lesson-page .exam-guide-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.28fr) minmax(320px, 0.72fr);
+    gap: 10px;
+    min-height: auto;
+    align-items: stretch;
+    margin: 0 auto 12px;
+}
+
+.exam-lesson-page .exam-guide-hero-copy,
+.exam-lesson-page .exam-guide-hero-side,
+.exam-lesson-page .exam-guide-section,
+.exam-lesson-page .exam-plan-step,
+.exam-lesson-page .exam-code-card,
+.exam-lesson-page .exam-warning-grid article,
+.exam-lesson-page .exam-score-grid article,
+.exam-lesson-page .exam-local-checklist label,
+.exam-lesson-page .exam-timeline-guide li {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+        var(--exam-panel-2);
+    border: 1px solid rgba(255, 255, 255, 0.085);
+    border-radius: var(--exam-guide-radius);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.exam-lesson-page .exam-guide-hero-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(16px, 3vw, 34px);
+    background:
+        radial-gradient(circle at 8% 8%, rgba(124, 58, 237, 0.26), transparent 32%),
+        radial-gradient(circle at 88% 18%, rgba(34, 211, 238, 0.18), transparent 34%),
+        linear-gradient(135deg, rgba(9, 9, 18, 0.98), rgba(2, 6, 23, 0.98));
+}
+
+.exam-lesson-page .exam-guide-kicker,
+.exam-lesson-page .exam-guide-section-head > p,
+.exam-lesson-page .exam-guide-stats dt,
+.exam-lesson-page .exam-guide-rule span,
+.exam-lesson-page .exam-plan-details span,
+.exam-lesson-page .exam-code-card header > span,
+.exam-lesson-page .exam-checklist-progress span {
+    margin: 0;
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: clamp(0.68rem, 1vw, 0.76rem);
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--exam-accent);
+}
+
+.exam-lesson-page .lesson-content .exam-guide-hero h2 {
+    margin: 12px 0 18px;
+    max-width: 12ch;
+    font-size: clamp(2.6rem, 7.2vw, 6.2rem);
+    line-height: 0.88;
+    letter-spacing: -0.075em;
+    text-wrap: balance;
+}
+
+.exam-lesson-page .exam-guide-hero-copy > p:not(.exam-guide-kicker) {
+    max-width: 62ch;
+    margin: 0;
+    color: rgba(255,255,255,0.72);
+    font-size: clamp(1.02rem, 1.6vw, 1.22rem);
+    line-height: 1.7;
+}
+
+.exam-lesson-page .exam-guide-hero-side {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    padding: 14px;
+}
+
+.exam-lesson-page .exam-guide-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 0;
+}
+
+.exam-lesson-page .exam-guide-stats div,
+.exam-lesson-page .exam-guide-rule {
+    min-width: 0;
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(0,0,0,0.22);
+    border: 1px solid rgba(255,255,255,0.075);
+}
+
+.exam-lesson-page .exam-guide-stats dd {
+    margin: 5px 0 0;
+    color: #fff;
+    font-weight: 850;
+    line-height: 1.2;
+}
+
+.exam-lesson-page .exam-guide-rule strong {
+    display: block;
+    margin-top: 6px;
+    color: #fff;
+    font-size: clamp(1rem, 1.5vw, 1.16rem);
+}
+
+.exam-lesson-page .exam-guide-hero-side .exam-picker {
+    margin-top: 0;
+}
+
+.exam-lesson-page .exam-guide-hero-side .exam-picker-toggle {
+    border-radius: 16px;
+}
+
+.exam-lesson-page .exam-guide-nav {
+    position: sticky;
+    top: 76px;
+    z-index: 20;
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin: 0 auto clamp(22px, 4vw, 42px);
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 999px;
+    background: rgba(2, 6, 23, 0.78);
+    backdrop-filter: blur(18px);
+    overscroll-behavior-inline: contain;
+}
+
+.exam-lesson-page .exam-guide-nav a {
+    flex: 0 0 auto;
+    padding: 9px 13px;
+    border-radius: 999px;
+    color: rgba(255,255,255,0.66);
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.exam-lesson-page .exam-guide-nav a:hover,
+.exam-lesson-page .exam-guide-nav a:focus-visible,
+.exam-lesson-page .exam-guide-nav a.active {
+    color: #020617;
+    background: var(--exam-accent);
+    outline: none;
+}
+
+.exam-lesson-page .exam-guide-section {
+    margin: clamp(22px, 4vw, 48px) auto;
+    padding: clamp(18px, 3vw, 34px);
+}
+
+.exam-lesson-page .exam-guide-section-head {
+    max-width: 840px;
+    margin-bottom: clamp(16px, 3vw, 26px);
+}
+
+.exam-lesson-page .lesson-content .exam-guide-section h2 {
+    margin: 6px 0 10px;
+    font-size: clamp(1.8rem, 4vw, 3.6rem);
+    line-height: 0.98;
+    letter-spacing: -0.052em;
+    text-wrap: balance;
+}
+
+.exam-lesson-page .exam-plan-grid,
+.exam-lesson-page .exam-code-grid,
+.exam-lesson-page .exam-warning-grid,
+.exam-lesson-page .exam-score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 12px;
+}
+
+.exam-lesson-page .exam-plan-step {
+    overflow: clip;
+}
+
+.exam-lesson-page .exam-plan-step summary {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: center;
+    padding: 18px;
+    cursor: pointer;
+    list-style: none;
+}
+
+.exam-lesson-page .exam-plan-step summary::-webkit-details-marker { display: none; }
+.exam-lesson-page .exam-plan-step[open] summary { border-bottom: 1px solid rgba(255,255,255,0.07); }
+.exam-lesson-page .exam-plan-step[open] .exam-plan-action { color: #020617; background: var(--exam-accent); }
+
+.exam-lesson-page .exam-plan-index {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    background: rgba(34, 211, 238, 0.12);
+    color: var(--exam-accent);
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.75rem;
+    font-weight: 900;
+}
+
+.exam-lesson-page .exam-plan-title-wrap strong,
+.exam-lesson-page .exam-code-card h3,
+.exam-lesson-page .exam-warning-grid h3,
+.exam-lesson-page .exam-score-grid h3,
+.exam-lesson-page .exam-timeline-guide h3 {
+    display: block;
+    margin: 0;
+    color: #fff;
+    font-family: var(--font-space-grotesk), sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.12;
+}
+
+.exam-lesson-page .exam-plan-title-wrap em {
+    display: block;
+    margin-top: 4px;
+    color: rgba(255,255,255,0.56);
+    font-style: normal;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.exam-lesson-page .exam-plan-action {
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.68);
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.68rem;
+    font-weight: 850;
+    text-transform: uppercase;
+}
+
+.exam-lesson-page .exam-plan-details {
+    display: grid;
+    gap: 12px;
+    padding: 16px 18px 18px;
+}
+
+.exam-lesson-page .exam-plan-details p {
+    margin: 5px 0 0;
+    color: rgba(255,255,255,0.68);
+}
+
+.exam-lesson-page .exam-plan-extra {
+    color: rgba(255,255,255,0.72);
+}
+
+.exam-lesson-page .exam-materials-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 16px;
+    align-items: stretch;
+}
+
+.exam-lesson-page .exam-materials-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.exam-lesson-page .exam-materials-grid figure:first-child { grid-column: 1 / -1; }
+.exam-lesson-page .exam-materials-layout figure { margin: 0; overflow: clip; border-radius: 18px; background: #050b16; border: 1px solid rgba(255,255,255,0.08); }
+.exam-lesson-page .exam-materials-layout img { width: 100%; height: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform 0.18s ease; }
+.exam-lesson-page .exam-materials-result img { aspect-ratio: 16 / 10; object-fit: contain; background: rgba(255,255,255,0.03); }
+.exam-lesson-page .exam-materials-layout a:hover img { transform: scale(1.025); }
+.exam-lesson-page .exam-materials-layout figcaption { padding: 12px 14px; }
+.exam-lesson-page .exam-materials-layout figcaption strong { display: block; color: #fff; }
+.exam-lesson-page .exam-materials-layout figcaption span { display: block; color: rgba(255,255,255,0.52); font-size: 0.82rem; }
+
+.exam-lesson-page .exam-timeline-guide {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.exam-lesson-page .exam-timeline-guide li {
+    position: relative;
+    padding: 18px;
+}
+
+.exam-lesson-page .exam-timeline-guide time {
+    display: inline-flex;
+    margin-bottom: 12px;
+    color: var(--exam-accent);
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.74rem;
+    font-weight: 900;
+}
+
+.exam-lesson-page .exam-timeline-guide p,
+.exam-lesson-page .exam-warning-grid dd,
+.exam-lesson-page .exam-score-grid p,
+.exam-lesson-page .exam-code-card header p,
+.exam-lesson-page .exam-code-mistake p {
+    margin: 8px 0 0;
+    color: rgba(255,255,255,0.64);
+    line-height: 1.55;
+}
+
+.exam-lesson-page .exam-timeline-guide li > span {
+    display: inline-flex;
+    margin-top: 12px;
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: rgba(124,58,237,0.16);
+    color: #ddd6fe;
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.66rem;
+    font-weight: 850;
+    text-transform: uppercase;
+}
+
+.exam-lesson-page .exam-warning-grid article,
+.exam-lesson-page .exam-score-grid article {
+    padding: 18px;
+}
+
+.exam-lesson-page .exam-warning-grid dl { margin: 12px 0 0; display: grid; gap: 10px; }
+.exam-lesson-page .exam-warning-grid dt { color: #fca5a5; font-family: var(--font-jetbrains-mono), monospace; font-size: 0.68rem; font-weight: 850; text-transform: uppercase; }
+.exam-lesson-page .exam-warning-grid dd { margin-top: 3px; }
+
+.exam-lesson-page .exam-code-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 18px;
+}
+
+.exam-lesson-page .exam-code-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.exam-lesson-page .exam-code-actions button {
+    min-height: 40px;
+    padding: 9px 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.055);
+    color: #fff;
+    cursor: pointer;
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.72rem;
+    font-weight: 850;
+    text-transform: uppercase;
+}
+.exam-lesson-page .exam-code-actions button:hover,
+.exam-lesson-page .exam-code-actions button:focus-visible { background: var(--exam-accent); color: #020617; outline: none; }
+.exam-lesson-page .exam-code-card pre { max-height: min(560px, 68svh); overflow: auto; margin: 0; }
+.exam-lesson-page .exam-code-mistake { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 12px; }
+.exam-lesson-page .exam-code-mistake summary { cursor: pointer; color: #fca5a5; font-family: var(--font-jetbrains-mono), monospace; font-size: 0.72rem; font-weight: 850; text-transform: uppercase; }
+
+.exam-lesson-page .exam-score-grid article strong {
+    display: inline-flex;
+    margin-bottom: 14px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    color: #020617;
+    background: var(--exam-accent);
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.78rem;
+    font-weight: 900;
+}
+
+.exam-lesson-page .exam-local-checklist {
+    display: grid;
+    gap: 10px;
+}
+
+.exam-lesson-page .exam-checklist-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: rgba(34, 211, 238, 0.08);
+    border: 1px solid var(--exam-line);
+}
+
+.exam-lesson-page .exam-checklist-progress strong { color: #fff; font-family: var(--font-jetbrains-mono), monospace; }
+.exam-lesson-page .exam-local-checklist label {
+    display: grid;
+    grid-template-columns: auto 38px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    padding: 14px;
+    cursor: pointer;
+}
+.exam-lesson-page .exam-local-checklist input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--exam-accent); }
+.exam-lesson-page .exam-local-checklist label > span:nth-of-type(1) { color: var(--exam-accent); font-family: var(--font-jetbrains-mono), monospace; font-size: 0.74rem; font-weight: 900; }
+.exam-lesson-page .exam-local-checklist label > span:nth-of-type(2) { color: rgba(255,255,255,0.76); }
+.exam-lesson-page .exam-local-checklist label.done { background: rgba(34,197,94,0.10); border-color: rgba(34,197,94,0.28); }
+.exam-lesson-page .exam-local-checklist label.done > span:nth-of-type(2) { text-decoration: line-through; text-decoration-thickness: 2px; color: rgba(255,255,255,0.48); }
+
+@container (max-width: 860px) {
+    .exam-lesson-page .exam-guide-hero,
+    .exam-lesson-page .exam-materials-layout,
+    .exam-lesson-page .exam-timeline-guide {
+        grid-template-columns: 1fr;
+    }
+
+    .exam-lesson-page .exam-guide-hero { min-height: auto; }
+    .exam-lesson-page .exam-timeline-guide li { border-left: 3px solid var(--exam-accent); }
+}
+
+@media (max-width: 760px) {
+    .exam-lesson-page .exam-guide-nav {
+        top: 62px;
+        border-radius: 18px;
+        scroll-snap-type: x mandatory;
+    }
+    .exam-lesson-page .exam-guide-nav a { scroll-snap-align: start; }
+    .exam-lesson-page .exam-guide-stats,
+    .exam-lesson-page .exam-materials-grid { grid-template-columns: 1fr 1fr; }
+    .exam-lesson-page .exam-plan-step summary { grid-template-columns: auto minmax(0, 1fr); }
+    .exam-lesson-page .exam-plan-action { grid-column: 2; justify-self: start; }
+}
+
+@media (max-width: 520px) {
+    .exam-lesson-page .exam-guide-stats { grid-template-columns: 1fr; }
+    .exam-lesson-page .exam-materials-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+    .exam-lesson-page .exam-materials-grid figure { flex: 0 0 78%; scroll-snap-align: start; }
+    .exam-lesson-page .exam-local-checklist label { grid-template-columns: auto minmax(0, 1fr); }
+    .exam-lesson-page .exam-local-checklist label > span:nth-of-type(1) { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .exam-lesson-page .exam-guide *,
+    .exam-lesson-page .exam-guide *::before,
+    .exam-lesson-page .exam-guide *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+        animation-duration: 0.001ms !important;
+    }
+}
+
 /* Mobile fixes */
 @media (max-width: 640px) {
     .exam-timeline { gap: 8px; }

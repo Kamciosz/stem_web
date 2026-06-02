@@ -1,305 +1,195 @@
-<div className="exam-review-hero">
-  <div className="exam-review-kicker">INF.03 · STYCZEŃ 2026 · ARKUSZ 01</div>
-  <h2>Portal samochodowy — rozwiązanie egzaminu bez lania wody</h2>
-  <div className="exam-copy">
-    To nie jest zwykła lekcja HTML/CSS. To jest rozbiór arkusza tak, jak sprawdzałby go
-    nauczyciel w złym humorze: co daje punkty, co wygląda dobrze tylko w twojej głowie,
-    gdzie łatwo stracić czas i które fragmenty muszą działać bez dyskusji.
-  </div>
-  <div className="exam-review-hero-grid">
-    <div><span>Czas</span><strong>150 min</strong></div>
-    <div><span>Technologia</span><strong>PHP + SQL + CSS</strong></div>
-    <div><span>Cel</span><strong>strona salonu aut</strong></div>
-    <div><span>Próg</span><strong>~22/30 pkt</strong></div>
-  </div>
-</div>
+<ExamGuideShell>
 
-<div className="exam-verdict danger">
-  <div className="exam-verdict-label">werdykt nauczyciela</div>
-  <div className="exam-copy">
-    Jeśli zaczniesz od kolorowania strony, to sam sobie robisz krzywdę. Ten arkusz wygrywa się
-    kolejnością: najpierw SQL, potem PHP z bazą, dopiero później CSS i kosmetyka. Egzaminator
-    nie będzie podziwiał twojego gustu — będzie szukał konkretnych rzeczy w kodzie.
-  </div>
-</div>
+<ExamHero
+  kicker="INF.03 · Styczeń 2026 · Arkusz 01"
+  title="Arkusz 01 — Portal samochodowy"
+  description="Interaktywny przewodnik po rozwiązaniu: najpierw plan i kolejność pracy, potem materiały, błędy, kod i kontrola. Nie czytasz ściany tekstu — rozwijasz tylko to, czego akurat potrzebujesz."
+  rule="SQL → PHP → CSS → Kontrola"
+  stats={[
+    { label: "Czas", value: "150 min" },
+    { label: "Technologie", value: "PHP + SQL + CSS" },
+    { label: "Cel", value: "strona salonu aut" },
+    { label: "Próg", value: "około 22/30 pkt" }
+  ]}
+/>
 
-## 1. Co tu właściwie trzeba zrobić?
+<ExamQuickNav
+  items={[
+    { href: "#plan", label: "Plan" },
+    { href: "#materialy", label: "Materiały" },
+    { href: "#strategia", label: "Strategia" },
+    { href: "#bledy", label: "Błędy" },
+    { href: "#kod", label: "Kod" },
+    { href: "#punktacja", label: "Punktacja" },
+    { href: "#checklista", label: "Checklista" }
+  ]}
+/>
 
-<div className="exam-case-board">
-  <div className="exam-case-card priority-high">
-    <span className="case-index">01</span>
-    <h3>Baza danych</h3>
-    <div className="exam-copy">Dwie tabele: <code>kolory</code> i <code>pojazdy</code>. Relacja przez <code>pojazdy.kolor → kolory.id</code>.</div>
-    <strong>Nie rozumiesz JOIN-a = tracisz najłatwiejsze punkty z backendu.</strong>
-  </div>
-  <div className="exam-case-card priority-high">
-    <span className="case-index">02</span>
-    <h3>Zapytania SQL</h3>
-    <div className="exam-copy">4 krótkie zapytania: filtrowanie, agregacja, JOIN, losowanie.</div>
-    <strong>To powinno być zrobione przed dotknięciem PHP.</strong>
-  </div>
-  <div className="exam-case-card priority-mid">
-    <span className="case-index">03</span>
-    <h3>PHP</h3>
-    <div className="exam-copy">Połączenie z bazą, pętla <code>while</code>, tabela, losowe auta, <code>rowspan</code>.</div>
-    <strong>Tu jest najwięcej miejsc na głupie błędy.</strong>
-  </div>
-  <div className="exam-case-card priority-low">
-    <span className="case-index">04</span>
-    <h3>CSS</h3>
-    <div className="exam-copy">Układ 3 kolumn, kolory z polecenia, tabela, hover, overflow.</div>
-    <strong>CSS ma odtworzyć makietę, nie wygrać konkurs designu.</strong>
-  </div>
-</div>
+<ExamSection
+  id="plan"
+  eyebrow="Najpierw mapa, potem szczegóły"
+  title="Co tu właściwie trzeba zrobić?"
+  lead="Ten arkusz nie jest trudny przez jeden wielki problem. Jest trudny, bo ma dużo małych wymagań, które łatwo pominąć. Rozwijaj etapy po kolei."
+>
+  <ExamPlan
+    steps={[
+      {
+        title: "Baza danych",
+        summary: "Dwie tabele i relacja przez kolor pojazdu.",
+        points: "Poprawne tabele kolory i pojazdy, klucz główny, klucz obcy i dane potrzebne do zapytań.",
+        mistake: "Uczeń widzi dwie tabele, ale nie widzi relacji pojazdy.kolor → kolory.id.",
+        details: <div className="exam-copy">Zapamiętaj schemat: <code>kolory.id</code> to <ExamTooltip word="PRIMARY KEY">PRIMARY KEY</ExamTooltip>, a <code>pojazdy.kolor</code> to <ExamTooltip word="klucz obcy">klucz obcy</ExamTooltip>. Bez tego <ExamTooltip word="JOIN">JOIN</ExamTooltip> będzie zgadywaniem.</div>
+      },
+      {
+        title: "SQL",
+        summary: "Cztery krótkie zapytania do zrobienia przed PHP.",
+        points: "Filtrowanie, agregacja, JOIN, losowanie dwóch rekordów, poprawna kolejność ORDER BY i LIMIT.",
+        mistake: "ORDER BY i LIMIT w złej kolejności albo JOIN bez warunku ON.",
+        details: <div className="exam-copy">To są szybkie punkty. Najpierw sprawdzasz zapytania w bazie, dopiero potem wklejasz je do PHP.</div>
+      },
+      {
+        title: "PHP",
+        summary: "Połączenie z bazą, pętle, obliczenia i tabela.",
+        points: "mysqli, <code>set_charset(\"utf8\")</code>, pobieranie wyników, cena całkowita liczona w PHP, dokładnie dwa losowe pojazdy.",
+        mistake: "Cena policzona w SQL zamiast w PHP albo brak <code>rowspan=\"2\"</code> w tabeli środkowej.",
+        details: <div className="exam-copy">Egzaminator nie ocenia intencji. Jeśli polecenie wymaga <ExamTooltip word="rowspan">rowspan</ExamTooltip>, to ma być atrybut w kodzie, nie podobny wygląd.</div>
+      },
+      {
+        title: "CSS",
+        summary: "Odtworzenie makiety, nie własny redesign.",
+        points: "Trzy kolumny, kolory z polecenia, tabela, hover, overflow i proporcje sekcji.",
+        mistake: "Ładniejsza strona, ale inna niż makieta. To nie jest prawie dobrze.",
+        details: <div className="exam-copy"><code>main</code> ma mieć <ExamTooltip word="display: flex">display: flex</ExamTooltip>, sekcje po <code>33.3%</code>, a długa tabela <ExamTooltip word="overflow">overflow</ExamTooltip>.</div>
+      },
+      {
+        title: "Kontrola",
+        summary: "Ostatnie 20 minut na porównanie z makietą.",
+        points: "Ścieżki obrazków, liczba losowych aut, tabela, polskie znaki, wygląd końcowy.",
+        mistake: "Oddanie rozwiązania bez odpalenia strony w przeglądarce.",
+        details: <div className="exam-copy">Nie sprawdzasz „czy wygląda spoko”. Sprawdzasz wymaganie po wymaganiu z checklisty na dole.</div>
+      }
+    ]}
+  />
+</ExamSection>
 
-<div className="exam-teacher-note">
-  <strong>Ocena na start:</strong> arkusz jest prosty, ale bezlitosny. Nie ma tu jednej trudnej rzeczy.
-  Jest za to dużo małych wymagań. Jeden brakujący <code>set_charset</code>, jeden źle ustawiony
-  <code>rowspan</code>, jedna pomylona kolejność <code>ORDER BY</code> / <code>LIMIT</code> — i punkty lecą.
-</div>
+<ExamSection
+  id="materialy"
+  eyebrow="Materiały z arkusza"
+  title="Obrazki i makieta są dowodami, nie dekoracją"
+  lead="Te pliki mówią, co ma się znaleźć na stronie. Otwórz je, porównaj ścieżki i nie zmieniaj układu pod własny gust."
+>
+  <ExamMaterials
+    materials={[
+      { src: "/img/egzaminy/e01-a1.jpg", alt: "a1.jpg — niebieskie Audi z arkusza INF.03", title: "e01-a1.jpg", caption: "obrazek do sekcji środkowej" },
+      { src: "/img/egzaminy/e01-a2.jpg", alt: "a2.jpg — białe BMW z arkusza INF.03", title: "e01-a2.jpg", caption: "drugi losowy samochód" },
+      { src: "/img/egzaminy/e01-a3.png", alt: "a3.png — czerwony kabriolet z arkusza INF.03", title: "e01-a3.png", caption: "obrazek w kontakcie" }
+    ]}
+    result={{ src: "/img/egzaminy/e01-rozwiazanie.webp", alt: "Makieta gotowej strony w arkuszu INF.03-01-26.01", title: "Makieta końcowa", caption: "to masz odtworzyć, nie interpretować artystycznie" }}
+  />
+</ExamSection>
 
-## 2. Materiały z arkusza — dowody, nie ozdoby
+<ExamSection
+  id="strategia"
+  eyebrow="Strategia 150 minut"
+  title="Kolejność pracy decyduje o punktach"
+  lead="Jeśli zaczniesz od kolorowania strony, to sam sobie robisz krzywdę. Najpierw działające dane, później wygląd."
+>
+  <ExamTimeline
+    steps={[
+      { time: "0–25 min", title: "SQL najpierw", body: "Zapisz i sprawdź cztery zapytania. To są punkty do zebrania szybko.", tag: "łatwe punkty" },
+      { time: "25–90 min", title: "PHP i baza", body: "Połączenie, charset, pętle, obliczenie ceny, losowanie i tabela z rowspan.", tag: "tu się oblewa" },
+      { time: "90–130 min", title: "CSS pod makietę", body: "Trzy kolumny, kolory, hover, overflow. Bez kombinowania.", tag: "techniczne dopięcie" },
+      { time: "130–150 min", title: "Kontrola", body: "Odpalasz stronę i porównujesz z makietą punkt po punkcie.", tag: "ostatnie punkty" }
+    ]}
+  />
+</ExamSection>
 
-<div className="exam-evidence-grid">
-  <figure>
-    <a href="/img/egzaminy/e01-a1.jpg" target="_blank" rel="noopener">
-      <img src="/img/egzaminy/e01-a1.jpg" alt="a1.jpg — niebieskie Audi z arkusza INF.03" />
-    </a>
-    <figcaption><strong>a1.jpg</strong><span>obrazek do sekcji środkowej</span></figcaption>
-  </figure>
-  <figure>
-    <a href="/img/egzaminy/e01-a2.jpg" target="_blank" rel="noopener">
-      <img src="/img/egzaminy/e01-a2.jpg" alt="a2.jpg — białe BMW z arkusza INF.03" />
-    </a>
-    <figcaption><strong>a2.jpg</strong><span>drugi losowy samochód</span></figcaption>
-  </figure>
-  <figure>
-    <a href="/img/egzaminy/e01-a3.png" target="_blank" rel="noopener">
-      <img src="/img/egzaminy/e01-a3.png" alt="a3.png — czerwony kabriolet z arkusza INF.03" />
-    </a>
-    <figcaption><strong>a3.png</strong><span>obrazek w kontakcie</span></figcaption>
-  </figure>
-</div>
+<ExamSection
+  id="bledy"
+  eyebrow="Na co uważać"
+  title="Błędy, które wyglądają niewinnie i zabierają punkty"
+  lead="Nie rozrzucamy ostrzeżeń po całej stronie. Tu masz jedną listę rzeczy, które trzeba sprawdzić przed oddaniem."
+>
+  <ExamWarnings
+    items={[
+      { title: "Brak set_charset(\"utf8\")", impact: "Polskie znaki mogą się rozsypać. Egzaminator nie przyjmie tłumaczenia, że lokalnie działało.", check: "Plik PHP zaraz po utworzeniu połączenia z bazą." },
+      { title: "Zły JOIN", impact: "Wyniki z tabel kolory i pojazdy są błędnie połączone albo mnożą rekordy.", check: "Zapytanie 3 i lewa sekcja PHP." },
+      { title: "Cena policzona w SQL", impact: "Strona może wyglądać dobrze, ale polecenie wymaga obliczenia w PHP.", check: "Kod pętli w lewej sekcji." },
+      { title: "Brak rowspan=\"2\"", impact: "Tabela w środku nie spełnia wymagania z makiety.", check: "HTML generowany przy losowych pojazdach." },
+      { title: "ORDER BY / LIMIT w złej kolejności", impact: "Zapytanie losujące albo ranking cen daje zły wynik.", check: "Zapytanie 1 i zapytanie 4." },
+      { title: "Błędne ścieżki obrazków", impact: "Na stronie są puste miejsca zamiast aut.", check: "a1.jpg, a2.jpg, a3.png w katalogu strony i w atrybutach src." },
+      { title: "CSS niezgodny z makietą", impact: "Rozwiązanie jest twoim projektem, a nie odpowiedzią na arkusz.", check: "Kolory, trzy kolumny, wysokość sekcji, overflow i hover." }
+    ]}
+  />
+</ExamSection>
 
-<div className="exam-target">
-  <div className="exam-target-copy">
-    <span>makieta końcowa</span>
-    <h3>To masz odtworzyć, a nie interpretować artystycznie</h3>
-    <div className="exam-copy">
-      Header i footer ciemnozielone. Trzy jasnozielone sekcje. Tabela po lewej,
-      dwa losowe auta w środku, kontakt po prawej. Jeśli twoja strona ma inny układ,
-      to nie jest „prawie dobrze” — to jest niezgodne z poleceniem.
-    </div>
-  </div>
-  <a href="/img/egzaminy/e01-rozwiazanie.webp" target="_blank" rel="noopener">
-    <img src="/img/egzaminy/e01-rozwiazanie.webp" alt="Makieta gotowej strony w arkuszu INF.03-01-26.01" />
-  </a>
-</div>
-
-## 3. Strategia 150 minut
-
-<div className="exam-workflow">
-  <div className="workflow-step">
-    <div className="workflow-time">0–25 min</div>
-    <h3>SQL najpierw</h3>
-    <div className="exam-copy">Masz cztery zapytania. To są punkty do zebrania szybko, zanim zaczniesz walczyć z layoutem.</div>
-    <span className="workflow-grade good">łatwe punkty</span>
-  </div>
-  <div className="workflow-step">
-    <div className="workflow-time">25–90 min</div>
-    <h3>PHP i baza</h3>
-    <div className="exam-copy">Połączenie, charset, pętle, obliczenie ceny, losowanie i tabela z rowspan.</div>
-    <span className="workflow-grade danger">tu się oblewa</span>
-  </div>
-  <div className="workflow-step">
-    <div className="workflow-time">90–130 min</div>
-    <h3>CSS pod makietę</h3>
-    <div className="exam-copy">Trzy kolumny, kolory, hover, overflow. Bez kombinowania.</div>
-    <span className="workflow-grade mid">techniczne dopięcie</span>
-  </div>
-  <div className="workflow-step">
-    <div className="workflow-time">130–150 min</div>
-    <h3>Kontrola</h3>
-    <div className="exam-copy">Odpalasz stronę i porównujesz z makietą. Nie „wydaje mi się”, tylko punkt po punkcie.</div>
-    <span className="workflow-grade good">ostatnie punkty</span>
-  </div>
-</div>
-
-## 4. Baza danych — schemat, który musisz widzieć w głowie
-
-<div className="exam-db-map">
-  <div className="db-entity">
-    <div className="db-entity-title">kolory</div>
-    <div className="db-row"><strong>PK</strong><code>id</code><span>INT A_I</span></div>
-    <div className="db-row"><strong></strong><code>nazwa</code><span>VARCHAR(20)</span></div>
-    <div className="db-row"><strong></strong><code>doplata</code><span>DECIMAL(10,2)</span></div>
-    <div className="exam-copy">8 rekordów: 4 bazowe i 4 metalik.</div>
-  </div>
-  <div className="db-relation">pojazdy.kolor → kolory.id</div>
-  <div className="db-entity">
-    <div className="db-entity-title">pojazdy</div>
-    <div className="db-row"><strong>PK</strong><code>id</code><span>INT A_I</span></div>
-    <div className="db-row"><strong></strong><code>marka</code><span>VARCHAR(20)</span></div>
-    <div className="db-row"><strong></strong><code>model</code><span>VARCHAR(20)</span></div>
-    <div className="db-row"><strong></strong><code>cena</code><span>DECIMAL(15,0)</span></div>
-    <div className="db-row"><strong>FK</strong><code>kolor</code><span>→ kolory.id</span></div>
-    <div className="exam-copy">62 pojazdy: BM/AM, alfa/beta/meta.</div>
-  </div>
-</div>
-
-<div className="exam-verdict warning">
-  <div className="exam-verdict-label">punkt krytyczny</div>
-  <div className="exam-copy">
-    Cena całkowita ma być policzona w PHP: <code>pojazdy.cena + kolory.doplata</code>.
-    Jak policzysz ją w SQL, strona zadziała, ale realizacja polecenia będzie zła.
-  </div>
-</div>
-
-```sql
-CREATE TABLE kolory (
-  id      INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-  nazwa   VARCHAR(20) NOT NULL,
-  doplata DECIMAL(10,2) UNSIGNED DEFAULT NULL
-);
-
-CREATE TABLE pojazdy (
-  id    INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-  marka VARCHAR(20) NOT NULL,
-  model VARCHAR(20) NOT NULL,
-  cena  DECIMAL(15,0) UNSIGNED NOT NULL,
-  kolor INT UNSIGNED NOT NULL,
-  FOREIGN KEY (kolor) REFERENCES kolory(id)
-);
-```
-
-## 5. SQL — cztery zapytania i zero filozofii
-
-<div className="exam-solution-block">
-  <div className="solution-head">
-    <span>ZAPYTANIE 1</span>
-    <h3>15 najdroższych pojazdów marki BM</h3>
-  </div>
-
-```sql
-SELECT marka, model, cena
+<ExamSection
+  id="kod"
+  eyebrow="Kod ukryty domyślnie"
+  title="Rozwijaj tylko fragment, który aktualnie robisz"
+  lead="Najpierw przeczytaj opis i typowy błąd. Kod pokazuj dopiero wtedy, gdy chcesz porównać swoje rozwiązanie."
+>
+  <h3>SQL — cztery zapytania</h3>
+  <ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1 — 15 najdroższych pojazdów BM"
+      description="Filtrujesz markę, sortujesz malejąco po cenie i bierzesz pierwsze 15 rekordów."
+      mistake="Brak DESC albo LIMIT wpisany bez sortowania. Wtedy nie masz 15 najdroższych, tylko przypadkowe 15."
+      code={`SELECT marka, model, cena
 FROM pojazdy
 WHERE marka = 'BM'
 ORDER BY cena DESC
-LIMIT 15;
-```
-
-  <div className="solution-check good">
-    <strong>Dlaczego to przechodzi:</strong> filtrujesz markę, sortujesz malejąco po cenie i dopiero potem ograniczasz do 15.
-  </div>
-  <div className="solution-check bad">
-    <strong>Za co bym obciął:</strong> <code>LIMIT</code> przed <code>ORDER BY</code>, brak <code>DESC</code>, literówka w <code>BM</code>.
-  </div>
-</div>
-
-<div className="exam-solution-block">
-  <div className="solution-head">
-    <span>ZAPYTANIE 2</span>
-    <h3>Średnia i maksymalna cena modelu meta</h3>
-  </div>
-
-```sql
-SELECT AVG(cena) AS 'Średnia cena', MAX(cena) AS 'Maksymalna cena'
+LIMIT 15;`}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 — średnia i maksymalna cena meta"
+      description="Dwie funkcje agregujące dla modelu meta. Aliasy mają być czytelne."
+      mistake="Inne aliasy niż w poleceniu albo brak filtra WHERE model = 'meta'."
+      code={`SELECT AVG(cena) AS 'Średnia cena', MAX(cena) AS 'Maksymalna cena'
 FROM pojazdy
-WHERE model = 'meta';
-```
-
-  <div className="solution-check good">
-    <strong>Dlaczego to przechodzi:</strong> są dwie funkcje agregujące i filtr na model <code>meta</code>.
-  </div>
-  <div className="solution-check bad">
-    <strong>Za co bym obciął:</strong> inne aliasy niż w poleceniu. Egzaminator porównuje wynik z oczekiwanym widokiem.
-  </div>
-</div>
-
-<div className="exam-solution-block">
-  <div className="solution-head">
-    <span>ZAPYTANIE 3</span>
-    <h3>Pojazdy alfa z nazwą koloru i dopłatą</h3>
-  </div>
-
-```sql
-SELECT marka, model, cena, nazwa, doplata
+WHERE model = 'meta';`}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 — alfa z kolorem i dopłatą"
+      description="Tu sprawdzasz relację przez klucz obcy. JOIN musi mieć warunek ON."
+      mistake="Cartesian join bez ON albo łączenie po złych kolumnach. Wyniki wyglądają licznie, ale są błędne."
+      code={`SELECT marka, model, cena, nazwa, doplata
 FROM pojazdy
 INNER JOIN kolory ON pojazdy.kolor = kolory.id
-WHERE model = 'alfa';
-```
-
-  <div className="solution-check good">
-    <strong>Dlaczego to przechodzi:</strong> JOIN idzie po kluczu obcym, a wynik zawiera dane z obu tabel.
-  </div>
-  <div className="solution-check bad">
-    <strong>Za co bym obciął:</strong> cartesian join bez <code>ON</code>, zły warunek łączenia albo pominięcie <code>doplata</code>.
-  </div>
-</div>
-
-<div className="exam-solution-block">
-  <div className="solution-head">
-    <span>ZAPYTANIE 4</span>
-    <h3>Dwa losowe pojazdy</h3>
-  </div>
-
-```sql
-SELECT marka, model, cena
+WHERE model = 'alfa';`}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 — dwa losowe pojazdy"
+      description="RAND miesza rekordy, LIMIT 2 bierze dokładnie dwa do sekcji środkowej."
+      mistake="Pobranie wszystkich aut i losowanie ręcznie bez sensu albo LIMIT przed ORDER BY."
+      code={`SELECT marka, model, cena
 FROM pojazdy
 ORDER BY RAND()
-LIMIT 2;
-```
+LIMIT 2;`}
+    />
+  </ExamCodeGrid>
 
-  <div className="solution-check good">
-    <strong>Dlaczego to przechodzi:</strong> <code>RAND()</code> miesza rekordy, <code>LIMIT 2</code> bierze dwa.
-  </div>
-  <div className="solution-check bad">
-    <strong>Za co bym obciął:</strong> pobranie wszystkich aut i losowanie ręcznie bez sensu. Miało być prosto.
-  </div>
-</div>
-
-## 6. PHP — najważniejsza część rozwiązania
-
-<div className="exam-code-map">
-  <div>
-    <span>01</span>
-    <strong>Połącz z bazą</strong>
-    <div className="exam-copy"><code>mysqli</code>, baza <code>samochody</code>, charset UTF-8.</div>
-  </div>
-  <div>
-    <span>02</span>
-    <strong>Lewy panel</strong>
-    <div className="exam-copy">JOIN, pętla, cena całkowita policzona w PHP.</div>
-  </div>
-  <div>
-    <span>03</span>
-    <strong>Środek</strong>
-    <div className="exam-copy">Dwa losowe auta, obrazki <code>a1.jpg</code>/<code>a2.jpg</code>, <code>rowspan</code>.</div>
-  </div>
-  <div>
-    <span>04</span>
-    <strong>Prawy panel</strong>
-    <div className="exam-copy">Kontakt i <code>a3.png</code>. Proste, ale ma być zgodne z makietą.</div>
-  </div>
-</div>
-
-### Połączenie z bazą
-
-```php
-<?php
+  <h3>PHP</h3>
+  <ExamCodeGrid>
+    <ExamCodeBlock
+      language="PHP"
+      title="Połączenie z bazą"
+      description="Najkrótszy fragment, ale bez niego reszta jest martwa. Charset ustawiasz od razu po połączeniu."
+      mistake="Brak charset. To jest klasyczny błąd: działa lokalnie, a potem polskie znaki są śmietnikiem."
+      code={`<?php
 $conn = new mysqli("localhost", "root", "", "samochody");
-$conn->set_charset("utf8");
-```
-
-<div className="exam-teacher-note">
-  <strong>Ocena:</strong> brak <code>set_charset("utf8")</code> to typowy błąd ucznia, który „u mnie działa”.
-  Na egzaminie polskie znaki mają się wyświetlać poprawnie. Koniec dyskusji.
-</div>
-
-### Sekcja lewa — tabela pojazdów alfa
-
-```php
-$query = "SELECT marka, model, cena, nazwa, doplata
+$conn->set_charset("utf8");`}
+    />
+    <ExamCodeBlock
+      language="PHP"
+      title="Lewa sekcja — tabela pojazdów alfa"
+      description="JOIN, pętla po wyniku i cena całkowita liczona w PHP. To jest główny fragment backendu."
+      mistake="Cena całkowita policzona w SELECT zamiast w pętli PHP. Wynik podobny, ale wymaganie niespełnione."
+      code={`$query = "SELECT marka, model, cena, nazwa, doplata
           FROM pojazdy
           INNER JOIN kolory ON pojazdy.kolor = kolory.id
           WHERE model = 'alfa'";
@@ -318,20 +208,14 @@ while ($row = $result->fetch_assoc()) {
     echo "</tr>";
 }
 
-echo "</table>";
-```
-
-<div className="exam-grading-rubric">
-  <div><strong>+ punkt</strong><span>JOIN na właściwych kolumnach</span></div>
-  <div><strong>+ punkt</strong><span>pętla <code>while</code> przechodzi po wynikach</span></div>
-  <div><strong>+ punkt</strong><span>cena całkowita liczona w PHP</span></div>
-  <div><strong>- punkt</strong><span>liczenie ceny w SQL mimo polecenia</span></div>
-</div>
-
-### Sekcja środkowa — losowanie i rowspan
-
-```php
-$query = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
+echo "</table>";`}
+    />
+    <ExamCodeBlock
+      language="PHP"
+      title="Sekcja środkowa — losowanie i rowspan"
+      description="Dwa auta, dwa obrazki i tabela z komórką scaloną pionowo. Rowspan nie jest dekoracją."
+      mistake="Tabela wygląda podobnie, ale nie ma rowspan='2'. W kodzie nie spełniasz polecenia."
+      code={`$query = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
 $result = $conn->query($query);
 $nr = 1;
 
@@ -343,30 +227,28 @@ while ($row = $result->fetch_assoc()) {
     echo "<tr><td>Model: " . $row['model'] . "</td></tr>";
     echo "</table>";
     $nr++;
-}
-```
-
-<div className="exam-verdict danger">
-  <div className="exam-verdict-label">tu uczniowie tracą punkty</div>
-  <div className="exam-copy">
-    <code>rowspan='2'</code> nie jest dekoracją. To wymaganie makiety. Jeśli tabela wygląda podobnie,
-    ale nie ma <code>rowspan</code>, to w kodzie nie spełniasz polecenia.
-  </div>
-</div>
-
-### Sekcja prawa i zamknięcie
-
-```php
-echo "<p>Telefon: 111 222 444</p>";
+}`}
+    />
+    <ExamCodeBlock
+      language="PHP"
+      title="Sekcja prawa i zamknięcie"
+      description="Kontakt, trzeci obrazek i zamknięcie połączenia. Proste, ale musi być."
+      mistake="Zła nazwa pliku a3.png albo brak close. Mały błąd, głupio stracić punkt."
+      code={`echo "<p>Telefon: 111 222 444</p>";
 echo "<img src='a3.png' alt='Kontakt'>";
 
-$conn->close();
-```
+$conn->close();`}
+    />
+  </ExamCodeGrid>
 
-## 7. CSS — ma odtworzyć makietę, nie udawać portfolio
-
-```css
-* {
+  <h3>CSS</h3>
+  <ExamCodeGrid>
+    <ExamCodeBlock
+      language="CSS"
+      title="Układ i wygląd zgodny z makietą"
+      description="To nie jest portfolio. CSS ma odtworzyć wymagane kolory, trzy kolumny i zachowanie tabeli."
+      mistake="Brak overflow albo sekcje nie mają po 33.3%. Strona może wyglądać ładnie, ale nie jest zgodna z arkuszem."
+      code={`* {
     text-align: center;
     font-family: Helvetica, sans-serif;
 }
@@ -407,107 +289,56 @@ table, th, td {
 #srodkowa img {
     width: 95%;
     border-radius: 8px;
-}
-```
+}`}
+    />
+  </ExamCodeGrid>
+</ExamSection>
 
-<div className="exam-grading-rubric compact">
-  <div><strong>flex</strong><span>main robi 3 kolumny</span></div>
-  <div><strong>33.3%</strong><span>sekcje mają równą szerokość</span></div>
-  <div><strong>overflow</strong><span>długa tabela nie rozwala layoutu</span></div>
-  <div><strong>hover</strong><span>wymagany efekt w lewym panelu</span></div>
-</div>
+<ExamSection
+  id="punktacja"
+  eyebrow="Punktacja wcześniej, nie na końcu ściany tekstu"
+  title="Co naprawdę sprawdza egzaminator"
+  lead="To są wartości orientacyjne, ale dobrze pokazują priorytety. SQL i PHP są ważniejsze niż zabawa w kosmetykę."
+>
+  <ExamScoring
+    items={[
+      { area: "SQL", points: "~8 pkt", criterion: "Składnia, aliasy, JOIN, kolejność ORDER BY i LIMIT." },
+      { area: "Połączenie z bazą", points: "~2 pkt", criterion: "mysqli, baza samochody, UTF-8 i zamknięcie połączenia." },
+      { area: "PHP lewa sekcja", points: "~6 pkt", criterion: "JOIN, pętla, tabela i cena całkowita policzona w skrypcie." },
+      { area: "PHP środek", points: "~4 pkt", criterion: "Losowanie dwóch pojazdów, obrazki i rowspan." },
+      { area: "HTML/CSS", points: "~10 pkt", criterion: "Układ zgodny z makietą. Nie ładny, tylko zgodny." }
+    ]}
+  />
+</ExamSection>
 
-## 8. Punktacja — co naprawdę sprawdza egzaminator
-
-<table className="exam-scoring-table">
-  <thead>
-    <tr>
-      <th>Obszar</th>
-      <th>Szacunkowo</th>
-      <th>Kryterium nauczyciela w złym humorze</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>SQL</td>
-      <td>~8 pkt</td>
-      <td>Składnia, aliasy, JOIN, kolejność <code>ORDER BY</code> i <code>LIMIT</code>.</td>
-    </tr>
-    <tr>
-      <td>Połączenie z bazą</td>
-      <td>~2 pkt</td>
-      <td>Nie interesuje mnie, że „u ciebie działa”. Ma być baza, charset i zamknięcie.</td>
-    </tr>
-    <tr>
-      <td>PHP lewa sekcja</td>
-      <td>~6 pkt</td>
-      <td>JOIN, pętla, tabela i cena całkowita policzona w skrypcie.</td>
-    </tr>
-    <tr>
-      <td>PHP środek</td>
-      <td>~4 pkt</td>
-      <td>Losowanie dwóch pojazdów, obrazki i <code>rowspan</code>.</td>
-    </tr>
-    <tr>
-      <td>HTML/CSS</td>
-      <td>~10 pkt</td>
-      <td>Układ zgodny z makietą. Nie „ładny”, tylko zgodny.</td>
-    </tr>
-  </tbody>
-</table>
-
-## 9. Akordeony szybkiej kontroli
-
-<div className="exam-accordion-list">
-  <details className="exam-accordion" open>
-    <summary>SQL — minimalny zestaw, który musi się zgadzać</summary>
-    <div className="exam-accordion-body">
-      <div className="exam-copy">
-        Sprawdź kolejność <code>WHERE → ORDER BY → LIMIT</code>, aliasy w zapytaniu drugim i warunek
-        <code>pojazdy.kolor = kolory.id</code> w JOIN-ie. Bez tego nie ma dyskusji o punktach.
-      </div>
-    </div>
-  </details>
-  <details className="exam-accordion">
-    <summary>PHP — gdzie egzaminator najczęściej ucina</summary>
-    <div className="exam-accordion-body">
-      <div className="exam-copy">
-        Musi być połączenie z bazą, <code>set_charset("utf8")</code>, pętla po wyniku zapytania,
-        cena całkowita liczona w PHP i dokładnie dwa losowe pojazdy w sekcji środkowej.
-      </div>
-    </div>
-  </details>
-  <details className="exam-accordion">
-    <summary>CSS — zgodność z makietą, nie własny gust</summary>
-    <div className="exam-accordion-body">
-      <div className="exam-copy">
-        Header/footer ciemnozielone, nav ForestGreen, trzy sekcje LightGreen po 33.3%, wysokość sekcji,
-        overflow, obramowania tabeli i hover w lewej tabeli. To są wymagania, nie sugestie.
-      </div>
-    </div>
-  </details>
-</div>
-
-## 10. Checklist przed oddaniem
-
-<div className="exam-final-checklist">
-  <label><span>01</span> Wszystkie 4 zapytania SQL są zapisane i działają.</label>
-  <label><span>02</span> PHP łączy się z bazą <code>samochody</code> i ustawia UTF-8.</label>
-  <label><span>03</span> W lewej sekcji cena całkowita jest liczona w PHP.</label>
-  <label><span>04</span> W środkowej sekcji są dokładnie 2 losowe pojazdy.</label>
-  <label><span>05</span> Tabela z losowymi autami używa <code>rowspan='2'</code>.</label>
-  <label><span>06</span> Obrazki <code>a1.jpg</code>, <code>a2.jpg</code>, <code>a3.png</code> są w dobrych miejscach.</label>
-  <label><span>07</span> <code>main</code> ma <code>display: flex</code>, a sekcje mają <code>width: 33.3%</code>.</label>
-  <label><span>08</span> Kolory odpowiadają poleceniu: DarkGreen, ForestGreen, LightGreen.</label>
-  <label><span>09</span> Długa tabela nie wychodzi poza sekcję, bo jest <code>overflow: auto</code>.</label>
-  <label><span>10</span> Strona po odpaleniu wygląda jak makieta, nie jak twoja interpretacja makiety.</label>
-</div>
+<ExamSection
+  id="checklista"
+  eyebrow="Przed oddaniem"
+  title="Praktyczna checklista do odhaczania lokalnie"
+  lead="To nie zapisuje się na serwerze. Jest tylko po to, żebyś przed wysłaniem rozwiązania sprawdził konkretne wymagania."
+>
+  <ExamChecklist
+    items={[
+      { label: <>4 zapytania SQL działają.</> },
+      { label: <>PHP łączy się z bazą <code>samochody</code>.</> },
+      { label: <>Ustawiono UTF-8 przez <code>set_charset("utf8")</code>.</> },
+      { label: <>Cena całkowita jest liczona w PHP.</> },
+      { label: <>Są dokładnie 2 losowe pojazdy.</> },
+      { label: <>Tabela używa <code>rowspan="2"</code>.</> },
+      { label: <>Obrazki <code>a1.jpg</code>, <code>a2.jpg</code>, <code>a3.png</code> są w dobrych miejscach.</> },
+      { label: <><code>main</code> ma <code>display:flex</code>.</> },
+      { label: <>Sekcje mają po <code>33.3%</code>.</> },
+      { label: <>Wygląd zgadza się z makietą.</> }
+    ]}
+  />
+</ExamSection>
 
 <div className="exam-verdict final">
   <div className="exam-verdict-label">finalna ocena</div>
   <div className="exam-copy">
     Dobre rozwiązanie tego arkusza nie jest kreatywne. Jest nudne, zgodne z poleceniem i kompletne.
-    I właśnie takie ma być. Na INF.03 dostajesz punkty za realizację wymagań, nie za to, że kod wygląda
-    „prawie tak samo”.
+    Na INF.03 dostajesz punkty za realizację wymagań, nie za to, że kod wygląda „prawie tak samo”.
   </div>
 </div>
+
+</ExamGuideShell>

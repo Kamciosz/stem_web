@@ -101,10 +101,12 @@ export default async function LessonPage({ params }: LessonPageProps) {
                         </nav>
                     )}
 
-                    <header className="lesson-header">
-                        <h1 className="lesson-title-main">{lesson.title}</h1>
-                        <p className="lesson-summary-main">{lesson.summary}</p>
-                    </header>
+                    {!isExamLesson && (
+                        <header className="lesson-header">
+                            <h1 className="lesson-title-main">{lesson.title}</h1>
+                            <p className="lesson-summary-main">{lesson.summary}</p>
+                        </header>
+                    )}
 
                     {lesson.objectives && lesson.objectives.length > 0 && (
                         <div className="lesson-objectives">

@@ -49,9 +49,11 @@ function TechBadges({ tech }: { tech: ExamEntry["tech"] }) {
 export function ExamPicker({
     sessions,
     courseId,
+    label = "Egzaminy",
 }: {
     sessions: ExamSession[];
     courseId: string;
+    label?: string;
 }) {
     const [open, setOpen] = useState(false);
     const [idx, setIdx] = useState(0);
@@ -68,7 +70,7 @@ export function ExamPicker({
                 onClick={() => setOpen(!open)}
                 aria-expanded={open}
             >
-                <span className="exam-picker-label">Egzaminy</span>
+                <span className="exam-picker-label">{label}</span>
                 <svg
                     className={`exam-picker-chevron ${open ? "open" : ""}`}
                     viewBox="0 0 20 20"

@@ -82,6 +82,26 @@ export const glossary: Record<string, string> = {
         "Podejście do projektowania, w którym zaczynasz od wersji mobilnej, a potem dodajesz style dla większych ekranów.",
     JOIN:
         "Operacja SQL łącząca wiersze z dwóch tabel na podstawie wspólnej kolumny. INNER JOIN zwraca tylko pasujące, LEFT JOIN — wszystkie z lewej.",
+    "klucz obcy":
+        "Kolumna wskazująca rekord w innej tabeli. W tym arkuszu pojazdy.kolor wskazuje kolory.id.",
+    "PRIMARY KEY":
+        "Klucz główny tabeli — unikalny identyfikator rekordu. Dzięki niemu baza wie, który wiersz jest który.",
+    "ORDER BY":
+        "Część zapytania SQL ustawiająca kolejność wyników, np. od najdroższych do najtańszych.",
+    LIMIT:
+        "Część zapytania SQL ograniczająca liczbę zwróconych rekordów, np. tylko pierwsze 2 lub 15.",
+    rowspan:
+        "Atrybut komórki tabeli HTML, który scala ją pionowo przez kilka wierszy. rowspan=\"2\" oznacza: ta komórka zajmuje dwa wiersze.",
+    charset:
+        "Zestaw znaków używany do odczytu tekstu. W PHP/MySQL ustawienie utf8 chroni polskie znaki przed krzaczkami.",
+    overflow:
+        "Właściwość CSS określająca, co zrobić, gdy treść nie mieści się w elemencie. overflow:auto dodaje przewijanie, gdy jest potrzebne.",
+    hover:
+        "Stan elementu po najechaniu myszką. Na telefonie nie można polegać tylko na hover, bo ekran jest dotykowy.",
+    "display: flex":
+        "Włącza układ Flexbox dla elementu. Dzieci mogą wtedy ustawiać się w rzędzie lub kolumnie i łatwiej tworzyć równe sekcje.",
+    semantyka:
+        "Znaczenie elementów w kodzie HTML. Semantyczny kod mówi, czym jest fragment strony, a nie tylko jak wygląda.",
     indeks:
         "Struktura danych w bazie przyspieszająca wyszukiwanie. Jak spis treści w książce — zamiast czytać wszystko, skaczemy od razu do właściwego miejsca.",
     normalizacja:
