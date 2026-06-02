@@ -1,5 +1,5 @@
 ---
-title: "Korona gór polskich — szczyty"
+title: "Korona gór polskich — portal turystyczny"
 ---
 
 **Arkusz:** INF.03-08-26.01-SG (styczeń 2026)
@@ -14,63 +14,199 @@ Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii.
 
 ## O czym jest ten arkusz
 
-Portal Korony Gór Polskich.
-Skrypty **PHP** działają po stronie serwera (XAMPP, localhost).
+Portal turystyczny Korony Gór Polskich — dwie strony PHP. index.php z odnośnikami do szczytów (skrypt 1) i miniaturami zdjęć (skrypt 2). szczyty.php z detalami szczytu (skrypt 3). Własna czcionka Lato z pliku. Efekt nth-child na span.
 
-**Baza danych:** `korona` — szczyty (id, nazwa, wysokosc, pasmo, lokator, plik), opis (id, id_szczyt FK, opis).
+**Baza danych:** `korona` — tabele: `szczyty` (id, nazwa, wysokosc, pasmo, lokator, plik), `opis` (id, id_szczyt FK, tekst).
 
 ## Co musisz oddać — pliki
 
-index.php + szczyty.php. Index: logo (przezroczyste), h1 'Korona Gór Polskich', nawigacja, sekcja z listą szczytów z bazy (odnośniki GET→szczyty.php?id=X). szczyty.php: szczegóły wybranego szczytu z obrazem i opisem.
-
-## CSS — najważniejsze zasady
-
-Układ z semantycznymi blokami, logo float left, overflow auto na sekcjach, obrazy gór.
+index.php + szczyty.php. Wspólne: header1 (logo.png) + header2 (h1 "Korona Gór Polskich"), sekcja (miniatury — skrypt 2), footer1 (Kontakt + email), footer2 (autor). Main index: nazwy szczytów jako odnośniki w span (skrypt 1). Main szczyty: obraz + nazwa + wysokość + pasmo + opis (skrypt 3).
 
 ## Grafika — co robić
 
-logo.png: białe tło→przezroczyste, skadrowane do szczytu, przeskalowane do 100px wysokości
-
+logo.png: usunąć białe tło (przezroczystość), skadrować do prawego szczytu, przeskalować do 100px wysokości z zachowaniem proporcji.
 
 ## Zapytania SQL — gotowe rozwiązania
 
 Baza: `korona`. Plik SQL: `korona.sql`.
 
-### Zapytanie 1: Szczyty posortowane malejąco po wysokości
+### Zapytanie 1: szczyty posortowane malejąco wg wysokości
 
 ```sql
 SELECT id, nazwa FROM szczyty ORDER BY wysokosc DESC;
 ```
 
-### Zapytanie 2: Pliki i nazwy pierwszych 10 szczytów
+### Zapytanie 2: pliki i nazwy pierwszych 10 szczytów
 
 ```sql
 SELECT plik, nazwa FROM szczyty LIMIT 10;
 ```
 
-### Zapytanie 3: Dane + opis szczytu id=1
+### Zapytanie 3: szczyt id=1 z opisem (JOIN)
 
 ```sql
-SELECT s.plik, s.nazwa, s.wysokosc, s.pasmo, o.opis FROM szczyty s JOIN opis o ON s.id = o.id_szczyt WHERE s.id = 1;
+SELECT s.plik, s.nazwa, s.wysokosc, s.pasmo, o.tekst
+FROM szczyty s
+JOIN opis o ON s.id = o.id_szczyt
+WHERE s.id = 1;
 ```
 
-### Zapytanie 4: Szczyty w Beskidach (LIKE)
+### Zapytanie 4: szczyty w Beskidach (LIKE)
 
 ```sql
-SELECT nazwa, wysokosc, pasmo FROM szczyty WHERE pasmo LIKE 'Beskid%';
+SELECT nazwa, wysokosc, pasmo FROM szczyty
+WHERE pasmo LIKE 'Beskid%';
 ```
 
+<Callout type="tip" title="LIKE z %">
+`LIKE 'Beskid%'` — znajduje wszystkie pasma zaczynające się od "Beskid" (Beskid Żywiecki, Beskid Śląski itd.). Znak `%` zastępuje dowolną liczbę znaków.
+</Callout>
 
-## Skrypty — rozwiązanie krok po kroku
+## Skrypty PHP — rozwiązanie krok po kroku
 
-{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+### Połączenie z bazą
 
-## Punkty — co sprawdza egzaminator
+```php
+<?php
+$conn = mysqli_connect("localhost", "root", "", "korona");
+mysqli_query($conn, "SET CHARSET utf8");
+```
 
-Ocenie podlegać będzie 5 rezultatów:
+### Skrypt 1 — nazwy szczytów jako odnośniki (index.php)
 
-1. **Operacje na bazie danych** — import tabel + kwerendy SQL
-2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
-3. **Działanie witryny** — czy skrypty działają poprawnie
-4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
-5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają
+```php
+$wynik = mysqli_query($conn,
+    "SELECT id, nazwa FROM szczyty ORDER BY wysokosc DESC");
+while ($row = mysqli_fetch_array($wynik)) {
+    echo "<span><a href='szczyty.php?id=" . $row['id'] . "'>"
+         . $row['nazwa'] . "</a></span>";
+}
+```
+
+### Skrypt 2 — miniatury zdjęć
+
+```php
+$wynik2 = mysqli_query($conn, "SELECT plik, nazwa FROM szczyty LIMIT 10");
+while ($row = mysqli_fetch_array($wynik2)) {
+    echo "<img src='" . $row['plik'] . "' alt='" . $row['nazwa']
+         . "' class='miniatura'>";
+}
+```
+
+### Skrypt 3 — detale szczytu (szczyty.php)
+
+```php
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $wynik3 = mysqli_query($conn,
+        "SELECT s.plik, s.nazwa, s.wysokosc, s.pasmo, o.tekst
+         FROM szczyty s JOIN opis o ON s.id = o.id_szczyt
+         WHERE s.id = $id");
+    $row = mysqli_fetch_array($wynik3);
+
+    echo "<img src='" . $row['plik'] . "' alt='szczyt'>";
+    echo "<h2>" . $row['nazwa'] . "</h2>";
+    echo "<h3>wysokość: " . $row['wysokosc'] . " metrów n.p.m.</h3>";
+    echo "<h3>pasmo górskie: " . $row['pasmo'] . "</h3>";
+    echo "<p>" . $row['tekst'] . "</p>";
+}
+```
+
+### Zamknięcie
+
+```php
+mysqli_close($conn);
+?>
+```
+
+## Styl CSS (styl.css)
+
+```css
+@font-face {
+    font-family: 'Lato';
+    src: url('czcionka/Lato-Regular.ttf');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('czcionka/Lato-Bold.ttf');
+    font-weight: bold;
+}
+
+* {
+    font-family: 'Lato', sans-serif;
+    text-align: center;
+    color: #333;
+}
+
+header, footer {
+    height: 100px;
+}
+
+header:first-of-type, footer:first-of-type {
+    width: 30%;
+    display: inline-block;
+}
+
+header:last-of-type, footer:last-of-type {
+    width: 70%;
+    display: inline-block;
+}
+
+main {
+    background-color: #E0F2F1;
+    padding: 100px;
+}
+
+section {
+    height: 90px;
+    overflow: hidden;
+}
+
+.miniatura {
+    height: 90px;
+}
+
+li {
+    text-align: left;
+}
+
+span {
+    padding-left: 30px;
+}
+
+span:nth-child(2), span:nth-child(11) { font-size: 200%; }
+span:nth-child(3), span:nth-child(15) { font-size: 150%; }
+span:nth-child(4), span:nth-child(17) { font-size: 120%; }
+span:nth-child(5), span:nth-child(21) { font-size: 170%; }
+span:nth-child(7), span:nth-child(27) { font-size: 130%; }
+span:nth-child(9), span:nth-child(25) { font-size: 160%; }
+```
+
+<Callout type="exam">
+`@font-face` — ładowanie czcionki Lato z pliku. To wymaganie wprost z polecenia. Musisz zdefiniować dwa warianty: regular i bold. Plik czcionki jest w folderze `czcionka/` z archiwum.
+</Callout>
+
+## Omówienie punktacji
+
+| Element | Punkty | Na co patrzy egzaminator |
+|---------|--------|--------------------------|
+| Operacje na bazie danych | ~8 pkt | Import, 4 zapytania (JOIN, LIKE, ORDER BY DESC) |
+| Grafika | ~4 pkt | logo.png — przezroczystość, kadr, skalowanie |
+| Zawartość witryny | ~4 pkt | Obie strony, 2 headery+2 footery, email mailto |
+| Działanie witryny | ~6 pkt | Skrypty 1-3, GET, miniatury z klasą |
+| Styl CSS | ~4 pkt | @font-face Lato, nth-child, overflow:hidden |
+| Skrypt połączenia | ~4 pkt | mysqli, close() |
+
+## Wnioski z tego arkusza
+
+1. **Własna czcionka @font-face** — to jedyny arkusz w tej sesji z czcionką z pliku. Musisz umieć pisać `@font-face` z pamięci.
+
+2. **LIKE z %** — wzorzec "Beskid%" to prosty pattern matching. Na egzaminie pojawia się regularnie.
+
+3. **Dwie strony z przekazywaniem GET** — index.php → szczyty.php przez `?id=X`. Identyczny wzorzec jak w arkuszu 04 (matura).
+
+4. **nth-child na span** — znowu efekt "chmury tagów" z różnymi rozmiarami. Tym razem więcej wartości (2,3,4,5,7,9,11,15,17,21,25,27).
+
+5. **overflow: hidden na sekcji z miniaturami** — pasek miniatur ma stałą wysokość 90px. Nadmiar jest ukryty.

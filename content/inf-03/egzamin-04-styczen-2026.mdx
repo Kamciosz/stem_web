@@ -14,69 +14,218 @@ Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii.
 
 ## O czym jest ten arkusz
 
-Portal dla maturzystów z wynikami.
-Skrypty **PHP** działają po stronie serwera (XAMPP, localhost).
+System informacji dla maturzystów. Dwie strony: index.php (lista uczniów jako odnośniki + statystyki w 4 blokach) i wynik.php (wyniki wybranego maturzysty).
 
-**Baza danych:** `matura` — maturzysta (id, imie, nazwisko, szkola), arkusz (id, rok, przedmiot, sesja), wyniki (id, id_maturzysta FK, id_arkusz FK, punkty).
+**Baza danych:** `matura` — tabele: `maturzysta` (id, imie, nazwisko, szkola), `arkusz` (id, rok, przedmiot, sesja), `wyniki` (id, id_maturzysta FK, id_arkusz FK, punkty).
 
 ## Co musisz oddać — pliki
 
-index.php + wynik.php. Index: nawigacja po lewej (3 obrazy), sekcja z listą uczniów jako odnośniki (skrypt 2, GET → wynik.php?id=X&imie=Y&nazwisko=Z), 4 kafelki (Przedmioty, Lata, Najlepszy wynik, Najgorszy wynik) z danymi z bazy (skrypt 1). wynik.php: wyświetla imię/nazwisko z GET i wyniki z bazy (skrypt 3).
-
-## CSS — najważniejsze zasady
-
-cursive sans-serif, tło #4682B4, header+footer #0F0F64 (white, centered), aside 20% 500px, sekcje 80% 250px overflow auto, obrazy 150px padding 2px, kafelki: #2B6BA0 white 150×150px margin 10px shadow 3/5 black inline-block, odnośniki white no-underline hover #12538A.
-
-## Grafika — co robić
-
-Trzy zdjęcia: ma.jpg, tu.jpg, ra.jpg
-
+index.php + wynik.php. Wspólne: h1 "System informacji dla maturzystów", aside (3 grafiki ma.jpg/tu.jpg/ra.jpg), sekcja dolna z 4 blokami (Przedmioty, Lata, Najlepszy wynik, Najgorszy wynik — skrypt 1), footer. Sekcja górna index.php: lista uczniów (skrypt 2). Sekcja górna wynik.php: tabela wyników (skrypt 3).
 
 ## Zapytania SQL — gotowe rozwiązania
 
 Baza: `matura`. Plik SQL: `egzamin.sql`.
 
-### Zapytanie 1: Maturzyści ze szkoły T3 sortowani po nazwisku
+### Zapytanie 1: uczniowie ze szkoły T3
 
 ```sql
-SELECT id, imie, nazwisko FROM maturzysta WHERE szkola = 'T3' ORDER BY nazwisko ASC;
+SELECT id, imie, nazwisko FROM maturzysta
+WHERE szkola = 'T3'
+ORDER BY nazwisko ASC;
 ```
 
-### Zapytanie 2: Unikalne nazwy przedmiotów
+### Zapytanie 2: unikalne przedmioty
 
 ```sql
 SELECT DISTINCT przedmiot FROM arkusz;
 ```
 
-### Zapytanie 3: Najstarszy i najmłodszy arkusz
+### Zapytanie 3: najstarszy i najmłodszy arkusz
 
 ```sql
-SELECT MIN(rok) AS najstarszy, MAX(rok) AS najmlodszy FROM arkusz;
+SELECT MIN(rok) AS 'Najstarszy', MAX(rok) AS 'Najmłodszy' FROM arkusz;
 ```
 
-### Zapytanie 4: Maturzysta z najlepszą średnią
+### Zapytanie 4: maturzysta z najlepszą średnią
 
 ```sql
-SELECT id_maturzysta, AVG(punkty) AS Wynik FROM wyniki GROUP BY id_maturzysta ORDER BY Wynik DESC LIMIT 1;
+SELECT id_maturzysta, AVG(punkty) AS Wynik
+FROM wyniki
+GROUP BY id_maturzysta
+ORDER BY Wynik DESC
+LIMIT 1;
 ```
 
-### Zapytanie 5: Wyniki maturzysty 31 z JOIN
+<Callout type="exam">
+Zapytanie 4 łączy GROUP BY + ORDER BY + LIMIT — trzy klauzule naraz. Alias `Wynik` w ORDER BY działa w MySQL/MariaDB (w innych bazach nie zawsze). Na egzaminie INF.03 używasz MySQL, więc jest OK.
+</Callout>
+
+### Zapytanie 5: wyniki maturzysty id=31 z JOIN
 
 ```sql
-SELECT a.rok, a.sesja, a.przedmiot, w.punkty FROM arkusz a JOIN wyniki w ON a.id = w.id_arkusz WHERE w.id_maturzysta = 31;
+SELECT a.rok, a.sesja, a.przedmiot, w.punkty
+FROM wyniki w
+JOIN arkusz a ON w.id_arkusz = a.id
+WHERE w.id_maturzysta = 31;
 ```
 
+## Skrypty PHP — rozwiązanie krok po kroku
 
-## Skrypty — rozwiązanie krok po kroku
+### Połączenie z bazą
 
-{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+```php
+<?php
+$conn = mysqli_connect("localhost", "root", "", "matura");
+mysqli_query($conn, "SET CHARSET utf8");
+```
 
-## Punkty — co sprawdza egzaminator
+### Skrypt 1 — 4 bloki statystyk (index.php i wynik.php)
 
-Ocenie podlegać będzie 5 rezultatów:
+```php
+// Blok Przedmioty
+$wynik = mysqli_query($conn, "SELECT DISTINCT przedmiot FROM arkusz");
+echo "<div class='blok'><h4>Przedmioty</h4>";
+while ($row = mysqli_fetch_array($wynik)) {
+    echo $row['przedmiot'] . " ";
+}
+echo "</div>";
 
-1. **Operacje na bazie danych** — import tabel + kwerendy SQL
-2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
-3. **Działanie witryny** — czy skrypty działają poprawnie
-4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
-5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają
+// Blok Lata
+$wynik = mysqli_query($conn, "SELECT MIN(rok), MAX(rok) FROM arkusz");
+$row = mysqli_fetch_array($wynik);
+echo "<div class='blok'><h4>Lata</h4>" . $row[0] . " - " . $row[1] . "</div>";
+
+// Blok Najlepszy wynik
+$wynik = mysqli_query($conn,
+    "SELECT AVG(punkty) AS Wynik FROM wyniki
+     GROUP BY id_maturzysta ORDER BY Wynik DESC LIMIT 1");
+$row = mysqli_fetch_array($wynik);
+echo "<div class='blok'><h4>Najlepszy wynik</h4>" . round($row['Wynik']) . "%</div>";
+
+// Blok Najgorszy wynik
+$wynik = mysqli_query($conn,
+    "SELECT AVG(punkty) AS Wynik FROM wyniki
+     GROUP BY id_maturzysta ORDER BY Wynik ASC LIMIT 1");
+$row = mysqli_fetch_array($wynik);
+echo "<div class='blok'><h4>Najgorszy wynik</h4>" . round($row['Wynik']) . "%</div>";
+```
+
+### Skrypt 2 — lista uczniów jako odnośniki (index.php)
+
+```php
+echo "<h3>Wybierz ucznia z listy:</h3>";
+$wynik = mysqli_query($conn,
+    "SELECT id, imie, nazwisko FROM maturzysta WHERE szkola = 'T3' ORDER BY nazwisko ASC");
+while ($row = mysqli_fetch_array($wynik)) {
+    echo "<a href='wynik.php?id=" . $row['id'] . "'>"
+         . $row['imie'] . " " . $row['nazwisko'] . "</a><br>";
+}
+```
+
+### Skrypt 3 — wyniki wybranego maturzysty (wynik.php)
+
+```php
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $wynik = mysqli_query($conn,
+        "SELECT a.rok, a.sesja, a.przedmiot, w.punkty
+         FROM wyniki w JOIN arkusz a ON w.id_arkusz = a.id
+         WHERE w.id_maturzysta = $id");
+
+    echo "<table><tr><th>Rok</th><th>Sesja</th><th>Przedmiot</th><th>Punkty</th></tr>";
+    while ($row = mysqli_fetch_array($wynik)) {
+        echo "<tr><td>" . $row['rok'] . "</td><td>" . $row['sesja'] . "</td>"
+             . "<td>" . $row['przedmiot'] . "</td><td>" . $row['punkty'] . "</td></tr>";
+    }
+    echo "</table>";
+}
+```
+
+### Zamknięcie
+
+```php
+mysqli_close($conn);
+?>
+```
+
+## Styl CSS (styl.css)
+
+```css
+body {
+    font-family: cursive, sans-serif;
+    background-color: #4682B4;
+}
+
+header, footer {
+    background-color: #0F0F64;
+    color: white;
+    text-align: center;
+    padding: 3px;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+aside {
+    width: 20%;
+    height: 500px;
+}
+
+section {
+    width: 80%;
+    height: 250px;
+    overflow: auto;
+}
+
+img {
+    width: 150px;
+    padding: 2px;
+}
+
+h4 {
+    text-align: center;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: #12538A;
+}
+
+.blok {
+    background-color: #2B6BA0;
+    color: white;
+    width: 150px;
+    height: 150px;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px black;
+    display: inline-block;
+}
+```
+
+## Omówienie punktacji
+
+| Element | Punkty | Na co patrzy egzaminator |
+|---------|--------|--------------------------|
+| Operacje na bazie danych | ~10 pkt | Import, 5 zapytań SQL (więcej niż zwykle!) |
+| Zawartość witryny | ~4 pkt | Obie strony, semantyka, 4 bloki z klasą |
+| Działanie witryny | ~6 pkt | Skrypty 1-3 działają, przekazywanie id przez GET |
+| Styl CSS | ~6 pkt | Kolory hex, box-shadow, border-radius, hover |
+| Skrypt połączenia z bazą | ~4 pkt | mysqli, close(), charset |
+
+## Wnioski z tego arkusza
+
+1. **5 zapytań SQL zamiast 4** — ten arkusz ma o jedno zapytanie więcej. Zapytanie 4 (GROUP BY + AVG + ORDER + LIMIT) i zapytanie 5 (JOIN) to najtrudniejsze.
+
+2. **Dwie strony PHP** — index.php i wynik.php. Przekazywanie id ucznia przez GET (`?id=31`) to klasyczny wzorzec.
+
+3. **4 bloki z tą samą klasą** — egzaminator sprawdza, czy klasa CSS jest przypisana do wszystkich 4 bloków i czy `display: inline-block` (lub flex) ustawia je obok siebie.
+
+4. **Modyfikacja zapytania 4** — skrypt 1 używa zapytania 4 dwa razy: raz z `DESC` (najlepszy), raz z `ASC` (najgorszy). To wymaga zmiany tylko jednego słowa w zapytaniu.

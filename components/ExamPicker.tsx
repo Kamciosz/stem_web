@@ -81,7 +81,7 @@ export function ExamPicker({
                 {sessions.map((session) => (
                     <div key={`${session.year}-${session.month}`} className="exam-session">
                         <h4 className="exam-session-header">
-                            {session.month} {session.year}
+                            {session.month}&nbsp;{session.year}
                         </h4>
                         <ul className="exam-session-list">
                             {session.exams.map((exam) => (

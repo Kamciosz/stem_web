@@ -14,63 +14,200 @@ Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii.
 
 ## O czym jest ten arkusz
 
-Portal do diagnostyki chorób.
-Skrypty **PHP** działają po stronie serwera (XAMPP, localhost).
+Portal do diagnostyki chorób z relacją n:m (choroba ↔ objawy przez tabelę łączącą). Jedna strona zdrowie.php z listą chorób zakaźnych, listą rozwijaną i wyświetlaniem objawów w znacznikach span z pseudo-klasami nth-child.
 
-**Baza danych:** `choroby` — choroba (id, nazwa, zakazna T/N), objawy (id, nazwa), choroba_objawy (id_choroba FK, id_objaw FK) — relacja n:m.
+**Baza danych:** `choroby` — tabele: `choroba` (id, nazwa, zakazna T/N), `objawy` (id, nazwa), `choroba_objawy` (id_choroba FK, id_objaw FK) — relacja n:m.
 
 ## Co musisz oddać — pliki
 
-zdrowie.php: nagłówek 'Informacja o chorobach w Polsce', nawigacja (3 odnośniki do szpitale/przychodnie/NFZ target=_blank), lewa sekcja: lista numerowana chorób zakaźnych (skrypt 1), prawa sekcja: lista rozwijana chorób (skrypt 2) + Sprawdź → skrypt 3 wyświetla objawy w znacznikach `<span>`, obraz zdrowia.png (position absolute, z-index, 100px od lewej 500px od góry).
-
-## CSS — najważniejsze zasady
-
-Trebuchet MS sans-serif, header+nav+footer #FF8F00 (orange, padding 10px, text-align right), sekcje 50% 400px: left #FFF8E1, right #FFECB3, odnośniki #FFECB3 180% no-underline margin-left 70px hover white+underline, obraz position:absolute z-index top/left, skrypt3 div: dotted 1px black padding 30px margin 50/180/0/50, span:nth-child różne font-size (120%–240%).
+zdrowie.php: header (h1), nav (3 odnośniki external target=_blank), main z sekcją lewą (lista numerowana chorób zakaźnych — skrypt 1) i sekcją prawą (formularz z listą rozwijaną — skrypt 2, przycisk Sprawdź, div z objawami w span — skrypt 3), footer, obraz zdrowia.png poza blokami (position absolute).
 
 ## Grafika — co robić
 
-zdrowia.png: tekst ZDROWIA, tło przezroczyste, wysokość 100px, przycięte do szerokości tekstu
-
+zdrowia.png: tekst "ZDROWIA", tło przezroczyste, wysokość 100px, przycięte do szerokości tekstu.
 
 ## Zapytania SQL — gotowe rozwiązania
 
 Baza: `choroby`. Plik SQL: `choroby.sql`.
 
-### Zapytanie 1: Choroby zakaźne posortowane
+### Zapytanie 1: choroby zakaźne posortowane
 
 ```sql
 SELECT nazwa FROM choroba WHERE zakazna = 'T' ORDER BY nazwa ASC;
 ```
 
-### Zapytanie 2: Wszystkie choroby — id i nazwa
+### Zapytanie 2: wszystkie choroby — id i nazwa
 
 ```sql
 SELECT id, nazwa FROM choroba;
 ```
 
-### Zapytanie 3: Objawy choroby id=5 przez relację
+### Zapytanie 3: objawy choroby id=5 przez relację
 
 ```sql
-SELECT o.nazwa FROM objawy o JOIN choroba_objawy co ON o.id = co.id_objaw WHERE co.id_choroba = 5;
+SELECT o.nazwa FROM objawy o
+JOIN choroba_objawy co ON o.id = co.id_objaw
+WHERE co.id_choroba = 5;
 ```
 
-### Zapytanie 4: Nazwy chorób zakaźnych + liczba objawów
+### Zapytanie 4: choroby zakaźne + liczba objawów
 
 ```sql
-SELECT c.nazwa, COUNT(*) FROM choroba c JOIN choroba_objawy co ON c.id = co.id_choroba WHERE c.zakazna = 'T' GROUP BY c.id;
+SELECT c.nazwa, COUNT(*) AS liczba_objawow
+FROM choroba c
+JOIN choroba_objawy co ON c.id = co.id_choroba
+WHERE c.zakazna = 'T'
+GROUP BY c.id;
 ```
 
+<Callout type="exam">
+Zapytanie 4 łączy JOIN + WHERE + GROUP BY — trzy klauzule naraz na relacji n:m. To najtrudniejsze zapytanie w tym arkuszu. Przećwicz pisanie takich z pamięci.
+</Callout>
 
-## Skrypty — rozwiązanie krok po kroku
+## Skrypty PHP — rozwiązanie krok po kroku
 
-{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+### Połączenie z bazą
 
-## Punkty — co sprawdza egzaminator
+```php
+<?php
+$conn = mysqli_connect("localhost", "root", "", "choroby");
+mysqli_query($conn, "SET CHARSET utf8");
+```
 
-Ocenie podlegać będzie 5 rezultatów:
+### Skrypt 1 — lista chorób zakaźnych
 
-1. **Operacje na bazie danych** — import tabel + kwerendy SQL
-2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
-3. **Działanie witryny** — czy skrypty działają poprawnie
-4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
-5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają
+```php
+$wynik = mysqli_query($conn,
+    "SELECT nazwa FROM choroba WHERE zakazna = 'T' ORDER BY nazwa ASC");
+echo "<ol>";
+while ($row = mysqli_fetch_array($wynik)) {
+    echo "<li>" . $row['nazwa'] . "</li>";
+}
+echo "</ol>";
+```
+
+### Skrypt 2 — lista rozwijana wszystkich chorób
+
+```php
+echo "<select name='choroba'>";
+$wynik2 = mysqli_query($conn, "SELECT id, nazwa FROM choroba");
+while ($row = mysqli_fetch_array($wynik2)) {
+    echo "<option value='" . $row['id'] . "'>" . $row['nazwa'] . "</option>";
+}
+echo "</select>";
+```
+
+### Skrypt 3 — objawy wybranej choroby w span
+
+```php
+if (isset($_POST['choroba'])) {
+    $id_choroby = $_POST['choroba'];
+    $wynik3 = mysqli_query($conn,
+        "SELECT o.nazwa FROM objawy o
+         JOIN choroba_objawy co ON o.id = co.id_objaw
+         WHERE co.id_choroba = $id_choroby");
+
+    echo "<div class='objawy'>";
+    while ($row = mysqli_fetch_array($wynik3)) {
+        echo "<span>" . $row['nazwa'] . "</span> ";
+    }
+    echo "</div>";
+}
+```
+
+### Zamknięcie
+
+```php
+mysqli_close($conn);
+?>
+```
+
+## Styl CSS (styl.css)
+
+```css
+* {
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+header, nav, footer {
+    background-color: #FF8F00;
+    padding: 10px;
+    text-align: right;
+}
+
+main {
+    display: flex;
+}
+
+section {
+    width: 50%;
+    height: 400px;
+}
+
+section:first-of-type {
+    background-color: #FFF8E1;
+}
+
+section:last-of-type {
+    background-color: #FFECB3;
+}
+
+a {
+    color: #FFECB3;
+    margin-left: 70px;
+    font-size: 180%;
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+img {
+    position: absolute;
+    left: 100px;
+    top: 500px;
+    z-index: 1;
+}
+
+.objawy {
+    border: 1px dotted black;
+    padding: 30px;
+    margin: 50px 180px 0 50px;
+}
+
+span:nth-child(2) { font-size: 120%; }
+span:nth-child(4) { font-size: 240%; }
+span:nth-child(5) { font-size: 150%; }
+span:nth-child(7) { font-size: 160%; }
+span:nth-child(9) { font-size: 130%; }
+span:nth-child(10) { font-size: 190%; }
+```
+
+<Callout type="exam">
+`span:nth-child(n)` — pseudo-klasa, która wybiera n-ty element potomny. Polecenie wymaga różnych rozmiarów czcionki dla 2., 4., 5., 7., 9. i 10. spanu. To tworzy efekt "chmury tagów" z objawami o różnych wielkościach.
+</Callout>
+
+## Omówienie punktacji
+
+| Element | Punkty | Na co patrzy egzaminator |
+|---------|--------|--------------------------|
+| Operacje na bazie danych | ~8 pkt | Import, 4 zapytania (JOIN n:m, GROUP BY + COUNT) |
+| Grafika | ~2 pkt | zdrowia.png z przezroczystym tłem |
+| Zawartość witryny | ~4 pkt | Semantyka, target=_blank, formularz |
+| Działanie witryny | ~6 pkt | Skrypty 1-3, span z objawami |
+| Styl CSS | ~6 pkt | nth-child, position absolute, hover, objawy div |
+| Skrypt połączenia z bazą | ~4 pkt | mysqli, close(), JOIN w skrypcie 3 |
+
+## Wnioski z tego arkusza
+
+1. **Relacja n:m** — tabela łącząca `choroba_objawy` to klasyczny wzorzec. Musisz umieć pisać JOIN przez tabelę łączącą.
+
+2. **position: absolute** — obraz zdrowia.png jest pozycjonowany absolutnie (left: 100px, top: 500px). Bez `position: absolute` na img, obraz zostanie w normalnym przepływie dokumentu.
+
+3. **nth-child na span** — tworzy efekt "chmury tagów". Egzaminator sprawdza, czy użyłeś pseudo-klasy (a nie klas CSS na poszczególnych span).
+
+4. **target=_blank** — wszystkie odnośniki w nawigacji otwierają się w nowym oknie. Bez tego atrybutu tracisz punkt za "zawartość witryny".
+
+5. **margin: 50px 180px 0 50px** — skrócony zapis marginesów (góra/prawo/dół/lewo). Na egzaminie szybciej niż pisanie 4 osobnych `margin-top/right/bottom/left`.

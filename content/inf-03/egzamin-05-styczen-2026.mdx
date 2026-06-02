@@ -1,5 +1,5 @@
 ---
-title: "Zgłoszenia wydarzeń — portal wypadków"
+title: "Zgłoszenia wypadków — rejestr zdarzeń"
 ---
 
 **Arkusz:** INF.03-05-26.01-SG (styczeń 2026)
@@ -14,63 +14,200 @@ Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii.
 
 ## O czym jest ten arkusz
 
-Portal zgłoszeń wypadków.
-Skrypty **PHP** działają po stronie serwera (XAMPP, localhost).
+Portal zgłoszeń wypadków — rejestr personelu (policjanci i ratownicy), pojazdów (karetki i radiowozy) i zgłoszeń. Jedna strona index.php z dwoma formularzami i dwoma sekcjami.
 
-**Baza danych:** `zgloszenia` — personel (id, imie, nazwisko, status='policjant'|'ratownik'), pojazdy (id, typ='K'|'R'), rejestr (id, id_personel FK, id_pojazd FK, data).
+**Baza danych:** `zgloszenia` — tabele: `personel` (id, imie, nazwisko, status: policjant/ratownik), `pojazdy` (id, typ: K/R, marka), `rejestr` (id, id_personel FK, id_pojazd FK, data).
 
 ## Co musisz oddać — pliki
 
-index.php: sekcja lewa — radio (Policjant/Ratownik) + Pokaż → skrypt 1 filtruje personel wg opcji, tabela Id/Imię/Nazwisko; sekcja prawa — lista numerowana personelu bez zgłoszeń (skrypt 2), formularz z id + Dodaj zgłoszenie (skrypt 3 wstawia do bazy).
-
-## CSS — najważniejsze zasady
-
-Tahoma, Maroon header+footer (white, padding 10px), sekcje 50% 500px: left LightSalmon, right DarkSalmon, h1+h2+h3 centered, tabela border 1px solid Maroon collapsed 85% auto margin, lista no bullets, przyciski Maroon white no border border-radius 20px margin-left 20px padding 10px hover: white bg Maroon text.
-
-## Grafika — co robić
-
-Brak szczególnych grafik
-
+index.php: header (h1 "Zgłoszenia wydarzeń"), main z sekcją lewą (formularz radio Policjant/Ratownik + przycisk Pokaż + tabela skryptu 1) i sekcją prawą (h2 "Nowe zgłoszenie" + lista numerowana skryptu 2 + formularz z polem edycyjnym + przycisk "Dodaj zgłoszenie" skryptu 3), footer.
 
 ## Zapytania SQL — gotowe rozwiązania
 
 Baza: `zgloszenia`. Plik SQL: `zgloszenia.sql`.
 
-### Zapytanie 1: Policjanci z personelu
+### Zapytanie 1: policjanci z personelu
 
 ```sql
-SELECT id, imie, nazwisko FROM personel WHERE status = 'policjant';
+SELECT id, imie, nazwisko FROM personel
+WHERE status = 'policjant';
 ```
 
-### Zapytanie 2: Liczba karetek i radiowozów
+### Zapytanie 2: liczba pojazdów wg typu
 
 ```sql
-SELECT typ, COUNT(*) FROM pojazdy GROUP BY typ;
+SELECT typ, COUNT(*) AS liczba FROM pojazdy
+GROUP BY typ;
 ```
 
-### Zapytanie 3: Personel BEZ zgłoszeń (NOT IN)
+### Zapytanie 3: osoby bez zgłoszeń (NOT IN)
 
 ```sql
-SELECT id, nazwisko FROM personel WHERE id NOT IN (SELECT id_personel FROM rejestr);
+SELECT id, nazwisko FROM personel
+WHERE id NOT IN (SELECT id_personel FROM rejestr);
 ```
 
-### Zapytanie 4: Wstawienie zgłoszenia z aktualną datą
+<Callout type="exam">
+Podzapytanie `NOT IN` — to zaawansowany wzorzec. Alternatywnie można użyć `LEFT JOIN ... WHERE rejestr.id IS NULL`, ale NOT IN jest prostszy do napisania na egzaminie.
+</Callout>
+
+### Zapytanie 4: wstawienie rekordu z aktualną datą
 
 ```sql
-INSERT INTO rejestr (id_personel, id_pojazd, data) VALUES (1, 14, NOW());
+INSERT INTO rejestr (id_personel, id_pojazd, data)
+VALUES (1, 14, CURDATE());
 ```
 
+<Callout type="tip" title="CURDATE()">
+`CURDATE()` wstawia aktualną datę (format YYYY-MM-DD). Egzaminator sprawdza, czy użyłeś funkcji a nie wpisałeś datę na sztywno.
+</Callout>
 
-## Skrypty — rozwiązanie krok po kroku
+## Skrypty PHP — rozwiązanie krok po kroku
 
-{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+### Połączenie z bazą
 
-## Punkty — co sprawdza egzaminator
+```php
+<?php
+$conn = mysqli_connect("localhost", "root", "", "zgloszenia");
+mysqli_query($conn, "SET CHARSET utf8");
+```
 
-Ocenie podlegać będzie 5 rezultatów:
+### Skrypt 1 — tabela personelu wg opcji z formularza
 
-1. **Operacje na bazie danych** — import tabel + kwerendy SQL
-2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
-3. **Działanie witryny** — czy skrypty działają poprawnie
-4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
-5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają
+```php
+$opcja = isset($_POST['status']) ? $_POST['status'] : 'policjant';
+
+echo "<h3>Wybrano opcję: $opcja</h3>";
+
+$wynik = mysqli_query($conn,
+    "SELECT id, imie, nazwisko FROM personel WHERE status = '$opcja'");
+
+echo "<table><tr><th>Id</th><th>Imię</th><th>Nazwisko</th></tr>";
+while ($row = mysqli_fetch_array($wynik)) {
+    echo "<tr><td>" . $row['id'] . "</td><td>" . $row['imie'] . "</td>"
+         . "<td>" . $row['nazwisko'] . "</td></tr>";
+}
+echo "</table>";
+```
+
+<Callout type="warning" title="Stan początkowy">
+Polecenie mówi: "w stanie początkowym z opcją policjant". Dlatego `$opcja` ma domyślną wartość `'policjant'` gdy formularz nie został jeszcze wysłany.
+</Callout>
+
+### Skrypt 2 — lista osób bez zgłoszeń
+
+```php
+$wynik2 = mysqli_query($conn,
+    "SELECT id, nazwisko FROM personel
+     WHERE id NOT IN (SELECT id_personel FROM rejestr)");
+while ($row = mysqli_fetch_array($wynik2)) {
+    echo "<li>" . $row['id'] . " - " . $row['nazwisko'] . "</li>";
+}
+```
+
+### Skrypt 3 — dodanie zgłoszenia
+
+```php
+if (isset($_POST['id_osoby'])) {
+    $id_osoby = $_POST['id_osoby'];
+    mysqli_query($conn,
+        "INSERT INTO rejestr (id_personel, id_pojazd, data)
+         VALUES ($id_osoby, 14, CURDATE())");
+}
+```
+
+### Zamknięcie
+
+```php
+mysqli_close($conn);
+?>
+```
+
+## Styl CSS (styl.css)
+
+```css
+* {
+    font-family: Tahoma;
+}
+
+header, footer {
+    background-color: Maroon;
+    color: white;
+    padding: 10px;
+}
+
+main {
+    display: flex;
+}
+
+section {
+    width: 50%;
+    height: 500px;
+}
+
+section:first-of-type {
+    background-color: LightSalmon;
+}
+
+section:last-of-type {
+    background-color: DarkSalmon;
+}
+
+h1, h2, h3 {
+    text-align: center;
+}
+
+table, td, th {
+    border: 1px solid Maroon;
+}
+
+table {
+    width: 85%;
+    border-collapse: collapse;
+    margin: auto;
+}
+
+ol {
+    list-style-type: none;
+}
+
+button {
+    background-color: Maroon;
+    color: white;
+    margin-left: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+}
+
+button:hover {
+    background-color: white;
+    color: Maroon;
+}
+```
+
+<Callout type="exam">
+`border-collapse: collapse` + `margin: auto` na tabeli — pierwszy łączy krawędzie, drugi centruje tabelę w sekcji. Bez `margin: auto` tabela będzie wyrównana do lewej.
+</Callout>
+
+## Omówienie punktacji
+
+| Element | Punkty | Na co patrzy egzaminator |
+|---------|--------|--------------------------|
+| Operacje na bazie danych | ~8 pkt | Import, 4 zapytania (NOT IN, GROUP BY, CURDATE) |
+| Zawartość witryny | ~4 pkt | Semantyka, radio buttons, dwa formularze |
+| Działanie witryny | ~6 pkt | Skrypty 1-3, stan początkowy, INSERT z POST |
+| Styl CSS | ~6 pkt | Tahoma, kolory, hover efekt na przyciskach |
+| Skrypt połączenia z bazą | ~6 pkt | mysqli, close(), poprawne zapytania |
+
+## Wnioski z tego arkusza
+
+1. **Radio buttons (pola opcji)** — `input type="radio"` z `name` takim samym dla obu = tylko jedna opcja naraz. Domyślnie zaznaczony: atrybut `checked`.
+
+2. **NOT IN z podzapytaniem** — zapytanie 3 jest trudne. Jeśli nie znasz NOT IN, przećwicz na danych testowych przed egzaminem.
+
+3. **CURDATE()** — funkcja MySQL wstawiająca aktualną datę. Alternatywa: `NOW()` (data + czas), ale polecenie mówi o dacie.
+
+4. **Dwa formularze na jednej stronie** — oba wysyłają POST do tego samego pliku. Skrypty muszą rozróżniać, który formularz wysłał dane (sprawdzanie `isset` odpowiedniego pola).
+
+5. **Hover na przyciskach: zamiana kolorów** — tło Maroon → white, tekst white → Maroon. To odwrócenie kolorów.

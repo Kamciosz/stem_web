@@ -3,7 +3,7 @@ title: "Pola figur płaskich — witryna matematyczna"
 ---
 
 **Arkusz:** INF.03-03-26.01-SG (styczeń 2026)
-**Technologia:** JavaScript · **Czas:** 150 minut
+**Technologia:** JavaScript (bez bazy danych) · **Czas:** 150 minut
 **Archiwum:** `pliki2.7z` · **Hasło:** `*M@tem@tyk@6`
 
 <Callout type="exam" title="Podejście do egzaminu">
@@ -14,33 +14,235 @@ Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii.
 
 ## O czym jest ten arkusz
 
-Aplikacja do obliczania pól figur.
+Witryna matematyczna do obliczania pól figur. **Bez bazy danych** — ten arkusz sprawdza JavaScript, HTML i CSS.
 
-**Bez bazy danych** — ten arkusz sprawdza JS/HTML/CSS.
+Dwie strony: index.html (prostokąt i trójkąt — obliczenia JS) i kolo.html (animacja GIF + wzór).
 
 ## Co musisz oddać — pliki
 
-index.html + kolo.html. Wspólne: nagłówek h2 'Pola figur płaskich', nawigacja (Prostokąt i trójkąt → index, Okrąg i koło → kolo). Index: obraz 1d.bmp, miniatury 1m.bmp/2m.bmp (skrypt 1 zmienia duży obraz), formularz z bok/podstawa + wysokość + Oblicz (skrypt 2 liczy pole prostokąta lub trójkąta). kolo.html: animacja kolo.gif, wzór P = Π·r² (ze znakiem specjalnym Pi i indeksem górnym).
+index.html + kolo.html. Wspólne: h2 "Pola figur płaskich", nawigacja (Prostokąt i trójkąt = index, Okrąg i koło = kolo). Index: obraz 1d.bmp, miniatury 1m.bmp/2m.bmp (skrypt 1 zmienia duży obraz), formularz z dwoma polami + przycisk Oblicz (skrypt 2 liczy pole). kolo.html: animacja kolo.gif, wzór z Pi i indeksem górnym.
 
-## CSS — najważniejsze zasady
+## Animacja GIF — co robić
 
-Garamond serif, Navy header+footer (white text, letter-spacing 3px), DodgerBlue nav+aside (35%, 500px), SkyBlue section (30%), grafiki z box-shadow 5px/10px DimGray + border-radius 10px + cursor pointer.
+Z klatki.jpg wycinasz 5 kwadratów 200x200px. Tworzysz animację GIF:
+- 5 klatek, każda 200x200px
+- Opóźnienie: 1 sekunda między klatkami
+- Pętla: nieskończona
+- Zapisz jako kolo.gif
+- Zrzut ustawień parametrów jako parametry.jpg
 
-## Grafika — co robić
+## CSS — pełne rozwiązanie (styl.css)
 
-Animacja GIF: 5 klatek 200×200px z klatki.jpg, opóźnienie 1s, nieskończona pętla → kolo.gif
+```css
+* {
+    font-family: Garamond, serif;
+}
 
+header, footer {
+    background-color: Navy;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    letter-spacing: 3px;
+}
 
+main {
+    display: flex;
+}
 
+nav, section, aside {
+    height: 500px;
+}
 
-{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+nav, aside {
+    background-color: DodgerBlue;
+    width: 35%;
+}
 
-## Punkty — co sprawdza egzaminator
+section {
+    background-color: SkyBlue;
+    width: 30%;
+    text-align: center;
+}
 
-Ocenie podlegać będzie 5 rezultatów:
+input, button {
+    margin: 10px;
+}
 
-1. **Animacja/grafika** — poprawność i parametry animacji/grafiki
-2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
-3. **Działanie witryny** — czy skrypty działają poprawnie
-4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
-5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają
+h3 {
+    text-align: center;
+}
+
+h3::first-letter {
+    font-size: 200%;
+}
+
+p {
+    font-size: 150%;
+}
+
+.miniatura {
+    box-shadow: 5px 5px 10px DimGray;
+    border-radius: 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+```
+
+<Callout type="exam">
+`h3::first-letter` — pseudo-element, który powiększa pierwszą literę nagłówka do 200%. To rzadko spotykane na egzaminie, ale polecenie mówi wprost. Zapamiętaj składnię z podwójnym dwukropkiem.
+</Callout>
+
+## HTML — index.html
+
+```html
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Pola figur</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header>
+        <h2>Pola figur płaskich</h2>
+    </header>
+    <main>
+        <nav>
+            <h3>MENU</h3>
+            <ul>
+                <li><a href="index.html">Prostokąt i trójkąt</a></li>
+                <li><a href="kolo.html">Okrąg i koło</a></li>
+            </ul>
+        </nav>
+        <section>
+            <img id="duzy" src="1d.bmp" alt="Figura">
+            <br>
+            <img src="1m.bmp" alt="Wybierz trójkąt"
+                 class="miniatura" onclick="zmienObraz(this)">
+            <img src="2m.bmp" alt="Wybierz prostokąt"
+                 class="miniatura" onclick="zmienObraz(this)">
+        </section>
+        <aside>
+            <h3>Pole prostokąta / pole trójkąta</h3>
+            <label for="bok1">Bok prostokąta / podstawa trójkąta:</label>
+            <input type="number" id="bok1"><br>
+            <label for="bok2">Drugi bok prostokąta / wysokość trójkąta:</label>
+            <input type="number" id="bok2"><br>
+            <button onclick="oblicz()">Oblicz</button>
+            <p id="wynik"></p>
+        </aside>
+    </main>
+    <footer>
+        <p>Autor: [numer zdającego]</p>
+    </footer>
+    <script src="skrypt.js"></script>
+</body>
+</html>
+```
+
+## HTML — kolo.html
+
+```html
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Pola figur</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header>
+        <h2>Pola figur płaskich</h2>
+    </header>
+    <main>
+        <nav>
+            <h3>MENU</h3>
+            <ul>
+                <li><a href="index.html">Prostokąt i trójkąt</a></li>
+                <li><a href="kolo.html">Okrąg i koło</a></li>
+            </ul>
+        </nav>
+        <section>
+            <img src="kolo.gif" alt="koło">
+        </section>
+        <aside>
+            <p>Pole koła: P = &Pi; * r<sup>2</sup></p>
+        </aside>
+    </main>
+    <footer>
+        <p>Autor: [numer zdającego]</p>
+    </footer>
+</body>
+</html>
+```
+
+<Callout type="tip" title="Znak Pi i indeks górny">
+`&Pi;` daje wielką literę Pi (Π). `r<sup>2</sup>` daje r z indeksem górnym. Oba wymagane w poleceniu — bez nich tracisz punkty za "zawartość witryny".
+</Callout>
+
+## JavaScript — skrypty (skrypt.js)
+
+### Skrypt 1 — zmiana dużego obrazu po kliknięciu miniatury
+
+```javascript
+function zmienObraz(miniatura) {
+    var duzy = document.getElementById("duzy");
+    if (miniatura.src.includes("1m")) {
+        duzy.src = "1d.bmp";
+    } else {
+        duzy.src = "2d.bmp";
+    }
+}
+```
+
+<Callout type="warning" title="Uwaga na src">
+`miniatura.src` zwraca pełny URL (np. `file:///C:/...1m.bmp`), dlatego używamy `includes("1m")` zamiast porównania `==`. To częsty błąd na egzaminie — `== "1m.bmp"` nie zadziała.
+</Callout>
+
+### Skrypt 2 — obliczenie pola figury
+
+```javascript
+function oblicz() {
+    var a = parseFloat(document.getElementById("bok1").value);
+    var b = parseFloat(document.getElementById("bok2").value);
+    var duzy = document.getElementById("duzy");
+    var wynik = document.getElementById("wynik");
+
+    if (duzy.src.includes("2d")) {
+        // Prostokąt: P = a * b
+        wynik.innerHTML = "Pole prostokąta = " + (a * b);
+    } else {
+        // Trójkąt: P = a * b / 2
+        wynik.innerHTML = "Pole trójkąta = " + (a * b / 2);
+    }
+}
+```
+
+<Callout type="exam">
+Polecenie mówi: "obliczenia powinny też działać dla stanu początkowego witryny (Skrypt 1 nie wykonał się ani razu), wtedy liczone jest pole trójkąta". Domyślnie duży obraz to 1d.bmp (trójkąt) — warunek `else` pokrywa ten przypadek. Egzaminator testuje to jako pierwszy krok.
+</Callout>
+
+## Omówienie punktacji
+
+| Element | Punkty | Na co patrzy egzaminator |
+|---------|--------|--------------------------|
+| Animacja GIF | ~6 pkt | 5 klatek 200x200, pętla nieskończona, 1s opóźnienie |
+| Zawartość witryny | ~6 pkt | Obie strony, semantyczne bloki, nawigacja, formularz |
+| Działanie witryny | ~6 pkt | Skrypt 1 zmienia obraz, skrypt 2 liczy poprawnie |
+| Styl CSS | ~6 pkt | Garamond, kolory, flex layout, first-letter, box-shadow |
+| Skrypt | ~6 pkt | Logika warunkowa, parseFloat, innerHTML |
+
+**Łącznie:** ~30 punktów. Próg zdania: 75% = 22-23 punkty.
+
+## Wnioski z tego arkusza
+
+1. **Arkusz bez bazy danych** — to rzadkość na INF.03 (zwykle jest PHP+SQL). Tutaj sprawdzane jest tylko JS/HTML/CSS + animacja GIF. Jeśli słabo znasz JS, ten arkusz może być trudniejszy niż te z PHP.
+
+2. **Animacja GIF** — musisz umieć obsługiwać edytor grafiki rastrowej (GIMP lub Photoshop na egzaminie). Wycinanie klatek z jednego obrazu + ustawienie parametrów animacji to osobna umiejętność.
+
+3. **includes() zamiast porównania** — `element.src` zwraca pełną ścieżkę URL, nie samą nazwę pliku. To pułapka, na którą wielu zdających wpada.
+
+4. **Stan początkowy witryny** — egzaminator sprawdza, co się dzieje gdy od razu klikniesz "Oblicz" bez wybierania figury. Twój skrypt musi obsłużyć domyślny obraz (1d.bmp = trójkąt).
+
+5. **Pseudo-element `::first-letter`** — pojawił się po raz pierwszy w sesji głównej. Zapamiętaj składnię i to, że działa tylko na elementach blokowych.

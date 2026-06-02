@@ -1,5 +1,5 @@
 ---
-title: "Studio tatuażu — galeria i dodawanie"
+title: "Studio Tatuażu — galeria wzorów"
 ---
 
 **Arkusz:** INF.03-12-26.01-SG (styczeń 2026)
@@ -14,63 +14,212 @@ Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii.
 
 ## O czym jest ten arkusz
 
-Studio tatuażu z galerią.
-W tym arkuszu **JavaScript** działa po stronie klienta (w przeglądarce).
+Studio tatuażu — arkusz mieszany PHP+JS. Strona index.html z galerią miniatur, formularzem dodawania wzoru (input file + select + input number), skryptem JS tworzącym nowe elementy DOM. Własna czcionka Dancing Script z pliku. Efekt hover z transition na miniaturach.
 
-**Baza danych:** `studiotatuazu` — tatual (id, wzor, cena, kolor FK), style (id, nazwa), kolory (id, nazwa).
+**Baza danych:** `studiotatuazu` — tabele: `tatauze` (id, wzor, kolor, cena, id_styl FK), `style` (id, nazwa).
 
 ## Co musisz oddać — pliki
 
-index.html: nagłówek z logo (przezroczyste), h1 'Studio Tatuażu', sekcja z galerią obrazów (smok, koliber), aside z formularzem: nazwa pliku + input file (tylko PNG) + kolor (select) + cena (number) + Dodaj Wzór. Skrypt JS: pobiera dane z formularza, wyświetla komunikat 'Wzór: X, kolor Y w cenie Z zł', tworzy element `<img>` z klasą miniatury i dodaje do sekcji (createElement+appendChild). @font-face Dancing Script.
-
-## CSS — najważniejsze zasady
-
-Dancing Script @font-face, body 120% centered, header1+aside RosyBrown 30%, aside left 350px, header2 RosyBrown 70% 100px, section 70% 550px overflow scroll, label line-height 50px, .miniatury 150px hover: Bisque bg 200px width transition 1s.
-
-## Grafika — co robić
-
-logo.png: skadrowana do ptaka, przezroczyste tło, 300px wysokość + litery S/T czcionką ozdobną, obrazy tatuaży: smok.png, koliber.png, triquetra.png, aniol.png, lotos.png
-
+index.html: header1 (logo.png), header2 (h1 "Studio Tatuażu"), main z section (h2 "Galeria" + 2 miniatury smok.png/koliber.png z klasą) i aside (h3 "Dodaj wzór" + formularz: label+input text, input file accept PNG, label+select kolory, label+input number cena, button "Dodaj Wzór" — onclick skrypt JS), footer. Grafika: logo.png — kadr ptaka + litery S/T czcionką ozdobną, 300px wysokości.
 
 ## Zapytania SQL — gotowe rozwiązania
 
-Baza: `studiotatuazu`. Plik SQL: `studiotatuazu.sql`.
-
-### Zapytanie 1: Czarne tatuaże droższe niż 100 zł
+### Zapytanie 1: czarne tatuaże powyżej 100 zł
 
 ```sql
-SELECT wzor, cena FROM tatual WHERE kolor = (SELECT id FROM kolory WHERE nazwa = 'czarny') AND cena > 100 ORDER BY cena DESC;
+SELECT wzor, cena FROM tatuaze
+WHERE kolor = 'czarny' AND cena > 100
+ORDER BY cena DESC;
 ```
 
-### Zapytanie 2: Liczba tatuaży wg koloru (GROUP BY)
+### Zapytanie 2: liczba tatuaży wg koloru
 
 ```sql
-SELECT k.nazwa, COUNT(*) FROM tatual t JOIN kolory k ON t.kolor = k.id GROUP BY k.id;
+SELECT kolor, COUNT(*) AS liczba FROM tatuaze
+GROUP BY kolor;
 ```
 
-### Zapytanie 3: Zielone tatuaże + styl (JOIN)
+### Zapytanie 3: zielone tatuaże z nazwą stylu (JOIN)
 
 ```sql
-SELECT t.wzor, s.nazwa FROM tatual t JOIN style s ON t.styl = s.id WHERE t.kolor = (SELECT id FROM kolory WHERE nazwa = 'zielony');
+SELECT t.wzor, s.nazwa
+FROM tatuaze t
+JOIN style s ON t.id_styl = s.id
+WHERE t.kolor = 'zielony';
 ```
 
-### Zapytanie 4: Podwyżka o 10% dla czerwonych tatuaży
+### Zapytanie 4: podwyżka ceny o 10% dla czerwonych
 
 ```sql
-UPDATE tatual SET cena = cena * 1.1 WHERE kolor = (SELECT id FROM kolory WHERE nazwa = 'czerwony');
+UPDATE tatuaze SET cena = cena * 1.1
+WHERE kolor = 'czerwony';
 ```
 
+<Callout type="exam">
+`UPDATE ... SET cena = cena * 1.1` — mnożenie przez 1.1 to podwyżka o 10%. Alternatywa: `cena + cena * 0.1`. Egzaminator sprawdza, czy cena naprawdę wzrosła (nie została nadpisana stałą wartością).
+</Callout>
 
-## Skrypty — rozwiązanie krok po kroku
+## Skrypt JavaScript — dodawanie wzoru do galerii
 
-{/* Szczegółowe rozwiązanie skryptów będzie uzupełniane */}
+```javascript
+function dodajWzor() {
+    // Pobranie danych z kontrolek
+    var wzor = document.getElementById("wzor").value;
+    var plikInput = document.getElementById("plik");
+    var kolor = document.getElementById("kolor").value;
+    var cena = document.getElementById("cena").value;
 
-## Punkty — co sprawdza egzaminator
+    // Ustalenie nazwy pliku (bez ścieżki)
+    var pelnaSciezka = plikInput.value;
+    var nazwaPliku = pelnaSciezka.split("\\").pop();
 
-Ocenie podlegać będzie 5 rezultatów:
+    // Komunikat
+    alert("Wzór: " + nazwaPliku + ", kolor " + kolor + " w cenie " + cena + " zł");
 
-1. **Operacje na bazie danych** — import tabel + kwerendy SQL
-2. **Zawartość witryny** — czy wszystkie elementy HTML są na miejscu
-3. **Działanie witryny** — czy skrypty działają poprawnie
-4. **Styl CSS** — czy formatowanie jest zgodne z poleceniem
-5. **Skrypt** — czy logika jest poprawna i dane się wyświetlają
+    // Utworzenie i dodanie obrazu do sekcji
+    var img = document.createElement("img");
+    img.src = nazwaPliku;
+    img.alt = nazwaPliku;
+    img.className = "miniatura";
+
+    var sekcja = document.querySelector("section");
+    sekcja.appendChild(img);
+}
+```
+
+<Callout type="warning" title="Ścieżka pliku w input file">
+`input[type=file].value` zwraca `C:\fakepath\plik.png`. Musisz wyciąć samą nazwę pliku: `split("\\").pop()` lub `split("/").pop()`. To pułapka z polecenia — jest nawet podpowiedź w arkuszu: "JS Value property: C:\fakepath\fileName.png".
+</Callout>
+
+## HTML — index.html
+
+```html
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Tatuaże</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header id="h1">
+        <img src="logo.png" alt="salon">
+    </header>
+    <header id="h2">
+        <h1>Studio Tatuażu</h1>
+    </header>
+    <section>
+        <h2>Galeria</h2>
+        <img src="smok.png" alt="smok.png" class="miniatura">
+        <img src="koliber.png" alt="koliber.png" class="miniatura">
+    </section>
+    <aside>
+        <h3>Dodaj wzór</h3>
+        <label for="wzor">Wzór:</label>
+        <input type="text" id="wzor"><br>
+        <label for="plik">Plik:</label>
+        <input type="file" id="plik" accept="image/png"><br>
+        <label for="kolor">Kolor:</label>
+        <select id="kolor">
+            <option>Czarny</option>
+            <option>Czerwony</option>
+            <option>Zielony</option>
+            <option>Niebieski</option>
+        </select><br>
+        <label for="cena">Cena:</label>
+        <input type="number" id="cena"><br>
+        <button onclick="dodajWzor()">Dodaj Wzór</button>
+    </aside>
+    <footer>
+        <p>Autor strony: [numer zdającego]</p>
+    </footer>
+    <script src="skrypt.js"></script>
+</body>
+</html>
+```
+
+## Styl CSS (styl.css)
+
+```css
+@font-face {
+    font-family: 'Dancing Script';
+    src: url('czcionki/DancingScript-Regular.ttf');
+    font-weight: normal;
+}
+
+body {
+    font-family: 'Dancing Script', serif;
+    font-size: 120%;
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+header:first-of-type, aside {
+    background-color: RosyBrown;
+    width: 30%;
+}
+
+aside {
+    text-align: left;
+    height: 350px;
+}
+
+header:last-of-type {
+    background-color: RosyBrown;
+    width: 70%;
+    height: 100px;
+}
+
+section {
+    width: 70%;
+    height: 550px;
+    overflow: scroll;
+}
+
+label {
+    line-height: 50px;
+}
+
+.miniatura {
+    width: 150px;
+    transition: width 1s;
+}
+
+.miniatura:hover {
+    background-color: Bisque;
+    width: 200px;
+}
+```
+
+<Callout type="exam">
+`transition: width 1s` + `.miniatura:hover { width: 200px }` — powiększenie miniatury z animacją 1 sekundy. To jedyny arkusz z `transition` w CSS. Egzaminator sprawdza płynność animacji — bez `transition` zmiana jest natychmiastowa i tracisz punkt.
+</Callout>
+
+## Omówienie punktacji
+
+| Element | Punkty | Na co patrzy egzaminator |
+|---------|--------|--------------------------|
+| Operacje na bazie danych | ~8 pkt | Import, 4 zapytania (UPDATE, JOIN, GROUP BY) |
+| Grafika | ~4 pkt | logo.png — kadr ptaka, litery ST, czcionka, 300px |
+| Zawartość witryny | ~4 pkt | Semantyka, input file accept PNG, label+for |
+| Działanie witryny | ~6 pkt | Skrypt JS: createElement, appendChild, alert |
+| Styl CSS | ~4 pkt | @font-face Dancing Script, transition 1s, hover |
+| Skrypt | ~4 pkt | split fakepath, DOM manipulation |
+
+## Wnioski z tego arkusza
+
+1. **Arkusz mieszany PHP+JS** — baza w PHP, interakcja w JS. Ale strona to index.html (nie .php!) — skrypty PHP są tylko do zapytań w phpMyAdmin, nie do generowania strony.
+
+2. **transition CSS** — jedyny arkusz z animacją CSS. Zapamiętaj składnię: `transition: property duration`.
+
+3. **input file + accept** — `accept="image/png"` ogranicza wybór plików do PNG. Value zawiera `C:\fakepath\` — musisz to obciąć.
+
+4. **createElement + appendChild** — tworzenie elementu DOM i dodawanie do sekcji. To najważniejsza umiejętność JS na tym egzaminie.
+
+5. **UPDATE z obliczeniem** — `SET cena = cena * 1.1` to matematyka w SQL. Nie musisz pobierać wartości i wstawiać z powrotem — UPDATE robi to atomowo.
+
+6. **@font-face** — tak jak w arkuszu 08 (Lato), ale tu Dancing Script. Dwa arkusze z własnymi czcionkami w jednej sesji.
