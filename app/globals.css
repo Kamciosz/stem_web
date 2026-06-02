@@ -2642,6 +2642,7 @@ footer {
     background: var(--lower);
     border: 1px solid #1f1f1f;
     border-left: 2px solid var(--laser);
+    border-radius: 10px;
     font-size: 0.85rem;
     line-height: 1.6;
 }
@@ -2652,6 +2653,32 @@ footer {
     background: none;
     padding: 0;
     border: 0;
+}
+
+/* Tabele markdown (GFM) */
+.lesson-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+}
+.lesson-content thead {
+    border-bottom: 2px solid var(--laser);
+}
+.lesson-content th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--clinical);
+    background: rgba(124, 58, 237, 0.08);
+}
+.lesson-content td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.75);
+}
+.lesson-content tbody tr:hover {
+    background: rgba(124, 58, 237, 0.05);
 }
 
 /* Nawigacja prev/next */
@@ -3809,6 +3836,30 @@ a.lesson-nav-link:hover {
 }
 .exam-scoring table {
     width: 100%;
+}
+.exam-scoring-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+}
+.exam-scoring-table thead {
+    border-bottom: 2px solid #7c3aed;
+}
+.exam-scoring-table th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    color: #e0e0f0;
+    background: rgba(124, 58, 237, 0.1);
+}
+.exam-scoring-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.75);
+}
+.exam-scoring-table tbody tr:hover {
+    background: rgba(124, 58, 237, 0.06);
 }
 
 /* Mobile fixes */
