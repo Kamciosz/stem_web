@@ -3438,7 +3438,7 @@ a.lesson-nav-link:hover {
 }
 
 .exam-picker-panel.open {
-    max-height: 800px;
+    max-height: 2000px;
     padding: 0 16px 16px;
 }
 
