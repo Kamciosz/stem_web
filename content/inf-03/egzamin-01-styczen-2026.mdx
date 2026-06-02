@@ -456,7 +456,39 @@ table, th, td {
   </tbody>
 </table>
 
-## 9. Checklist przed oddaniem
+## 9. Akordeony szybkiej kontroli
+
+<div className="exam-accordion-list">
+  <details className="exam-accordion" open>
+    <summary>SQL — minimalny zestaw, który musi się zgadzać</summary>
+    <div className="exam-accordion-body">
+      <div className="exam-copy">
+        Sprawdź kolejność <code>WHERE → ORDER BY → LIMIT</code>, aliasy w zapytaniu drugim i warunek
+        <code>pojazdy.kolor = kolory.id</code> w JOIN-ie. Bez tego nie ma dyskusji o punktach.
+      </div>
+    </div>
+  </details>
+  <details className="exam-accordion">
+    <summary>PHP — gdzie egzaminator najczęściej ucina</summary>
+    <div className="exam-accordion-body">
+      <div className="exam-copy">
+        Musi być połączenie z bazą, <code>set_charset("utf8")</code>, pętla po wyniku zapytania,
+        cena całkowita liczona w PHP i dokładnie dwa losowe pojazdy w sekcji środkowej.
+      </div>
+    </div>
+  </details>
+  <details className="exam-accordion">
+    <summary>CSS — zgodność z makietą, nie własny gust</summary>
+    <div className="exam-accordion-body">
+      <div className="exam-copy">
+        Header/footer ciemnozielone, nav ForestGreen, trzy sekcje LightGreen po 33.3%, wysokość sekcji,
+        overflow, obramowania tabeli i hover w lewej tabeli. To są wymagania, nie sugestie.
+      </div>
+    </div>
+  </details>
+</div>
+
+## 10. Checklist przed oddaniem
 
 <div className="exam-final-checklist">
   <label><span>01</span> Wszystkie 4 zapytania SQL są zapisane i działają.</label>

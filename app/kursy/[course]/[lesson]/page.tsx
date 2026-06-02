@@ -56,37 +56,51 @@ export default async function LessonPage({ params }: LessonPageProps) {
     const next = currentIndex < flat.length - 1 ? flat[currentIndex + 1] : null;
 
     const hasQuiz = lessonHasQuiz(courseId, lessonSlug);
+    const isExamLesson = module.id === "_egzaminy" || lessonSlug.startsWith("egzamin-");
 
     return (
-        <article className="lesson-page section-shell">
-            <div className="section-inner lesson-container">
-                <aside className="lesson-sidebar">
-                    <nav className="lesson-breadcrumb" aria-label="Ścieżka nawigacji">
-                        <Link href="/kursy">KURSY</Link>
-                        <span aria-hidden="true">/</span>
-                        <Link href={`/kursy/${course.id}`}>{course.badge}</Link>
-                    </nav>
+        <article className={`lesson-page section-shell ${isExamLesson ? "exam-lesson-page" : ""}`}>
+            <div className={`section-inner lesson-container ${isExamLesson ? "exam-lesson-container" : ""}`}>
+                {!isExamLesson && (
+                    <aside className="lesson-sidebar">
+                        <nav className="lesson-breadcrumb" aria-label="Ścieżka nawigacji">
+                            <Link href="/kursy">KURSY</Link>
+                            <span aria-hidden="true">/</span>
+                            <Link href={`/kursy/${course.id}`}>{course.badge}</Link>
+                        </nav>
 
-                    <div className="lesson-meta">
-                        <span className="lesson-meta-module">{module.title}</span>
-                        {lesson.minutes && <span className="lesson-meta-time">{lesson.minutes} MIN</span>}
-                    </div>
+                        <div className="lesson-meta">
+                            <span className="lesson-meta-module">{module.title}</span>
+                            {lesson.minutes && <span className="lesson-meta-time">{lesson.minutes} MIN</span>}
+                        </div>
 
-                    <div className="lesson-module-nav">
-                        <h3 className="lesson-module-nav-title">Lekcje w module</h3>
-                        <ol className="lesson-module-list">
-                            {module.lessons
-                                .filter((l) => l.published)
-                                .map((l) => (
-                                    <li key={l.slug} className={l.slug === lessonSlug ? "active" : ""}>
-                                        <Link href={`/kursy/${course.id}/${l.slug}`}>{l.title}</Link>
-                                    </li>
-                                ))}
-                        </ol>
-                    </div>
-                </aside>
+                        <div className="lesson-module-nav">
+                            <h3 className="lesson-module-nav-title">Lekcje w module</h3>
+                            <ol className="lesson-module-list">
+                                {module.lessons
+                                    .filter((l) => l.published)
+                                    .map((l) => (
+                                        <li key={l.slug} className={l.slug === lessonSlug ? "active" : ""}>
+                                            <Link href={`/kursy/${course.id}/${l.slug}`}>{l.title}</Link>
+                                        </li>
+                                    ))}
+                            </ol>
+                        </div>
+                    </aside>
+                )}
 
-                <div className="lesson-main">
+                <div className={`lesson-main ${isExamLesson ? "exam-lesson-main" : ""}`}>
+                    {isExamLesson && (
+                        <nav className="exam-page-topbar" aria-label="Ścieżka egzaminu">
+                            <Link href="/kursy">KURSY</Link>
+                            <span aria-hidden="true">/</span>
+                            <Link href={`/kursy/${course.id}`}>{course.badge}</Link>
+                            <span aria-hidden="true">/</span>
+                            <span>{module.title}</span>
+                            {lesson.minutes && <strong>{lesson.minutes} MIN</strong>}
+                        </nav>
+                    )}
+
                     <header className="lesson-header">
                         <h1 className="lesson-title-main">{lesson.title}</h1>
                         <p className="lesson-summary-main">{lesson.summary}</p>
