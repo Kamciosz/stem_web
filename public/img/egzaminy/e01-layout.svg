@@ -1,118 +1,147 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 500" fill="none">
   <style>
     .bg { fill: #0f0f23; }
-    .section { stroke-width: 2; rx: 4; }
-    .header-bar { fill: #006400; }
-    .nav-bar { fill: #228B22; }
-    .footer-bar { fill: #006400; }
-    .col { fill: #90EE90; stroke: #228B22; stroke-width: 1.5; }
-    .white-text { fill: #fff; font: bold 13px sans-serif; }
-    .dark-text { fill: #1a1a2e; font: 12px sans-serif; }
-    .dark-bold { fill: #1a1a2e; font: bold 12px sans-serif; }
-    .tag { fill: #a78bfa; font: bold 11px monospace; }
-    .dim { fill: #6b6b8a; font: 11px sans-serif; }
-    .accent { fill: #7c3aed; rx: 4; }
-    .accent-text { fill: #e9d5ff; font: bold 11px sans-serif; }
-    .arrow-line { stroke: #7c3aed; stroke-width: 1.5; stroke-dasharray: 4; }
-    .brace { stroke: #7c3aed; stroke-width: 1.5; fill: none; }
+    .white-text { fill: #fff; font-family: sans-serif; font-size: 13px; font-weight: bold; }
+    .dim-text { fill: #8888aa; font-family: sans-serif; font-size: 11px; }
+    .tag { fill: #a78bfa; font-family: monospace; font-size: 12px; font-weight: bold; }
+    .dark-bold { fill: #1a1a2e; font-family: sans-serif; font-size: 13px; font-weight: bold; }
+    .dark-text { fill: #333; font-family: sans-serif; font-size: 11px; }
+    .accent-bg { fill: #7c3aed; rx: 4; }
+    .accent-text { fill: #e9d5ff; font-family: sans-serif; font-size: 10px; font-weight: bold; }
+    .col { fill: #90EE90; stroke: #228B22; stroke-width: 1.5; rx: 4; }
+    .mini-table { fill: #fff; stroke: #228B22; stroke-width: 1; rx: 2; }
+    .css-code { fill: #c0c0e0; font-family: monospace; font-size: 11px; }
+    .css-label { fill: #a78bfa; font-family: sans-serif; font-size: 13px; font-weight: bold; }
+    .warn { fill: #f59e0b; font-family: sans-serif; font-size: 12px; font-weight: bold; }
   </style>
   
-  <rect width="720" height="480" class="bg"/>
+  <rect width="780" height="500" class="bg"/>
   
   <!-- Tytuł -->
-  <text x="360" y="28" text-anchor="middle" fill="#a78bfa" font-size="15" font-weight="bold" font-family="sans-serif">Struktura strony — index.php</text>
+  <text x="200" y="28" text-anchor="middle" fill="#a78bfa" font-family="sans-serif" font-size="16" font-weight="bold">Struktura strony — index.php</text>
   
-  <!-- === MAKIETA STRONY (lewa strona) === -->
+  <!-- ===== MAKIETA (lewa strona, x=30..380) ===== -->
   
   <!-- Header -->
-  <rect x="40" y="46" width="320" height="36" rx="4" class="header-bar"/>
-  <text x="200" y="69" text-anchor="middle" class="white-text">Serwis konfiguracji samochodów</text>
-  <text x="370" y="69" class="tag">&lt;header&gt;</text>
+  <rect x="30" y="44" width="350" height="36" rx="6" fill="#006400"/>
+  <text x="205" y="67" text-anchor="middle" class="white-text">Serwis konfiguracji samochodów</text>
+  <text x="395" y="67" class="tag">header</text>
   
   <!-- Nav -->
-  <rect x="40" y="86" width="320" height="24" rx="4" class="nav-bar"/>
-  <text x="200" y="103" text-anchor="middle" fill="#ccc" font-size="11" font-family="sans-serif">Samochody | Konfigurator | Kontakt</text>
-  <text x="370" y="103" class="tag">&lt;nav&gt;</text>
+  <rect x="30" y="84" width="350" height="26" rx="4" fill="#228B22"/>
+  <text x="205" y="102" text-anchor="middle" fill="#ddd" font-family="sans-serif" font-size="11">Samochody | Konfigurator | Kontakt</text>
+  <text x="395" y="102" class="tag">nav</text>
   
-  <!-- Main z 3 kolumnami -->
-  <rect x="40" y="114" width="320" height="280" rx="4" fill="none" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4"/>
-  <text x="370" y="130" class="tag">&lt;main&gt; display: flex</text>
+  <!-- Main frame -->
+  <rect x="30" y="114" width="350" height="310" rx="4" fill="none" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="6"/>
+  <text x="395" y="130" class="tag">main</text>
+  <text x="395" y="146" class="dim-text">display: flex</text>
   
-  <!-- Kolumna #lewa -->
-  <rect x="44" y="118" width="100" height="272" class="col"/>
-  <text x="94" y="138" text-anchor="middle" class="dark-bold">#lewa</text>
-  <text x="94" y="155" text-anchor="middle" class="dark-text">Tabela pojazdów</text>
-  <text x="94" y="170" text-anchor="middle" class="dark-text">"alfa" + cena</text>
+  <!-- ── KOLUMNA #lewa ── -->
+  <rect x="34" y="118" width="110" height="302" class="col"/>
+  <text x="89" y="140" text-anchor="middle" class="dark-bold">#lewa</text>
+  <line x1="44" y1="146" x2="134" y2="146" stroke="#228B22" stroke-width="1"/>
+  <text x="89" y="162" text-anchor="middle" class="dark-text">Tabela pojazdów</text>
+  <text x="89" y="176" text-anchor="middle" class="dark-text">model = 'alfa'</text>
   
   <!-- Mini tabela -->
-  <rect x="52" y="180" width="84" height="60" rx="2" fill="#fff" stroke="#228B22" stroke-width="1"/>
-  <text x="94" y="196" text-anchor="middle" fill="#006400" font-size="9" font-family="monospace">marka|model</text>
-  <text x="94" y="210" text-anchor="middle" fill="#006400" font-size="9" font-family="monospace">kolor|cena</text>
-  <text x="94" y="228" text-anchor="middle" fill="#888" font-size="8" font-family="sans-serif">tr:hover →</text>
-  <text x="94" y="238" text-anchor="middle" fill="#888" font-size="8" font-family="sans-serif">ForestGreen</text>
+  <rect x="42" y="186" width="94" height="70" class="mini-table"/>
+  <rect x="42" y="186" width="94" height="18" rx="2" fill="#006400"/>
+  <text x="89" y="199" text-anchor="middle" fill="#fff" font-family="monospace" font-size="8">marka|model|kolor|cena</text>
+  <text x="89" y="218" text-anchor="middle" fill="#666" font-family="monospace" font-size="8">BM | alfa | biały | 71000</text>
+  <text x="89" y="232" text-anchor="middle" fill="#666" font-family="monospace" font-size="8">AM | alfa | czarny | 73000</text>
+  <text x="89" y="246" text-anchor="middle" fill="#666" font-family="monospace" font-size="8">...</text>
   
-  <rect x="52" y="252" width="84" height="18" rx="2" class="accent"/>
-  <text x="94" y="264" text-anchor="middle" class="accent-text">JOIN + PHP</text>
+  <!-- Hover info -->
+  <text x="89" y="278" text-anchor="middle" fill="#228B22" font-family="sans-serif" font-size="9" font-weight="bold">tr:hover</text>
+  <text x="89" y="292" text-anchor="middle" fill="#228B22" font-family="sans-serif" font-size="9">→ ForestGreen</text>
   
-  <!-- Kolumna #srodkowa -->
-  <rect x="148" y="118" width="108" height="272" class="col"/>
-  <text x="202" y="138" text-anchor="middle" class="dark-bold">#srodkowa</text>
-  <text x="202" y="155" text-anchor="middle" class="dark-text">2 losowe auta</text>
+  <!-- Badge -->
+  <rect x="44" y="310" width="90" height="22" class="accent-bg"/>
+  <text x="89" y="325" text-anchor="middle" class="accent-text">JOIN + oblicz w PHP</text>
   
-  <!-- Mini obrazek 1 -->
-  <rect x="160" y="168" width="80" height="44" rx="3" fill="#3b82f6" stroke="#228B22" stroke-width="1"/>
-  <text x="200" y="195" text-anchor="middle" fill="#fff" font-size="10" font-family="sans-serif">🚗 a1.jpg</text>
-  <rect x="160" y="214" width="80" height="28" rx="2" fill="#fff" stroke="#228B22" stroke-width="1"/>
-  <text x="200" y="232" text-anchor="middle" fill="#333" font-size="8" font-family="monospace">rowspan=2</text>
+  <!-- Cena info -->
+  <text x="89" y="356" text-anchor="middle" fill="#f59e0b" font-family="sans-serif" font-size="9" font-weight="bold">cena = cena + doplata</text>
+  <text x="89" y="370" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="8">(w pętli PHP!)</text>
   
-  <!-- Mini obrazek 2 -->
-  <rect x="160" y="250" width="80" height="44" rx="3" fill="#e5e7eb" stroke="#228B22" stroke-width="1"/>
-  <text x="200" y="277" text-anchor="middle" fill="#333" font-size="10" font-family="sans-serif">🚗 a2.jpg</text>
+  <!-- ── KOLUMNA #srodkowa ── -->
+  <rect x="148" y="118" width="120" height="302" class="col"/>
+  <text x="208" y="140" text-anchor="middle" class="dark-bold">#srodkowa</text>
+  <line x1="158" y1="146" x2="258" y2="146" stroke="#228B22" stroke-width="1"/>
+  <text x="208" y="162" text-anchor="middle" class="dark-text">2 losowe pojazdy</text>
   
-  <rect x="158" y="304" width="84" height="18" rx="2" class="accent"/>
-  <text x="200" y="316" text-anchor="middle" class="accent-text">RAND() + LIMIT 2</text>
+  <!-- Obrazek 1 -->
+  <rect x="162" y="176" width="92" height="52" rx="4" fill="#3b82f6"/>
+  <text x="208" y="206" text-anchor="middle" fill="#fff" font-family="sans-serif" font-size="11">a1.jpg</text>
   
-  <!-- Kolumna #prawa -->
-  <rect x="260" y="118" width="96" height="272" class="col"/>
-  <text x="308" y="138" text-anchor="middle" class="dark-bold">#prawa</text>
-  <text x="308" y="155" text-anchor="middle" class="dark-text">Kontakt</text>
+  <!-- Tabela pod obrazkiem 1 -->
+  <rect x="162" y="232" width="92" height="36" class="mini-table"/>
+  <text x="208" y="248" text-anchor="middle" fill="#666" font-family="monospace" font-size="8">cena | Marka: BM</text>
+  <text x="208" y="260" text-anchor="middle" fill="#ef4444" font-family="monospace" font-size="8">rowspan=2!</text>
   
-  <text x="308" y="185" text-anchor="middle" fill="#333" font-size="10" font-family="sans-serif">📞 111 222 444</text>
+  <!-- Obrazek 2 -->
+  <rect x="162" y="278" width="92" height="52" rx="4" fill="#e5e7eb"/>
+  <text x="208" y="308" text-anchor="middle" fill="#333" font-family="sans-serif" font-size="11">a2.jpg</text>
   
-  <rect x="270" y="200" width="72" height="50" rx="3" fill="#ef4444" stroke="#228B22" stroke-width="1"/>
-  <text x="306" y="230" text-anchor="middle" fill="#fff" font-size="10" font-family="sans-serif">🚗 a3.png</text>
+  <!-- Badge -->
+  <rect x="152" y="344" width="112" height="22" class="accent-bg"/>
+  <text x="208" y="359" text-anchor="middle" class="accent-text">ORDER BY RAND() LIMIT 2</text>
   
-  <rect x="266" y="264" width="80" height="18" rx="2" fill="#1a1a2e" stroke="#6b6b8a" stroke-width="1"/>
-  <text x="306" y="276" text-anchor="middle" fill="#6b6b8a" font-size="9" font-family="sans-serif">statyczne HTML</text>
+  <!-- Img width -->
+  <text x="208" y="388" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="9">img { width: 95% }</text>
+  <text x="208" y="402" text-anchor="middle" fill="#888" font-family="sans-serif" font-size="9">border-radius: 8px</text>
+  
+  <!-- ── KOLUMNA #prawa ── -->
+  <rect x="272" y="118" width="104" height="302" class="col"/>
+  <text x="324" y="140" text-anchor="middle" class="dark-bold">#prawa</text>
+  <line x1="282" y1="146" x2="366" y2="146" stroke="#228B22" stroke-width="1"/>
+  <text x="324" y="162" text-anchor="middle" class="dark-text">Kontakt</text>
+  
+  <text x="324" y="192" text-anchor="middle" fill="#333" font-family="sans-serif" font-size="11">111 222 444</text>
+  
+  <!-- Obrazek 3 -->
+  <rect x="284" y="210" width="80" height="52" rx="4" fill="#ef4444"/>
+  <text x="324" y="240" text-anchor="middle" fill="#fff" font-family="sans-serif" font-size="11">a3.png</text>
+  
+  <!-- Badge -->
+  <rect x="280" y="280" width="88" height="22" fill="#1a1a2e" stroke="#6b6b8a" stroke-width="1" rx="4"/>
+  <text x="324" y="295" text-anchor="middle" fill="#8888aa" font-family="sans-serif" font-size="10">statyczne HTML</text>
   
   <!-- Footer -->
-  <rect x="40" y="398" width="320" height="32" rx="4" class="footer-bar"/>
-  <text x="200" y="419" text-anchor="middle" class="white-text">Stronę wykonał: ...</text>
-  <text x="370" y="419" class="tag">&lt;footer&gt;</text>
+  <rect x="30" y="428" width="350" height="32" rx="6" fill="#006400"/>
+  <text x="205" y="449" text-anchor="middle" class="white-text">Stronę wykonał: ...</text>
+  <text x="395" y="449" class="tag">footer</text>
   
-  <!-- === LEGENDA CSS (prawa strona) === -->
-  <text x="500" y="130" fill="#a78bfa" font-size="13" font-weight="bold" font-family="sans-serif">CSS — klucz</text>
+  <!-- ===== LEGENDA CSS (prawa strona) ===== -->
   
-  <rect x="490" y="145" width="14" height="14" rx="2" fill="#006400"/>
-  <text x="512" y="157" class="dim">DarkGreen — header, footer</text>
+  <text x="500" y="44" class="css-label">Kolory CSS</text>
   
-  <rect x="490" y="168" width="14" height="14" rx="2" fill="#228B22"/>
-  <text x="512" y="180" class="dim">ForestGreen — nav, hover</text>
+  <rect x="500" y="56" width="16" height="16" rx="3" fill="#006400"/>
+  <text x="524" y="68" class="dim-text">DarkGreen — header, footer</text>
   
-  <rect x="490" y="191" width="14" height="14" rx="2" fill="#90EE90"/>
-  <text x="512" y="203" class="dim">LightGreen — sekcje</text>
+  <rect x="500" y="80" width="16" height="16" rx="3" fill="#228B22"/>
+  <text x="524" y="92" class="dim-text">ForestGreen — nav, hover</text>
   
-  <text x="500" y="240" fill="#a78bfa" font-size="13" font-weight="bold" font-family="sans-serif">Kluczowe reguły</text>
+  <rect x="500" y="104" width="16" height="16" rx="3" fill="#90EE90" stroke="#228B22" stroke-width="1"/>
+  <text x="524" y="116" class="dim-text">LightGreen — sekcje</text>
   
-  <text x="500" y="262" fill="#a0a0c0" font-size="11" font-family="monospace">main { display: flex }</text>
-  <text x="500" y="280" fill="#a0a0c0" font-size="11" font-family="monospace">section { width: 33.3% }</text>
-  <text x="500" y="298" fill="#a0a0c0" font-size="11" font-family="monospace">section { height: 550px }</text>
-  <text x="500" y="316" fill="#a0a0c0" font-size="11" font-family="monospace">section { overflow: auto }</text>
-  <text x="500" y="334" fill="#a0a0c0" font-size="11" font-family="monospace">table { border-collapse }</text>
-  <text x="500" y="352" fill="#a0a0c0" font-size="11" font-family="monospace">#lewa tr:hover { ... }</text>
-  <text x="500" y="370" fill="#a0a0c0" font-size="11" font-family="monospace">#srodkowa img { 95% }</text>
+  <text x="500" y="156" class="css-label">Kluczowe reguły CSS</text>
   
-  <!-- Wymiary -->
-  <text x="500" y="410" fill="#f59e0b" font-size="12" font-weight="bold" font-family="sans-serif">⚠ Każda sekcja = 33.3% × 550px</text>
-  <text x="500" y="430" fill="#f59e0b" font-size="12" font-weight="bold" font-family="sans-serif">⚠ overflow: auto = scroll gdy &gt;550px</text>
+  <text x="500" y="178" class="css-code">main { display: flex; }</text>
+  <text x="500" y="198" class="css-code">section { width: 33.3%; }</text>
+  <text x="500" y="218" class="css-code">section { height: 550px; }</text>
+  <text x="500" y="238" class="css-code">section { overflow: auto; }</text>
+  <text x="500" y="258" class="css-code">table { border-collapse; }</text>
+  <text x="500" y="278" class="css-code">#lewa tr:hover {...}</text>
+  <text x="500" y="298" class="css-code">#srodkowa img { width: 95% }</text>
+  
+  <text x="500" y="340" class="css-label">Uwagi</text>
+  
+  <text x="500" y="362" class="warn">Kazda sekcja = 33.3% x 550px</text>
+  <text x="500" y="384" class="warn">overflow: auto = scroll</text>
+  <text x="500" y="400" class="dim-text">gdy tabela przekroczy 550px</text>
+  <text x="500" y="420" class="dim-text">pojawi sie scrollbar</text>
+  
+  <text x="500" y="456" class="warn">font-family: Helvetica</text>
+  <text x="500" y="472" class="dim-text">text-align: center (na *)</text>
 </svg>
