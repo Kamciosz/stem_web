@@ -14,33 +14,32 @@ export type ExamEntry = {
 export type ExamSession = {
     year: number;
     month: string;
-    /** Egzaminy z rozwiązaniami — jeśli pusta tablica, sesja oznaczona jako WKRÓTCE */
     exams: ExamEntry[];
 };
 
 const PhpIcon = () => (
-    <svg viewBox="0 0 24 24" className="exam-tech-icon exam-tech-php" aria-label="PHP">
-        <rect width="24" height="24" rx="4" fill="#6B21A8" />
-        <text x="12" y="16" textAnchor="middle" fontSize="9" fontWeight="bold" fill="#E9D5FF">
+    <svg viewBox="0 0 28 16" className="exam-tech-badge" aria-label="PHP">
+        <rect width="28" height="16" rx="3" fill="#7c3aed" />
+        <text x="14" y="12" textAnchor="middle" fontSize="9" fontWeight="700" fill="#e9d5ff">
             PHP
         </text>
     </svg>
 );
 
 const JsIcon = () => (
-    <svg viewBox="0 0 24 24" className="exam-tech-icon exam-tech-js" aria-label="JavaScript">
-        <rect width="24" height="24" rx="4" fill="#CA8A04" />
-        <text x="12" y="16" textAnchor="middle" fontSize="10" fontWeight="bold" fill="#1a1a2e">
+    <svg viewBox="0 0 20 16" className="exam-tech-badge" aria-label="JS">
+        <rect width="20" height="16" rx="3" fill="#ca8a04" />
+        <text x="10" y="12" textAnchor="middle" fontSize="9" fontWeight="700" fill="#1a1a2e">
             JS
         </text>
     </svg>
 );
 
-function TechBadge({ tech }: { tech: ExamEntry["tech"] }) {
+function TechBadges({ tech }: { tech: ExamEntry["tech"] }) {
     if (tech === "php") return <PhpIcon />;
     if (tech === "js") return <JsIcon />;
     return (
-        <span className="exam-tech-both">
+        <span className="exam-badges-row">
             <PhpIcon />
             <JsIcon />
         </span>
@@ -55,19 +54,27 @@ export function ExamPicker({
     courseId: string;
 }) {
     const [open, setOpen] = useState(false);
+    const [idx, setIdx] = useState(0);
+
+    const current = sessions[idx];
+    const hasPrev = idx > 0;
+    const hasNext = idx < sessions.length - 1;
 
     return (
         <div className="exam-picker">
+            {/* Toggle */}
             <button
                 className="exam-picker-toggle"
                 onClick={() => setOpen(!open)}
                 aria-expanded={open}
             >
-                <span className="exam-picker-title">Egzaminy</span>
+                <span className="exam-picker-label">Egzaminy</span>
                 <svg
                     className={`exam-picker-chevron ${open ? "open" : ""}`}
                     viewBox="0 0 20 20"
                     fill="currentColor"
+                    width="18"
+                    height="18"
                 >
                     <path
                         fillRule="evenodd"
@@ -77,35 +84,62 @@ export function ExamPicker({
                 </svg>
             </button>
 
+            {/* Panel */}
             <div className={`exam-picker-panel ${open ? "open" : ""}`}>
-                {sessions.map((session) => (
-                    <div key={`${session.year}-${session.month}`} className="exam-session">
-                        <h4 className="exam-session-header">
-                            {session.month.toUpperCase()} {session.year}
-                        </h4>
+                {/* Session navigator */}
+                <div className="exam-nav">
+                    <button
+                        className="exam-nav-arrow"
+                        onClick={() => setIdx(idx - 1)}
+                        disabled={!hasPrev}
+                        aria-label="Poprzednia sesja"
+                    >
+                        ‹
+                    </button>
+                    <span className="exam-nav-title">
+                        {current.month.toUpperCase()} {current.year}
+                    </span>
+                    <button
+                        className="exam-nav-arrow"
+                        onClick={() => setIdx(idx + 1)}
+                        disabled={!hasNext}
+                        aria-label="Następna sesja"
+                    >
+                        ›
+                    </button>
+                </div>
 
-                        {session.exams.length > 0 ? (
-                            <ul className="exam-session-list">
-                                {session.exams.map((exam) => (
-                                    <li key={exam.id} className="exam-entry">
-                                        <Link
-                                            href={`/kursy/${courseId}/${exam.slug}`}
-                                            className="exam-entry-link"
-                                        >
-                                            <TechBadge tech={exam.tech} />
-                                            <span className="exam-entry-text">
-                                                <span className="exam-entry-id">{exam.id}</span>
-                                                <span className="exam-entry-topic">{exam.topic}</span>
-                                            </span>
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p className="exam-session-empty">WKRÓTCE</p>
-                        )}
-                    </div>
-                ))}
+                {/* Exams list or "coming soon" */}
+                {current.exams.length > 0 ? (
+                    <ul className="exam-list">
+                        {current.exams.map((exam) => (
+                            <li key={exam.id}>
+                                <Link
+                                    href={`/kursy/${courseId}/${exam.slug}`}
+                                    className="exam-row"
+                                >
+                                    <TechBadges tech={exam.tech} />
+                                    <span className="exam-row-id">{exam.id}</span>
+                                    <span className="exam-row-topic">{exam.topic}</span>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p className="exam-empty">WKRÓTCE</p>
+                )}
+
+                {/* Dots indicator */}
+                <div className="exam-dots">
+                    {sessions.map((s, i) => (
+                        <button
+                            key={`${s.year}-${s.month}`}
+                            className={`exam-dot ${i === idx ? "active" : ""} ${s.exams.length > 0 ? "has-content" : ""}`}
+                            onClick={() => setIdx(i)}
+                            aria-label={`${s.month} ${s.year}`}
+                        />
+                    ))}
+                </div>
             </div>
         </div>
     );
