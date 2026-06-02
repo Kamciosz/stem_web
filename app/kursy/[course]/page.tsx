@@ -63,10 +63,6 @@ export default async function CoursePage({ params }: CoursePageProps) {
                     </div>
                 </header>
 
-                {detail.id === "inf-03" && examSessions.length > 0 && (
-                    <ExamPicker sessions={examSessions} courseId={detail.id} />
-                )}
-
                 <ol className="module-list">
                     {detail.modules.map((module, mi) => (
                         <ScrollReveal as="li" key={module.id} delay={mi * 0.05} className="module-item">
@@ -122,6 +118,10 @@ export default async function CoursePage({ params }: CoursePageProps) {
                         </ScrollReveal>
                     ))}
                 </ol>
+
+                {detail.id === "inf-03" && examSessions.length > 0 && (
+                    <ExamPicker sessions={examSessions} courseId={detail.id} />
+                )}
 
                 <div className="course-overview-back">
                     <Link href="/kursy" className="terminal-link">

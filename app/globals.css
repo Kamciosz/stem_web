@@ -3517,3 +3517,13 @@ a.lesson-nav-link:hover {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.exam-session-empty {
+    margin: 0;
+    padding: 8px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--on-surface-variant);
+    opacity: 0.5;
+}

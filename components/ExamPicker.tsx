@@ -8,13 +8,13 @@ export type ExamEntry = {
     title: string;
     tech: "php" | "js" | "php+js";
     slug: string;
-    /** np. "Portal samochodowy" */
     topic: string;
 };
 
 export type ExamSession = {
     year: number;
     month: string;
+    /** Egzaminy z rozwiązaniami — jeśli pusta tablica, sesja oznaczona jako WKRÓTCE */
     exams: ExamEntry[];
 };
 
@@ -81,24 +81,29 @@ export function ExamPicker({
                 {sessions.map((session) => (
                     <div key={`${session.year}-${session.month}`} className="exam-session">
                         <h4 className="exam-session-header">
-                            {session.month}&nbsp;{session.year}
+                            {session.month.toUpperCase()}&nbsp;{session.year}
                         </h4>
-                        <ul className="exam-session-list">
-                            {session.exams.map((exam) => (
-                                <li key={exam.id} className="exam-entry">
-                                    <Link
-                                        href={`/kursy/${courseId}/${exam.slug}`}
-                                        className="exam-entry-link"
-                                    >
-                                        <TechBadge tech={exam.tech} />
-                                        <span className="exam-entry-text">
-                                            <span className="exam-entry-id">{exam.id}</span>
-                                            <span className="exam-entry-topic">{exam.topic}</span>
-                                        </span>
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
+
+                        {session.exams.length > 0 ? (
+                            <ul className="exam-session-list">
+                                {session.exams.map((exam) => (
+                                    <li key={exam.id} className="exam-entry">
+                                        <Link
+                                            href={`/kursy/${courseId}/${exam.slug}`}
+                                            className="exam-entry-link"
+                                        >
+                                            <TechBadge tech={exam.tech} />
+                                            <span className="exam-entry-text">
+                                                <span className="exam-entry-id">{exam.id}</span>
+                                                <span className="exam-entry-topic">{exam.topic}</span>
+                                            </span>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="exam-session-empty">WKRÓTCE</p>
+                        )}
                     </div>
                 ))}
             </div>

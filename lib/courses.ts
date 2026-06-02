@@ -406,197 +406,6 @@ export const courseDetails: CourseDetail[] = [
                         quizPoolSize: 20
                     }
                 ]
-            },
-            {
-                id: "egzaminy",
-                title: "Egzaminy praktyczne INF.03",
-                description:
-                    "Realne arkusze egzaminacyjne z rozwiązaniami, omówieniem i wnioskami. Sesja styczeń 2026 — 12 arkuszy.",
-                lessons: [
-                    {
-                        slug: "anatomia-zadania",
-                        title: "Jak czytać arkusz INF.03",
-                        summary: "Struktura arkusza, podział czasu, na co patrzy egzaminator, typowe pułapki.",
-                        published: true,
-                        minutes: 15,
-                        objectives: [
-                            "Rozłożysz arkusz egzaminacyjny na sekcje",
-                            "Zaplanujesz czas (ile minut na SQL / PHP / CSS)",
-                            "Rozpoznasz typowe pułapki punktowe",
-                            "Zastosujesz zasadę 'najpierw łatwe punkty'"
-                        ],
-                        hasQuiz: true,
-                        quizPoolSize: 20
-                    },
-                    {
-                        slug: "egzamin-01-styczen-2026",
-                        title: "Arkusz 01 — Portal samochodowy",
-                        summary: "PHP+SQL: baza samochody, JOIN z dopłatą, losowanie rekordów, CSS DarkGreen.",
-                        published: true,
-                        minutes: 40,
-                        objectives: [
-                            "Napiszesz 4 kwerendy SQL (LIMIT, AVG/MAX, JOIN, ORDER BY RAND())",
-                            "Zbudujesz stronę index.php z 3 sekcjami i tabelami",
-                            "Połączysz PHP z bazą i wyświetlisz dane w pętli",
-                            "Zastosujesz hover na wierszach tabeli w CSS"
-                        ],
-                        hasQuiz: false
-                    },
-                    {
-                        slug: "egzamin-02-styczen-2026",
-                        title: "Arkusz 02 — Zdrowy bazarek",
-                        summary: "PHP+SQL: baza bazar, formularz zamówień, dynamiczna lista rozwijana, grafika z przezroczystością.",
-                        published: true,
-                        minutes: 40,
-                        objectives: [
-                            "Napiszesz kwerendy SQL (LIMIT, INSERT, SELECT po id)",
-                            "Zbudujesz formularz z listą rozwijaną wypełnioną z bazy",
-                            "Obsłużysz POST w PHP i wstawisz rekord do bazy",
-                            "Ustawisz przezroczyste tło grafiki"
-                        ],
-                        hasQuiz: false
-                    },
-                    {
-                        slug: "egzamin-03-styczen-2026",
-                        title: "Arkusz 03 — Pola figur",
-                        summary: "JavaScript: animacja GIF, DOM (zmiana src obrazu), obliczanie pól figur, znaki specjalne HTML.",
-                        published: true,
-                        minutes: 40,
-                        objectives: [
-                            "Utworzysz animację GIF z 5 klatek",
-                            "Napiszesz skrypt JS zmieniający src obrazu po kliknięciu",
-                            "Obliczysz pole trójkąta/prostokąta na podstawie pól formularza",
-                            "Użyjesz &Pi; i <sup> do zapisu wzoru"
-                        ],
-                        hasQuiz: false
-                    },
-                    {
-                        slug: "egzamin-04-styczen-2026",
-                        title: "Arkusz 04 — Portal maturzystów",
-                        summary: "PHP+SQL: baza matura, GET między stronami, 5 kwerend, GROUP BY ze średnią.",
-                        published: true,
-                        minutes: 45,
-                        objectives: [
-                            "Napiszesz 5 kwerend SQL (DISTINCT, MIN/MAX, AVG+GROUP BY, JOIN)",
-                            "Przekażesz dane między stronami metodą GET przez odnośniki",
-                            "Zbudujesz dynamiczne odnośniki z parametrami z bazy",
-                            "Zastosujesz box-shadow i inline-block w CSS"
-                        ],
-                        hasQuiz: false
-                    },
-                    {
-                        slug: "egzamin-05-styczen-2026",
-                        title: "Arkusz 05 — Zgłoszenia wypadków",
-                        summary: "PHP+SQL: baza zgloszenia, radio buttons, NOT IN, INSERT z datą, hover na przyciskach.",
-                        published: true,
-                        minutes: 40,
-                        objectives: [
-                            "Napiszesz kwerendy z NOT IN i COUNT+GROUP BY",
-                            "Obsłużysz pola opcji (radio) w formularzu PHP",
-                            "Wstawisz rekord z aktualną datą (NOW())",
-                            "Zastosujesz zaokrąglone przyciski z hover w CSS"
-                        ],
-                        hasQuiz: false
-                    },
-                    {
-                        slug: "egzamin-06-styczen-2026",
-                        title: "Arkusz 06 — Diagnostyka online",
-                        summary: "PHP+SQL: baza choroby, relacja n:m, grafika z przezroczystym tłem, pozycjonowanie absolute, nth-child.",
-                        published: true,
-                        minutes: 45,
-                        objectives: [
-                            "Napiszesz kwerendę z relacją n:m (3 tabele)",
-                            "Utworzysz grafikę PNG z przezroczystym tłem i tekstem",
-                            "Zastosujesz position: absolute i nth-child w CSS",
-                            "Dynamicznie wypełnisz listę rozwijaną i wyświetlisz wyniki"
-                        ],
-                        hasQuiz: false
-                    },
-                    {
-                        slug: "egzamin-07-styczen-2026",
-                        title: "Arkusz 07 — Stacja meteorologiczna",
-                        summary: "PHP+SQL: baza pogoda, ROUND+AVG, INSERT, JOIN, kadrowanie grafik pogodowych.",
-                        published: true,
-                        minutes: 40,
-                        objectives: [
-                            "Napiszesz kwerendy z ROUND(AVG()), INSERT i JOIN",
-                            "Wykadrujesz i przeskolujesz 3 grafiki z jednego pliku źródłowego",
-                            "Zbudujesz stronę z formularzem i dynamiczną tabelą",
-                            "Wyświetlisz dane pogodowe z bazy w odpowiednich sekcjach"
-                        ],
-                        hasQuiz: false
-                    },
-                    {
-                        slug: "egzamin-08-styczen-2026",
-                        title: "Arkusz 08 — Korona gór polskich",
-                        summary: "PHP+SQL: baza korona, LIKE 'Beskid%', JOIN z opisem, 2 strony PHP, przezroczystość logo.",
-                        published: true,
-                        minutes: 45,
-                        objectives: [
-                            "Napiszesz kwerendy z ORDER BY, LIMIT, JOIN i LIKE",
-                            "Zbudujesz 2 strony PHP (index + szczyty) z przekazaniem GET",
-                            "Ustawisz przezroczyste tło logo i przeskolujesz grafikę",
-                            "Zastosujesz overflow: auto i dynamiczne obrazy z bazy"
-                        ],
-                        hasQuiz: false
-                    },
-                    {
-                        slug: "egzamin-09-styczen-2026",
-                        title: "Arkusz 09 — Salon paznokci",
-                        summary: "PHP+JS+SQL: baza paznokcie, JS przełączanie sekcji (display), ALTER TABLE, kadrowanie grafiki.",
-                        published: true,
-                        minutes: 45,
-                        objectives: [
-                            "Napiszesz kwerendy z JOIN i ALTER TABLE ADD COLUMN",
-                            "Napiszesz JS przełączający widoczność 3 sekcji (display block/none)",
-                            "Użyjesz PHP lub JS do generowania 10 obrazów w pętli",
-                            "Wykadrujesz grafikę do krawędzi butelek i przeskolujesz"
-                        ],
-                        hasQuiz: false
-                    },
-                    {
-                        slug: "egzamin-10-styczen-2026",
-                        title: "Arkusz 10 — Blog kulinarny",
-                        summary: "PHP+SQL: baza przepisy, relacja n:m (potrawy-alergeny), GET przez odnośniki, kadrowanie separatora.",
-                        published: true,
-                        minutes: 40,
-                        objectives: [
-                            "Napiszesz kwerendy z relacją n:m przez tabelę pośredniczącą",
-                            "Zbudujesz nawigację przez odnośniki z parametrem GET id",
-                            "Wyświetlisz przepis, alergeny i obrazek potrawy z bazy",
-                            "Wykadrujesz graficzny separator"
-                        ],
-                        hasQuiz: false
-                    },
-                    {
-                        slug: "egzamin-11-styczen-2026",
-                        title: "Arkusz 11 — KinoTEKA",
-                        summary: "PHP+SQL: baza kino, relacja n:m (filmy-aktorzy), 5 kwerend, 2 strony, awatary aktorów.",
-                        published: true,
-                        minutes: 45,
-                        objectives: [
-                            "Napiszesz 5 kwerend SQL (>=, WHERE id, ORDER BY, JOIN n:m, COUNT+GROUP BY)",
-                            "Zbudujesz 2 strony PHP z przekazaniem danych GET",
-                            "Wyświetlisz awatary aktorów jako klikalne karty",
-                            "Zastosujesz <em>, <strong> i semantyczne znaczniki"
-                        ],
-                        hasQuiz: false
-                    },
-                    {
-                        slug: "egzamin-12-styczen-2026",
-                        title: "Arkusz 12 — Studio tatuażu",
-                        summary: "PHP+JS+SQL: baza studiotatuazu, JS createElement+appendChild, @font-face Dancing Script, UPDATE +10%.",
-                        published: true,
-                        minutes: 45,
-                        objectives: [
-                            "Napiszesz kwerendy z UPDATE SET cena=cena*1.1, GROUP BY, JOIN",
-                            "Napiszesz JS tworzący elementy DOM (createElement, appendChild)",
-                            "Dodasz czcionkę @font-face do CSS",
-                            "Wydobędziesz nazwę pliku z C:\\\\fakepath\\\\ w JS"
-                        ],
-                        hasQuiz: false
-                    }
-                ]
             }
         ]
     }
@@ -631,7 +440,7 @@ export function lessonHasQuiz(courseId: string, lessonSlug: string) {
     return Boolean(found?.lesson.hasQuiz);
 }
 
-/** Dane do komponentu ExamPicker — sesje egzaminacyjne z ikonami technologii */
+/** Dane do komponentu ExamPicker — sesje egzaminacyjne INF.03 */
 import type { ExamSession } from "@/components/ExamPicker";
 
 export const examSessions: ExamSession[] = [
@@ -653,4 +462,10 @@ export const examSessions: ExamSession[] = [
             { id: "INF.03-12", title: "Arkusz 12", tech: "php+js", slug: "egzamin-12-styczen-2026", topic: "Studio tatuażu" },
         ],
     },
+    { year: 2025, month: "Czerwiec", exams: [] },
+    { year: 2025, month: "Styczeń", exams: [] },
+    { year: 2024, month: "Czerwiec", exams: [] },
+    { year: 2024, month: "Styczeń", exams: [] },
+    { year: 2023, month: "Czerwiec", exams: [] },
+    { year: 2023, month: "Styczeń", exams: [] },
 ];
