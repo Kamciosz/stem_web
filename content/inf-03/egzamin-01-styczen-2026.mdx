@@ -6,9 +6,44 @@ Ten arkusz to Twój pierwszy pełny egzamin do przejścia. Nie czytaj go jak pod
 
 **Czas:** 150 minut. **Język:** PHP. **Baza:** MariaDB/MySQL.
 
+### Jak rozłożyć czas
+
+Zanim zaczniesz kodować, zobacz plan. 150 minut to dużo, ale tylko jeśli nie utkniesz na jednym zadaniu:
+
+<img src="/img/egzaminy/e01-timeline.svg" alt="Timeline rozwiązania — podział 150 minut na zadania" style={{width: '100%', maxWidth: '720px', margin: '1rem auto', display: 'block'}} />
+
+### Zdjęcia z arkusza
+
+Dostajesz 3 pliki graficzne — to one lądują na stronie:
+
+<div style={{display: 'flex', gap: '12px', flexWrap: 'wrap', margin: '1rem 0'}}>
+  <figure style={{margin: 0, textAlign: 'center'}}>
+    <img src="/img/egzaminy/e01-a1.jpg" alt="a1.jpg — niebieskie Audi" style={{width: '200px', borderRadius: '8px', border: '1px solid #333'}} />
+    <figcaption style={{color: '#888', fontSize: '12px'}}>a1.jpg — sekcja środkowa</figcaption>
+  </figure>
+  <figure style={{margin: 0, textAlign: 'center'}}>
+    <img src="/img/egzaminy/e01-a2.jpg" alt="a2.jpg — białe BMW" style={{width: '200px', borderRadius: '8px', border: '1px solid #333'}} />
+    <figcaption style={{color: '#888', fontSize: '12px'}}>a2.jpg — sekcja środkowa</figcaption>
+  </figure>
+  <figure style={{margin: 0, textAlign: 'center'}}>
+    <img src="/img/egzaminy/e01-a3.png" alt="a3.png — czerwony kabriolet" style={{width: '200px', borderRadius: '8px', border: '1px solid #333'}} />
+    <figcaption style={{color: '#888', fontSize: '12px'}}>a3.png — sekcja kontakt</figcaption>
+  </figure>
+</div>
+
+### Jak wygląda gotowa strona
+
+<img src="/img/egzaminy/e01-rozwiazanie.webp" alt="Screenshot gotowej strony — serwis konfiguracji samochodów" style={{width: '100%', maxWidth: '700px', borderRadius: '8px', border: '1px solid #333', margin: '1rem auto', display: 'block'}} />
+
+To jest cel. Trzy zielone kolumny, ciemnozielony header/footer, tabela z pojazdami po lewej, losowe auta ze zdjęciami w środku, kontakt po prawej.
+
+---
+
 ## Baza danych — co dostajesz
 
 Dwie tabele połączone <Term word="klucz_obcy">kluczem obcym</Term>:
+
+<img src="/img/egzaminy/e01-baza.svg" alt="Diagram bazy danych — tabele kolory i pojazdy" style={{width: '100%', maxWidth: '720px', margin: '1rem auto', display: 'block'}} />
 
 ```sql
 CREATE TABLE kolory (
@@ -85,14 +120,16 @@ LIMIT 2;
 
 ## Zadanie 2 — Skrypt PHP (index.php)
 
-Strona ma strukturę: `header` → `nav` → `main` (3 sekcje flex) → `footer`.
+Strona ma taką strukturę — zobacz schemat:
+
+<img src="/img/egzaminy/e01-layout.svg" alt="Schemat layoutu strony — 3 kolumny flex" style={{width: '100%', maxWidth: '720px', margin: '1rem auto', display: 'block'}} />
 
 ### Połączenie z bazą
 
 ```php
-<?php
+{`<?php
 $conn = new mysqli("localhost", "root", "", "samochody");
-$conn->set_charset("utf8");
+$conn->set_charset("utf8");`}
 ```
 
 <Callout type="warning" title="set_charset">
@@ -236,21 +273,8 @@ Co nowego / nietypowego w porównaniu z poprzednimi latami:
 
 2. **ORDER BY RAND()** — pojawiło się po raz pierwszy w sesji głównej (wcześniej było tylko w próbnych). Zapamiętaj składnię.
 
-3. **rowspan w dynamicznej tabeli** — generujesz HTML z `rowspan` wewnątrz pętli `while`. To trudniejsze niż statyczny rowspan, bo musisz pilnować, który `<tr>` ma `<td rowspan>` a który nie.
+3. **rowspan w dynamicznej tabeli** — generujesz HTML z `rowspan` wewnątrz pętli `while`. To trudniejsze niż statyczny rowspan, bo musisz pilnować, który wiersz ma `rowspan` a który nie.
 
 4. **Motyw kolorystyczny z nazwami CSS** — `DarkGreen`, `ForestGreen`, `LightGreen`. Egzaminator akceptuje zarówno nazwy jak i hex, ale nazwy są szybsze do wpisania i mniej podatne na literówki.
 
 5. **overflow: auto na section** — gdy tabela jest dłuższa niż 550px, pojawia się scroll. Bez tego treść wylewa się poza sekcję i tracisz punkt za "zgodność z makietą".
-
----
-
-{/*
-  STRUKTURA DLA PRZYSZŁYCH SESJI:
-  Gdy pojawi się nowy arkusz (np. czerwiec 2026), skopiuj ten plik jako
-  egzamin-php-czerwiec-2026.mdx i podmień:
-    1. Treść zadania (baza, zapytania, skrypt)
-    2. Rozwiązanie krok po kroku
-    3. Punktację
-    4. Wnioski ("co nowego w tej sesji")
-  Dodaj wpis w lib/courses.ts w module "egzaminy".
-*/}

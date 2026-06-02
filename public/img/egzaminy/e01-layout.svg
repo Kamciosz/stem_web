@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" fill="none">
+  <style>
+    .bg { fill: #0f0f23; }
+    .section { stroke-width: 2; rx: 4; }
+    .header-bar { fill: #006400; }
+    .nav-bar { fill: #228B22; }
+    .footer-bar { fill: #006400; }
+    .col { fill: #90EE90; stroke: #228B22; stroke-width: 1.5; }
+    .white-text { fill: #fff; font: bold 13px sans-serif; }
+    .dark-text { fill: #1a1a2e; font: 12px sans-serif; }
+    .dark-bold { fill: #1a1a2e; font: bold 12px sans-serif; }
+    .tag { fill: #a78bfa; font: bold 11px monospace; }
+    .dim { fill: #6b6b8a; font: 11px sans-serif; }
+    .accent { fill: #7c3aed; rx: 4; }
+    .accent-text { fill: #e9d5ff; font: bold 11px sans-serif; }
+    .arrow-line { stroke: #7c3aed; stroke-width: 1.5; stroke-dasharray: 4; }
+    .brace { stroke: #7c3aed; stroke-width: 1.5; fill: none; }
+  </style>
+  
+  <rect width="720" height="480" class="bg"/>
+  
+  <!-- Tytuł -->
+  <text x="360" y="28" text-anchor="middle" fill="#a78bfa" font-size="15" font-weight="bold" font-family="sans-serif">Struktura strony — index.php</text>
+  
+  <!-- === MAKIETA STRONY (lewa strona) === -->
+  
+  <!-- Header -->
+  <rect x="40" y="46" width="320" height="36" rx="4" class="header-bar"/>
+  <text x="200" y="69" text-anchor="middle" class="white-text">Serwis konfiguracji samochodów</text>
+  <text x="370" y="69" class="tag">&lt;header&gt;</text>
+  
+  <!-- Nav -->
+  <rect x="40" y="86" width="320" height="24" rx="4" class="nav-bar"/>
+  <text x="200" y="103" text-anchor="middle" fill="#ccc" font-size="11" font-family="sans-serif">Samochody | Konfigurator | Kontakt</text>
+  <text x="370" y="103" class="tag">&lt;nav&gt;</text>
+  
+  <!-- Main z 3 kolumnami -->
+  <rect x="40" y="114" width="320" height="280" rx="4" fill="none" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4"/>
+  <text x="370" y="130" class="tag">&lt;main&gt; display: flex</text>
+  
+  <!-- Kolumna #lewa -->
+  <rect x="44" y="118" width="100" height="272" class="col"/>
+  <text x="94" y="138" text-anchor="middle" class="dark-bold">#lewa</text>
+  <text x="94" y="155" text-anchor="middle" class="dark-text">Tabela pojazdów</text>
+  <text x="94" y="170" text-anchor="middle" class="dark-text">"alfa" + cena</text>
+  
+  <!-- Mini tabela -->
+  <rect x="52" y="180" width="84" height="60" rx="2" fill="#fff" stroke="#228B22" stroke-width="1"/>
+  <text x="94" y="196" text-anchor="middle" fill="#006400" font-size="9" font-family="monospace">marka|model</text>
+  <text x="94" y="210" text-anchor="middle" fill="#006400" font-size="9" font-family="monospace">kolor|cena</text>
+  <text x="94" y="228" text-anchor="middle" fill="#888" font-size="8" font-family="sans-serif">tr:hover →</text>
+  <text x="94" y="238" text-anchor="middle" fill="#888" font-size="8" font-family="sans-serif">ForestGreen</text>
+  
+  <rect x="52" y="252" width="84" height="18" rx="2" class="accent"/>
+  <text x="94" y="264" text-anchor="middle" class="accent-text">JOIN + PHP</text>
+  
+  <!-- Kolumna #srodkowa -->
+  <rect x="148" y="118" width="108" height="272" class="col"/>
+  <text x="202" y="138" text-anchor="middle" class="dark-bold">#srodkowa</text>
+  <text x="202" y="155" text-anchor="middle" class="dark-text">2 losowe auta</text>
+  
+  <!-- Mini obrazek 1 -->
+  <rect x="160" y="168" width="80" height="44" rx="3" fill="#3b82f6" stroke="#228B22" stroke-width="1"/>
+  <text x="200" y="195" text-anchor="middle" fill="#fff" font-size="10" font-family="sans-serif">🚗 a1.jpg</text>
+  <rect x="160" y="214" width="80" height="28" rx="2" fill="#fff" stroke="#228B22" stroke-width="1"/>
+  <text x="200" y="232" text-anchor="middle" fill="#333" font-size="8" font-family="monospace">rowspan=2</text>
+  
+  <!-- Mini obrazek 2 -->
+  <rect x="160" y="250" width="80" height="44" rx="3" fill="#e5e7eb" stroke="#228B22" stroke-width="1"/>
+  <text x="200" y="277" text-anchor="middle" fill="#333" font-size="10" font-family="sans-serif">🚗 a2.jpg</text>
+  
+  <rect x="158" y="304" width="84" height="18" rx="2" class="accent"/>
+  <text x="200" y="316" text-anchor="middle" class="accent-text">RAND() + LIMIT 2</text>
+  
+  <!-- Kolumna #prawa -->
+  <rect x="260" y="118" width="96" height="272" class="col"/>
+  <text x="308" y="138" text-anchor="middle" class="dark-bold">#prawa</text>
+  <text x="308" y="155" text-anchor="middle" class="dark-text">Kontakt</text>
+  
+  <text x="308" y="185" text-anchor="middle" fill="#333" font-size="10" font-family="sans-serif">📞 111 222 444</text>
+  
+  <rect x="270" y="200" width="72" height="50" rx="3" fill="#ef4444" stroke="#228B22" stroke-width="1"/>
+  <text x="306" y="230" text-anchor="middle" fill="#fff" font-size="10" font-family="sans-serif">🚗 a3.png</text>
+  
+  <rect x="266" y="264" width="80" height="18" rx="2" fill="#1a1a2e" stroke="#6b6b8a" stroke-width="1"/>
+  <text x="306" y="276" text-anchor="middle" fill="#6b6b8a" font-size="9" font-family="sans-serif">statyczne HTML</text>
+  
+  <!-- Footer -->
+  <rect x="40" y="398" width="320" height="32" rx="4" class="footer-bar"/>
+  <text x="200" y="419" text-anchor="middle" class="white-text">Stronę wykonał: ...</text>
+  <text x="370" y="419" class="tag">&lt;footer&gt;</text>
+  
+  <!-- === LEGENDA CSS (prawa strona) === -->
+  <text x="500" y="130" fill="#a78bfa" font-size="13" font-weight="bold" font-family="sans-serif">CSS — klucz</text>
+  
+  <rect x="490" y="145" width="14" height="14" rx="2" fill="#006400"/>
+  <text x="512" y="157" class="dim">DarkGreen — header, footer</text>
+  
+  <rect x="490" y="168" width="14" height="14" rx="2" fill="#228B22"/>
+  <text x="512" y="180" class="dim">ForestGreen — nav, hover</text>
+  
+  <rect x="490" y="191" width="14" height="14" rx="2" fill="#90EE90"/>
+  <text x="512" y="203" class="dim">LightGreen — sekcje</text>
+  
+  <text x="500" y="240" fill="#a78bfa" font-size="13" font-weight="bold" font-family="sans-serif">Kluczowe reguły</text>
+  
+  <text x="500" y="262" fill="#a0a0c0" font-size="11" font-family="monospace">main { display: flex }</text>
+  <text x="500" y="280" fill="#a0a0c0" font-size="11" font-family="monospace">section { width: 33.3% }</text>
+  <text x="500" y="298" fill="#a0a0c0" font-size="11" font-family="monospace">section { height: 550px }</text>
+  <text x="500" y="316" fill="#a0a0c0" font-size="11" font-family="monospace">section { overflow: auto }</text>
+  <text x="500" y="334" fill="#a0a0c0" font-size="11" font-family="monospace">table { border-collapse }</text>
+  <text x="500" y="352" fill="#a0a0c0" font-size="11" font-family="monospace">#lewa tr:hover { ... }</text>
+  <text x="500" y="370" fill="#a0a0c0" font-size="11" font-family="monospace">#srodkowa img { 95% }</text>
+  
+  <!-- Wymiary -->
+  <text x="500" y="410" fill="#f59e0b" font-size="12" font-weight="bold" font-family="sans-serif">⚠ Każda sekcja = 33.3% × 550px</text>
+  <text x="500" y="430" fill="#f59e0b" font-size="12" font-weight="bold" font-family="sans-serif">⚠ overflow: auto = scroll gdy &gt;550px</text>
+</svg>
