@@ -37,8 +37,9 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
     const detail = course as NonNullable<typeof course>;
 
-    const totalLessons = detail.modules.reduce((acc, m) => acc + m.lessons.length, 0);
-    const publishedLessons = detail.modules.reduce(
+    const visibleModules = detail.modules.filter((m) => !m.hidden);
+    const totalLessons = visibleModules.reduce((acc, m) => acc + m.lessons.length, 0);
+    const publishedLessons = visibleModules.reduce(
         (acc, m) => acc + m.lessons.filter((l) => l.published).length,
         0
     );
@@ -55,7 +56,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                     <p className="course-overview-intro">{detail.intro}</p>
                     <div className="course-overview-stats">
                         <span>
-                            <strong>{detail.modules.length}</strong> MODUŁÓW
+                            <strong>{visibleModules.length}</strong> MODUŁÓW
                         </span>
                         <span>
                             <strong>{publishedLessons}</strong> / {totalLessons} LEKCJI GOTOWYCH
@@ -64,7 +65,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                 </header>
 
                 <ol className="module-list">
-                    {detail.modules.map((module, mi) => (
+                    {visibleModules.map((module, mi) => (
                         <ScrollReveal as="li" key={module.id} delay={mi * 0.05} className="module-item">
                             <div className="module-head">
                                 <span className="module-index">{String(mi + 1).padStart(2, "0")}</span>

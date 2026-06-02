@@ -71,6 +71,8 @@ export type Module = {
     title: string;
     description: string;
     lessons: Lesson[];
+    /** Ukryty moduł — nie wyświetla się w UI, ale routing generuje strony */
+    hidden?: boolean;
 };
 
 export type CourseDetail = {
@@ -405,6 +407,27 @@ export const courseDetails: CourseDetail[] = [
                         hasQuiz: true,
                         quizPoolSize: 20
                     }
+                ]
+            },
+            {
+                id: "_egzaminy",
+                title: "Egzaminy praktyczne",
+                description: "Arkusze egzaminacyjne INF.03 z rozwiązaniami — dostępne przez ExamPicker.",
+                hidden: true,
+                lessons: [
+                    { slug: "anatomia-zadania", title: "Jak czytać arkusz INF.03", summary: "Struktura arkusza, podział czasu, na co patrzy egzaminator.", published: true, minutes: 15, hasQuiz: true, quizPoolSize: 20 },
+                    { slug: "egzamin-01-styczen-2026", title: "Arkusz 01 — Portal samochodowy", summary: "PHP+SQL", published: true, minutes: 40 },
+                    { slug: "egzamin-02-styczen-2026", title: "Arkusz 02 — Zdrowy bazarek", summary: "PHP+SQL", published: true, minutes: 40 },
+                    { slug: "egzamin-03-styczen-2026", title: "Arkusz 03 — Pola figur", summary: "JavaScript", published: true, minutes: 40 },
+                    { slug: "egzamin-04-styczen-2026", title: "Arkusz 04 — Portal maturzystów", summary: "PHP+SQL", published: true, minutes: 45 },
+                    { slug: "egzamin-05-styczen-2026", title: "Arkusz 05 — Zgłoszenia wypadków", summary: "PHP+SQL", published: true, minutes: 40 },
+                    { slug: "egzamin-06-styczen-2026", title: "Arkusz 06 — Diagnostyka online", summary: "PHP+SQL", published: true, minutes: 45 },
+                    { slug: "egzamin-07-styczen-2026", title: "Arkusz 07 — Stacja meteorologiczna", summary: "PHP+SQL", published: true, minutes: 40 },
+                    { slug: "egzamin-08-styczen-2026", title: "Arkusz 08 — Korona gór polskich", summary: "PHP+SQL", published: true, minutes: 45 },
+                    { slug: "egzamin-09-styczen-2026", title: "Arkusz 09 — Salon paznokci", summary: "PHP+JS+SQL", published: true, minutes: 45 },
+                    { slug: "egzamin-10-styczen-2026", title: "Arkusz 10 — Blog kulinarny", summary: "PHP+SQL", published: true, minutes: 40 },
+                    { slug: "egzamin-11-styczen-2026", title: "Arkusz 11 — KinoTEKA", summary: "PHP+SQL", published: true, minutes: 45 },
+                    { slug: "egzamin-12-styczen-2026", title: "Arkusz 12 — Studio tatuażu", summary: "PHP+JS+SQL", published: true, minutes: 45 },
                 ]
             }
         ]
