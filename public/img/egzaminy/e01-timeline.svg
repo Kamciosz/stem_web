@@ -1,66 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" fill="none">
   <style>
+    text { font-family: system-ui, -apple-system, sans-serif; }
     .bg { fill: #0f0f23; }
-    .bar { rx: 6; }
-    .bar-text { fill: #fff; font: bold 12px sans-serif; }
-    .time-text { fill: #a0a0c0; font: 11px sans-serif; }
-    .min-text { fill: #fff; font: bold 11px sans-serif; }
-    .label { fill: #6b6b8a; font: 10px sans-serif; }
-    .tick { stroke: #2a2a4a; stroke-width: 1; }
+    .block { rx: 8; }
+    .num { fill: #fff; font-size: 24px; font-weight: 800; }
+    .name { fill: #fff; font-size: 14px; font-weight: 700; }
+    .time { fill: rgba(255,255,255,0.7); font-size: 12px; }
+    .pts { fill: rgba(255,255,255,0.5); font-size: 11px; }
+    .tip { fill: #8888aa; font-size: 11px; }
+    .title { fill: #a78bfa; font-size: 15px; font-weight: 700; }
   </style>
-  
-  <rect width="720" height="200" class="bg"/>
-  
-  <text x="360" y="24" text-anchor="middle" fill="#a78bfa" font-size="14" font-weight="bold" font-family="sans-serif">Podział czasu — 150 minut</text>
-  
-  <!-- Oś czasu -->
-  <line x1="40" y1="100" x2="680" y2="100" stroke="#2a2a4a" stroke-width="2"/>
-  
-  <!-- Ticki co 30 min -->
-  <line x1="40" y1="94" x2="40" y2="106" class="tick" stroke-width="2"/>
-  <text x="40" y="120" text-anchor="middle" class="time-text">0</text>
-  
-  <line x1="168" y1="94" x2="168" y2="106" class="tick" stroke-width="2"/>
-  <text x="168" y="120" text-anchor="middle" class="time-text">30</text>
-  
-  <line x1="296" y1="94" x2="296" y2="106" class="tick" stroke-width="2"/>
-  <text x="296" y="120" text-anchor="middle" class="time-text">60</text>
-  
-  <line x1="424" y1="94" x2="424" y2="106" class="tick" stroke-width="2"/>
-  <text x="424" y="120" text-anchor="middle" class="time-text">90</text>
-  
-  <line x1="552" y1="94" x2="552" y2="106" class="tick" stroke-width="2"/>
-  <text x="552" y="120" text-anchor="middle" class="time-text">120</text>
-  
-  <line x1="680" y1="94" x2="680" y2="106" class="tick" stroke-width="2"/>
-  <text x="680" y="120" text-anchor="middle" class="time-text">150</text>
-  
-  <!-- Blok 1: SQL (0-25 min) -->
-  <rect x="40" y="50" width="107" height="38" class="bar" fill="#7c3aed"/>
-  <text x="93" y="65" text-anchor="middle" class="bar-text">SQL</text>
-  <text x="93" y="80" text-anchor="middle" class="min-text">~25 min</text>
-  <text x="93" y="42" text-anchor="middle" class="label">4 zapytania • ~8 pkt</text>
-  
-  <!-- Blok 2: PHP (25-90 min) -->
-  <rect x="151" y="50" width="277" height="38" class="bar" fill="#2563eb"/>
-  <text x="289" y="65" text-anchor="middle" class="bar-text">PHP — index.php</text>
-  <text x="289" y="80" text-anchor="middle" class="min-text">~65 min</text>
-  <text x="289" y="42" text-anchor="middle" class="label">połączenie + 3 sekcje • ~16 pkt</text>
-  
-  <!-- Blok 3: CSS (90-130 min) -->
-  <rect x="432" y="50" width="170" height="38" class="bar" fill="#16a34a"/>
-  <text x="517" y="65" text-anchor="middle" class="bar-text">CSS — styl.css</text>
-  <text x="517" y="80" text-anchor="middle" class="min-text">~40 min</text>
-  <text x="517" y="42" text-anchor="middle" class="label">flex + kolory + hover • ~6 pkt</text>
-  
-  <!-- Blok 4: Sprawdzenie (130-150 min) -->
-  <rect x="606" y="50" width="70" height="38" class="bar" fill="#f59e0b"/>
-  <text x="641" y="65" text-anchor="middle" class="bar-text">Test</text>
-  <text x="641" y="80" text-anchor="middle" class="min-text">~20 min</text>
-  <text x="641" y="42" text-anchor="middle" class="label">sprawdź!</text>
-  
-  <!-- Wskazówki na dole -->
-  <text x="40" y="150" fill="#a0a0c0" font-size="11" font-family="sans-serif">💡 SQL rób pierwsze — szybkie punkty, łatwo stracić na głupiej literówce gdy się śpieszysz</text>
-  <text x="40" y="168" fill="#a0a0c0" font-size="11" font-family="sans-serif">💡 PHP zajmie najwięcej — JOIN + obliczenie w pętli + rowspan. Nie szukaj skrótów</text>
-  <text x="40" y="186" fill="#a0a0c0" font-size="11" font-family="sans-serif">💡 Zostaw 20 min na koniec — odpal w przeglądarce i porównaj z makietą punkt po punkcie</text>
+
+  <rect width="600" height="220" class="bg"/>
+  <text x="300" y="24" text-anchor="middle" class="title">Plan na 150 minut</text>
+
+  <!-- 1. SQL -->
+  <rect x="16" y="38" width="130" height="80" class="block" fill="#7c3aed"/>
+  <text x="81" y="66" text-anchor="middle" class="num">25'</text>
+  <text x="81" y="86" text-anchor="middle" class="name">SQL</text>
+  <text x="81" y="102" text-anchor="middle" class="time">4 zapytania</text>
+  <text x="81" y="114" text-anchor="middle" class="pts">~8 pkt</text>
+
+  <!-- 2. PHP -->
+  <rect x="156" y="38" width="168" height="80" class="block" fill="#2563eb"/>
+  <text x="240" y="66" text-anchor="middle" class="num">65'</text>
+  <text x="240" y="86" text-anchor="middle" class="name">PHP — index.php</text>
+  <text x="240" y="102" text-anchor="middle" class="time">3 sekcje + baza</text>
+  <text x="240" y="114" text-anchor="middle" class="pts">~16 pkt</text>
+
+  <!-- 3. CSS -->
+  <rect x="334" y="38" width="130" height="80" class="block" fill="#16a34a"/>
+  <text x="399" y="66" text-anchor="middle" class="num">40'</text>
+  <text x="399" y="86" text-anchor="middle" class="name">CSS — styl.css</text>
+  <text x="399" y="102" text-anchor="middle" class="time">flex + kolory + hover</text>
+  <text x="399" y="114" text-anchor="middle" class="pts">~6 pkt</text>
+
+  <!-- 4. Test -->
+  <rect x="474" y="38" width="110" height="80" class="block" fill="#d97706"/>
+  <text x="529" y="66" text-anchor="middle" class="num">20'</text>
+  <text x="529" y="86" text-anchor="middle" class="name">Sprawdzenie</text>
+  <text x="529" y="102" text-anchor="middle" class="time">przeglądarka</text>
+  <text x="529" y="114" text-anchor="middle" class="pts">porównaj z makietą</text>
+
+  <!-- Strzałki między blokami -->
+  <text x="150" y="78" fill="#555" font-size="20">→</text>
+  <text x="328" y="78" fill="#555" font-size="20">→</text>
+  <text x="468" y="78" fill="#555" font-size="20">→</text>
+
+  <!-- Tipy -->
+  <text x="20" y="146" class="tip">→ SQL rób pierwsze — szybkie punkty, łatwo stracić na literówce gdy się śpieszysz</text>
+  <text x="20" y="166" class="tip">→ PHP zajmie najwięcej — JOIN + obliczenie w pętli + rowspan</text>
+  <text x="20" y="186" class="tip">→ Zostaw 20 min na koniec — odpal w przeglądarce i porównaj z makietą</text>
+  <text x="20" y="210" fill="#facc15" font-size="12" font-weight="700">Razem: ~30 pkt | Próg zdania: 75% = 22-23 pkt</text>
 </svg>
