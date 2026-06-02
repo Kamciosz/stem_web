@@ -3574,3 +3574,253 @@ a.lesson-nav-link:hover {
 .exam-dot.has-content:not(.active) {
     background: var(--on-surface-variant);
 }
+
+/* ═══════════════════════════════════════════
+   EXAM CONTENT — klasy do treści egzaminów
+   ═══════════════════════════════════════════ */
+
+/* Timeline — plan egzaminu */
+.exam-timeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+    gap: 12px;
+    margin: 1.5rem 0;
+}
+.exam-timeline-block {
+    border-radius: 14px;
+    padding: 20px 16px;
+    text-align: center;
+    transition: transform 0.15s ease;
+}
+.exam-timeline-block:hover {
+    transform: translateY(-2px);
+}
+.exam-timeline-block .minutes {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+.exam-timeline-block .label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+}
+.exam-timeline-block .detail {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+}
+.exam-timeline-block.sql { background: #7c3aed; }
+.exam-timeline-block.php { background: #2563eb; }
+.exam-timeline-block.css-block { background: #16a34a; }
+.exam-timeline-block.check { background: #d97706; }
+
+/* Zdjęcia z arkusza */
+.exam-photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 16px;
+    margin: 1.5rem 0;
+}
+.exam-photos figure {
+    margin: 0;
+    text-align: center;
+}
+.exam-photos img {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid rgba(124, 58, 237, 0.3);
+    cursor: zoom-in;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.exam-photos img:hover {
+    border-color: #7c3aed;
+    transform: scale(1.02);
+}
+.exam-photos figcaption {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.75rem;
+    margin-top: 6px;
+}
+
+/* Screenshot rozwiązania */
+.exam-screenshot {
+    display: block;
+    margin: 1.5rem auto;
+    max-width: 720px;
+}
+.exam-screenshot img {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid rgba(124, 58, 237, 0.3);
+    cursor: zoom-in;
+    transition: border-color 0.2s ease;
+}
+.exam-screenshot:hover img {
+    border-color: #7c3aed;
+}
+
+/* Diagram bazy danych */
+.exam-db {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 20px;
+    margin: 1.5rem 0;
+}
+.exam-db-table {
+    background: #12122a;
+    border: 2px solid rgba(124, 58, 237, 0.4);
+    border-radius: 12px;
+    padding: 20px;
+    overflow: hidden;
+}
+.exam-db-table .table-name {
+    background: #7c3aed;
+    border-radius: 8px;
+    padding: 8px 16px;
+    text-align: center;
+    margin-bottom: 16px;
+}
+.exam-db-table .table-name span {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1.1rem;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+.exam-db-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.exam-db-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.9rem;
+}
+.exam-db-table .key {
+    width: 36px;
+    font-weight: 800;
+    font-size: 0.8rem;
+}
+.exam-db-table .key.pk { color: #facc15; }
+.exam-db-table .key.fk { color: #f87171; }
+.exam-db-table .col-name { color: #e0e0f0; }
+.exam-db-table .col-type {
+    color: rgba(255,255,255,0.35);
+    text-align: right;
+    font-size: 0.78rem;
+}
+.exam-db-table .table-footer {
+    border-top: 1px dashed rgba(255,255,255,0.1);
+    margin-top: 12px;
+    padding-top: 10px;
+    color: rgba(255,255,255,0.4);
+    font-size: 0.78rem;
+}
+
+/* Wzór / formuła */
+.exam-formula {
+    background: #12122a;
+    border: 2px solid #facc15;
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin: 12px 0 1.5rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.exam-formula code {
+    color: #facc15;
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    background: none !important;
+    padding: 0 !important;
+}
+.exam-formula .note {
+    color: #facc15;
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+/* Schemat layoutu strony */
+.exam-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 12px;
+    margin: 1.5rem 0;
+}
+.exam-layout-col {
+    border-radius: 10px;
+    padding: 16px;
+    border: 2px solid;
+}
+.exam-layout-col .col-title {
+    font-weight: 800;
+    font-size: 1rem;
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid;
+}
+.exam-layout-col .col-body {
+    font-size: 0.85rem;
+    line-height: 1.7;
+}
+.exam-layout-col .col-body strong {
+    font-weight: 700;
+}
+.exam-layout-col .col-note {
+    font-size: 0.7rem;
+    margin-top: 4px;
+    opacity: 0.7;
+}
+/* warianty kolorów layoutu */
+.exam-layout-col.green {
+    background: rgba(144, 238, 144, 0.12);
+    border-color: rgba(34, 139, 34, 0.5);
+}
+.exam-layout-col.green .col-title {
+    color: #90EE90;
+    border-bottom-color: rgba(34, 139, 34, 0.4);
+}
+.exam-layout-col.green .col-body { color: rgba(255,255,255,0.8); }
+
+/* Badge w tekście */
+.exam-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.4;
+}
+.exam-badge.purple { background: #7c3aed; color: #fff; }
+.exam-badge.blue { background: #3b82f6; color: #fff; }
+.exam-badge.red { background: #ef4444; color: #fff; }
+.exam-badge.gray { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); }
+
+/* Tabela punktacji */
+.exam-scoring {
+    margin: 1.5rem 0;
+}
+.exam-scoring table {
+    width: 100%;
+}
+
+/* Mobile fixes */
+@media (max-width: 640px) {
+    .exam-timeline { gap: 8px; }
+    .exam-timeline-block { padding: 14px 10px; }
+    .exam-timeline-block .minutes { font-size: 1.8rem; }
+    .exam-timeline-block .label { font-size: 0.85rem; }
+    .exam-db { gap: 12px; }
+    .exam-db-table { padding: 14px; }
+    .exam-layout { gap: 8px; }
+    .exam-layout-col { padding: 12px; }
+    .exam-photos { gap: 10px; }
+}

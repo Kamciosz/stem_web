@@ -10,26 +10,26 @@ Ten arkusz to Twój pierwszy pełny egzamin do przejścia. Nie czytaj go jak pod
 
 Zanim zaczniesz kodować, zobacz plan. 150 minut to dużo, ale tylko jeśli nie utkniesz na jednym zadaniu:
 
-<div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 130px), 1fr))', gap: '8px', margin: '1rem 0'}}>
-  <div style={{background: '#7c3aed', borderRadius: '10px', padding: '14px 10px', textAlign: 'center'}}>
-    <div style={{fontSize: '28px', fontWeight: 800, color: '#fff'}}>25'</div>
-    <div style={{fontSize: '14px', fontWeight: 700, color: '#fff'}}>SQL</div>
-    <div style={{fontSize: '11px', color: 'rgba(255,255,255,0.65)', marginTop: '4px'}}>4 zapytania · ~8 pkt</div>
+<div className="exam-timeline">
+  <div className="exam-timeline-block sql">
+    <div className="minutes">25'</div>
+    <div className="label">SQL</div>
+    <div className="detail">4 zapytania · ~8 pkt</div>
   </div>
-  <div style={{background: '#2563eb', borderRadius: '10px', padding: '14px 10px', textAlign: 'center'}}>
-    <div style={{fontSize: '28px', fontWeight: 800, color: '#fff'}}>65'</div>
-    <div style={{fontSize: '14px', fontWeight: 700, color: '#fff'}}>PHP — index.php</div>
-    <div style={{fontSize: '11px', color: 'rgba(255,255,255,0.65)', marginTop: '4px'}}>3 sekcje + baza · ~16 pkt</div>
+  <div className="exam-timeline-block php">
+    <div className="minutes">65'</div>
+    <div className="label">PHP</div>
+    <div className="detail">3 sekcje + baza · ~16 pkt</div>
   </div>
-  <div style={{background: '#16a34a', borderRadius: '10px', padding: '14px 10px', textAlign: 'center'}}>
-    <div style={{fontSize: '28px', fontWeight: 800, color: '#fff'}}>40'</div>
-    <div style={{fontSize: '14px', fontWeight: 700, color: '#fff'}}>CSS — styl.css</div>
-    <div style={{fontSize: '11px', color: 'rgba(255,255,255,0.65)', marginTop: '4px'}}>flex + kolory · ~6 pkt</div>
+  <div className="exam-timeline-block css-block">
+    <div className="minutes">40'</div>
+    <div className="label">CSS</div>
+    <div className="detail">flex + kolory · ~6 pkt</div>
   </div>
-  <div style={{background: '#d97706', borderRadius: '10px', padding: '14px 10px', textAlign: 'center'}}>
-    <div style={{fontSize: '28px', fontWeight: 800, color: '#fff'}}>20'</div>
-    <div style={{fontSize: '14px', fontWeight: 700, color: '#fff'}}>Sprawdzenie</div>
-    <div style={{fontSize: '11px', color: 'rgba(255,255,255,0.65)', marginTop: '4px'}}>porównaj z makietą</div>
+  <div className="exam-timeline-block check">
+    <div className="minutes">20'</div>
+    <div className="label">Sprawdzenie</div>
+    <div className="detail">porównaj z makietą</div>
   </div>
 </div>
 
@@ -41,31 +41,31 @@ SQL rób pierwsze — szybkie punkty. PHP zajmie najwięcej (JOIN + obliczenie +
 
 Dostajesz 3 pliki graficzne — to one lądują na stronie:
 
-<div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: '16px', margin: '1rem 0'}}>
-  <figure style={{margin: 0, textAlign: 'center'}}>
+<div className="exam-photos">
+  <figure>
     <a href="/img/egzaminy/e01-a1.jpg" target="_blank" rel="noopener">
-      <img src="/img/egzaminy/e01-a1.jpg" alt="a1.jpg — niebieskie Audi" style={{width: '100%', borderRadius: '8px', border: '2px solid #333', cursor: 'zoom-in'}} />
+      <img src="/img/egzaminy/e01-a1.jpg" alt="a1.jpg — niebieskie Audi" />
     </a>
-    <figcaption style={{color: '#888', fontSize: '12px', marginTop: '4px'}}>a1.jpg — sekcja środkowa (kliknij → pełny rozmiar)</figcaption>
+    <figcaption>a1.jpg — sekcja środkowa (kliknij → pełny rozmiar)</figcaption>
   </figure>
-  <figure style={{margin: 0, textAlign: 'center'}}>
+  <figure>
     <a href="/img/egzaminy/e01-a2.jpg" target="_blank" rel="noopener">
-      <img src="/img/egzaminy/e01-a2.jpg" alt="a2.jpg — białe BMW" style={{width: '100%', borderRadius: '8px', border: '2px solid #333', cursor: 'zoom-in'}} />
+      <img src="/img/egzaminy/e01-a2.jpg" alt="a2.jpg — białe BMW" />
     </a>
-    <figcaption style={{color: '#888', fontSize: '12px', marginTop: '4px'}}>a2.jpg — sekcja środkowa (kliknij → pełny rozmiar)</figcaption>
+    <figcaption>a2.jpg — sekcja środkowa (kliknij → pełny rozmiar)</figcaption>
   </figure>
-  <figure style={{margin: 0, textAlign: 'center'}}>
+  <figure>
     <a href="/img/egzaminy/e01-a3.png" target="_blank" rel="noopener">
-      <img src="/img/egzaminy/e01-a3.png" alt="a3.png — czerwony kabriolet" style={{width: '100%', borderRadius: '8px', border: '2px solid #333', cursor: 'zoom-in'}} />
+      <img src="/img/egzaminy/e01-a3.png" alt="a3.png — czerwony kabriolet" />
     </a>
-    <figcaption style={{color: '#888', fontSize: '12px', marginTop: '4px'}}>a3.png — sekcja kontakt (kliknij → pełny rozmiar)</figcaption>
+    <figcaption>a3.png — sekcja kontakt (kliknij → pełny rozmiar)</figcaption>
   </figure>
 </div>
 
 ### Jak wygląda gotowa strona
 
-<a href="/img/egzaminy/e01-rozwiazanie.webp" target="_blank" rel="noopener">
-  <img src="/img/egzaminy/e01-rozwiazanie.webp" alt="Screenshot gotowej strony — serwis konfiguracji samochodów" style={{width: '100%', maxWidth: '700px', borderRadius: '8px', border: '2px solid #333', margin: '1rem auto', display: 'block', cursor: 'zoom-in'}} />
+<a className="exam-screenshot" href="/img/egzaminy/e01-rozwiazanie.webp" target="_blank" rel="noopener">
+  <img src="/img/egzaminy/e01-rozwiazanie.webp" alt="Screenshot gotowej strony — serwis konfiguracji samochodów" />
 </a>
 
 To jest cel. Trzy zielone kolumny, ciemnozielony header/footer, tabela z pojazdami po lewej, losowe auta ze zdjęciami w środku, kontakt po prawej.
@@ -76,76 +76,68 @@ To jest cel. Trzy zielone kolumny, ciemnozielony header/footer, tabela z pojazda
 
 Dwie tabele połączone <Term word="klucz_obcy">kluczem obcym</Term>:
 
-<div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))', gap: '16px', margin: '1rem 0'}}>
-  <div style={{background: '#16163a', border: '2px solid #7c3aed', borderRadius: '10px', padding: '16px', overflow: 'auto'}}>
-    <div style={{background: '#7c3aed', borderRadius: '6px', padding: '6px 12px', marginBottom: '12px', textAlign: 'center'}}>
-      <span style={{color: '#fff', fontWeight: 700, fontSize: '15px', fontFamily: 'monospace'}}>kolory</span>
-    </div>
-    <table style={{width: '100%', borderCollapse: 'collapse', fontSize: '13px', fontFamily: 'monospace'}}>
+<div className="exam-db">
+  <div className="exam-db-table">
+    <div className="table-name"><span>kolory</span></div>
+    <table>
       <tbody>
-        <tr style={{borderBottom: '1px solid #2a2a50'}}>
-          <td style={{color: '#facc15', fontWeight: 700, padding: '4px 6px', width: '30px'}}>PK</td>
-          <td style={{color: '#e0e0f0', padding: '4px 6px'}}>id</td>
-          <td style={{color: '#7a7a9a', padding: '4px 6px', textAlign: 'right', fontSize: '11px'}}>INT A_I</td>
-        </tr>
-        <tr style={{borderBottom: '1px solid #2a2a50'}}>
-          <td></td>
-          <td style={{color: '#e0e0f0', padding: '4px 6px'}}>nazwa</td>
-          <td style={{color: '#7a7a9a', padding: '4px 6px', textAlign: 'right', fontSize: '11px'}}>VARCHAR(20)</td>
+        <tr>
+          <td className="key pk">PK</td>
+          <td className="col-name">id</td>
+          <td className="col-type">INT A_I</td>
         </tr>
         <tr>
-          <td></td>
-          <td style={{color: '#e0e0f0', padding: '4px 6px'}}>doplata</td>
-          <td style={{color: '#7a7a9a', padding: '4px 6px', textAlign: 'right', fontSize: '11px'}}>DECIMAL(10,2)</td>
+          <td className="key"></td>
+          <td className="col-name">nazwa</td>
+          <td className="col-type">VARCHAR(20)</td>
+        </tr>
+        <tr>
+          <td className="key"></td>
+          <td className="col-name">doplata</td>
+          <td className="col-type">DECIMAL(10,2)</td>
         </tr>
       </tbody>
     </table>
-    <div style={{borderTop: '1px dashed #2a2a50', marginTop: '8px', paddingTop: '8px', color: '#7a7a9a', fontSize: '11px'}}>
-      8 kolorów: 4 bazowe (0 zł), 4 metalik (+1000 zł)
-    </div>
+    <div className="table-footer">8 kolorów: 4 bazowe (0 zł), 4 metalik (+1000 zł)</div>
   </div>
-  <div style={{background: '#16163a', border: '2px solid #7c3aed', borderRadius: '10px', padding: '16px', overflow: 'auto'}}>
-    <div style={{background: '#7c3aed', borderRadius: '6px', padding: '6px 12px', marginBottom: '12px', textAlign: 'center'}}>
-      <span style={{color: '#fff', fontWeight: 700, fontSize: '15px', fontFamily: 'monospace'}}>pojazdy</span>
-    </div>
-    <table style={{width: '100%', borderCollapse: 'collapse', fontSize: '13px', fontFamily: 'monospace'}}>
+  <div className="exam-db-table">
+    <div className="table-name"><span>pojazdy</span></div>
+    <table>
       <tbody>
-        <tr style={{borderBottom: '1px solid #2a2a50'}}>
-          <td style={{color: '#facc15', fontWeight: 700, padding: '4px 6px', width: '30px'}}>PK</td>
-          <td style={{color: '#e0e0f0', padding: '4px 6px'}}>id</td>
-          <td style={{color: '#7a7a9a', padding: '4px 6px', textAlign: 'right', fontSize: '11px'}}>INT A_I</td>
-        </tr>
-        <tr style={{borderBottom: '1px solid #2a2a50'}}>
-          <td></td>
-          <td style={{color: '#e0e0f0', padding: '4px 6px'}}>marka</td>
-          <td style={{color: '#7a7a9a', padding: '4px 6px', textAlign: 'right', fontSize: '11px'}}>VARCHAR(20)</td>
-        </tr>
-        <tr style={{borderBottom: '1px solid #2a2a50'}}>
-          <td></td>
-          <td style={{color: '#e0e0f0', padding: '4px 6px'}}>model</td>
-          <td style={{color: '#7a7a9a', padding: '4px 6px', textAlign: 'right', fontSize: '11px'}}>VARCHAR(20)</td>
-        </tr>
-        <tr style={{borderBottom: '1px solid #2a2a50'}}>
-          <td></td>
-          <td style={{color: '#e0e0f0', padding: '4px 6px'}}>cena</td>
-          <td style={{color: '#7a7a9a', padding: '4px 6px', textAlign: 'right', fontSize: '11px'}}>DECIMAL(15,0)</td>
+        <tr>
+          <td className="key pk">PK</td>
+          <td className="col-name">id</td>
+          <td className="col-type">INT A_I</td>
         </tr>
         <tr>
-          <td style={{color: '#f87171', fontWeight: 700, padding: '4px 6px'}}>FK</td>
-          <td style={{color: '#e0e0f0', padding: '4px 6px'}}>kolor</td>
-          <td style={{color: '#7a7a9a', padding: '4px 6px', textAlign: 'right', fontSize: '11px'}}>→ kolory.id</td>
+          <td className="key"></td>
+          <td className="col-name">marka</td>
+          <td className="col-type">VARCHAR(20)</td>
+        </tr>
+        <tr>
+          <td className="key"></td>
+          <td className="col-name">model</td>
+          <td className="col-type">VARCHAR(20)</td>
+        </tr>
+        <tr>
+          <td className="key"></td>
+          <td className="col-name">cena</td>
+          <td className="col-type">DECIMAL(15,0)</td>
+        </tr>
+        <tr>
+          <td className="key fk">FK</td>
+          <td className="col-name">kolor</td>
+          <td className="col-type">→ kolory.id</td>
         </tr>
       </tbody>
     </table>
-    <div style={{borderTop: '1px dashed #2a2a50', marginTop: '8px', paddingTop: '8px', color: '#7a7a9a', fontSize: '11px'}}>
-      62 pojazdy: marki BM/AM, modele alfa/beta/meta
-    </div>
+    <div className="table-footer">62 pojazdy: marki BM/AM, modele alfa/beta/meta</div>
   </div>
 </div>
 
-<div style={{background: '#16163a', border: '2px solid #facc15', borderRadius: '8px', padding: '10px 16px', margin: '8px 0', textAlign: 'center'}}>
-  <code style={{color: '#facc15', fontSize: '15px', fontWeight: 700}}>cena_calkowita = pojazdy.cena + kolory.doplata</code>
-  <span style={{color: '#facc15', fontSize: '13px', marginLeft: '8px'}}>(obliczasz w PHP!)</span>
+<div className="exam-formula">
+  <code>cena_calkowita = pojazdy.cena + kolory.doplata</code>
+  <span className="note">(obliczasz w PHP!)</span>
 </div>
 
 ```sql
@@ -223,35 +215,35 @@ LIMIT 2;
 
 Strona ma 3 sekcje w `main` (flex, każda 33.3%):
 
-<div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: '8px', margin: '1rem 0'}}>
-  <div style={{background: '#90EE90', borderRadius: '8px', padding: '12px', border: '2px solid #228B22'}}>
-    <div style={{color: '#1a1a2e', fontWeight: 700, fontSize: '14px', borderBottom: '1px solid #228B22', paddingBottom: '6px', marginBottom: '6px'}}>#lewa</div>
-    <div style={{color: '#333', fontSize: '12px', lineHeight: '1.6'}}>
+<div className="exam-layout">
+  <div className="exam-layout-col green">
+    <div className="col-title">#lewa</div>
+    <div className="col-body">
       Tabela: model='alfa'<br/>
       JOIN kolory + pojazdy<br/>
       <strong>cena = cena + doplata</strong><br/>
-      <span style={{background: '#7c3aed', color: '#fff', padding: '1px 6px', borderRadius: '3px', fontSize: '10px'}}>obliczenie w PHP!</span><br/>
-      <span style={{color: '#228B22', fontSize: '11px'}}>tr:hover → ForestGreen</span>
+      <span className="exam-badge purple">obliczenie w PHP!</span><br/>
+      <span className="col-note">tr:hover → ForestGreen</span>
     </div>
   </div>
-  <div style={{background: '#90EE90', borderRadius: '8px', padding: '12px', border: '2px solid #228B22'}}>
-    <div style={{color: '#1a1a2e', fontWeight: 700, fontSize: '14px', borderBottom: '1px solid #228B22', paddingBottom: '6px', marginBottom: '6px'}}>#srodkowa</div>
-    <div style={{color: '#333', fontSize: '12px', lineHeight: '1.6'}}>
+  <div className="exam-layout-col green">
+    <div className="col-title">#srodkowa</div>
+    <div className="col-body">
       2 losowe pojazdy<br/>
-      <span style={{background: '#3b82f6', color: '#fff', padding: '1px 6px', borderRadius: '3px', fontSize: '10px'}}>a1.jpg</span>{' '}
-      <span style={{background: '#e5e7eb', color: '#333', padding: '1px 6px', borderRadius: '3px', fontSize: '10px'}}>a2.jpg</span><br/>
+      <span className="exam-badge blue">a1.jpg</span>{' '}
+      <span className="exam-badge gray">a2.jpg</span><br/>
       <strong>rowspan=2</strong><br/>
-      <span style={{background: '#7c3aed', color: '#fff', padding: '1px 6px', borderRadius: '3px', fontSize: '10px'}}>RAND() LIMIT 2</span><br/>
-      <span style={{color: '#228B22', fontSize: '11px'}}>img width: 95%</span>
+      <span className="exam-badge purple">RAND() LIMIT 2</span><br/>
+      <span className="col-note">img width: 95%</span>
     </div>
   </div>
-  <div style={{background: '#90EE90', borderRadius: '8px', padding: '12px', border: '2px solid #228B22'}}>
-    <div style={{color: '#1a1a2e', fontWeight: 700, fontSize: '14px', borderBottom: '1px solid #228B22', paddingBottom: '6px', marginBottom: '6px'}}>#prawa</div>
-    <div style={{color: '#333', fontSize: '12px', lineHeight: '1.6'}}>
+  <div className="exam-layout-col green">
+    <div className="col-title">#prawa</div>
+    <div className="col-body">
       Kontakt<br/>
       tel: 111 222 444<br/>
-      <span style={{background: '#ef4444', color: '#fff', padding: '1px 6px', borderRadius: '3px', fontSize: '10px'}}>a3.png</span><br/>
-      <span style={{color: '#666', fontSize: '11px'}}>statyczne HTML</span>
+      <span className="exam-badge red">a3.png</span><br/>
+      <span className="col-note">statyczne HTML</span>
     </div>
   </div>
 </div>
