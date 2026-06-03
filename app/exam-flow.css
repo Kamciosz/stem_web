@@ -15,19 +15,19 @@
  */
 
 .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] {
-    /* tokeny */
-    --ef-bg:           #070312;
-    --ef-panel:        #120A24;
-    --ef-panel-2:      #1A1033;
-    --ef-panel-3:      #221646;
-    --ef-accent:       #6D28D9;
-    --ef-accent-2:     #8B5CF6;
-    --ef-accent-soft:  rgba(139, 92, 246, 0.10);
-    --ef-text:         #F5F3FF;
-    --ef-muted:        #B8AECF;
-    --ef-dim:          #7E7297;
-    --ef-border:       rgba(139, 92, 246, 0.14);
-    --ef-border-em:    rgba(139, 92, 246, 0.28);
+    /* tokeny — zgodne z globals.css (czarne tlo + #7c3aed laser + clinical #e8e8e8) */
+    --ef-bg:           #000000;
+    --ef-panel:        #0d0a14;          /* nieco fioletowy ciemny, ledwo widoczny */
+    --ef-panel-2:      #15121b;          /* = --surface */
+    --ef-panel-3:      #1d1a24;          /* = --surface-container-low */
+    --ef-accent:       #7c3aed;          /* = --laser */
+    --ef-accent-2:     #a78bfa;          /* jasniejszy fiolet dla hover */
+    --ef-accent-soft:  rgba(124, 58, 237, 0.10);
+    --ef-text:         #e8e8e8;          /* = --clinical */
+    --ef-muted:        #ccc3d8;          /* = --on-surface-variant */
+    --ef-dim:          #6d717c;          /* spojne z reszta UI */
+    --ef-border:       #1f1f1f;          /* zgodne z .lesson-header */
+    --ef-border-em:    rgba(124, 58, 237, 0.32);
     --ef-success:      #4ADE80;
     --ef-warn:         #FBBF24;
     --ef-danger:       #F87171;
@@ -36,7 +36,8 @@
     --ef-radius-md:    10px;
     --ef-radius-lg:    14px;
 
-    --ef-font-ui:      var(--font-plus-jakarta), 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --ef-font-ui:      var(--font-inter), system-ui, -apple-system, sans-serif;
+    --ef-font-display: var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif;
     --ef-font-mono:    var(--font-jetbrains-mono), 'JetBrains Mono', ui-monospace, monospace;
 
     background: var(--ef-bg);
@@ -61,7 +62,8 @@
     padding: 0;
 }
 
-/* root shell */
+/* root shell — padding horyzontalny przejmuje .section-shell z globals (64px),
+   tu zostawiamy tylko bottom dla oddechu nad stopka. */
 .exam-flow {
     background: var(--ef-bg);
     color: var(--ef-text);
@@ -69,7 +71,7 @@
     font-size: 15px;
     line-height: 1.55;
     min-height: 60vh;
-    padding: 24px clamp(16px, 4vw, 48px) 96px;
+    padding: 0 0 32px;
 }
 .exam-flow-inner {
     max-width: 1240px;
@@ -136,10 +138,11 @@
 }
 .exam-flow-title {
     margin: 0 0 12px;
+    font-family: var(--ef-font-display);
     font-size: clamp(28px, 3.8vw, 40px);
     line-height: 1.15;
-    letter-spacing: -0.015em;
-    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-weight: 800;
     color: var(--ef-text);
 }
 .exam-flow-lead {
@@ -242,9 +245,10 @@
 /* sekcje (Etapy / Materialy / Strategia) */
 .exam-flow-section-title {
     margin: 0 0 6px;
+    font-family: var(--ef-font-display);
     font-size: 20px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-weight: 700;
+    letter-spacing: -0.015em;
     color: var(--ef-text);
 }
 .exam-flow-section-lead {
@@ -1042,9 +1046,10 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Responsive
+   Responsive — przelaczamy na 1-kol layout gdy zabraknie miejsca
+   na 1fr main + 320px panel boczny (z paddingiem section-shell 64*2 = 128px).
    ───────────────────────────────────────────────────────────── */
-@media (max-width: 960px) {
+@media (max-width: 1100px) {
     .exam-flow-dashboard,
     .exam-flow-stage {
         grid-template-columns: 1fr;
@@ -1076,9 +1081,6 @@
 }
 
 @media (max-width: 560px) {
-    .exam-flow {
-        padding: 16px 12px 64px;
-    }
     .exam-flow-stage-content {
         padding: 20px 16px;
     }

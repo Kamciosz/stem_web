@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "./exam-redesign.css";
+/* exam-redesign.css zostal zastapiony przez exam-flow.css dla arkusza 01 */
 @import "./exam-flow.css";
 
 @theme {
