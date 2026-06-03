@@ -661,7 +661,7 @@
 
 /* Typografia w MDX — triple specificity beats globals .lesson-content h2 */
 .exam-flow .exam-flow-stage-content h2 {
-    margin: 40px 0 32px;
+    margin: 48px 0 44px;
     font-family: var(--ef-font-display);
     font-size: 18px;
     font-weight: 600;
