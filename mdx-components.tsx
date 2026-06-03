@@ -17,6 +17,7 @@ import {
     ExamTooltip,
     ExamWarnings,
 } from "@/components/courses/ExamLessonGuide";
+import { ExamFlowChecklist } from "@/components/courses/examflow/ExamFlowChecklist";
 
 // Uwaga: stary komponent <Quiz> (pytania w kodzie) został usunięty z rejestru.
 // Quizy żyją na osobnej podstronie /quiz i lecą z Supabase (QuizClient).
@@ -39,6 +40,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         ExamTimeline,
         ExamTooltip,
         ExamWarnings,
+        ExamFlowChecklist,
         ...components
     };
 }

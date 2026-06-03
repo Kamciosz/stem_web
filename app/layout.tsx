@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Inter, JetBrains_Mono, Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import { Logo } from "@/components/navigation/Logo";
 import { Footer } from "@/components/sections/Footer";
 import { ParallaxLayers } from "@/components/ui/ParallaxLayers";
@@ -20,8 +20,14 @@ const inter = Inter({
 
 const jetBrainsMono = JetBrains_Mono({
     subsets: ["latin-ext"],
-    weight: ["500", "700"],
+    weight: ["400", "500", "700"],
     variable: "--font-jetbrains-mono"
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+    subsets: ["latin-ext"],
+    weight: ["400", "500", "600", "700"],
+    variable: "--font-plus-jakarta"
 });
 
 export const metadata: Metadata = {
@@ -33,7 +39,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="pl">
-            <body className={`${spaceGrotesk.variable} ${inter.variable} ${jetBrainsMono.variable}`}>
+            <body className={`${spaceGrotesk.variable} ${inter.variable} ${jetBrainsMono.variable} ${plusJakarta.variable}`}>
                 <ScrollProgress />
                 <ParallaxLayers />
                 <Logo />

@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* exam-redesign.css zostal zastapiony przez exam-flow.css dla arkusza 01 */
+@import "./exam-flow.css";
 
 @theme {
     --color-void: #000000;

@@ -1,0 +1,1118 @@
+/*
+ * Exam Redesign — Light theme override
+ * Scope: .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"]
+ *
+ * Nadpisuje ciemny styl egzaminacyjny z globals.css TYLKO dla tego arkusza.
+ * Pozostale arkusze INF.03 zachowuja dark Linear/Vercel z fe6b3ed.
+ *
+ * Design DNA: utilitarian editorial, light oklch, Plus Jakarta Sans,
+ * container queries (zero @media z szerokoscia), Popover API,
+ * <details> + @starting-style, anchor positioning.
+ */
+
+/* Bez @layer — niewarstwowe reguly w globals.css maja priorytet nad warstwowymi
+   bez wzgledu na specyficznosc. Tu uzywamy specyficznosci selektorem
+   .exam-lesson-page[data-exam-slug="..."] (klasa + atrybut) ktora wygrywa
+   z .exam-lesson-page (klasa) z linii 4353 globals.css. */
+.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] {
+    /* tokeny — dark oklch */
+    --er-bg:          oklch(14%   0.010 270);
+    --er-surface:     oklch(18%   0.012 270);
+    --er-surface-2:   oklch(22%   0.015 270);
+    --er-border:      oklch(28%   0.020 270);
+    --er-border-em:   oklch(38%   0.025 270);
+    --er-primary:     oklch(72%   0.180 270);
+    --er-primary-bg:  oklch(28%   0.080 270);
+    --er-primary-hover: color-mix(in oklch, var(--er-primary) 14%, transparent);
+    --er-text:        oklch(96%   0.010 270);
+    --er-muted:       oklch(70%   0.020 270);
+    --er-hint:        oklch(55%   0.020 270);
+    --er-error-bg:    oklch(28%   0.080  25);
+    --er-error:       oklch(75%   0.180  25);
+    --er-success-bg:  oklch(28%   0.080 150);
+    --er-success:     oklch(75%   0.150 150);
+    --er-tech-bg:     oklch(28%   0.080 310);
+    --er-tech:        oklch(75%   0.150 310);
+    --er-time-bg:     oklch(28%   0.080 230);
+    --er-time:        oklch(75%   0.150 230);
+
+    --er-radius-sm: 6px;
+    --er-radius-md: 10px;
+    --er-radius-lg: 14px;
+    --er-shadow-sm: 0 1px 3px oklch(0% 0 0 / 0.30);
+    --er-shadow-md: 0 4px 12px oklch(0% 0 0 / 0.40);
+
+    --er-font-ui: var(--font-plus-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+    --er-font-code: var(--font-jetbrains-mono), 'JetBrains Mono', ui-monospace, monospace;
+
+    background: var(--er-bg);
+    color: var(--er-text);
+    font-family: var(--er-font-ui);
+    color-scheme: dark;
+}
+
+    /* container ustawiamy na .exam-guide — to faktyczny wrapper egzaminu */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide {
+        container-type: inline-size;
+        container-name: exam;
+        background: var(--er-bg);
+        color: var(--er-text);
+        font-family: var(--er-font-ui);
+        max-width: 1180px;
+        padding: 0 clamp(14px, 3cqi, 28px);
+    }
+
+    /* topbar */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-page-topbar {
+        background: var(--er-surface);
+        border-bottom: 1px solid var(--er-border);
+        color: var(--er-muted);
+        font-family: var(--er-font-ui);
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-page-topbar a {
+        color: var(--er-muted);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-page-topbar a:hover {
+        color: var(--er-primary);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-page-topbar strong {
+        color: var(--er-text);
+        font-weight: 600;
+    }
+
+    /* focus ring globalnie w obrebie egzaminu */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] :focus-visible {
+        outline: 2px solid var(--er-primary);
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
+
+    /* ============ HERO ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-hero {
+        background: var(--er-primary-bg);
+        border: 1px solid var(--er-border-em);
+        border-radius: var(--er-radius-lg);
+        box-shadow: var(--er-shadow-sm);
+        padding: clamp(20px, 4cqi, 36px);
+        margin: clamp(16px, 3cqi, 28px) 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        gap: clamp(16px, 3cqi, 32px);
+        align-items: start;
+    }
+    @container exam (width < 760px) {
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-hero {
+            grid-template-columns: 1fr;
+        }
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-kicker {
+        color: var(--er-muted);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin: 0 0 8px 0;
+        font-family: var(--er-font-code);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-hero h2 {
+        color: var(--er-primary);
+        font-family: var(--er-font-ui);
+        font-size: clamp(1.4rem, 2cqi + 1rem, 2.1rem);
+        font-weight: 600;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+        text-wrap: balance;
+        margin: 0 0 12px 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-hero-copy p {
+        color: var(--er-text);
+        font-size: clamp(0.95rem, 0.5cqi + 0.85rem, 1.05rem);
+        line-height: 1.55;
+        max-width: 60ch;
+        margin: 0;
+    }
+
+    /* ============ STATS (pigulki: czas/tech/prog/cel) ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin: 0 0 16px 0;
+        padding: 0;
+        background: transparent;
+        border: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-stats > div {
+        background: var(--er-bg);
+        border: 1px solid var(--er-border);
+        border-radius: var(--er-radius-md);
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-height: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-stats dt {
+        color: var(--er-muted);
+        font-size: 0.7rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-stats dd {
+        color: var(--er-text);
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin: 0;
+        line-height: 1.3;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-rule {
+        background: var(--er-bg);
+        border: 1px solid var(--er-border);
+        border-radius: var(--er-radius-md);
+        padding: 12px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        margin: 0 0 16px 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-rule span {
+        color: var(--er-muted);
+        font-size: 0.7rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-rule strong {
+        color: var(--er-text);
+        font-family: var(--er-font-code);
+        font-size: 0.88rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+    }
+
+    /* ============ EXAM PICKER (Popover API hybrid) ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-picker {
+        position: relative;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-picker-toggle {
+        background: var(--er-bg);
+        color: var(--er-text);
+        border: 1px solid var(--er-border-em);
+        border-radius: var(--er-radius-md);
+        padding: 10px 14px;
+        min-height: 44px;
+        font-family: var(--er-font-ui);
+        font-size: 0.88rem;
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        transition: background 160ms ease, border-color 160ms ease;
+        anchor-name: --exam-picker-anchor;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-picker-toggle:hover {
+        background: var(--er-primary-hover);
+        border-color: var(--er-primary);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-picker-chevron {
+        color: var(--er-muted);
+        transition: rotate 200ms ease;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-picker-chevron.open {
+        rotate: 180deg;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-picker-panel {
+        background: var(--er-bg);
+        border: 1px solid var(--er-border-em);
+        border-radius: var(--er-radius-lg);
+        box-shadow: var(--er-shadow-md);
+        padding: 16px;
+        margin-top: 8px;
+        display: none;
+        flex-direction: column;
+        gap: 14px;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: opacity 200ms ease, max-height 240ms ease;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-picker-panel.open {
+        display: flex;
+        opacity: 1;
+        max-height: 480px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--er-border);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-nav-arrow {
+        background: transparent;
+        border: 1px solid var(--er-border);
+        border-radius: var(--er-radius-sm);
+        color: var(--er-text);
+        cursor: pointer;
+        font-size: 1.2rem;
+        min-width: 36px;
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-nav-arrow:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-nav-arrow:not(:disabled):hover {
+        background: var(--er-primary-hover);
+        color: var(--er-primary);
+        border-color: var(--er-primary);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-nav-title {
+        color: var(--er-text);
+        font-family: var(--er-font-code);
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-row {
+        display: grid;
+        grid-template-columns: auto auto 1fr;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: var(--er-radius-sm);
+        color: var(--er-text);
+        text-decoration: none;
+        font-size: 0.88rem;
+        transition: background 140ms ease;
+        min-height: 44px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-row:hover {
+        background: var(--er-primary-hover);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-row-id {
+        font-family: var(--er-font-code);
+        font-size: 0.78rem;
+        color: var(--er-muted);
+        letter-spacing: 0.04em;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-row-topic {
+        color: var(--er-text);
+        font-weight: 500;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-empty {
+        color: var(--er-muted);
+        font-family: var(--er-font-code);
+        font-size: 0.85rem;
+        text-align: center;
+        padding: 24px 0;
+        letter-spacing: 0.12em;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-dots {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        padding-top: 8px;
+        border-top: 1px solid var(--er-border);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1px solid var(--er-border-em);
+        background: transparent;
+        cursor: pointer;
+        padding: 0;
+        transition: background 140ms ease, transform 140ms ease;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-dot.has-content {
+        background: var(--er-border-em);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-dot.active {
+        background: var(--er-primary);
+        border-color: var(--er-primary);
+        scale: 1.15;
+    }
+
+    /* ============ QUICK NAV — taby sticky + scroll-snap ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-nav {
+        position: sticky;
+        top: 56px;
+        z-index: 10;
+        display: flex;
+        gap: 4px;
+        background: color-mix(in oklch, var(--er-bg) 92%, transparent);
+        backdrop-filter: saturate(140%) blur(8px);
+        border-bottom: 1px solid var(--er-border);
+        padding: 8px 0;
+        margin: 0 0 24px 0;
+        overflow-x: auto;
+        scrollbar-width: none;
+        scroll-snap-type: x proximity;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-nav::-webkit-scrollbar {
+        display: none;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-nav a {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        color: var(--er-muted);
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: var(--er-radius-sm);
+        padding: 10px 14px;
+        min-height: 44px;
+        font-family: var(--er-font-ui);
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-nav a:hover {
+        background: var(--er-primary-hover);
+        color: var(--er-primary);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-nav a.active {
+        background: var(--er-primary-bg);
+        color: var(--er-primary);
+        border-color: var(--er-border-em);
+    }
+
+    /* ============ SECTION ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-section {
+        margin: 0 0 clamp(28px, 5cqi, 56px) 0;
+        scroll-margin-top: 80px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-section-head {
+        margin: 0 0 20px 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-section-head p {
+        color: var(--er-muted);
+        font-family: var(--er-font-code);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin: 0 0 8px 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-section h2 {
+        color: var(--er-text);
+        font-family: var(--er-font-ui);
+        font-size: clamp(1.3rem, 1.5cqi + 0.9rem, 1.7rem);
+        font-weight: 600;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        text-wrap: balance;
+        margin: 0 0 8px 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-section .exam-copy,
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-guide-section .exam-copy p {
+        color: var(--er-text);
+        font-size: 1rem;
+        line-height: 1.6;
+        max-width: 70ch;
+    }
+
+    /* ============ PLAN — <details> accordion ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        interpolate-size: allow-keywords;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-step {
+        background: var(--er-surface);
+        border: 1px solid var(--er-border);
+        border-radius: var(--er-radius-md);
+        overflow: hidden;
+        transition: border-color 200ms ease, background 200ms ease;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-step[open] {
+        background: var(--er-bg);
+        border-color: var(--er-border-em);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-step summary {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 18px;
+        cursor: pointer;
+        list-style: none;
+        min-height: 60px;
+        user-select: none;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-step summary::-webkit-details-marker,
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-step summary::marker {
+        display: none;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-index {
+        color: var(--er-hint);
+        font-family: var(--er-font-code);
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-title-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-title-wrap strong {
+        color: var(--er-text);
+        font-family: var(--er-font-ui);
+        font-size: 0.98rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-title-wrap em {
+        color: var(--er-muted);
+        font-style: normal;
+        font-size: 0.82rem;
+        line-height: 1.35;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-action {
+        color: var(--er-primary);
+        font-family: var(--er-font-code);
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 6px 10px;
+        border: 1px solid var(--er-border);
+        border-radius: var(--er-radius-sm);
+        background: var(--er-bg);
+        transition: rotate 220ms ease, background 140ms ease;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-step[open] .exam-plan-action {
+        background: var(--er-primary);
+        color: var(--er-bg);
+        border-color: var(--er-primary);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-step[open] .exam-plan-action::after {
+        content: " ✓";
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-details {
+        padding: 0 18px 18px 18px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        border-top: 1px solid var(--er-border);
+        margin-top: 0;
+        padding-top: 16px;
+    }
+    @container exam (width < 640px) {
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-details {
+            grid-template-columns: 1fr;
+        }
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-details > div {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-details > div > span {
+        color: var(--er-muted);
+        font-family: var(--er-font-code);
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-details > div > p {
+        color: var(--er-text);
+        font-size: 0.9rem;
+        line-height: 1.55;
+        margin: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-details > div:nth-child(2) {
+        background: var(--er-error-bg);
+        border-left: 3px solid var(--er-error);
+        border-radius: 0 var(--er-radius-sm) var(--er-radius-sm) 0;
+        padding: 10px 12px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-details > div:nth-child(2) > span {
+        color: var(--er-error);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-extra {
+        grid-column: 1 / -1;
+        padding-top: 8px;
+        border-top: 1px dashed var(--er-border);
+    }
+
+    /* ============ MATERIALS ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        gap: clamp(14px, 2.5cqi, 24px);
+        align-items: start;
+    }
+    @container exam (width < 760px) {
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    @container exam (width < 480px) {
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-grid {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: thin;
+            gap: 10px;
+            padding-bottom: 8px;
+        }
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-grid > figure {
+            flex: 0 0 78%;
+            scroll-snap-align: start;
+        }
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-grid figure,
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-result {
+        background: var(--er-surface);
+        border: 1px solid var(--er-border);
+        border-radius: var(--er-radius-md);
+        overflow: hidden;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-grid figure:hover,
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-result:hover {
+        border-color: var(--er-primary);
+        box-shadow: var(--er-shadow-md);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-grid img,
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-result img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+        background: var(--er-surface-2);
+        display: block;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-grid figcaption,
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-result figcaption {
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        background: var(--er-bg);
+        border-top: 1px solid var(--er-border);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-grid figcaption strong,
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-result figcaption strong {
+        color: var(--er-text);
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-grid figcaption span,
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-result figcaption span {
+        color: var(--er-muted);
+        font-size: 0.78rem;
+        line-height: 1.4;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-result {
+        background: var(--er-primary-bg);
+        border-color: var(--er-border-em);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-materials-result img {
+        aspect-ratio: 3 / 4;
+    }
+
+    /* ============ TIMELINE ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-timeline-guide {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        position: relative;
+    }
+    @container exam (width < 880px) {
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-timeline-guide {
+            grid-template-columns: 1fr;
+        }
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-timeline-guide li {
+        background: var(--er-surface);
+        border: 1px solid var(--er-border);
+        border-radius: var(--er-radius-md);
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        position: relative;
+        counter-increment: timeline;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-timeline-guide li::before {
+        content: "";
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--er-primary);
+        box-shadow: 0 0 0 3px var(--er-primary-bg);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-timeline-guide li time {
+        color: var(--er-primary);
+        font-family: var(--er-font-code);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        margin-left: 18px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-timeline-guide li h3 {
+        color: var(--er-text);
+        font-family: var(--er-font-ui);
+        font-size: 0.98rem;
+        font-weight: 600;
+        margin: 0;
+        line-height: 1.3;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-timeline-guide li p {
+        color: var(--er-muted);
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-timeline-guide li span {
+        color: var(--er-time);
+        background: var(--er-time-bg);
+        font-family: var(--er-font-code);
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        padding: 4px 8px;
+        border-radius: var(--er-radius-sm);
+        align-self: flex-start;
+        margin-top: 4px;
+    }
+
+    /* ============ WARNINGS ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-warning-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 10px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-warning-grid article {
+        background: var(--er-error-bg);
+        border: 1px solid color-mix(in oklch, var(--er-error) 30%, transparent);
+        border-left: 3px solid var(--er-error);
+        border-radius: var(--er-radius-md);
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-warning-grid article h3 {
+        color: var(--er-error);
+        font-family: var(--er-font-code);
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        margin: 0;
+        line-height: 1.35;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-warning-grid article dl {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-warning-grid article dl div {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-warning-grid article dt {
+        color: var(--er-muted);
+        font-family: var(--er-font-code);
+        font-size: 0.68rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-warning-grid article dd {
+        color: var(--er-text);
+        font-size: 0.85rem;
+        line-height: 1.45;
+        margin: 0;
+    }
+
+    /* ============ SCORING ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-score-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-score-grid article {
+        background: var(--er-surface);
+        border: 1px solid var(--er-border);
+        border-radius: var(--er-radius-md);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        position: relative;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-score-grid article strong {
+        color: var(--er-primary);
+        font-family: var(--er-font-code);
+        font-size: clamp(1.4rem, 1.5cqi + 0.9rem, 1.9rem);
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: -0.01em;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-score-grid article h3 {
+        color: var(--er-text);
+        font-family: var(--er-font-ui);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-score-grid article p {
+        color: var(--er-muted);
+        font-size: 0.8rem;
+        line-height: 1.45;
+        margin: 0;
+    }
+
+    /* ============ CODE CARD ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-card {
+        background: var(--er-surface);
+        border: 1px solid var(--er-border);
+        border-radius: var(--er-radius-md);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        container-type: inline-size;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-card header {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-card header span {
+        color: var(--er-tech);
+        background: var(--er-tech-bg);
+        font-family: var(--er-font-code);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: var(--er-radius-sm);
+        align-self: flex-start;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-card header h3 {
+        color: var(--er-text);
+        font-family: var(--er-font-ui);
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0;
+        line-height: 1.3;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-card header p {
+        color: var(--er-muted);
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-actions button {
+        background: var(--er-bg);
+        color: var(--er-text);
+        border: 1px solid var(--er-border-em);
+        border-radius: var(--er-radius-sm);
+        padding: 8px 14px;
+        min-height: 36px;
+        font-family: var(--er-font-code);
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-actions button:first-child {
+        background: var(--er-primary);
+        color: var(--er-bg);
+        border-color: var(--er-primary);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-actions button:first-child:hover {
+        background: color-mix(in oklch, var(--er-primary) 88%, black);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-actions button:not(:first-child):hover {
+        background: var(--er-primary-hover);
+        color: var(--er-primary);
+        border-color: var(--er-primary);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-card pre {
+        background: var(--er-text);
+        color: oklch(95% 0.020 270);
+        border-radius: var(--er-radius-md);
+        padding: 14px 16px;
+        margin: 0;
+        overflow-x: auto;
+        font-family: var(--er-font-code);
+        font-size: 0.82rem;
+        line-height: 1.55;
+        border: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-card pre code {
+        background: transparent;
+        color: inherit;
+        font-family: inherit;
+        font-size: inherit;
+        padding: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-mistake {
+        background: var(--er-error-bg);
+        border: 1px solid color-mix(in oklch, var(--er-error) 25%, transparent);
+        border-radius: var(--er-radius-sm);
+        padding: 10px 12px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-mistake summary {
+        color: var(--er-error);
+        font-family: var(--er-font-code);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        list-style: none;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-mistake summary::-webkit-details-marker,
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-mistake summary::marker {
+        display: none;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-mistake summary::before {
+        content: "▸ ";
+        color: var(--er-error);
+        display: inline-block;
+        transition: rotate 200ms ease;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-mistake[open] summary::before {
+        rotate: 90deg;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-mistake p {
+        color: var(--er-text);
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin: 6px 0 0 0;
+    }
+
+    /* ============ CHECKLIST ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-local-checklist {
+        background: var(--er-surface);
+        border: 1px solid var(--er-border);
+        border-radius: var(--er-radius-md);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-checklist-progress {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding-bottom: 10px;
+        margin-bottom: 6px;
+        border-bottom: 1px solid var(--er-border);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-checklist-progress span {
+        color: var(--er-muted);
+        font-family: var(--er-font-code);
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-checklist-progress strong {
+        color: var(--er-primary);
+        font-family: var(--er-font-code);
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-local-checklist label {
+        display: grid;
+        grid-template-columns: auto auto 1fr;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 8px;
+        border-radius: var(--er-radius-sm);
+        cursor: pointer;
+        min-height: 44px;
+        transition: background 140ms ease;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-local-checklist label:hover {
+        background: var(--er-primary-hover);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-local-checklist label input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--er-primary);
+        cursor: pointer;
+        margin: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-local-checklist label span:first-of-type {
+        color: var(--er-muted);
+        font-family: var(--er-font-code);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        min-width: 22px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-local-checklist label span:last-of-type {
+        color: var(--er-text);
+        font-size: 0.9rem;
+        line-height: 1.45;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-local-checklist label:has(input:checked) span {
+        color: var(--er-muted);
+        text-decoration: line-through;
+        text-decoration-color: var(--er-success);
+        text-decoration-thickness: 2px;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-local-checklist label.done {
+        background: var(--er-success-bg);
+    }
+
+    /* ============ TERM TOOLTIP ============ */
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .term {
+        position: relative;
+        display: inline;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .term-trigger {
+        background: transparent;
+        color: var(--er-primary);
+        border: 0;
+        border-bottom: 1px dashed var(--er-primary);
+        padding: 0;
+        font: inherit;
+        cursor: help;
+        transition: background 120ms ease;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .term-trigger:hover,
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .term-trigger:focus-visible {
+        background: var(--er-primary-hover);
+        border-bottom-style: solid;
+        outline: 0;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .term-tooltip {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--er-surface-2);
+        color: var(--er-text);
+        border: 1px solid var(--er-border-em);
+        border-radius: var(--er-radius-sm);
+        padding: 10px 12px;
+        min-width: 220px;
+        max-width: 320px;
+        font-size: 0.82rem;
+        line-height: 1.45;
+        box-shadow: var(--er-shadow-md);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        z-index: 50;
+        transition: opacity 160ms ease, visibility 160ms ease, transform 160ms ease;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    @starting-style {
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .term-tooltip-open {
+            opacity: 0;
+            transform: translateX(-50%) translateY(4px);
+        }
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .term-tooltip-open {
+        opacity: 1;
+        visibility: visible;
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .term-tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 5px solid transparent;
+        border-top-color: var(--er-surface-2);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .term-tooltip-word {
+        font-family: var(--er-font-code);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--er-primary);
+    }
+    .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .term-tooltip-def {
+        color: var(--er-text);
+    }
+
+    /* ============ REDUCED MOTION ============ */
+    @media (prefers-reduced-motion: reduce) {
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] *,
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] *::before,
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-plan-step[open] summary,
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-picker-chevron,
+        .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-mistake[open] summary::before {
+            rotate: 0deg;
+        }
+
+
+
+
+
+    }

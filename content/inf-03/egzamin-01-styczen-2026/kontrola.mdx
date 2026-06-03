@@ -1,0 +1,58 @@
+{/*
+  Etap 4 — Kontrola
+  Punktacja, bledy, pelna checklista przed oddaniem.
+*/}
+
+<div className="exam-step-lead">
+  Ostatnie 20 minut. **Nie pisze sie nowego kodu** — sprawdza sie wymaganie po wymaganiu.
+  Najwiecej punktow uciec moze tutaj, jak nikt nie odpali strony przed oddaniem.
+</div>
+
+## Punktacja — co wazy najwiecej
+
+<ExamScoring
+  items={[
+    { area: "SQL", points: "~8 pkt", criterion: "Skladnia, aliasy, JOIN, kolejnosc ORDER BY i LIMIT." },
+    { area: "Polaczenie z baza", points: "~2 pkt", criterion: "mysqli, baza samochody, UTF-8, close()." },
+    { area: "PHP lewa sekcja", points: "~6 pkt", criterion: "JOIN, petla, tabela, cena liczona w PHP." },
+    { area: "PHP srodek", points: "~4 pkt", criterion: "Losowanie dwoch pojazdow, obrazki, rowspan." },
+    { area: "HTML/CSS", points: "~10 pkt", criterion: "Uklad zgodny z makieta." }
+  ]}
+/>
+
+## Najczestsze bledy
+
+<ExamWarnings
+  items={[
+    { title: "Brak set_charset(\"utf8\")", impact: "Polskie znaki sie rozsypuja.", check: "PHP, zaraz po new mysqli()." },
+    { title: "Zly JOIN", impact: "Bledne lub zduplikowane wiersze.", check: "Zapytanie 3 i lewa sekcja PHP." },
+    { title: "Cena policzona w SQL", impact: "Polecenie wymaga obliczenia w PHP.", check: "Petla w lewej sekcji." },
+    { title: "Brak rowspan=\"2\"", impact: "Tabela srodkowa niezgodna z makieta.", check: "HTML w sekcji srodkowej." },
+    { title: "ORDER BY / LIMIT", impact: "Zle sortowanie lub losowanie.", check: "Zapytanie 1 i 4." },
+    { title: "Sciezki obrazkow", impact: "Brak obrazkow na stronie.", check: "a1.jpg, a2.jpg, a3.png w katalogu i w src." },
+    { title: "CSS niezgodny z makieta", impact: "Twoj projekt zamiast odpowiedzi na arkusz.", check: "Kolory, kolumny, wysokosc, overflow, hover." }
+  ]}
+/>
+
+## Checklista przed oddaniem
+
+Pelna, klikana lokalnie. Stan zostaje w przegladarce — `localStorage`. Resetuje sie samo przy nowym egzaminie.
+
+<ExamFlowChecklist
+  items={[
+    { label: <>4 zapytania SQL dzialaja w bazie i zwracaja poprawne dane.</> },
+    { label: <>PHP laczy sie z baza <code>samochody</code>.</> },
+    { label: <>Ustawiono UTF-8 przez <code>set_charset("utf8")</code>.</> },
+    { label: <>Cena calkowita liczona w PHP, nie w SQL.</> },
+    { label: <>Dokladnie 2 losowe pojazdy w sekcji srodkowej.</> },
+    { label: <>Tabela srodkowa uzywa <code>rowspan="2"</code>.</> },
+    { label: <><code>a1.jpg</code>, <code>a2.jpg</code>, <code>a3.png</code> w dobrych miejscach i sciezkach.</> },
+    { label: <><code>main</code> ma <code>display: flex</code>.</> },
+    { label: <>Sekcje po <code>33.3%</code> z <code>overflow: auto</code>.</> },
+    { label: <>Wyglad zgadza sie z makieta — kolor, hover, proporcje.</> }
+  ]}
+/>
+
+<div className="exam-step-next">
+  Gotowe? Otworz strone w przegladarce. Porownaj z makieta. Oddaj.
+</div>
