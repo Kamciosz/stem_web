@@ -3,6 +3,15 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { courseDetails, getLesson, getFlatLessons, lessonHasQuiz } from "@/lib/courses";
 import { VideoEmbed } from "@/components/courses/VideoEmbed";
+import { ExamFlowDashboard } from "@/components/courses/examflow/ExamFlowDashboard";
+import { examMeta as examFlow01Meta } from "@/lib/exams/inf-03-egzamin-01";
+
+/** Mapa lekcji z dedykowanym dashboard-em zamiast renderowania MDX 1:1. */
+const examFlowDashboards: Record<string, Record<string, () => React.ReactElement>> = {
+    "inf-03": {
+        [examFlow01Meta.lessonSlug]: () => <ExamFlowDashboard />,
+    },
+};
 
 type LessonPageProps = {
     params: Promise<{ course: string; lesson: string }>;
@@ -41,6 +50,24 @@ export default async function LessonPage({ params }: LessonPageProps) {
     }
 
     const { course, module, lesson } = found as NonNullable<typeof found>;
+
+    // Dedykowany dashboard egzaminu — renderowany zamiast jednolitego MDX.
+    // Subpages etapow zyja w app/kursy/inf-03/egzamin-01-styczen-2026/[step]/page.tsx.
+    const dashboard = examFlowDashboards[courseId]?.[lessonSlug];
+    if (dashboard) {
+        return (
+            <article
+                className="lesson-page section-shell exam-lesson-page"
+                data-exam-slug={lessonSlug}
+            >
+                <div className="section-inner lesson-container exam-lesson-container">
+                    <div className="lesson-main exam-lesson-main">
+                        {dashboard()}
+                    </div>
+                </div>
+            </article>
+        );
+    }
 
     let LessonContent!: React.ComponentType;
     try {

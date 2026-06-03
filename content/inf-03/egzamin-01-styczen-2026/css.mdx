@@ -1,0 +1,89 @@
+{/*
+  Etap 3 — CSS
+  Odtworzenie makiety, trzy kolumny, kolory z polecenia.
+*/}
+
+<div className="exam-step-lead">
+  Cel: **wygladac dokladnie jak makieta**. Nie ladniej, nie nowoczesniej. Zgodnosc kolor-w-kolor,
+  trzy sekcje po 33.3%, hover, overflow. Punkty leca za spelnienie wymagan, nie kreatywnosc.
+</div>
+
+## Caly CSS
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Uklad zgodny z makieta"
+    description="Trzy kolumny, kolory z polecenia, hover, overflow, proporcje."
+    mistake="Brak overflow albo sekcje nie po 33.3% — uklad sie sypie."
+    code={`* {
+    text-align: center;
+    font-family: Helvetica, sans-serif;
+}
+
+header, footer {
+    background-color: DarkGreen;
+    color: white;
+}
+
+nav {
+    background-color: ForestGreen;
+}
+
+main {
+    display: flex;
+}
+
+section {
+    background-color: LightGreen;
+    width: 33.3%;
+    height: 550px;
+    overflow: auto;
+}
+
+table {
+    width: 90%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid DarkGreen;
+}
+
+#lewa tr:hover {
+    background-color: ForestGreen;
+}
+
+#srodkowa img {
+    width: 95%;
+    border-radius: 8px;
+}`}
+  />
+</ExamCodeGrid>
+
+## Co sprawdza egzaminator
+
+- `main` ma `display: flex` (nie grid, nie float).
+- Trzy sekcje po `33.3%` (suma ~100% — egzaminator NIE czepia sie zaokraglen).
+- `header` i `footer` w `DarkGreen` z bialym tekstem; `nav` w `ForestGreen`.
+- `section` w `LightGreen`, `height: 550px`, `overflow: auto` — zeby tabela sie scrollowala wewnatrz.
+- Hover na wierszach lewej sekcji: `ForestGreen`.
+- Obrazki w srodkowej sekcji: `width: 95%` i `border-radius: 8px`.
+
+<ExamWarnings
+  items={[
+    { title: "Wlasny ladniejszy projekt", impact: "Punkty leca za zgodnosc z makieta — kreatywnosc kosztuje.", check: "Otworz makiete obok i porownaj kolor-po-kolorze." },
+    { title: "Brak overflow: auto", impact: "Tabela wylewa sie poza sekcje 550px.", check: "section { height: 550px; overflow: auto; }" },
+    { title: "Sekcje za szerokie / nierowne", impact: "Layout sie lamie albo sekcje nie sa rowne.", check: "Trzy section { width: 33.3% } w main z display: flex." }
+  ]}
+/>
+
+## Punkty za ten etap
+
+- ~10 pkt za uklad zgodny z makieta.
+- Wiekszosc punktow to proste **jest/nie ma** — kolor, szerokosc, hover, overflow.
+- Nie warto polerowac CSS po godzinie 130 — czas na kontrole.
+
+<div className="exam-step-next">
+  Wyglada jak makieta? Idz do <strong>Kontroli</strong> i przejdz checkliste przed oddaniem.
+</div>
