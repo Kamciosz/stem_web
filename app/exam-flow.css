@@ -63,7 +63,7 @@
 }
 /* Re-apply padding for exam-flow stage content (overrides the reset above) */
 .exam-lesson-page[data-exam-slug] .exam-flow-stage-content {
-    padding: 28px clamp(24px, 3.5vw, 40px);
+    padding: 24px clamp(16px, 2vw, 24px);
 }
 
 /* root shell — padding horyzontalny przejmuje .section-shell z globals (64px),
@@ -633,14 +633,14 @@
     background: var(--ef-panel);
     border: 1px solid var(--ef-border);
     border-radius: var(--ef-radius-md);
-    padding: 28px clamp(20px, 3vw, 36px);
+    padding: 24px clamp(16px, 2vw, 24px);
     color: var(--ef-text);
     font-size: 15px;
     line-height: 1.65;
 }
 /* Bump specificity — globals zeroes padding via cascade order */
 .exam-flow .exam-flow-stage-content {
-    padding: 28px clamp(24px, 3.5vw, 40px);
+    padding: 24px clamp(16px, 2vw, 24px);
 }
 
 /* Step lead — kazdy MDX zaczyna sie hint blokiem */
@@ -1183,20 +1183,17 @@
     line-height: 1.45;
 }
 
-/* Scoring — centered card grid
-   Triple-class specificity beats globals .exam-lesson-page overrides */
+/* Scoring — 5-column grid, centered last row */
 .exam-flow .exam-flow-stage-content .exam-score-grid {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    justify-items: stretch;
+    gap: 10px;
     margin: 20px 0;
     border-top: none;
 }
 .exam-flow .exam-flow-stage-content .exam-score-grid article {
-    flex: 0 1 calc(20% - 12px);
-    min-width: 170px;
+    min-width: 0;
     background: var(--ef-panel-2);
     border: 1px solid var(--ef-border);
     border-radius: var(--ef-radius-sm);
