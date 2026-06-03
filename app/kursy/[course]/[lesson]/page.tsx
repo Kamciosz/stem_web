@@ -59,7 +59,10 @@ export default async function LessonPage({ params }: LessonPageProps) {
     const isExamLesson = module.id === "_egzaminy" || lessonSlug.startsWith("egzamin-");
 
     return (
-        <article className={`lesson-page section-shell ${isExamLesson ? "exam-lesson-page" : ""}`}>
+        <article
+            className={`lesson-page section-shell ${isExamLesson ? "exam-lesson-page" : ""}`}
+            data-exam-slug={isExamLesson ? lessonSlug : undefined}
+        >
             <div className={`section-inner lesson-container ${isExamLesson ? "exam-lesson-container" : ""}`}>
                 {!isExamLesson && (
                     <aside className="lesson-sidebar">

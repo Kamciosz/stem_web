@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./exam-redesign.css";
 
 @theme {
     --color-void: #000000;
