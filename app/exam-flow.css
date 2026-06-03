@@ -913,31 +913,139 @@
     gap: 6px;
     padding: 0 18px 12px;
 }
+/* WAZNE: te selektory MUSZA przebic regule z globals.css `.exam-lesson-page .exam-code-actions button`,
+   ktora dawala bialy tekst na ledwo widocznym tle (4% bialy). Wyzsza specyficznosc atrybutu. */
+.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-actions button,
 .exam-flow-stage-content .exam-code-actions button {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--ef-border);
     color: var(--ef-muted);
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 12px;
     cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
     font-family: var(--ef-font-ui);
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    min-height: 32px;
 }
-.exam-flow-stage-content .exam-code-actions button:hover {
+.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-actions button:hover,
+.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-actions button:focus-visible,
+.exam-flow-stage-content .exam-code-actions button:hover,
+.exam-flow-stage-content .exam-code-actions button:focus-visible {
+    background: rgba(124, 58, 237, 0.12);
     color: var(--ef-text);
     border-color: var(--ef-border-em);
+    outline: none;
 }
+.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-card pre,
 .exam-flow-stage-content .exam-code-card pre {
     margin: 0;
-    padding: 14px 18px;
-    background: var(--ef-bg);
+    padding: 16px 18px;
+    background: #1e1e1e;
     border-top: 1px solid var(--ef-border);
     overflow-x: auto;
     font-family: var(--ef-font-mono);
     font-size: 12.5px;
-    line-height: 1.55;
-    color: var(--ef-text);
+    line-height: 1.6;
+    color: #d4d4d4;
+    tab-size: 4;
+}
+.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-card pre code,
+.exam-flow-stage-content .exam-code-card pre code {
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    padding: 0;
+    display: block;
+    min-width: max-content;
+}
+/* ─────────────────────────────────────────────────────────────
+   Syntax highlighting — minimalna paleta inspirowana VSCode Dark+
+   Stosuje klasy highlight.js (.hljs-keyword, .hljs-string, ...).
+   Scope tylko do bloku kodu w arkuszu — nie wycieka do reszty strony.
+   ───────────────────────────────────────────────────────────── */
+.exam-flow-stage-content .exam-code-card pre code.hljs {
+    background: transparent;
+}
+.exam-flow-stage-content .exam-code-card .hljs-comment,
+.exam-flow-stage-content .exam-code-card .hljs-quote {
+    color: #6a9955;
+    font-style: italic;
+}
+.exam-flow-stage-content .exam-code-card .hljs-keyword,
+.exam-flow-stage-content .exam-code-card .hljs-selector-tag,
+.exam-flow-stage-content .exam-code-card .hljs-literal,
+.exam-flow-stage-content .exam-code-card .hljs-section,
+.exam-flow-stage-content .exam-code-card .hljs-doctag {
+    color: #c586c0;
+}
+.exam-flow-stage-content .exam-code-card .hljs-built_in,
+.exam-flow-stage-content .exam-code-card .hljs-type,
+.exam-flow-stage-content .exam-code-card .hljs-class .hljs-title {
+    color: #4ec9b0;
+}
+.exam-flow-stage-content .exam-code-card .hljs-title,
+.exam-flow-stage-content .exam-code-card .hljs-title.function_,
+.exam-flow-stage-content .exam-code-card .hljs-function .hljs-title {
+    color: #dcdcaa;
+}
+.exam-flow-stage-content .exam-code-card .hljs-string,
+.exam-flow-stage-content .exam-code-card .hljs-regexp,
+.exam-flow-stage-content .exam-code-card .hljs-attribute {
+    color: #ce9178;
+}
+.exam-flow-stage-content .exam-code-card .hljs-number,
+.exam-flow-stage-content .exam-code-card .hljs-meta,
+.exam-flow-stage-content .exam-code-card .hljs-symbol {
+    color: #b5cea8;
+}
+.exam-flow-stage-content .exam-code-card .hljs-variable,
+.exam-flow-stage-content .exam-code-card .hljs-template-variable,
+.exam-flow-stage-content .exam-code-card .hljs-params {
+    color: #9cdcfe;
+}
+.exam-flow-stage-content .exam-code-card .hljs-tag,
+.exam-flow-stage-content .exam-code-card .hljs-name {
+    color: #569cd6;
+}
+.exam-flow-stage-content .exam-code-card .hljs-attr {
+    color: #9cdcfe;
+}
+.exam-flow-stage-content .exam-code-card .hljs-operator,
+.exam-flow-stage-content .exam-code-card .hljs-punctuation {
+    color: #d4d4d4;
+}
+.exam-flow-stage-content .exam-code-card .hljs-deletion {
+    color: #f48771;
+}
+.exam-flow-stage-content .exam-code-card .hljs-addition {
+    color: #b5cea8;
+}
+.exam-flow-stage-content .exam-code-card .hljs-emphasis {
+    font-style: italic;
+}
+.exam-flow-stage-content .exam-code-card .hljs-strong {
+    font-weight: 700;
+}
+/* Scrollbar w bloku kodu — subtelny, ciemny, zgodny z reszta UI. */
+.exam-flow-stage-content .exam-code-card pre::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+.exam-flow-stage-content .exam-code-card pre::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+.exam-flow-stage-content .exam-code-card pre::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 4px;
+}
+.exam-flow-stage-content .exam-code-card pre::-webkit-scrollbar-thumb:hover {
+    background: #4a4a4a;
 }
 .exam-flow-stage-content .exam-code-mistake {
     margin: 0;

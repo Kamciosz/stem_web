@@ -1,9 +1,29 @@
 "use client";
 
-import { useEffect, useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { ExamPicker } from "@/components/ExamPicker";
 import { examSessions } from "@/lib/courses";
 import { Term } from "@/components/courses/Term";
+
+/**
+ * Mapowanie aliasow MDX -> highlight.js language id.
+ * Trzymamy tylko jezyki rzeczywiscie uzywane w arkuszach INF.03.
+ */
+const HLJS_LANG_MAP: Record<string, string> = {
+    sql: "sql",
+    mysql: "sql",
+    php: "php",
+    html: "xml",
+    xml: "xml",
+    css: "css",
+    js: "javascript",
+    javascript: "javascript",
+    ts: "typescript",
+    typescript: "typescript",
+    json: "json",
+    bash: "bash",
+    sh: "bash",
+};
 
 type Stat = {
     label: string;
@@ -269,6 +289,38 @@ export function ExamCodeBlock({
     const [open, setOpen] = useState(false);
     const [copied, setCopied] = useState(false);
     const contentId = useId();
+    const codeRef = useRef<HTMLElement | null>(null);
+
+    const langKey = language.toLowerCase();
+    const hljsLang = HLJS_LANG_MAP[langKey] ?? null;
+
+    // Lazy-loaded syntax highlighter (highlight.js core + tylko potrzebne jezyki).
+    // Odpalane dopiero gdy uzytkownik rozwinie blok kodu — zero kosztu na zamknietym dashboardzie.
+    useEffect(() => {
+        if (!open || !codeRef.current || !hljsLang) return;
+        let cancelled = false;
+        (async () => {
+            const [{ default: hljs }, langModule] = await Promise.all([
+                import("highlight.js/lib/core"),
+                import(/* webpackChunkName: "hljs-lang-[request]" */ `highlight.js/lib/languages/${hljsLang}`),
+            ]);
+            if (cancelled || !codeRef.current) return;
+            // Rejestracja idempotentna — hljs sam pomija duplikaty.
+            try {
+                hljs.registerLanguage(hljsLang, langModule.default);
+            } catch {
+                /* juz zarejestrowany */
+            }
+            const el = codeRef.current;
+            // Resetujemy znacznik highlight aby kazde otwarcie/zmiana kodu odpalala highlight od zera.
+            el.removeAttribute("data-highlighted");
+            el.className = `hljs language-${hljsLang}`;
+            hljs.highlightElement(el);
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, [open, hljsLang, code]);
 
     async function copyCode() {
         try {
@@ -281,7 +333,7 @@ export function ExamCodeBlock({
     }
 
     return (
-        <article className="exam-code-card">
+        <article className="exam-code-card" data-language={langKey}>
             <header>
                 <span>{language}</span>
                 <h3>{title}</h3>
@@ -296,8 +348,10 @@ export function ExamCodeBlock({
                 </button>
             </div>
             {open && (
-                <pre id={contentId} className={`language-${language.toLowerCase()}`}>
-                    <code>{code.trim()}</code>
+                <pre id={contentId} className={`language-${langKey}`}>
+                    <code ref={codeRef} className={hljsLang ? `language-${hljsLang}` : undefined}>
+                        {code.trim()}
+                    </code>
                 </pre>
             )}
             <details className="exam-code-mistake">
