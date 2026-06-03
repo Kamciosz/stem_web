@@ -1111,45 +1111,62 @@
     color: var(--ef-warn);
 }
 
-/* Warnings */
-.exam-flow-stage-content .exam-warning-grid {
+/* Warnings — horizontal cards grid
+   [data-exam-flow] bumps specificity above globals.css overrides */
+.exam-flow .exam-flow-stage-content .exam-warning-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-    margin: 16px 0;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+    border-top: none;
 }
-.exam-flow-stage-content .exam-warning-grid article {
+.exam-flow .exam-flow-stage-content .exam-warning-grid article {
     background: var(--ef-panel-2);
     border: 1px solid var(--ef-border);
-    border-left: 3px solid var(--ef-warn);
+    border-top: 3px solid var(--ef-warn);
+    border-bottom: 1px solid var(--ef-border);
     border-radius: var(--ef-radius-sm);
-    padding: 12px 16px;
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: none;
 }
-.exam-flow-stage-content .exam-warning-grid h3 {
-    margin: 0 0 6px;
+.exam-flow .exam-flow-stage-content .exam-warning-grid h3 {
+    margin: 0;
+    font-family: var(--ef-font-body);
     font-size: 14px;
+    line-height: 1.35;
     color: var(--ef-text);
     text-transform: none;
     letter-spacing: -0.005em;
-    font-weight: 600;
+    font-weight: 650;
 }
-.exam-flow-stage-content .exam-warning-grid dl {
+.exam-flow .exam-flow-stage-content .exam-warning-grid dl {
     margin: 0;
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 4px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     font-size: 13px;
 }
-.exam-flow-stage-content .exam-warning-grid dt {
+.exam-flow .exam-flow-stage-content .exam-warning-grid dl > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.exam-flow .exam-flow-stage-content .exam-warning-grid dt {
     color: var(--ef-dim);
+    font-family: var(--ef-font-mono);
     font-size: 11px;
+    font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    margin-top: 2px;
 }
-.exam-flow-stage-content .exam-warning-grid dd {
+.exam-flow .exam-flow-stage-content .exam-warning-grid dd {
     margin: 0;
-    color: var(--ef-text);
+    color: var(--ef-muted);
+    font-size: 13px;
+    line-height: 1.45;
 }
 
 /* Scoring */
