@@ -4615,9 +4615,9 @@ a.lesson-nav-link:hover {
 
 .exam-lesson-page .exam-plan-step summary {
     display: grid;
-    grid-template-columns: 32px minmax(0, 1fr) auto;
+    grid-template-columns: 42px minmax(0, 1fr) auto;
     gap: 16px;
-    align-items: baseline;
+    align-items: center;
     padding: 18px 0;
     cursor: pointer;
     list-style: none;
@@ -4627,16 +4627,20 @@ a.lesson-nav-link:hover {
 .exam-lesson-page .exam-plan-step[open] summary { border-bottom: 1px solid var(--eg-line); }
 
 .exam-lesson-page .exam-plan-index {
-    display: inline;
-    width: auto;
-    height: auto;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
     padding: 0;
-    background: transparent;
-    border-radius: 0;
-    color: var(--eg-dim);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.20), rgba(109, 40, 217, 0.14));
+    border: 1px solid rgba(139, 92, 246, 0.30);
+    border-radius: 12px;
+    color: #c4b5fd;
     font-family: var(--eg-mono);
-    font-size: 0.82rem;
-    font-weight: 500;
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
 }
 
 .exam-lesson-page .exam-plan-title-wrap {

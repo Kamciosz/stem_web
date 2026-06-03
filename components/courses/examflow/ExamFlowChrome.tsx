@@ -76,11 +76,16 @@ export function ExamFlowHeader({
                     <p className="exam-flow-eyebrow">
                         {eyebrow ?? `${examMeta.examId} · ${examMeta.session}`}
                     </p>
-                    <h1 className="exam-flow-title">
-                        {currentStep
-                            ? `Etap ${String(currentStep.index).padStart(2, "0")} — ${currentStep.label}`
-                            : examMeta.title}
-                    </h1>
+                    {currentStep ? (
+                        <div className="exam-flow-title-row">
+                            <span className="exam-flow-step-badge" aria-hidden="true">
+                                {String(currentStep.index).padStart(2, "0")}
+                            </span>
+                            <h1 className="exam-flow-title">{currentStep.label}</h1>
+                        </div>
+                    ) : (
+                        <h1 className="exam-flow-title">{examMeta.title}</h1>
+                    )}
                     <p className="exam-flow-lead">
                         {currentStep ? currentStep.summary : examMeta.description}
                     </p>
