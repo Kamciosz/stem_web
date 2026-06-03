@@ -659,19 +659,21 @@
     color: var(--ef-accent-2);
 }
 
-/* Typografia w MDX */
-.exam-flow-stage-content h2 {
-    margin: 36px 0 12px;
+/* Typografia w MDX — triple specificity beats globals .lesson-content h2 */
+.exam-flow .exam-flow-stage-content h2 {
+    margin: 40px 0 32px;
+    font-family: var(--ef-font-display);
     font-size: 18px;
     font-weight: 600;
     color: var(--ef-text);
     letter-spacing: -0.005em;
+    line-height: 1.3;
 }
-.exam-flow-stage-content h2:first-child {
+.exam-flow .exam-flow-stage-content h2:first-child {
     margin-top: 0;
 }
-.exam-flow-stage-content h3 {
-    margin: 24px 0 8px;
+.exam-flow .exam-flow-stage-content h3 {
+    margin: 28px 0 10px;
     font-size: 15px;
     font-weight: 600;
     color: var(--ef-text);
