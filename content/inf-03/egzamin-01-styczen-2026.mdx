@@ -3,13 +3,13 @@
 <ExamHero
   kicker="INF.03 · Styczeń 2026 · Arkusz 01"
   title="Arkusz 01 — Portal samochodowy"
-  description="Interaktywny przewodnik po rozwiązaniu: najpierw plan i kolejność pracy, potem materiały, błędy, kod i kontrola. Nie czytasz ściany tekstu — rozwijasz tylko to, czego akurat potrzebujesz."
+  description="Przewodnik po rozwiązaniu w kolejności pracy. Plan, materiały, błędy, kod i kontrola — szczegóły rozwijasz tylko gdy ich potrzebujesz."
   rule="SQL → PHP → CSS → Kontrola"
   stats={[
     { label: "Czas", value: "150 min" },
-    { label: "Technologie", value: "PHP + SQL + CSS" },
-    { label: "Cel", value: "strona salonu aut" },
-    { label: "Próg", value: "około 22/30 pkt" }
+    { label: "Technologie", value: "PHP, SQL, CSS" },
+    { label: "Cel", value: "Strona salonu aut" },
+    { label: "Próg", value: "~22/30 pkt" }
   ]}
 />
 
@@ -27,46 +27,46 @@
 
 <ExamSection
   id="plan"
-  eyebrow="Najpierw mapa, potem szczegóły"
-  title="Co tu właściwie trzeba zrobić?"
-  lead="Ten arkusz nie jest trudny przez jeden wielki problem. Jest trudny, bo ma dużo małych wymagań, które łatwo pominąć. Rozwijaj etapy po kolei."
+  eyebrow="Plan"
+  title="Co trzeba zrobić"
+  lead="Arkusz jest prosty, ale ma dużo małych wymagań. Rozwijaj etapy po kolei."
 >
   <ExamPlan
     steps={[
       {
         title: "Baza danych",
-        summary: "Dwie tabele i relacja przez kolor pojazdu.",
-        points: "Poprawne tabele kolory i pojazdy, klucz główny, klucz obcy i dane potrzebne do zapytań.",
-        mistake: "Uczeń widzi dwie tabele, ale nie widzi relacji pojazdy.kolor → kolory.id.",
-        details: <div className="exam-copy">Zapamiętaj schemat: <code>kolory.id</code> to <ExamTooltip word="PRIMARY KEY">PRIMARY KEY</ExamTooltip>, a <code>pojazdy.kolor</code> to <ExamTooltip word="klucz obcy">klucz obcy</ExamTooltip>. Bez tego <ExamTooltip word="JOIN">JOIN</ExamTooltip> będzie zgadywaniem.</div>
+        summary: "Dwie tabele i relacja przez kolor.",
+        points: "Tabele kolory i pojazdy, klucz główny, klucz obcy.",
+        mistake: "Brak relacji pojazdy.kolor → kolory.id.",
+        details: <div className="exam-copy"><code>kolory.id</code> to <ExamTooltip word="PRIMARY KEY">PRIMARY KEY</ExamTooltip>, <code>pojazdy.kolor</code> to <ExamTooltip word="klucz obcy">klucz obcy</ExamTooltip>. Bez tego <ExamTooltip word="JOIN">JOIN</ExamTooltip> nie działa.</div>
       },
       {
         title: "SQL",
-        summary: "Cztery krótkie zapytania do zrobienia przed PHP.",
-        points: "Filtrowanie, agregacja, JOIN, losowanie dwóch rekordów, poprawna kolejność ORDER BY i LIMIT.",
-        mistake: "ORDER BY i LIMIT w złej kolejności albo JOIN bez warunku ON.",
-        details: <div className="exam-copy">To są szybkie punkty. Najpierw sprawdzasz zapytania w bazie, dopiero potem wklejasz je do PHP.</div>
+        summary: "Cztery zapytania przed PHP.",
+        points: "Filtrowanie, agregacja, JOIN, losowanie, kolejność ORDER BY i LIMIT.",
+        mistake: "ORDER BY i LIMIT w złej kolejności, JOIN bez ON.",
+        details: <div className="exam-copy">Najpierw sprawdź zapytania w bazie, dopiero potem wklejaj do PHP.</div>
       },
       {
         title: "PHP",
-        summary: "Połączenie z bazą, pętle, obliczenia i tabela.",
-        points: "mysqli, <code>set_charset(\"utf8\")</code>, pobieranie wyników, cena całkowita liczona w PHP, dokładnie dwa losowe pojazdy.",
-        mistake: "Cena policzona w SQL zamiast w PHP albo brak <code>rowspan=\"2\"</code> w tabeli środkowej.",
-        details: <div className="exam-copy">Egzaminator nie ocenia intencji. Jeśli polecenie wymaga <ExamTooltip word="rowspan">rowspan</ExamTooltip>, to ma być atrybut w kodzie, nie podobny wygląd.</div>
+        summary: "Połączenie, pętle, obliczenia, tabela.",
+        points: "mysqli, <code>set_charset(\"utf8\")</code>, cena całkowita w PHP, dwa losowe pojazdy.",
+        mistake: "Cena policzona w SQL lub brak <code>rowspan=\"2\"</code>.",
+        details: <div className="exam-copy">Jeśli polecenie wymaga <ExamTooltip word="rowspan">rowspan</ExamTooltip>, ma być atrybut w kodzie — nie podobny wygląd.</div>
       },
       {
         title: "CSS",
-        summary: "Odtworzenie makiety, nie własny redesign.",
-        points: "Trzy kolumny, kolory z polecenia, tabela, hover, overflow i proporcje sekcji.",
-        mistake: "Ładniejsza strona, ale inna niż makieta. To nie jest prawie dobrze.",
-        details: <div className="exam-copy"><code>main</code> ma mieć <ExamTooltip word="display: flex">display: flex</ExamTooltip>, sekcje po <code>33.3%</code>, a długa tabela <ExamTooltip word="overflow">overflow</ExamTooltip>.</div>
+        summary: "Odtworzenie makiety.",
+        points: "Trzy kolumny, kolory z polecenia, tabela, hover, overflow, proporcje sekcji.",
+        mistake: "Ładniejsza strona niż makieta. Tracisz punkty.",
+        details: <div className="exam-copy"><code>main</code>: <ExamTooltip word="display: flex">display: flex</ExamTooltip>, sekcje <code>33.3%</code>, tabela <ExamTooltip word="overflow">overflow</ExamTooltip>.</div>
       },
       {
         title: "Kontrola",
         summary: "Ostatnie 20 minut na porównanie z makietą.",
-        points: "Ścieżki obrazków, liczba losowych aut, tabela, polskie znaki, wygląd końcowy.",
-        mistake: "Oddanie rozwiązania bez odpalenia strony w przeglądarce.",
-        details: <div className="exam-copy">Nie sprawdzasz „czy wygląda spoko”. Sprawdzasz wymaganie po wymaganiu z checklisty na dole.</div>
+        points: "Ścieżki obrazków, liczba aut, tabela, polskie znaki, wygląd.",
+        mistake: "Oddanie bez odpalenia strony.",
+        details: <div className="exam-copy">Sprawdzasz wymaganie po wymaganiu z checklisty.</div>
       }
     ]}
   />
@@ -74,68 +74,68 @@
 
 <ExamSection
   id="materialy"
-  eyebrow="Materiały z arkusza"
-  title="Obrazki i makieta są dowodami, nie dekoracją"
-  lead="Te pliki mówią, co ma się znaleźć na stronie. Otwórz je, porównaj ścieżki i nie zmieniaj układu pod własny gust."
+  eyebrow="Materiały"
+  title="Pliki z arkusza"
+  lead="Trzy obrazki i makieta końcowa. Otwórz w nowej karcie, porównaj ścieżki."
 >
   <ExamMaterials
     materials={[
-      { src: "/img/egzaminy/e01-a1.jpg", alt: "a1.jpg — niebieskie Audi z arkusza INF.03", title: "e01-a1.jpg", caption: "obrazek do sekcji środkowej" },
-      { src: "/img/egzaminy/e01-a2.jpg", alt: "a2.jpg — białe BMW z arkusza INF.03", title: "e01-a2.jpg", caption: "drugi losowy samochód" },
-      { src: "/img/egzaminy/e01-a3.png", alt: "a3.png — czerwony kabriolet z arkusza INF.03", title: "e01-a3.png", caption: "obrazek w kontakcie" }
+      { src: "/img/egzaminy/e01-a1.jpg", alt: "a1.jpg — niebieskie Audi", title: "e01-a1.jpg", caption: "sekcja środkowa" },
+      { src: "/img/egzaminy/e01-a2.jpg", alt: "a2.jpg — białe BMW", title: "e01-a2.jpg", caption: "drugi pojazd" },
+      { src: "/img/egzaminy/e01-a3.png", alt: "a3.png — czerwony kabriolet", title: "e01-a3.png", caption: "kontakt" }
     ]}
-    result={{ src: "/img/egzaminy/e01-rozwiazanie.webp", alt: "Makieta gotowej strony w arkuszu INF.03-01-26.01", title: "Makieta końcowa", caption: "to masz odtworzyć, nie interpretować artystycznie" }}
+    result={{ src: "/img/egzaminy/e01-rozwiazanie.webp", alt: "Makieta końcowa INF.03-01-26.01", title: "Makieta końcowa", caption: "do odtworzenia 1:1" }}
   />
 </ExamSection>
 
 <ExamSection
   id="strategia"
-  eyebrow="Strategia 150 minut"
-  title="Kolejność pracy decyduje o punktach"
-  lead="Jeśli zaczniesz od kolorowania strony, to sam sobie robisz krzywdę. Najpierw działające dane, później wygląd."
+  eyebrow="Strategia"
+  title="150 minut, kolejność"
+  lead="Najpierw działające dane, potem wygląd."
 >
   <ExamTimeline
     steps={[
-      { time: "0–25 min", title: "SQL najpierw", body: "Zapisz i sprawdź cztery zapytania. To są punkty do zebrania szybko.", tag: "łatwe punkty" },
-      { time: "25–90 min", title: "PHP i baza", body: "Połączenie, charset, pętle, obliczenie ceny, losowanie i tabela z rowspan.", tag: "tu się oblewa" },
-      { time: "90–130 min", title: "CSS pod makietę", body: "Trzy kolumny, kolory, hover, overflow. Bez kombinowania.", tag: "techniczne dopięcie" },
-      { time: "130–150 min", title: "Kontrola", body: "Odpalasz stronę i porównujesz z makietą punkt po punkcie.", tag: "ostatnie punkty" }
+      { time: "0–25 min", title: "SQL", body: "Cztery zapytania sprawdzone w bazie.", tag: "łatwe punkty" },
+      { time: "25–90 min", title: "PHP i baza", body: "Połączenie, charset, pętle, cena, losowanie, tabela z rowspan.", tag: "tu się oblewa" },
+      { time: "90–130 min", title: "CSS pod makietę", body: "Trzy kolumny, kolory, hover, overflow.", tag: "dopięcie" },
+      { time: "130–150 min", title: "Kontrola", body: "Porównanie z makietą punkt po punkcie.", tag: "ostatnie punkty" }
     ]}
   />
 </ExamSection>
 
 <ExamSection
   id="bledy"
-  eyebrow="Na co uważać"
-  title="Błędy, które wyglądają niewinnie i zabierają punkty"
-  lead="Nie rozrzucamy ostrzeżeń po całej stronie. Tu masz jedną listę rzeczy, które trzeba sprawdzić przed oddaniem."
+  eyebrow="Błędy"
+  title="Co najczęściej kosztuje punkty"
+  lead="Jedna lista. Sprawdź przed oddaniem."
 >
   <ExamWarnings
     items={[
-      { title: "Brak set_charset(\"utf8\")", impact: "Polskie znaki mogą się rozsypać. Egzaminator nie przyjmie tłumaczenia, że lokalnie działało.", check: "Plik PHP zaraz po utworzeniu połączenia z bazą." },
-      { title: "Zły JOIN", impact: "Wyniki z tabel kolory i pojazdy są błędnie połączone albo mnożą rekordy.", check: "Zapytanie 3 i lewa sekcja PHP." },
-      { title: "Cena policzona w SQL", impact: "Strona może wyglądać dobrze, ale polecenie wymaga obliczenia w PHP.", check: "Kod pętli w lewej sekcji." },
-      { title: "Brak rowspan=\"2\"", impact: "Tabela w środku nie spełnia wymagania z makiety.", check: "HTML generowany przy losowych pojazdach." },
-      { title: "ORDER BY / LIMIT w złej kolejności", impact: "Zapytanie losujące albo ranking cen daje zły wynik.", check: "Zapytanie 1 i zapytanie 4." },
-      { title: "Błędne ścieżki obrazków", impact: "Na stronie są puste miejsca zamiast aut.", check: "a1.jpg, a2.jpg, a3.png w katalogu strony i w atrybutach src." },
-      { title: "CSS niezgodny z makietą", impact: "Rozwiązanie jest twoim projektem, a nie odpowiedzią na arkusz.", check: "Kolory, trzy kolumny, wysokość sekcji, overflow i hover." }
+      { title: "Brak set_charset(\"utf8\")", impact: "Polskie znaki się rozsypują.", check: "PHP, zaraz po new mysqli()." },
+      { title: "Zły JOIN", impact: "Błędne lub zduplikowane wiersze.", check: "Zapytanie 3 i lewa sekcja PHP." },
+      { title: "Cena policzona w SQL", impact: "Polecenie wymaga obliczenia w PHP.", check: "Pętla w lewej sekcji." },
+      { title: "Brak rowspan=\"2\"", impact: "Tabela środkowa niezgodna z makietą.", check: "HTML w sekcji środkowej." },
+      { title: "ORDER BY / LIMIT", impact: "Złe sortowanie lub losowanie.", check: "Zapytanie 1 i 4." },
+      { title: "Ścieżki obrazków", impact: "Brak obrazków na stronie.", check: "a1.jpg, a2.jpg, a3.png w katalogu i w src." },
+      { title: "CSS niezgodny z makietą", impact: "Twój projekt zamiast odpowiedzi na arkusz.", check: "Kolory, kolumny, wysokość, overflow, hover." }
     ]}
   />
 </ExamSection>
 
 <ExamSection
   id="kod"
-  eyebrow="Kod ukryty domyślnie"
-  title="Rozwijaj tylko fragment, który aktualnie robisz"
-  lead="Najpierw przeczytaj opis i typowy błąd. Kod pokazuj dopiero wtedy, gdy chcesz porównać swoje rozwiązanie."
+  eyebrow="Kod"
+  title="Rozwijaj fragmenty na bieżąco"
+  lead="Przeczytaj opis i błąd, kod pokaż gdy chcesz porównać."
 >
-  <h3>SQL — cztery zapytania</h3>
+  <h3>SQL</h3>
   <ExamCodeGrid>
     <ExamCodeBlock
       language="SQL"
-      title="Zapytanie 1 — 15 najdroższych pojazdów BM"
-      description="Filtrujesz markę, sortujesz malejąco po cenie i bierzesz pierwsze 15 rekordów."
-      mistake="Brak DESC albo LIMIT wpisany bez sortowania. Wtedy nie masz 15 najdroższych, tylko przypadkowe 15."
+      title="Zapytanie 1 — 15 najdroższych BM"
+      description="Filtr marki, sort malejąco, limit 15."
+      mistake="Brak DESC lub LIMIT bez ORDER BY."
       code={`SELECT marka, model, cena
 FROM pojazdy
 WHERE marka = 'BM'
@@ -144,18 +144,18 @@ LIMIT 15;`}
     />
     <ExamCodeBlock
       language="SQL"
-      title="Zapytanie 2 — średnia i maksymalna cena meta"
-      description="Dwie funkcje agregujące dla modelu meta. Aliasy mają być czytelne."
-      mistake="Inne aliasy niż w poleceniu albo brak filtra WHERE model = 'meta'."
+      title="Zapytanie 2 — średnia i max meta"
+      description="Dwie agregacje z aliasami z polecenia."
+      mistake="Złe aliasy lub brak WHERE."
       code={`SELECT AVG(cena) AS 'Średnia cena', MAX(cena) AS 'Maksymalna cena'
 FROM pojazdy
 WHERE model = 'meta';`}
     />
     <ExamCodeBlock
       language="SQL"
-      title="Zapytanie 3 — alfa z kolorem i dopłatą"
-      description="Tu sprawdzasz relację przez klucz obcy. JOIN musi mieć warunek ON."
-      mistake="Cartesian join bez ON albo łączenie po złych kolumnach. Wyniki wyglądają licznie, ale są błędne."
+      title="Zapytanie 3 — alfa z kolorem"
+      description="JOIN z warunkiem ON na kluczu obcym."
+      mistake="JOIN bez ON daje cartesian product."
       code={`SELECT marka, model, cena, nazwa, doplata
 FROM pojazdy
 INNER JOIN kolory ON pojazdy.kolor = kolory.id
@@ -163,9 +163,9 @@ WHERE model = 'alfa';`}
     />
     <ExamCodeBlock
       language="SQL"
-      title="Zapytanie 4 — dwa losowe pojazdy"
-      description="RAND miesza rekordy, LIMIT 2 bierze dokładnie dwa do sekcji środkowej."
-      mistake="Pobranie wszystkich aut i losowanie ręcznie bez sensu albo LIMIT przed ORDER BY."
+      title="Zapytanie 4 — dwa losowe"
+      description="RAND() i LIMIT 2."
+      mistake="LIMIT przed ORDER BY."
       code={`SELECT marka, model, cena
 FROM pojazdy
 ORDER BY RAND()
@@ -178,17 +178,17 @@ LIMIT 2;`}
     <ExamCodeBlock
       language="PHP"
       title="Połączenie z bazą"
-      description="Najkrótszy fragment, ale bez niego reszta jest martwa. Charset ustawiasz od razu po połączeniu."
-      mistake="Brak charset. To jest klasyczny błąd: działa lokalnie, a potem polskie znaki są śmietnikiem."
+      description="mysqli + charset od razu po połączeniu."
+      mistake="Brak charset — lokalnie działa, na egzaminie nie."
       code={`<?php
 $conn = new mysqli("localhost", "root", "", "samochody");
 $conn->set_charset("utf8");`}
     />
     <ExamCodeBlock
       language="PHP"
-      title="Lewa sekcja — tabela pojazdów alfa"
-      description="JOIN, pętla po wyniku i cena całkowita liczona w PHP. To jest główny fragment backendu."
-      mistake="Cena całkowita policzona w SELECT zamiast w pętli PHP. Wynik podobny, ale wymaganie niespełnione."
+      title="Lewa sekcja — tabela alfa"
+      description="JOIN, pętla, cena całkowita liczona w PHP."
+      mistake="Cena w SELECT zamiast w pętli — wymaganie niespełnione."
       code={`$query = "SELECT marka, model, cena, nazwa, doplata
           FROM pojazdy
           INNER JOIN kolory ON pojazdy.kolor = kolory.id
@@ -212,9 +212,9 @@ echo "</table>";`}
     />
     <ExamCodeBlock
       language="PHP"
-      title="Sekcja środkowa — losowanie i rowspan"
-      description="Dwa auta, dwa obrazki i tabela z komórką scaloną pionowo. Rowspan nie jest dekoracją."
-      mistake="Tabela wygląda podobnie, ale nie ma rowspan='2'. W kodzie nie spełniasz polecenia."
+      title="Środek — losowanie i rowspan"
+      description="Dwa auta, dwa obrazki, tabela z rowspan='2'."
+      mistake="Brak rowspan — niespełnione wymaganie z makiety."
       code={`$query = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
 $result = $conn->query($query);
 $nr = 1;
@@ -231,9 +231,9 @@ while ($row = $result->fetch_assoc()) {
     />
     <ExamCodeBlock
       language="PHP"
-      title="Sekcja prawa i zamknięcie"
-      description="Kontakt, trzeci obrazek i zamknięcie połączenia. Proste, ale musi być."
-      mistake="Zła nazwa pliku a3.png albo brak close. Mały błąd, głupio stracić punkt."
+      title="Prawa sekcja i zamknięcie"
+      description="Kontakt, obrazek a3.png, close()."
+      mistake="Zła nazwa pliku lub brak close()."
       code={`echo "<p>Telefon: 111 222 444</p>";
 echo "<img src='a3.png' alt='Kontakt'>";
 
@@ -245,9 +245,9 @@ $conn->close();`}
   <ExamCodeGrid>
     <ExamCodeBlock
       language="CSS"
-      title="Układ i wygląd zgodny z makietą"
-      description="To nie jest portfolio. CSS ma odtworzyć wymagane kolory, trzy kolumny i zachowanie tabeli."
-      mistake="Brak overflow albo sekcje nie mają po 33.3%. Strona może wyglądać ładnie, ale nie jest zgodna z arkuszem."
+      title="Układ zgodny z makietą"
+      description="Trzy kolumny, kolory z polecenia, hover, overflow."
+      mistake="Brak overflow lub sekcje nie po 33.3%."
       code={`* {
     text-align: center;
     font-family: Helvetica, sans-serif;
@@ -296,48 +296,47 @@ table, th, td {
 
 <ExamSection
   id="punktacja"
-  eyebrow="Punktacja wcześniej, nie na końcu ściany tekstu"
-  title="Co naprawdę sprawdza egzaminator"
-  lead="To są wartości orientacyjne, ale dobrze pokazują priorytety. SQL i PHP są ważniejsze niż zabawa w kosmetykę."
+  eyebrow="Punktacja"
+  title="Co sprawdza egzaminator"
+  lead="Wartości orientacyjne. Pokazują priorytety — SQL i PHP ważą najwięcej."
 >
   <ExamScoring
     items={[
       { area: "SQL", points: "~8 pkt", criterion: "Składnia, aliasy, JOIN, kolejność ORDER BY i LIMIT." },
-      { area: "Połączenie z bazą", points: "~2 pkt", criterion: "mysqli, baza samochody, UTF-8 i zamknięcie połączenia." },
-      { area: "PHP lewa sekcja", points: "~6 pkt", criterion: "JOIN, pętla, tabela i cena całkowita policzona w skrypcie." },
-      { area: "PHP środek", points: "~4 pkt", criterion: "Losowanie dwóch pojazdów, obrazki i rowspan." },
-      { area: "HTML/CSS", points: "~10 pkt", criterion: "Układ zgodny z makietą. Nie ładny, tylko zgodny." }
+      { area: "Połączenie z bazą", points: "~2 pkt", criterion: "mysqli, baza samochody, UTF-8, close()." },
+      { area: "PHP lewa sekcja", points: "~6 pkt", criterion: "JOIN, pętla, tabela, cena liczona w PHP." },
+      { area: "PHP środek", points: "~4 pkt", criterion: "Losowanie dwóch pojazdów, obrazki, rowspan." },
+      { area: "HTML/CSS", points: "~10 pkt", criterion: "Układ zgodny z makietą." }
     ]}
   />
 </ExamSection>
 
 <ExamSection
   id="checklista"
-  eyebrow="Przed oddaniem"
-  title="Praktyczna checklista do odhaczania lokalnie"
-  lead="To nie zapisuje się na serwerze. Jest tylko po to, żebyś przed wysłaniem rozwiązania sprawdził konkretne wymagania."
+  eyebrow="Checklista"
+  title="Przed oddaniem"
+  lead="Lokalna, nie zapisuje się nigdzie. Sprawdź konkretne wymagania."
 >
   <ExamChecklist
     items={[
       { label: <>4 zapytania SQL działają.</> },
       { label: <>PHP łączy się z bazą <code>samochody</code>.</> },
       { label: <>Ustawiono UTF-8 przez <code>set_charset("utf8")</code>.</> },
-      { label: <>Cena całkowita jest liczona w PHP.</> },
-      { label: <>Są dokładnie 2 losowe pojazdy.</> },
+      { label: <>Cena całkowita liczona w PHP.</> },
+      { label: <>Dokładnie 2 losowe pojazdy.</> },
       { label: <>Tabela używa <code>rowspan="2"</code>.</> },
-      { label: <>Obrazki <code>a1.jpg</code>, <code>a2.jpg</code>, <code>a3.png</code> są w dobrych miejscach.</> },
-      { label: <><code>main</code> ma <code>display:flex</code>.</> },
-      { label: <>Sekcje mają po <code>33.3%</code>.</> },
+      { label: <><code>a1.jpg</code>, <code>a2.jpg</code>, <code>a3.png</code> w dobrych miejscach.</> },
+      { label: <><code>main</code> ma <code>display: flex</code>.</> },
+      { label: <>Sekcje po <code>33.3%</code>.</> },
       { label: <>Wygląd zgadza się z makietą.</> }
     ]}
   />
 </ExamSection>
 
 <div className="exam-verdict final">
-  <div className="exam-verdict-label">finalna ocena</div>
+  <div className="exam-verdict-label">cel</div>
   <div className="exam-copy">
-    Dobre rozwiązanie tego arkusza nie jest kreatywne. Jest nudne, zgodne z poleceniem i kompletne.
-    Na INF.03 dostajesz punkty za realizację wymagań, nie za to, że kod wygląda „prawie tak samo”.
+    Zgodność z poleceniem, nie kreatywność. Punkty są za spełnienie wymagań — nie za to, że kod „prawie tak samo wygląda”.
   </div>
 </div>
 
