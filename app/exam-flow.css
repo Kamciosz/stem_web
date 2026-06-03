@@ -61,6 +61,10 @@
 .exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .lesson-content {
     padding: 0;
 }
+/* Re-apply padding for exam-flow stage content (overrides the reset above) */
+.exam-lesson-page[data-exam-slug] .exam-flow-stage-content {
+    padding: 28px clamp(24px, 3.5vw, 40px);
+}
 
 /* root shell — padding horyzontalny przejmuje .section-shell z globals (64px),
    tu zostawiamy tylko bottom dla oddechu nad stopka. */
