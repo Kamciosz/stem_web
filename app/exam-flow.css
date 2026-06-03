@@ -1111,16 +1111,20 @@
     color: var(--ef-warn);
 }
 
-/* Warnings — horizontal cards grid
-   [data-exam-flow] bumps specificity above globals.css overrides */
+/* Warnings — horizontal cards, centered rows
+   Triple-class specificity beats globals .exam-lesson-page overrides */
 .exam-flow .exam-flow-stage-content .exam-warning-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 12px;
     margin: 20px 0;
     border-top: none;
 }
 .exam-flow .exam-flow-stage-content .exam-warning-grid article {
+    flex: 0 1 calc(33.333% - 12px);
+    min-width: 220px;
     background: var(--ef-panel-2);
     border: 1px solid var(--ef-border);
     border-top: 3px solid var(--ef-warn);
@@ -1169,37 +1173,51 @@
     line-height: 1.45;
 }
 
-/* Scoring */
-.exam-flow-stage-content .exam-score-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 8px;
-    margin: 16px 0;
+/* Scoring — centered card grid
+   Triple-class specificity beats globals .exam-lesson-page overrides */
+.exam-flow .exam-flow-stage-content .exam-score-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+    border-top: none;
 }
-.exam-flow-stage-content .exam-score-grid article {
+.exam-flow .exam-flow-stage-content .exam-score-grid article {
+    flex: 0 1 calc(20% - 12px);
+    min-width: 170px;
     background: var(--ef-panel-2);
     border: 1px solid var(--ef-border);
     border-radius: var(--ef-radius-sm);
-    padding: 14px 16px;
+    padding: 16px 18px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    grid-template-columns: none;
+    align-items: stretch;
+    gap: 6px;
+    box-shadow: none;
 }
-.exam-flow-stage-content .exam-score-grid strong {
+.exam-flow .exam-flow-stage-content .exam-score-grid strong {
     font-family: var(--ef-font-mono);
     font-size: 18px;
     color: var(--ef-accent-2);
     font-weight: 600;
+    display: block;
+    margin: 0;
+    padding: 0;
+    background: transparent;
 }
-.exam-flow-stage-content .exam-score-grid h3 {
+.exam-flow .exam-flow-stage-content .exam-score-grid h3 {
     margin: 0;
     font-size: 13px;
     color: var(--ef-text);
     text-transform: none;
     letter-spacing: 0;
     font-weight: 600;
+    font-family: var(--ef-font-body);
 }
-.exam-flow-stage-content .exam-score-grid p {
+.exam-flow .exam-flow-stage-content .exam-score-grid p {
     margin: 0;
     color: var(--ef-muted);
     font-size: 12.5px;
