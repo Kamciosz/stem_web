@@ -6,6 +6,11 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export const dynamic = "force-static";
 
+export const metadata = {
+    title: "Zespół | STEM",
+    description: "Poznaj zespół koła technologicznego STEM — uczniowie technikum specjalizujący się w robotyce, mechatronice i programowaniu."
+};
+
 export default function TeamPage() {
     return (
         <section className="team-page section-shell" aria-labelledby="team-title">

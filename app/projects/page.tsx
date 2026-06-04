@@ -5,6 +5,7 @@ import { projects } from "@/lib/content";
 
 export const metadata = {
   title: "Projekty | Kolko Technologiczne",
+  robots: "noindex, nofollow",
 };
 
 export default function ProjectsPage() {

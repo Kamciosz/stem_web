@@ -5,6 +5,11 @@ import { TerminalLink } from "@/components/ui/TerminalLink";
 
 export const dynamic = "force-static";
 
+export const metadata = {
+    title: "Partnerzy | STEM",
+    description: "Zostań partnerem koła technologicznego STEM. Lab access, mentoring, staże. Wspieraj uczniów technikum w robotyce, mechatronice i programowaniu."
+};
+
 const benefits = [
     {
         label: "LAB ACCESS",

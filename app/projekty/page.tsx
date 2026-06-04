@@ -6,6 +6,11 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
 export const dynamic = "force-static";
 
+export const metadata = {
+    title: "Projekty | STEM",
+    description: "Projekty koła technologicznego STEM — robotyka, mechatronika i programowanie. Autonomiczne roboty, automatyzacja, aplikacje webowe i PWA tworzone przez uczniów technikum."
+};
+
 export default async function ProjectsPage() {
     const stats = await getGithubStatsMap(projects);
 

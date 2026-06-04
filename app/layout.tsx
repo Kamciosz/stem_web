@@ -33,7 +33,15 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
     title: "STEM | Koło Technologiczne",
     description: "Koło Technologiczne STEM: robotyka, mechatronika, programowanie.",
-    metadataBase: new URL("https://stem-kolo.pl")
+    metadataBase: new URL("https://stem-web-569q.vercel.app"),
+    alternates: { canonical: "/" },
+    openGraph: {
+        type: "website",
+        locale: "pl_PL",
+        siteName: "STEM | Koło Technologiczne",
+        title: "STEM | Koło Technologiczne",
+        description: "Koło Technologiczne STEM: robotyka, mechatronika, programowanie."
+    }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
