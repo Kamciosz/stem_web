@@ -82,7 +82,7 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: clamp(20px, 3vw, 32px);
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -126,7 +126,7 @@
 .exam-flow-header-row {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 32px;
+    gap: clamp(16px, 3vw, 32px);
     align-items: start;
 }
 .exam-flow-header-copy {
@@ -201,7 +201,7 @@
     border: 1px solid var(--ef-border);
     border-radius: var(--ef-radius-md);
     padding: 14px 18px;
-    min-width: 240px;
+    min-width: min(240px, 100%);
 }
 .exam-flow-header-meta dt {
     font-size: 11px;
@@ -235,11 +235,11 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 14px;
+    padding: clamp(8px, 1vw, 10px) clamp(8px, 1.2vw, 14px);
     border-radius: 8px;
     color: var(--ef-muted);
     text-decoration: none;
-    font-size: 13px;
+    font-size: clamp(11px, 1.2vw, 13px);
     font-weight: 500;
     white-space: nowrap;
     transition: background 0.15s ease, color 0.15s ease;
@@ -271,15 +271,15 @@
    ───────────────────────────────────────────────────────────── */
 .exam-flow-dashboard {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 320px;
-    gap: 32px;
+    grid-template-columns: minmax(0, 1fr) clamp(220px, 25vw, 320px);
+    gap: clamp(16px, 3vw, 32px);
     align-items: start;
 }
 .exam-flow-dashboard-main {
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: clamp(24px, 4vw, 40px);
 }
 
 /* sekcje (Etapy / Materialy / Strategia) */
@@ -304,8 +304,8 @@
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+    gap: clamp(8px, 1.5vw, 12px);
 }
 .exam-flow-stage-card {
     display: grid;
@@ -314,9 +314,9 @@
         "index summary"
         "index meta"
         "index cta";
-    grid-template-columns: 64px 1fr;
-    gap: 4px 16px;
-    padding: 18px;
+    grid-template-columns: clamp(40px, 5vw, 64px) 1fr;
+    gap: 4px clamp(8px, 2vw, 16px);
+    padding: clamp(12px, 2vw, 18px);
     background: var(--ef-panel);
     border: 1px solid var(--ef-border);
     border-radius: var(--ef-radius-md);
@@ -331,7 +331,7 @@
 .exam-flow-stage-index {
     grid-area: index;
     font-family: var(--ef-font-mono);
-    font-size: 32px;
+    font-size: clamp(22px, 3vw, 32px);
     line-height: 1;
     color: var(--ef-accent-2);
     font-weight: 600;
@@ -378,8 +378,8 @@
 /* Materialy */
 .exam-flow-materials-layout {
     display: grid;
-    grid-template-columns: 220px minmax(0, 1fr);
-    gap: 20px;
+    grid-template-columns: clamp(140px, 18vw, 220px) minmax(0, 1fr);
+    gap: clamp(12px, 2vw, 20px);
     align-items: start;
 }
 .exam-flow-materials-thumbs {
@@ -456,8 +456,8 @@
 }
 .exam-flow-strategy-list li {
     display: grid;
-    grid-template-columns: 110px 1fr auto;
-    gap: 16px;
+    grid-template-columns: clamp(70px, 10vw, 110px) 1fr auto;
+    gap: clamp(8px, 2vw, 16px);
     align-items: center;
     padding: 14px 18px;
     border-top: 1px solid var(--ef-border);
@@ -521,10 +521,10 @@
     background: var(--ef-panel);
     border: 1px solid var(--ef-border);
     border-radius: var(--ef-radius-md);
-    padding: 20px;
+    padding: clamp(14px, 2vw, 20px);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: clamp(14px, 2vw, 20px);
 }
 .exam-flow-infopanel-grid {
     margin: 0;
@@ -622,8 +622,8 @@
    ───────────────────────────────────────────────────────────── */
 .exam-flow-stage {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 280px;
-    gap: 32px;
+    grid-template-columns: minmax(0, 1fr) clamp(200px, 22vw, 280px);
+    gap: clamp(16px, 3vw, 32px);
     align-items: start;
 }
 .exam-flow-stage-main {
@@ -728,7 +728,7 @@
     background: var(--ef-panel);
     border: 1px solid var(--ef-border);
     border-radius: var(--ef-radius-md);
-    padding: 16px 18px;
+    padding: clamp(12px, 1.5vw, 16px) clamp(12px, 1.5vw, 18px);
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -878,9 +878,9 @@
 .exam-flow-checklist-list label {
     display: grid;
     grid-template-columns: 22px 36px 1fr;
-    gap: 12px;
+    gap: clamp(6px, 1.5vw, 12px);
     align-items: center;
-    padding: 12px 18px;
+    padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 18px);
     cursor: pointer;
     transition: background 0.15s ease;
 }
@@ -1134,7 +1134,7 @@
 }
 .exam-flow .exam-flow-stage-content .exam-warning-grid article {
     flex: 0 1 calc(33.333% - 12px);
-    min-width: 220px;
+    min-width: min(220px, 100%);
     background: var(--ef-panel-2);
     border: 1px solid var(--ef-border);
     border-top: 3px solid var(--ef-warn);
@@ -1186,7 +1186,7 @@
 /* Scoring — 5-column grid, centered last row */
 .exam-flow .exam-flow-stage-content .exam-score-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(140px, 100%), 1fr));
     justify-items: stretch;
     gap: 10px;
     margin: 20px 0;
@@ -1232,10 +1232,12 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Responsive — przelaczamy na 1-kol layout gdy zabraknie miejsca
-   na 1fr main + 320px panel boczny (z paddingiem section-shell 64*2 = 128px).
+   Responsive — tylko strukturalne zmiany layoutu.
+   Sizing jest fluid (clamp/min), tu tylko zmiany kolumn.
    ───────────────────────────────────────────────────────────── */
-@media (max-width: 1100px) {
+
+/* < 900px: 2-kol → 1-kol, sidebar unstick */
+@media (max-width: 900px) {
     .exam-flow-dashboard,
     .exam-flow-stage {
         grid-template-columns: 1fr;
@@ -1248,28 +1250,21 @@
     .exam-flow-header-row {
         grid-template-columns: 1fr;
     }
-    .exam-flow-header-meta dl {
-        min-width: 0;
-    }
     .exam-flow-materials-layout {
         grid-template-columns: 1fr;
     }
     .exam-flow-materials-thumbs {
         flex-direction: row;
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     .exam-flow-materials-thumbs figure {
-        flex: 0 0 160px;
-    }
-    .exam-flow-stages-grid {
-        grid-template-columns: 1fr;
+        flex: 0 0 clamp(120px, 20vw, 160px);
     }
 }
 
+/* < 560px: strategy list stack */
 @media (max-width: 560px) {
-    .exam-flow-stage-content {
-        padding: 20px 16px;
-    }
     .exam-flow-strategy-list li {
         grid-template-columns: 1fr;
         gap: 4px;
