@@ -44,8 +44,27 @@ export default async function CoursePage({ params }: CoursePageProps) {
         0
     );
 
+    const courseJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        name: detail.title,
+        description: detail.subtitle,
+        provider: {
+            "@type": "EducationalOrganization",
+            name: "STEM | Koło Technologiczne",
+            url: "https://stem-web-569q.vercel.app"
+        },
+        inLanguage: "pl",
+        isAccessibleForFree: true,
+        url: `https://stem-web-569q.vercel.app/kursy/${detail.id}`
+    };
+
     return (
         <section className="course-overview section-shell" aria-labelledby="course-overview-title">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(courseJsonLd) }}
+            />
             <div className="section-inner">
                 <header className="page-header">
                     <p className="font-mono-industrial body-muted">KNOWLEDGE BASE / {detail.badge}</p>
