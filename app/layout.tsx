@@ -45,9 +45,39 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+    const jsonLd = [
+        {
+            "@context": "https://schema.org",
+            "@type": "EducationalOrganization",
+            name: "STEM | Koło Technologiczne",
+            alternateName: "Koło Technologiczne STEM",
+            description: "Koło Technologiczne STEM: robotyka, mechatronika, programowanie. Uczniowie technikum tworzący w hardware i software.",
+            url: "https://stem-web-569q.vercel.app",
+            email: "kontakt@stem-kolo.pl",
+            address: {
+                "@type": "PostalAddress",
+                streetAddress: "ul. Mińska 25",
+                addressLocality: "Warszawa",
+                addressCountry: "PL"
+            },
+            knowsAbout: ["Robotyka", "Mechatronika", "Programowanie", "Elektronika"]
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "STEM | Koło Technologiczne",
+            url: "https://stem-web-569q.vercel.app",
+            inLanguage: "pl-PL"
+        }
+    ];
+
     return (
         <html lang="pl">
             <body className={`${spaceGrotesk.variable} ${inter.variable} ${jetBrainsMono.variable} ${plusJakarta.variable}`}>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                />
                 <ScrollProgress />
                 <ParallaxLayers />
                 <Logo />
