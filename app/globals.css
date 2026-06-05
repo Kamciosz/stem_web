@@ -2315,6 +2315,21 @@ footer {
    KURSY — kafelki dostępne, przegląd modułów, lekcja
    ============================================================ */
 
+.courses-intro {
+    max-width: 620px;
+    color: var(--recede);
+    line-height: 1.7;
+    margin-top: 16px;
+}
+
+.course-card-subtitle {
+    color: var(--laser);
+    font-size: 0.8rem;
+    font-family: var(--font-jetbrains-mono);
+    margin-bottom: 12px;
+    margin-top: -4px;
+}
+
 .courses-section-label {
     margin: 64px 0 0;
     color: var(--recede);

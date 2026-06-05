@@ -25,7 +25,7 @@ export default function CoursesPage() {
                     <h1 className="headline-large" id="courses-title">
                         KURSY
                     </h1>
-                    <p style={{ maxWidth: 620, color: "var(--recede)", lineHeight: 1.7, marginTop: 16 }}>
+                    <p className="courses-intro">
                         Darmowe materiały do nauki dla uczniów techników przygotowujących się do egzaminów INF.02, INF.03 i INF.04 — i dla każdego, kto traktuje programowanie jako hobby. Niski próg wejścia, żargon tłumaczony po najechaniu, wiedza sprawdzana quizami. Tworzymy je jako członkowie Koła STEM.
                     </p>
                 </header>
@@ -48,7 +48,7 @@ export default function CoursesPage() {
                                                 <span className="course-available">DOSTĘPNY →</span>
                                             </div>
                                             <h3>{course.title}</h3>
-                                            <p style={{ color: "var(--laser)", fontSize: "0.8rem", fontFamily: "var(--font-jetbrains-mono)", marginBottom: 12, marginTop: -4 }}>
+                                            <p className="course-card-subtitle">
                                                 {course.subtitle}
                                             </p>
                                             <p>{course.intro}</p>
@@ -74,7 +74,7 @@ export default function CoursesPage() {
                                     <span className="coming-soon">WKRÓTCE</span>
                                 </div>
                                 <h3>{course.title}</h3>
-                                <p style={{ color: "var(--laser)", fontSize: "0.8rem", fontFamily: "var(--font-jetbrains-mono)", marginBottom: 12, marginTop: -4 }}>
+                                <p className="course-card-subtitle">
                                     {course.subtitle}
                                 </p>
                                 <p>{course.description}</p>

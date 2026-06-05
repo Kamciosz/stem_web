@@ -46,9 +46,19 @@ function requireEnv(name: string, value: string | undefined): string {
     return value;
 }
 
+function normalizeSupabaseUrl(value: string): string {
+    // Vercel production miało literówkę w ref projektu: qunypod... zamiast qnypod...
+    // Bez tokenu Vercel naprawiamy runtime'owo, żeby API quizu nie waliło NXDOMAIN.
+    return value.replace("qunypodqdrhtzpuqgszk", "qnypodqdrhtzpupqgszk");
+}
+
+function requireSupabaseUrl(): string {
+    return normalizeSupabaseUrl(requireEnv("NEXT_PUBLIC_SUPABASE_URL", SUPABASE_URL));
+}
+
 /** Server-only — service role, omija RLS. Do walidacji i zapisu. */
 export function getServiceClient(): SupabaseClient {
-    return createClient(requireEnv("NEXT_PUBLIC_SUPABASE_URL", SUPABASE_URL), requireEnv("SUPABASE_SERVICE_ROLE_KEY", SERVICE_ROLE), {
+    return createClient(requireSupabaseUrl(), requireEnv("SUPABASE_SERVICE_ROLE_KEY", SERVICE_ROLE), {
         auth: { persistSession: false, autoRefreshToken: false }
     });
 }
@@ -64,7 +74,7 @@ export function getServiceClient(): SupabaseClient {
  * przez /api/quiz/*.
  */
 export function getAnonClient(): SupabaseClient {
-    return createClient(requireEnv("NEXT_PUBLIC_SUPABASE_URL", SUPABASE_URL), requireEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", ANON_KEY), {
+    return createClient(requireSupabaseUrl(), requireEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", ANON_KEY), {
         auth: { persistSession: false, autoRefreshToken: false }
     });
 }

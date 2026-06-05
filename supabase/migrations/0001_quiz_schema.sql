@@ -144,6 +144,27 @@ drop policy if exists "questions read active" on public.questions;
 create policy "questions read active" on public.questions
   for select using (is_active = true);
 
+-- ---------------------------------------------------------------------
+-- KOLUMNOWE GRANTY na questions — obrona przed wyciekiem correct_index.
+-- ---------------------------------------------------------------------
+-- UWAGA KRYTYCZNA: RLS w Postgresie filtruje WIERSZE, nie KOLUMNY.
+-- Domyślny grant Supabase (GRANT SELECT ON ALL TABLES ... TO anon)
+-- daje anonowi SELECT na CAŁEJ tabeli questions. Sama polityka RLS
+-- "questions read active" przepuszcza wszystkie aktywne wiersze ze
+-- WSZYSTKIMI kolumnami — łącznie z correct_index (klucz odpowiedzi)
+-- i explanation. Anon key jest publiczny (ląduje w bundlu przeglądarki),
+-- więc bez tej sekcji każdy mógłby zrobić:
+--    GET /rest/v1/questions?select=prompt,correct_index&is_active=eq.true
+-- i wyciągnąć cały klucz odpowiedzi, omijając widok public_questions.
+--
+-- Cofamy table-wide grant i przyznajemy SELECT TYLKO na bezpiecznych
+-- kolumnach. Widok public_questions (security_invoker = true) działa
+-- dalej, bo dotyka wyłącznie tych kolumn. Bezpośredni
+-- select=correct_index zwróci anonowi "permission denied for column".
+revoke select on public.questions from anon, authenticated;
+grant select (id, course_id, lesson_slug, prompt, is_active, created_at)
+  on public.questions to anon, authenticated;
+
 drop policy if exists "options read all"     on public.question_options;
 create policy "options read all" on public.question_options
   for select using (true);
