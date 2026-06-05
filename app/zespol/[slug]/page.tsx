@@ -18,7 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     if (!member) return {};
     return {
         title: `${member.name} | STEM`,
-        description: member.description
+        description: member.description,
+        alternates: { canonical: `/zespol/${member.slug}` },
+        openGraph: { url: `/zespol/${member.slug}` }
     };
 }
 

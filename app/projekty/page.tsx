@@ -8,7 +8,9 @@ export const dynamic = "force-static";
 
 export const metadata = {
     title: "Projekty | STEM",
-    description: "Projekty koła technologicznego STEM — robotyka, mechatronika i programowanie. Autonomiczne roboty, automatyzacja, aplikacje webowe i PWA tworzone przez uczniów technikum."
+    description: "Projekty koła technologicznego STEM — robotyka, mechatronika i programowanie. Autonomiczne roboty, automatyzacja, aplikacje webowe i PWA tworzone przez uczniów technikum.",
+    alternates: { canonical: "/projekty" },
+    openGraph: { url: "/projekty" }
 };
 
 export default async function ProjectsPage() {

@@ -35,9 +35,23 @@ export async function generateMetadata({ params }: LessonPageProps): Promise<Met
     if (!found) {
         return { title: "Lekcja | STEM" };
     }
+    const isOtherExam = lessonSlug.startsWith("egzamin-") && lessonSlug !== "egzamin-01-styczen-2026";
+    if (isOtherExam) {
+        return {
+            title: `${found.lesson.title} | ${found.course.title}`,
+            description: found.lesson.summary
+        };
+    }
+
+    const description = lessonSlug === "egzamin-01-styczen-2026"
+        ? "Interaktywny przewodnik do arkusza INF.03: Portal samochodowy. SQL, PHP, CSS, punktacja i checklista rozwiązania krok po kroku."
+        : found.lesson.summary;
+
     return {
         title: `${found.lesson.title} | ${found.course.title}`,
-        description: found.lesson.summary
+        description,
+        alternates: { canonical: `/kursy/${courseId}/${lessonSlug}` },
+        openGraph: { url: `/kursy/${courseId}/${lessonSlug}` }
     };
 }
 
@@ -129,6 +143,13 @@ export default async function LessonPage({ params }: LessonPageProps) {
                             <span>{module.title}</span>
                             {lesson.minutes && <strong>{lesson.minutes} MIN</strong>}
                         </nav>
+                    )}
+
+                    {lessonSlug === "anatomia-zadania" && (
+                        <header className="lesson-header exam-seo-header">
+                            <h1 className="lesson-title-main">{lesson.title}</h1>
+                            <p className="lesson-summary-main">{lesson.summary}</p>
+                        </header>
                     )}
 
                     {!isExamLesson && (

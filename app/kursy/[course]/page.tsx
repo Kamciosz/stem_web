@@ -23,7 +23,9 @@ export async function generateMetadata({ params }: CoursePageProps): Promise<Met
     }
     return {
         title: `${course.title} | STEM`,
-        description: course.subtitle
+        description: course.subtitle,
+        alternates: { canonical: `/kursy/${course.id}` },
+        openGraph: { url: `/kursy/${course.id}` }
     };
 }
 

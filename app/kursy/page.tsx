@@ -7,7 +7,9 @@ export const dynamic = "force-static";
 
 export const metadata = {
     title: "Kursy | STEM",
-    description: "Darmowe materiały do nauki programowania — przygotowanie do egzaminów INF.02, INF.03, INF.04 dla uczniów techników i pasjonatów. Niski próg wejścia."
+    description: "Darmowe materiały do nauki programowania — przygotowanie do egzaminów INF.02, INF.03, INF.04 dla uczniów techników i pasjonatów. Niski próg wejścia.",
+    alternates: { canonical: "/kursy" },
+    openGraph: { url: "/kursy" }
 };
 
 const levelLabel: Record<string, string> = {

@@ -8,7 +8,9 @@ export const dynamic = "force-static";
 
 export const metadata = {
     title: "Zespół | STEM",
-    description: "Poznaj zespół koła technologicznego STEM — uczniowie technikum specjalizujący się w robotyce, mechatronice i programowaniu."
+    description: "Poznaj zespół koła technologicznego STEM — uczniowie technikum specjalizujący się w robotyce, mechatronice i programowaniu.",
+    alternates: { canonical: "/zespol" },
+    openGraph: { url: "/zespol" }
 };
 
 export default function TeamPage() {

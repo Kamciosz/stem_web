@@ -7,7 +7,9 @@ export const dynamic = "force-static";
 
 export const metadata = {
     title: "Partnerzy | STEM",
-    description: "Zostań partnerem koła technologicznego STEM. Lab access, mentoring, staże. Wspieraj uczniów technikum w robotyce, mechatronice i programowaniu."
+    description: "Zostań partnerem koła technologicznego STEM. Lab access, mentoring, staże. Wspieraj uczniów technikum w robotyce, mechatronice i programowaniu.",
+    alternates: { canonical: "/partnerzy" },
+    openGraph: { url: "/partnerzy" }
 };
 
 const benefits = [

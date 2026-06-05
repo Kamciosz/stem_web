@@ -42,7 +42,10 @@ export async function generateMetadata({ params }: QuizPageProps): Promise<Metad
     }
     return {
         title: `Quiz: ${found.lesson.title} | ${found.course.title}`,
-        description: `Sprawdź wiedzę z lekcji "${found.lesson.title}".`
+        description: `Sprawdź wiedzę z lekcji "${found.lesson.title}" w quizie STEM. 5 losowych pytań, wynik liczony po stronie serwera.`,
+        alternates: { canonical: `/kursy/${courseId}/${lessonSlug}/quiz` },
+        openGraph: { url: `/kursy/${courseId}/${lessonSlug}/quiz` },
+        robots: { index: false, follow: true }
     };
 }
 

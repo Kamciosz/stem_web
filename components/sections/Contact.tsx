@@ -8,6 +8,8 @@ type ContactProps = {
 };
 
 export function Contact({ fullPage = false }: ContactProps) {
+    const HeadingTag = fullPage ? "h1" : "h2";
+
     return (
         <section className={`contact-section ${fullPage ? "contact-full" : ""}`} aria-labelledby="contact-title">
             {!fullPage && <MonolithDivider />}
@@ -16,9 +18,9 @@ export function Contact({ fullPage = false }: ContactProps) {
                     <CornerBrackets />
                     <ScrollReveal as="div" className="contact-copy">
                         <p className="font-mono-industrial body-muted">TRANSMISSION / CONTACT</p>
-                        <h2 className="headline-large" id="contact-title">
+                        <HeadingTag className="headline-large" id="contact-title">
                             KONTAKT
-                        </h2>
+                        </HeadingTag>
                         <form className="contact-form" action="mailto:kontakt@stem-kolo.pl" method="post" encType="text/plain">
                             <p className="field">
                                 <label htmlFor={fullPage ? "name-full" : "name-home"}>Name</label>
