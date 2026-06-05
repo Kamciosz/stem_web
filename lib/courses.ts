@@ -289,7 +289,7 @@ export const courseDetails: CourseDetail[] = [
                     {
                         slug: "fetch-api",
                         title: "Fetch i asynchroniczność",
-                        summary: "fetch, Promise, async/await, obsługa błędów.",
+                        summary: "fetch, Promise, async/await i obsługa błędów — pobieranie danych z API w zadaniach INF.03 i bezpieczna aktualizacja interfejsu.",
                         published: true,
                         minutes: 15,
                         objectives: [
@@ -395,7 +395,7 @@ export const courseDetails: CourseDetail[] = [
                     {
                         slug: "agregacje",
                         title: "Agregacje i GROUP BY",
-                        summary: "COUNT, SUM, AVG, GROUP BY, HAVING, podzapytania.",
+                        summary: "COUNT, SUM, AVG, GROUP BY, HAVING i podzapytania — agregowanie danych SQL oraz raporty wymagane w praktycznych zadaniach INF.03.",
                         published: true,
                         minutes: 18,
                         objectives: [
