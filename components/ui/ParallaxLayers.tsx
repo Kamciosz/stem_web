@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 const particles = Array.from({ length: 72 }, (_, index) => {
     const left = (index * 37) % 100;
@@ -12,8 +12,18 @@ const particles = Array.from({ length: 72 }, (_, index) => {
 
 export function ParallaxLayers() {
     const cursorGlowRef = useRef<HTMLDivElement>(null);
+    const [reducedMotion, setReducedMotion] = useState(true);
 
     useEffect(() => {
+        const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+        setReducedMotion(mq.matches);
+        const onChange = () => setReducedMotion(mq.matches);
+        mq.addEventListener("change", onChange);
+        return () => mq.removeEventListener("change", onChange);
+    }, []);
+
+    useEffect(() => {
+        if (reducedMotion) return; // bez ruchu nie podpinamy scroll listenera
         let animationFrame = 0;
         const layers = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax-speed]"));
 
@@ -43,9 +53,10 @@ export function ParallaxLayers() {
                 window.cancelAnimationFrame(animationFrame);
             }
         };
-    }, []);
+    }, [reducedMotion]);
 
     useEffect(() => {
+        if (reducedMotion) return; // bez ruchu nie śledzimy kursora
         const moveCursor = (e: MouseEvent) => {
             if (cursorGlowRef.current) {
                 cursorGlowRef.current.style.left = `${e.clientX}px`;
@@ -54,7 +65,12 @@ export function ParallaxLayers() {
         };
         window.addEventListener("mousemove", moveCursor, { passive: true });
         return () => window.removeEventListener("mousemove", moveCursor);
-    }, []);
+    }, [reducedMotion]);
+
+    // Reduced motion: nie renderujemy dekoracyjnych warstw ani 72 cząstek.
+    if (reducedMotion) {
+        return null;
+    }
 
     return (
         <>

@@ -2293,6 +2293,22 @@ footer {
         animation: none !important;
         text-shadow: 0 0 80px rgba(124, 58, 237, 0.1) !important;
     }
+
+    /* Ukryj dekoracyjne warstwy parallax/particles — bez ruchu nie wnoszą
+       nic poza obciążeniem i rozpraszaniem przy nauce. */
+    .parallax-void,
+    .parallax-wireframe,
+    .parallax-particles,
+    .parallax-volumetric,
+    .parallax-foreground,
+    .wireframe-floor,
+    .particle {
+        display: none !important;
+    }
+
+    .grain-image::after {
+        animation: none !important;
+    }
 }
 
 /* ============================================================
