@@ -53,7 +53,10 @@ export function QuizClient({
     const submittedRef = useRef(false);
     // Ref do questions i answers, żeby event listenery widziały aktualny stan.
     const stateRef = useRef({ questions, answers, attemptId, phase });
-    stateRef.current = { questions, answers, attemptId, phase };
+    // Synchronizuj ref po renderze (nie podczas) — listenery czytają aktualny stan.
+    useEffect(() => {
+        stateRef.current = { questions, answers, attemptId, phase };
+    });
 
     // ---------------------------------------------------------------
     // 1. START — pobierz pulę pytań z API

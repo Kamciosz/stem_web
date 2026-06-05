@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useSyncExternalStore, type CSSProperties } from "react";
 
 const particles = Array.from({ length: 72 }, (_, index) => {
     const left = (index * 37) % 100;
@@ -10,17 +10,31 @@ const particles = Array.from({ length: 72 }, (_, index) => {
     return { left, top, size, opacity };
 });
 
+/** Subskrypcja prefers-reduced-motion przez useSyncExternalStore —
+ *  zero hydration mismatch (server snapshot = true), zero setState-in-effect. */
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function subscribeReducedMotion(callback: () => void): () => void {
+    const mq = window.matchMedia(REDUCED_MOTION_QUERY);
+    mq.addEventListener("change", callback);
+    return () => mq.removeEventListener("change", callback);
+}
+
+function getReducedMotionSnapshot(): boolean {
+    return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
+function getReducedMotionServerSnapshot(): boolean {
+    return true; // SSR: nie renderuj dekoracji do czasu hydratacji
+}
+
 export function ParallaxLayers() {
     const cursorGlowRef = useRef<HTMLDivElement>(null);
-    const [reducedMotion, setReducedMotion] = useState(true);
-
-    useEffect(() => {
-        const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-        setReducedMotion(mq.matches);
-        const onChange = () => setReducedMotion(mq.matches);
-        mq.addEventListener("change", onChange);
-        return () => mq.removeEventListener("change", onChange);
-    }, []);
+    const reducedMotion = useSyncExternalStore(
+        subscribeReducedMotion,
+        getReducedMotionSnapshot,
+        getReducedMotionServerSnapshot
+    );
 
     useEffect(() => {
         if (reducedMotion) return; // bez ruchu nie podpinamy scroll listenera

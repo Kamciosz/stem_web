@@ -441,9 +441,9 @@ export function getCourseDetail(id: string) {
 export function getLesson(courseId: string, lessonSlug: string) {
     const course = getCourseDetail(courseId);
     if (!course) return null;
-    for (const module of course.modules) {
-        const lesson = module.lessons.find((l) => l.slug === lessonSlug);
-        if (lesson) return { course, module, lesson };
+    for (const mod of course.modules) {
+        const lesson = mod.lessons.find((l) => l.slug === lessonSlug);
+        if (lesson) return { course, module: mod, lesson };
     }
     return null;
 }
