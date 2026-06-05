@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { courseDetails } from "@/lib/courses";
-import { projects } from "@/lib/content";
+import { projects } from "@/lib/data";
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const baseUrl = "https://stem-web-569q.vercel.app";
