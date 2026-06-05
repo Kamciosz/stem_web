@@ -106,8 +106,9 @@ export async function POST(req: Request, ctx: RouteContext) {
         .in("id", questionIds);
 
     if (qErr || !fullQuestions) {
+        console.error("[quiz/submit] błąd odczytu pytań próby:", qErr?.message);
         return NextResponse.json(
-            { error: "Nie udało się odczytać pytań próby.", detail: qErr?.message },
+            { error: "Nie udało się sprawdzić odpowiedzi. Spróbuj ponownie później." },
             { status: 500 }
         );
     }
@@ -145,8 +146,9 @@ export async function POST(req: Request, ctx: RouteContext) {
         .eq("id", body.attemptId);
 
     if (updateErr) {
+        console.error("[quiz/submit] błąd zapisu wyniku:", updateErr.message);
         return NextResponse.json(
-            { error: "Nie udało się zapisać wyniku.", detail: updateErr.message },
+            { error: "Nie udało się zapisać wyniku. Spróbuj ponownie później." },
             { status: 500 }
         );
     }

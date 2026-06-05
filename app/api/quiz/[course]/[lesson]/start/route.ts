@@ -133,8 +133,9 @@ export async function GET(_req: Request, ctx: RouteContext) {
         .single();
 
     if (attemptErr || !attempt) {
+        console.error("[quiz/start] błąd zapisu próby:", attemptErr?.message);
         return NextResponse.json(
-            { error: "Nie udało się zapisać próby.", detail: attemptErr?.message },
+            { error: "Nie udało się rozpocząć quizu. Spróbuj ponownie później." },
             { status: 500 }
         );
     }
