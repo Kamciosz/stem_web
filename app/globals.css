@@ -5809,3 +5809,65 @@ a.lesson-nav-link:hover {
     border-radius: 10px;
     font-size: 0.95rem;
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   Footer columns
+   ───────────────────────────────────────────────────────────── */
+.site-footer .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(20px, 3vw, 32px);
+    padding: clamp(20px, 4vw, 40px) clamp(16px, 4vw, 32px);
+    max-width: 1280px;
+    margin: 0 auto;
+}
+@media (min-width: 720px) {
+    .site-footer .footer-grid {
+        grid-template-columns: 1.2fr 1fr 1fr 1.5fr 0.8fr;
+    }
+}
+.footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+    min-width: 0;
+}
+.footer-heading {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #a78bfa;
+    margin: 0 0 0.4em;
+}
+.footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
+}
+.footer-links a {
+    color: #ccc3d8;
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: color 0.15s;
+}
+.footer-links a:hover {
+    color: #F5F3FF;
+}
+.footer-copyright {
+    margin: 0 0 0.2em;
+    color: #ccc3d8;
+}
+.footer-location {
+    margin: 0;
+    color: #6d717c;
+    font-size: 0.78rem;
+}
+.footer-social-links a {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.78rem;
+}
