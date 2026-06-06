@@ -1,8 +1,25 @@
 import { MetadataRoute } from "next";
+import { promises as fs } from "fs";
+import path from "path";
 import { courseDetails } from "@/lib/courses";
 import { projects } from "@/lib/data";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+const EXAM_STEPS = ["baza-danych", "html-php", "css", "kontrola"] as const;
+
+async function discoverExamSlugs(): Promise<string[]> {
+    const base = path.join(process.cwd(), "app/kursy/inf-03");
+    try {
+        const entries = await fs.readdir(base, { withFileTypes: true });
+        return entries
+            .filter((e) => e.isDirectory() && e.name.startsWith("egzamin-"))
+            .map((e) => e.name)
+            .sort();
+    } catch {
+        return [];
+    }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = "https://stem-web-569q.vercel.app";
     const now = new Date();
 
@@ -46,5 +63,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7
     }));
 
-    return [...staticPages, ...coursePages, ...lessonPages, ...projectPages];
+    // Exam dashboard pages (egzamin-XX-YYY) + 4 stage pages each
+    const examSlugs = await discoverExamSlugs();
+    const examPages: MetadataRoute.Sitemap = examSlugs.flatMap((slug) => {
+        const base = `${baseUrl}/kursy/inf-03/${slug}`;
+        return [
+            { url: base, lastModified: now, changeFrequency: "monthly" as const, priority: 0.7 },
+            ...EXAM_STEPS.map((step) => ({
+                url: `${base}/${step}`,
+                lastModified: now,
+                changeFrequency: "monthly" as const,
+                priority: 0.6
+            }))
+        ];
+    });
+
+    return [...staticPages, ...coursePages, ...lessonPages, ...projectPages, ...examPages];
 }
