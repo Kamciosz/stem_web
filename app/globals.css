@@ -6171,3 +6171,79 @@ a.lesson-nav-link:hover {
     background: rgba(220, 38, 38, 0.3);
     border-color: rgba(220, 38, 38, 0.6);
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   ProgressBadges (gamification)
+   ───────────────────────────────────────────────────────────── */
+.progress-badges {
+    margin-top: clamp(32px, 4vw, 48px);
+    padding: 1.2em 1.4em;
+    background: rgba(13, 10, 20, 0.4);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    border-radius: 10px;
+}
+.progress-badges-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.6em;
+    margin-bottom: 1em;
+}
+.progress-badges-header h2 {
+    font-family: var(--font-space-grotesk), sans-serif;
+    font-size: 1.05rem;
+    color: #F5F3FF;
+    margin: 0;
+    font-weight: 600;
+}
+.progress-badges-count {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.78rem;
+    color: #ccc3d8;
+}
+.progress-badges-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+    gap: 0.6em;
+}
+.progress-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4em;
+    padding: 1em 0.8em;
+    background: rgba(13, 10, 20, 0.5);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    border-radius: 8px;
+    transition: transform 0.2s, border-color 0.2s;
+}
+.progress-badge.is-earned {
+    border-color: rgba(167, 139, 250, 0.5);
+    background: rgba(124, 58, 237, 0.08);
+}
+.progress-badge.is-earned:hover {
+    transform: translateY(-2px);
+}
+.progress-badge.is-locked {
+    opacity: 0.5;
+}
+.progress-badge-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+.progress-badge-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #F5F3FF;
+}
+.progress-badge-desc {
+    font-size: 0.75rem;
+    color: #ccc3d8;
+    line-height: 1.3;
+}
