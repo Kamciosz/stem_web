@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getExamIndex } from "@/lib/exam-index";
 import { ExamGrid } from "@/components/courses/examflow/ExamGrid";
 import { RecentlyVisited } from "@/components/courses/examflow/RecentlyVisited";
+import { RandomExamButton } from "@/components/courses/examflow/RandomExamButton";
 
 export const dynamic = "force-static";
 
@@ -36,6 +37,12 @@ export default function EgzaminyPage() {
                         kontrola. Status Twojego progresu zapisywany jest lokalnie.
                     </p>
                 </header>
+                <div className="egzaminy-toolbar">
+                    <RandomExamButton entries={entries} />
+                    <span className="egzaminy-toolbar-count">
+                        {entries.length} arkuszy w bazie
+                    </span>
+                </div>
                 <ExamGrid entries={entries} />
                 <RecentlyVisited />
             </div>

@@ -6525,3 +6525,46 @@ a.lesson-nav-link:hover {
     color: #4ADE80;
     grid-column: 2;
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   RandomExamButton + toolbar
+   ───────────────────────────────────────────────────────────── */
+.egzaminy-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.8em;
+    margin-bottom: 1.5em;
+    padding: 0.8em 1.2em;
+    background: rgba(13, 10, 20, 0.4);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    border-radius: 10px;
+}
+.random-exam-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.7em 1.4em;
+    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.1s;
+}
+.random-exam-btn:hover {
+    filter: brightness(1.1);
+}
+.random-exam-btn:active {
+    transform: translateY(1px);
+}
+.egzaminy-toolbar-count {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.78rem;
+    color: #ccc3d8;
+}
