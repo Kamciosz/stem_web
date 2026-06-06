@@ -31,6 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { url: `${baseUrl}/egzaminy`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
         { url: `${baseUrl}/feed.xml`, lastModified: now, changeFrequency: "daily", priority: 0.4 },
         { url: `${baseUrl}/administracja`, lastModified: now, changeFrequency: "monthly", priority: 0.2 },
+        { url: `${baseUrl}/notatki`, lastModified: now, changeFrequency: "monthly", priority: 0.3 },
         { url: `${baseUrl}/projekty`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
         { url: `${baseUrl}/zespol`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
         { url: `${baseUrl}/partnerzy`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },

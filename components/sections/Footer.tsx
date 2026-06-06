@@ -21,6 +21,9 @@ export function Footer() {
                             <Link href="/progres">Twoj progres</Link>
                         </li>
                         <li>
+                            <Link href="/notatki">Notatki</Link>
+                        </li>
+                        <li>
                             <Link href="/kursy/inf-03">Kurs INF.03</Link>
                         </li>
                     </ul>
