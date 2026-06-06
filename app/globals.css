@@ -5444,3 +5444,178 @@ a.lesson-nav-link:hover {
     font-family: var(--font-jetbrains-mono), monospace;
     color: #6d717c;
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   /progres
+   ───────────────────────────────────────────────────────────── */
+.progres-page {
+    min-height: 80vh;
+    padding-block: clamp(40px, 6vw, 80px);
+}
+.progres-container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-inline: clamp(16px, 3vw, 24px);
+}
+.progres-header {
+    margin-bottom: clamp(32px, 4vw, 56px);
+    text-align: center;
+}
+.progres-eyebrow {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #a78bfa;
+    margin-bottom: 0.5em;
+}
+.progres-title {
+    font-family: var(--font-space-grotesk), sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    color: #F5F3FF;
+    margin: 0 0 0.3em;
+    letter-spacing: -0.02em;
+}
+.progres-lead {
+    color: #ccc3d8;
+    max-width: 56ch;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.progres-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1em;
+    margin-bottom: clamp(28px, 4vw, 48px);
+}
+.progres-summary-card {
+    padding: 1.2em 1.4em;
+    background: rgba(13, 10, 20, 0.6);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+}
+.progres-summary-card.is-done {
+    border-color: rgba(74, 222, 128, 0.4);
+    background: rgba(74, 222, 128, 0.06);
+}
+.progres-summary-card.is-progress {
+    border-color: rgba(251, 191, 36, 0.4);
+    background: rgba(251, 191, 36, 0.06);
+}
+.progres-summary-value {
+    font-family: var(--font-space-grotesk), sans-serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #F5F3FF;
+    line-height: 1;
+}
+.progres-summary-total {
+    font-size: 1.1rem;
+    color: #6d717c;
+    margin-left: 0.2em;
+    font-weight: 500;
+}
+.progres-summary-label {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #ccc3d8;
+}
+
+.progres-session {
+    margin-bottom: clamp(28px, 4vw, 40px);
+}
+.progres-session-title {
+    font-family: var(--font-space-grotesk), sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #F5F3FF;
+    margin: 0 0 0.8em;
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.18);
+}
+.progres-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+    gap: 0.5em;
+}
+.progres-item {
+    border-radius: 8px;
+    transition: background 0.1s;
+}
+.progres-item.is-done {
+    background: rgba(74, 222, 128, 0.06);
+    border-left: 2px solid #4ADE80;
+}
+.progres-item.is-progress {
+    background: rgba(251, 191, 36, 0.04);
+    border-left: 2px solid #FBBF24;
+}
+.progres-item.is-none {
+    border-left: 2px solid transparent;
+}
+.progres-item:hover {
+    background: rgba(124, 58, 237, 0.12);
+}
+.progres-item-link {
+    display: flex;
+    align-items: center;
+    gap: 0.9em;
+    padding: 0.8em 1em;
+    color: #F5F3FF;
+    text-decoration: none;
+}
+.progres-item-num {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.85rem;
+    color: #a78bfa;
+    font-weight: 600;
+    flex: 0 0 2.5em;
+}
+.progres-item-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    min-width: 0;
+}
+.progres-item-body strong {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #F5F3FF;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.progres-item-meta {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.7rem;
+    color: #6d717c;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.progres-item-status {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.78rem;
+    color: #ccc3d8;
+    flex: 0 0 auto;
+    min-width: 5em;
+    text-align: right;
+}
+.progres-item.is-done .progres-item-status {
+    color: #4ADE80;
+}
+.progres-item.is-progress .progres-item-status {
+    color: #FBBF24;
+}
