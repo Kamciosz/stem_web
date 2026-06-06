@@ -92,6 +92,37 @@ export default async function ExamStagePage({ params }: StagePageProps) {
         <>
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "FAQPage",
+                        mainEntity: [
+                            {
+                                "@type": "Question",
+                                name: "Ile czasu trwa ten etap?",
+                                acceptedAnswer: { "@type": "Answer", text: step.minutes },
+                            },
+                            {
+                                "@type": "Question",
+                                name: "Jakie technologie sa wymagane?",
+                                acceptedAnswer: { "@type": "Answer", text: step.technologies.join(", ") },
+                            },
+                            {
+                                "@type": "Question",
+                                name: "Jaki jest prog zdania dla calego arkusza?",
+                                acceptedAnswer: { "@type": "Answer", text: examMeta.scoreTarget },
+                            },
+                            {
+                                "@type": "Question",
+                                name: "Z ktorej sesji pochodzi arkusz?",
+                                acceptedAnswer: { "@type": "Answer", text: examMeta.session },
+                            },
+                        ],
+                    }),
+                }}
+            />
             <article
                 className="lesson-page section-shell exam-lesson-page"
                 data-exam-slug={examMeta.lessonSlug}
