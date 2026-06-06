@@ -1,3 +1,59 @@
+import type { ExamMeta } from "@/lib/exams/inf-03-egzamin-01";
+import { examMeta as m01 } from "@/lib/exams/inf-03-egzamin-01";
+import { examMeta as m02 } from "@/lib/exams/inf-03-egzamin-01-czerwiec-2024";
+import { examMeta as m03 } from "@/lib/exams/inf-03-egzamin-01-czerwiec-2025";
+import { examMeta as m04 } from "@/lib/exams/inf-03-egzamin-01-styczen-2023";
+import { examMeta as m05 } from "@/lib/exams/inf-03-egzamin-01-styczen-2024";
+import { examMeta as m06 } from "@/lib/exams/inf-03-egzamin-01-styczen-2025";
+import { examMeta as m07 } from "@/lib/exams/inf-03-egzamin-02-czerwiec-2024";
+import { examMeta as m08 } from "@/lib/exams/inf-03-egzamin-02-czerwiec-2025";
+import { examMeta as m09 } from "@/lib/exams/inf-03-egzamin-02-styczen-2023";
+import { examMeta as m10 } from "@/lib/exams/inf-03-egzamin-02-styczen-2024";
+import { examMeta as m11 } from "@/lib/exams/inf-03-egzamin-02-styczen-2025";
+import { examMeta as m12 } from "@/lib/exams/inf-03-egzamin-03-czerwiec-2024";
+import { examMeta as m13 } from "@/lib/exams/inf-03-egzamin-03-czerwiec-2025";
+import { examMeta as m14 } from "@/lib/exams/inf-03-egzamin-03-styczen-2023";
+import { examMeta as m15 } from "@/lib/exams/inf-03-egzamin-03-styczen-2024";
+import { examMeta as m16 } from "@/lib/exams/inf-03-egzamin-03-styczen-2025";
+import { examMeta as m17 } from "@/lib/exams/inf-03-egzamin-04-czerwiec-2024";
+import { examMeta as m18 } from "@/lib/exams/inf-03-egzamin-04-czerwiec-2025";
+import { examMeta as m19 } from "@/lib/exams/inf-03-egzamin-04-styczen-2023";
+import { examMeta as m20 } from "@/lib/exams/inf-03-egzamin-04-styczen-2024";
+import { examMeta as m21 } from "@/lib/exams/inf-03-egzamin-04-styczen-2025";
+import { examMeta as m22 } from "@/lib/exams/inf-03-egzamin-05-czerwiec-2024";
+import { examMeta as m23 } from "@/lib/exams/inf-03-egzamin-05-czerwiec-2025";
+import { examMeta as m24 } from "@/lib/exams/inf-03-egzamin-05-styczen-2023";
+import { examMeta as m25 } from "@/lib/exams/inf-03-egzamin-05-styczen-2024";
+import { examMeta as m26 } from "@/lib/exams/inf-03-egzamin-05-styczen-2025";
+import { examMeta as m27 } from "@/lib/exams/inf-03-egzamin-06-czerwiec-2024";
+import { examMeta as m28 } from "@/lib/exams/inf-03-egzamin-06-czerwiec-2025";
+import { examMeta as m29 } from "@/lib/exams/inf-03-egzamin-06-styczen-2024";
+import { examMeta as m30 } from "@/lib/exams/inf-03-egzamin-06-styczen-2025";
+import { examMeta as m31 } from "@/lib/exams/inf-03-egzamin-07-czerwiec-2024";
+import { examMeta as m32 } from "@/lib/exams/inf-03-egzamin-07-czerwiec-2025";
+import { examMeta as m33 } from "@/lib/exams/inf-03-egzamin-07-styczen-2024";
+import { examMeta as m34 } from "@/lib/exams/inf-03-egzamin-07-styczen-2025";
+import { examMeta as m35 } from "@/lib/exams/inf-03-egzamin-08-czerwiec-2024";
+import { examMeta as m36 } from "@/lib/exams/inf-03-egzamin-08-czerwiec-2025";
+import { examMeta as m37 } from "@/lib/exams/inf-03-egzamin-08-styczen-2024";
+import { examMeta as m38 } from "@/lib/exams/inf-03-egzamin-08-styczen-2025";
+import { examMeta as m39 } from "@/lib/exams/inf-03-egzamin-09-czerwiec-2024";
+import { examMeta as m40 } from "@/lib/exams/inf-03-egzamin-09-czerwiec-2025";
+import { examMeta as m41 } from "@/lib/exams/inf-03-egzamin-09-styczen-2024";
+import { examMeta as m42 } from "@/lib/exams/inf-03-egzamin-09-styczen-2025";
+import { examMeta as m43 } from "@/lib/exams/inf-03-egzamin-10-czerwiec-2024";
+import { examMeta as m44 } from "@/lib/exams/inf-03-egzamin-10-czerwiec-2025";
+import { examMeta as m45 } from "@/lib/exams/inf-03-egzamin-10-styczen-2024";
+import { examMeta as m46 } from "@/lib/exams/inf-03-egzamin-10-styczen-2025";
+import { examMeta as m47 } from "@/lib/exams/inf-03-egzamin-11-czerwiec-2024";
+import { examMeta as m48 } from "@/lib/exams/inf-03-egzamin-11-czerwiec-2025";
+import { examMeta as m49 } from "@/lib/exams/inf-03-egzamin-11-styczen-2024";
+import { examMeta as m50 } from "@/lib/exams/inf-03-egzamin-11-styczen-2025";
+import { examMeta as m51 } from "@/lib/exams/inf-03-egzamin-12-czerwiec-2024";
+import { examMeta as m52 } from "@/lib/exams/inf-03-egzamin-12-czerwiec-2025";
+import { examMeta as m53 } from "@/lib/exams/inf-03-egzamin-12-styczen-2024";
+import { examMeta as m54 } from "@/lib/exams/inf-03-egzamin-12-styczen-2025";
+
 export type ExamIndexEntry = {
     slug: string;
     title: string;
@@ -10,73 +66,27 @@ export type ExamIndexEntry = {
     courseId: string;
 };
 
-import { promises as fs } from "fs";
-import path from "path";
-import { examMeta as m01 } from "@/lib/exams/inf-03-egzamin-01";
+const ALL = [
+    m01, m02, m03, m04, m05, m06, m07, m08, m09, m10,
+    m11, m12, m13, m14, m15, m16, m17, m18, m19, m20,
+    m21, m22, m23, m24, m25, m26, m27, m28, m29, m30,
+    m31, m32, m33, m34, m35, m36, m37, m38, m39, m40,
+    m41, m42, m43, m44, m45, m46, m47, m48, m49, m50,
+    m51, m52, m53, m54,
+] as unknown as ExamMeta[];
 
-const SESSIONS = [
-    "styczen-2023",
-    "czerwiec-2024",
-    "styczen-2024",
-    "czerwiec-2025",
-    "styczen-2025",
-    "styczen-2026",
-] as const;
-
-let _cache: ExamIndexEntry[] | null = null;
-
-export async function getExamIndex(): Promise<ExamIndexEntry[]> {
-    if (_cache) return _cache;
-
-    const baseUrl = "https://stem-web-569q.vercel.app";
-    const out: ExamIndexEntry[] = [];
-
-    // Prototyp 01-styczen-2026 z dedykowanego lib
-    out.push({
-        slug: m01.lessonSlug,
-        title: m01.title,
-        examId: m01.examId,
-        session: m01.session,
-        topic: m01.topic,
-        description: m01.description,
-        technologies: m01.technologies,
-        basePath: `/kursy/${m01.courseId}/${m01.lessonSlug}`,
-        courseId: m01.courseId,
-    });
-
-    // Reszta z plikow na dysku (unika koniecznosci importu 53 lib modules)
-    for (const num of Array.from({ length: 12 }, (_, i) => i + 1)) {
-        for (const sess of SESSIONS) {
-            if (num === 1 && sess === "styczen-2026") continue; // juz dodany
-            const slug = `egzamin-${String(num).padStart(2, "0")}-${sess}`;
-            const libPath = path.join(process.cwd(), "lib/exams", `inf-03-${slug}.ts`);
-            try {
-                await fs.access(libPath);
-            } catch {
-                continue;
-            }
-            try {
-                const mod = await import(`@/lib/exams/inf-03-${slug}`);
-                const meta = mod.examMeta;
-                out.push({
-                    slug: meta.lessonSlug,
-                    title: meta.title,
-                    examId: meta.examId,
-                    session: meta.session,
-                    topic: meta.topic,
-                    description: meta.description,
-                    technologies: meta.technologies,
-                    basePath: `/kursy/${meta.courseId}/${meta.lessonSlug}`,
-                    courseId: meta.courseId,
-                });
-            } catch {
-                /* skip */
-            }
-        }
-    }
-
-    _cache = out;
-    return out;
+export function getExamIndex(): ExamIndexEntry[] {
+    return ALL.map((m) => ({
+        slug: m.lessonSlug,
+        title: m.title,
+        examId: m.examId,
+        session: m.session,
+        topic: m.topic,
+        description: m.description,
+        technologies: m.technologies,
+        basePath: `/kursy/${m.courseId}/${m.lessonSlug}`,
+        courseId: m.courseId,
+    }));
 }
 
 export function searchExams(entries: ExamIndexEntry[], q: string, limit = 20): ExamIndexEntry[] {
