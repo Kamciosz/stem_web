@@ -1692,3 +1692,64 @@
         position: static;
     }
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   StepNotes
+   ───────────────────────────────────────────────────────────── */
+.exam-flow-aside .step-notes {
+    margin-top: 0;
+    padding: 0.8em 1em;
+    background: rgba(13, 10, 20, 0.5);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    border-radius: 8px;
+}
+.exam-flow-aside .step-notes-title {
+    font-family: var(--ef-font-mono);
+    font-size: 0.7rem;
+    color: #a78bfa;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 0.4em;
+    font-weight: 600;
+}
+.exam-flow-aside .step-notes-hint {
+    color: #6d717c;
+    font-size: 0.7rem;
+    margin: 0 0 0.5em;
+    line-height: 1.3;
+}
+.exam-flow-aside .step-notes-textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.5em 0.7em;
+    background: rgba(13, 10, 20, 0.6);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    border-radius: 6px;
+    color: #F5F3FF;
+    font-family: inherit;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    resize: vertical;
+    transition: border-color 0.15s;
+}
+.exam-flow-aside .step-notes-textarea:focus {
+    outline: none;
+    border-color: rgba(139, 92, 246, 0.5);
+}
+.exam-flow-aside .step-notes-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.4em;
+    font-family: var(--ef-font-mono);
+    font-size: 0.7rem;
+    color: #6d717c;
+}
+.exam-flow-aside .step-notes-saved {
+    color: #4ADE80;
+}
+@media print {
+    .step-notes {
+        display: none !important;
+    }
+}

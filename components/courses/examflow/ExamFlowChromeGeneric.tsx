@@ -272,6 +272,8 @@ export function ExamFlowStageAsideGeneric({
                     )}
                 </div>
             </div>
+
+            <StepNotes examSlug={meta.lessonSlug} stepSlug={step.slug} />
         </aside>
     );
 }
