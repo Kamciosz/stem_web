@@ -1,0 +1,181 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1"
+      description="SELECT id, nazwa, zdjecie FROM gry;"
+      mistake="Blad skladni SQL."
+      code={`SELECT id, nazwa, zdjecie FROM gry;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - funkcja LEFT()"
+      description="SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;"
+      mistake="Zla liczba znakow."
+      code={SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - sortowanie z LIMIT"
+      description="SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;"
+      mistake="Brak DESC sortuje A-Z."
+      code={SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - INSERT nowego rekordu"
+      description="INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu sto"
+      mistake="Pomylenie kolejnosci kolumn."
+      code={INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu stoi opuszczone zamczysko, w którym znajduje się skarb strzeżony przez złowrogie demony i duchy','200','50','zamczysko.jpg');`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>
+## Schemat bazy
+
+```sql
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Baza danych: `smoki`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `parada`
+--
+
+CREATE TABLE IF NOT EXISTS `parada` (
+  `id` int(11) NOT NULL,
+  `rok` char(4) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+  `liczba_widzow` int(10) unsigned NOT NULL,
+  `atrakcje` varchar(50) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
+
+--
+-- Zrzut danych tabeli `parada`
+--
+
+INSERT INTO `parada` (`id`, `rok`, `liczba_widzow`, `atrakcje`) VALUES
+(1, '2025', 20025, 'piknik'),
+(2, '2021', 35542, 'piknik'),
+(3, '2000', 35000, 'widowisko plenerowe'),
+(4, '2001', 35542, 'widowisko plenerowe'),
+(5, '2002', 35000, 'widowisko plenerowe'),
+(6, '2003', 35542, 'widowisko plenerowe'),
+(7, '2004', 35520, 'widowisko plenerowe'),
+(8, '2005', 25542, 'widowisko plenerowe'),
+(9, '2006', 20525, 'piknik'),
+(10, '2007', 35552, 'piknik'),
+(11, '2008', 65000, 'widowisko plenerowe'),
+(12, '2010', 75822, 'widowisko plenerowe'),
+(13, '2011', 32560, 'widowisko plenerowe'),
+(14, '2012', 45242, 'widowisko plenerowe'),
+(15, '2013', 33320, 'widowisko plenerowe'),
+(16, '2014', 22242, 'widowisko plenerowe'),
+(17, '1990', 52525, 'piknik'),
+(18, '1991', 26552, 'piknik'),
+(19, '1992', 65025, 'widowisko plenerowe'),
+(20, '1993', 76522, 'widowisko plenerowe'),
+(21, '1994', 32554, 'piknik'),
+(22, '1995', 42542, 'widowisko plenerowe'),
+(23, '1996', 34120, 'widowisko plenerowe'),
+(24, '1997', 22252, 'widowisko plenerowe'),
+(25, '1981', 52425, 'piknik'),
+(26, '1982', 26352, 'piknik'),
+(27, '1983', 65065, 'widowisko plenerowe'),
+(28, '1984', 76422, 'widowisko plenerowe'),
+(29, '1985', 33554, 'piknik'),
+(30, '1986', 42562, 'widowisko plenerowe'),
+(31, '1988', 54120, 'widowisko plenerowe'),
+(32, '1989', 22652, 'widowisko plenerowe'),
+(33, '1971', 42425, 'piknik'),
+(34, '1972', 24352, 'piknik'),
+(35, '1973', 65465, 'widowisko plenerowe'),
+(36, '1974', 76442, 'widowisko plenerowe'),
+(37, '1965', 33553, 'piknik'),
+(38, '1966', 32562, 'widowisko plenerowe'),
+(39, '1964', 53120, 'piknik'),
+(40, '1959', 22352, 'widowisko plenerowe'),
+(41, '1951', 12425, 'piknik'),
+(42, '1952', 21352, 'piknik'),
+(43, '1943', 65165, 'piknik'),
+(44, '1944', 76412, 'widowisko plenerowe'),
+(45, '1945', 33551, 'piknik'),
+(46, '1936', 12562, 'widowisko plenerowe'),
+(47, '1934', 51120, 'piknik'),
+(48, '1939', 22152, 'widowisko plenerowe');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `smok`
+--
+
+CREATE TABLE IF NOT EXISTS `smok` (
+  `id` int(11) NOT NULL,
+  `nazwa` varchar(50) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL,
+  `dlugosc` int(10) unsigned NOT NULL,
+  `szerokosc` int(10) unsigned NOT NULL,
+  `pochodzenie` varchar(30) CHARACTER SET utf8 COLLATE utf8_polish_ci NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
+
+--
+-- Zrzut danych tabeli `smok`
+--
+
+INSERT INTO `smok` (`id`, `nazwa`, `dlugosc`, `szerokosc`, `pochodzenie`) VALUES
+(1, 'zielony metalik', 3, 2, 'Chiny'),
+(2, 'niebieski', 5, 2, 'Polska'),
+(3, 'czerwonooki', 10, 1, 'Polska'),
+(4, 'straszny', 5, 5, 'Japonia'),
+(5, 'Śnieżny', 4, 2, 'Polska'),
+(6, 'Skrzydlaty diabeł', 5, 1, 'Polska'),
+(7, 'Bajeczny', 4, 3, 'Polska'),
+(8, 'Skrzydlaty anioł', 6, 1, 'Polska'),
+(9, 'przedszkolny', 4, 2, 'Polska'),
+(10, 'Skrzydlaty Ranii', 8, 1, 'Polska'),
+(11, 'Cienki', 15, 2, 'Polska'),
+(12, 'Wielki skrzydlaty ', 6, 3, 'Polska'),
+(13, 'Nobik', 5, 3, 'Francja'),
+(14, 'Rafael zielony', 6, 2, 'Francja'),
+(15, 'Nowicjusz', 5, 3, 'Bułgaria'),
+(16, 'Rafael złoty', 7, 2, 'Francja'),
+(17, 'Antonio', 15, 3, 'Bułgaria'),
+(18, 'Luiza złota', 7, 2, 'Francja'),
+(19, 'Straszny potwór', 6, 3, 'Bułg
+```
+
+## Kwerendy z rozwiazania
+
+```sql
+Zapytanie 1: SELECT nazwa, dlugosc, szerokosc FROM smok WHERE pochodzenie = "Polska";
+Zapytanie 2: SELECT DISTINCT pochodzenie FROM smok ORDER BY pochodzenie;
+Zapytanie 3: SELECT rok, AVG(dlugosc) AS "Średnia długość" FROM parada JOIN udzial ON parada.id = id_parada JOIN smok ON id_smok = smok.id WHERE rok > 2005 GROUP BY rok;
+Zapytanie 4: ALTER TABLE parada ADD COLUMN lokalizacja VARCHAR(100);
+```

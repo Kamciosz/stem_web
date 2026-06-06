@@ -1,0 +1,239 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1"
+      description="SELECT id, nazwa, zdjecie FROM gry;"
+      mistake="Blad skladni SQL."
+      code={`SELECT id, nazwa, zdjecie FROM gry;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - funkcja LEFT()"
+      description="SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;"
+      mistake="Zla liczba znakow."
+      code={SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - sortowanie z LIMIT"
+      description="SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;"
+      mistake="Brak DESC sortuje A-Z."
+      code={SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - INSERT nowego rekordu"
+      description="INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu sto"
+      mistake="Pomylenie kolejnosci kolumn."
+      code={INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu stoi opuszczone zamczysko, w którym znajduje się skarb strzeżony przez złowrogie demony i duchy','200','50','zamczysko.jpg');`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>
+## Schemat bazy
+
+```sql
+-- phpMyAdmin SQL Dump
+-- version 4.9.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Czas generowania: 12 Cze 2021, 09:45
+-- Wersja serwera: 10.4.6-MariaDB
+-- Wersja PHP: 7.3.9
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Baza danych: `wykaz`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `miasta`
+--
+
+CREATE TABLE `miasta` (
+  `id` int(11) NOT NULL,
+  `id_wojewodztwa` int(11) NOT NULL DEFAULT 0,
+  `nazwa` varchar(250) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `miasta`
+--
+
+INSERT INTO `miasta` (`id`, `id_wojewodztwa`, `nazwa`) VALUES
+(1, 1, 'Bolesławiec'),
+(2, 1, 'Nowogrodziec'),
+(3, 1, 'Bielawa'),
+(4, 1, 'Dzierżoniów'),
+(5, 1, 'Pieszyce'),
+(6, 1, 'Piława Górna'),
+(7, 1, 'Niemcza'),
+(8, 1, 'Głogów'),
+(9, 1, 'Góra'),
+(10, 1, 'Wąsosz'),
+(11, 1, 'Jawor'),
+(12, 1, 'Bolków'),
+(13, 1, 'Karpacz'),
+(14, 1, 'Kowary'),
+(15, 1, 'Piechowice'),
+(16, 1, 'Szklarska Poręba'),
+(17, 1, 'Kamienna Góra'),
+(18, 1, 'Lubawka'),
+(19, 1, 'Duszniki-Zdrój'),
+(20, 1, 'Kłodzko'),
+(21, 1, 'Kudowa-Zdrój'),
+(22, 1, 'Nowa Ruda'),
+(23, 1, 'Polanica-Zdrój'),
+(24, 1, 'Bystrzyca Kłodzka'),
+(25, 1, 'Lądek-Zdrój'),
+(26, 1, 'Międzylesie'),
+(27, 1, 'Radków'),
+(28, 1, 'Stronie Śląskie'),
+(29, 1, 'Szczytna'),
+(30, 1, 'Chojnów'),
+(31, 1, 'Prochowice'),
+(32, 1, 'Lubań'),
+(33, 1, 'Świeradów-Zdrój'),
+(34, 1, 'Leśna'),
+(35, 1, 'Olszyna'),
+(36, 1, 'Lubin'),
+(37, 1, 'Ścinawa'),
+(38, 1, 'Gryfów Śląski'),
+(39, 1, 'Lubomierz'),
+(40, 1, 'Lwówek Śląski'),
+(41, 1, 'Mirsk'),
+(42, 1, 'Wleń'),
+(43, 1, 'Milicz'),
+(44, 1, 'Oleśnica'),
+(45, 1, 'Bierutów'),
+(46, 1, 'Międzybórz'),
+(47, 1, 'Syców'),
+(48, 1, 'Twardogóra'),
+(49, 1, 'Oława'),
+(50, 1, 'Jelcz-Laskowice'),
+(51, 1, 'Chocianów'),
+(52, 1, 'Polkowice'),
+(53, 1, 'Przemków'),
+(54, 1, 'Strzelin'),
+(55, 1, 'Wiązów'),
+(56, 1, 'Środa Śląska'),
+(57, 1, 'Świdnica'),
+(58, 1, 'Świebodzice'),
+(59, 1, 'Jaworzyna Śląska'),
+(60, 1, 'Strzegom'),
+(61, 1, 'Żarów'),
+(62, 1, 'Oborniki Śląskie'),
+(63, 1, 'Prusice'),
+(64, 1, 'Trzebnica'),
+(65, 1, 'Żmigród'),
+(66, 1, 'Boguszów-Gorce'),
+(67, 1, 'Jedlina-Zdrój'),
+(68, 1, 'Szczawno-Zdrój'),
+(69, 1, 'Głuszyca'),
+(70, 1, 'Mieroszów'),
+(71, 1, 'Brzeg Dolny'),
+(72, 1, 'Wołów'),
+(73, 1, 'Kąty Wrocławskie'),
+(74, 1, 'Sobótka'),
+(75, 1, 'Siechnice'),
+(76, 1, 'Bardo'),
+(77, 1, 'Ząbkowice Śląskie'),
+(78, 1, 'Ziębice'),
+(79, 1, 'Złoty Stok'),
+(80, 1, 'Zawidów'),
+(81, 1, 'Zgorzelec'),
+(82, 1, 'Bogatynia'),
+(83, 1, 'Pieńsk'),
+(84, 1, 'Węgliniec'),
+(85, 1, 'Wojcieszów'),
+(86, 1, 'Złotoryja'),
+(87, 1, 'Świerzawa'),
+(88, 1, 'Jelenia Góra'),
+(89, 1, 'Legnica'),
+(90, 1, 'Wrocław'),
+(91, 1, 'Wałbrzych'),
+(92, 2, 'Aleksandrów Kujawski'),
+(93, 2, 'Ciechocinek'),
+(94, 2, 'Nieszawa'),
+(95, 2, 'Brodnica'),
+(96, 2, 'Górzno'),
+(97, 2, 'Jabłonowo Pomorskie'),
+(98, 2, 'Koronowo'),
+(99, 2, 'Solec Kujawski'),
+(100, 2, 'Chełmno'),
+(101, 2, 'Golub-Dobrzyń'),
+(102, 2, 'Kowalewo Pomorskie'),
+(103, 2, 'Łasin'),
+(104, 2, 'Radzyń Chełmiński'),
+(105, 2, 'Inowrocław'),
+(106, 2, 'Gniewkowo'),
+(107, 2, 'Janikowo'),
+(108, 2, 'Kruszwica'),
+(109, 2, 'Pakość'),
+(110, 2, 'Lipno'),
+(111, 2, 'Dobrzyń nad Wisłą'),
+(112, 2, 'Skępe'),
+(113, 2, 'Mogilno'),
+(114, 2, 'Strzelno'),
+(115, 2, 'Kcynia'),
+(116, 2, 'Mrocza'),
+(117, 2, 'Nakło nad Notecią'),
+(118, 2, 'Szubin'),
+(119, 2, 'Radziejów'),
+(120, 2, 'Piotrków Kujawski'),
+(121, 2, 'Rypin'),
+(122, 2, 'Kamień Krajeński'),
+(123, 2, 'Sępólno Krajeńskie'),
+(124, 2, 'Więcbork'),
+(125, 2, 'Nowe'),
+(126, 2, 'Świecie'),
+(127, 2, 'Chełmża'),
+(128, 2, 'Tuchola'),
+(129, 2, 'Wąbrzeźno'),
+(130, 2, 'Kowal'),
+(131, 2, 'Brześć Kujawski'),
+(132, 2, 'Chodecz'),
+(133, 2, 'Izbica Kujawska'),
+(134, 2, 'Lubień Kujawski'),
+(135, 2, 
+```
+
+## Kwerendy z rozwiazania
+
+```sql
+Zapytanie 1: SELECT LOWER(nazwa) FROM wojewodztwa;
+Zapytanie 2: SELECT COUNT(nazwa) FROM miasta WHERE id_wojewodztwa = 1;
+Zapytanie 3: SELECT miasta.nazwa, wojewodztwa.nazwa FROM miasta JOIN wojewodztwa ON wojewodztwa.id = id_wojewodztwa WHERE miasta.nazwa LIKE "Lu%" ORDER BY miasta.nazwa;
+Zapytanie 4: SELECT wojewodztwa.nazwa, COUNT(miasta.nazwa) AS "Liczba miast" FROM wojewodztwa JOIN miasta ON wojewodztwa.id = miasta.id_wojewodztwa GROUP BY wojewodztwa.nazwa;
+```

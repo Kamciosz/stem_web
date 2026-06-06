@@ -1,0 +1,119 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1"
+      description="SELECT id, nazwa, zdjecie FROM gry;"
+      mistake="Blad skladni SQL."
+      code={`SELECT id, nazwa, zdjecie FROM gry;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - funkcja LEFT()"
+      description="SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;"
+      mistake="Zla liczba znakow."
+      code={SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - sortowanie z LIMIT"
+      description="SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;"
+      mistake="Brak DESC sortuje A-Z."
+      code={SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - INSERT nowego rekordu"
+      description="INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu sto"
+      mistake="Pomylenie kolejnosci kolumn."
+      code={INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu stoi opuszczone zamczysko, w którym znajduje się skarb strzeżony przez złowrogie demony i duchy','200','50','zamczysko.jpg');`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>
+## Schemat bazy
+
+```sql
+-- phpMyAdmin SQL Dump
+-- version 5.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Czas generowania: 27 Sie 2021, 18:45
+-- Wersja serwera: 10.4.11-MariaDB
+-- Wersja PHP: 7.4.2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Baza danych: `konkurs`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `nagrody`
+--
+
+CREATE TABLE `nagrody` (
+  `id_nagrody` int(11) NOT NULL,
+  `nazwa` varchar(25) COLLATE utf8mb4_polish_ci NOT NULL,
+  `opis` tinytext COLLATE utf8mb4_polish_ci NOT NULL,
+  `cena` decimal(19,2) DEFAULT NULL,
+  `ilosc_sztuk` int(11) NOT NULL,
+  `data_dodania` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+
+--
+-- Zrzut danych tabeli `nagrody`
+--
+
+INSERT INTO `nagrody` (`id_nagrody`, `nazwa`, `opis`, `cena`, `ilosc_sztuk`, `data_dodania`) VALUES
+(1, 'Laptop EXTRIME EDU', 'Laptop EXTRIME EDU został wyposażony w wydajny sześciordzeniowy procesor AMD Ryzen 7 4800H. Dlatego sprawdzi się on bardzo dobrze podczas normalnego korzystania, ale także jako narzędzie to rozgrywania emocjonujących rywalizacji w świecie gier.', '4599.00', 1, '2021-08-03'),
+(2, 'Konsola EDU PRO', 'MAŁA KONSOLA, DUŻA MOC. Używaj tylko z grami cyfrowymi - konsola nie odtwarza dysków fizycznych. EDU PRO to najmniejsza konsola w historii. Ta całkowicie cyfrowa konsola zachwyci Cię nie tylko swoją szybkością ale i wydajnością.', '1138.50', 3, '2021-08-19'),
+(3, 'Smartfon OKKO 10 PRO', 'OKKO 10 PRO 256 GB (CZARNY) Designerski smartfon w szklanej obudowie 3D, wyposażony w 16-rdzeniowy procesor Helio G90T, poczwórny aparat 128 Mpix, pełnoekranowy wyświetlacz AMOLED+ i moduł NFC.', '1828.00', 4, '2021-07-21'),
+(4, 'Smart watch LEARNING', 'LEARNING GTXX (ZŁOTY) Elegancki i ultrasmukły smartwatch z udoskonaloną baterią o zwiększonej wydajności, superszybkim procesorem Kirin A1 oraz bogatą gamą inteligentnych funkcji.', '1230.00', 2, '2021-07-22'),
+(5, 'Tablet SPORT Tab FFF 5G', 'DAJ SIĘ UWIEŚĆ DŹWIĘKOM I OBRAZOM SPORT Tab FFF 5G posiada niezwykle żywy 12,4-calowy ekran, który uwypukli każdy szczegół. Podwójne głośniki i dźwięk AKG zadbają o niesamowite kinowe doznania. ', '1673.00', 2, '2021-06-23'),
+(6, 'Słuchawki BIG 6 ', 'Słuchawki BIG 6 mają wszystko, czego potrzebujesz, by zanurzyć się w głębokim i bogatym dźwięku. Zaawansowane rozwiązania, takie jak dwudrożne głośniki, ulepszona transmisja głosu czy aktywna redukcja szumów.', '650.00', 4, '2021-08-21'),
+(7, 'Głośnik BIASS 3000', 'Bezprzewodowy głośnik multiroom (jasnoszary) inteligentny głośnik z dźwiękiem 360.', '460.00', 2, '2021-06-14'),
+(8, 'Pendrive ULTRA ', 'ULTRA USB 3.0 256GB pozwoli Ci mieć zawsze przy sobie ulubione zdjęcia i potrzebne dokumenty cyfrowe. Poręczny pendrive zmieści się w kieszeni i możesz doczepić go do kluczy.', '222.22', 1, '2021-08-08'),
+(9, 'Książka BESTSEL', 'Sofokles, Antygona – tragedia Sofoklesa z roku 442 p.n.e. Nazywana jest tragedią władzy i klasyfikowana jako chronologicznie ostatnia z cyklu trzech tragedii tebańskich opartych na mitach o tebańskim rodzie Labdakidów.', '12.10', 7, '2021-07-10'),
+(10, 'Długopis LINE', 'Długopis LINE 4 kolory - GRAWER Ikona marki LINE. Dedykowany dla osób, które zawsze noszą długopis przy sobie. Dołączono pudełko upominkowe. Dostarczany z opatentowanym wkładem SUPERinkFlow.', '13.75', 7, '2021-06-12'),
+(11, 'Piórnik szkolny', 'Piórnik szkolny z wyposażeniem MEGA GAME. Z przodu grafika z motywem gry. Dedykowany jest dla fana gier komputerowych. Piórnik idealnie pasuje do innych produktów z tej serii.', '173.00', 9, '2021-06-13'),
+(12, 'Komplet zeszytów', 'Zeszyty PAPIER PP cechują się wysoką jakością papieru, estetyką wykończenia, modną grafiką okładek i 
+```
+
+## Kwerendy z rozwiazania
+
+```sql
+Zapytanie 1: SELECT nazwa, opis, cena FROM nagrody ORDER BY RAND() LIMIT 5;
+Zapytanie 2: SELECT * FROM nagrody WHERE cena BETWEEN 100 AND 1000 AND ilosc_sztuk = 2; 
+Zapytanie 3: DELETE FROM nagrody WHERE cena IS NULL OR cena = 0;
+Zapytanie 4: SELECT nazwa, cena, data_dodania FROM nagrody WHERE data_dodania LIKE '2021-08-%' ORDER BY data_dodania ASC;
+```

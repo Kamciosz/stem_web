@@ -1,0 +1,173 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1"
+      description="SELECT id, nazwa, zdjecie FROM gry;"
+      mistake="Blad skladni SQL."
+      code={`SELECT id, nazwa, zdjecie FROM gry;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - funkcja LEFT()"
+      description="SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;"
+      mistake="Zla liczba znakow."
+      code={SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - sortowanie z LIMIT"
+      description="SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;"
+      mistake="Brak DESC sortuje A-Z."
+      code={SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - INSERT nowego rekordu"
+      description="INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu sto"
+      mistake="Pomylenie kolejnosci kolumn."
+      code={INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu stoi opuszczone zamczysko, w którym znajduje się skarb strzeżony przez złowrogie demony i duchy','200','50','zamczysko.jpg');`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>
+## Schemat bazy
+
+```sql
+-- phpMyAdmin SQL Dump
+-- version 5.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Czas generowania: 13 Cze 2020, 22:57
+-- Wersja serwera: 10.4.11-MariaDB
+-- Wersja PHP: 7.4.2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Baza danych: `zdobywcy`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `gory`
+--
+
+CREATE TABLE `gory` (
+  `id_gory` int(11) NOT NULL,
+  `pasmo` text COLLATE utf8_polish_ci NOT NULL,
+  `nazwa_gory` text COLLATE utf8_polish_ci NOT NULL,
+  `wysokosc` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `gory`
+--
+
+INSERT INTO `gory` (`id_gory`, `pasmo`, `nazwa_gory`, `wysokosc`) VALUES
+(1, 'Beskid Makowiecki', 'Mędralowa', 1169),
+(2, 'Beskid Makowiecki', 'Jałowiec', 1111),
+(3, 'Beskid Makowiecki', 'Czerniawa Sucha', 1062),
+(4, 'Beskid Makowiecki', 'Lachów Groń', 1045),
+(5, 'Beskid Makowiecki', 'Mała Mędralowa', 1042),
+(6, 'Beskid Makowiecki', 'Mędralowa Zachodnia', 1024),
+(7, 'Beskid Mały', 'Czupel', 934),
+(8, 'Beskid Mały', 'Łamana Skała (błędne: Madohora)', 929),
+(9, 'Beskid Mały', 'Leskowiec', 918),
+(10, 'Beskid Mały', 'Magurka Wilkowicka', 909),
+(11, 'Beskid Mały', 'Wielki Cisownik', 853),
+(12, 'Beskid Mały', 'Groniczki', 839),
+(13, 'Beskid Mały', 'Kiczera', 831),
+(14, 'Beskid Mały', 'Chrobacza Łąka', 830),
+(15, 'Beskid Mały', 'Gaiki', 808),
+(16, 'Beskid Mały', 'Żar', 761),
+(17, 'Beskid Mały', 'Bukowski Groń', 729),
+(18, 'Beskid Niski', 'Lackowa', 997),
+(19, 'Beskid Niski', 'Ostry Wierch', 938),
+(20, 'Beskid Niski', 'Biała Skała', 903),
+(21, 'Beskid Niski', 'Jaworzyna Konieczniańska', 881),
+(22, 'Beskid Niski', 'Jaworzynka', 869),
+(23, 'Beskid Niski', 'Kamień nad Jaśliskami', 857),
+(24, 'Beskid Niski', 'Wielki Bukowiec (Pasika)', 848),
+(25, 'Beskid Niski', 'Kozie Żebro', 847),
+(26, 'Beskid Niski', 'Wątkowa', 846),
+(27, 'Beskid Sądecki', 'Radziejowa', 1262),
+(28, 'Beskid Sądecki', 'Złomisty Wierch', 1226),
+(29, 'Beskid Sądecki', 'Mała Radziejowa', 1207),
+(30, 'Beskid Sądecki', 'Wielka Przehyba', 1191),
+(31, 'Beskid Sądecki', 'Wielki Rogacz', 1182),
+(32, 'Beskid Sądecki', 'Przehyba', 1175),
+(33, 'Beskid Sądecki', 'Skałka', 1163),
+(34, 'Beskid Sądecki', 'Mały Rogacz', 1162),
+(35, 'Beskid Sądecki', 'Jasiennik', 1128),
+(36, 'Beskid Sądecki', 'Czeremcha', 1124),
+(37, 'Beskid Sądecki', 'Zgrzypy', 1120),
+(38, 'Beskid Sądecki', 'Jaworzyna Krynicka', 1114),
+(39, 'Beskid Sądecki', 'Wielka Bukowa', 1104),
+(40, 'Beskid Śląski', 'Skrzyczne', 1257),
+(41, 'Beskid Śląski', 'Barania Góra', 1220),
+(42, 'Beskid Śląski', 'Małe Skrzyczne', 1211),
+(43, 'Beskid Śląski', 'Kopa Skrzyczeńska', 1189),
+(44, 'Beskid Śląski', 'Zielony Kopiec', 1152),
+(45, 'Beskid Śląski', 'Malinowska Skała', 1152),
+(46, 'Beskid Śląski', 'Magurka Wiślańska', 1140),
+(47, 'Beskid Śląski', 'Klimczok', 1117),
+(48, 'Beskid Śląski', 'Malinów', 1114),
+(49, 'Beskid Śląski', 'Magura', 1109),
+(50, 'Beskid Śląski', 'Magurka Radziechowska', 1091),
+(51, 'Beskid Śląski', 'Trzy Kopce', 1081),
+(52, 'Beskid Śląski', 'Cebula', 1035),
+(53, 'Beskid Śląski', 'Stołów', 1035),
+(54, 'Beskid Śląski', 'Glinne', 1034),
+(55, 'Beskid Śląski', 'Szyndzielnia', 1028),
+(56, 'Beskid Śląski', 'Przysłop', 1028),
+(57, 'Beskid Śląski', 'Kościelec', 1022),
+(58, 'Beskid Śląski', 'Skałka', 1020),
+(59, 'Beskid Śląski', 'Murońka', 1021),
+(60, 'Beskid Śląski', 'Przypór', 1008),
+(61, 'Beskid Wyspowy', 'Mogielica', 1170),
+(62, 'Beskid Wyspowy', 'Ćwilin', 1072),
+(63, 'Beskid Wyspowy', 'Jasień', 1062),
+(64, 'Beskid Wyspowy', 'Modyń', 1029),
+(65, 'Beskid Wyspowy', 'Luboń Wielki', 1022),
+(66, 'Beskid Wyspowy', 'Krzystonów', 1012),
+(67, 'Beskid Wyspowy', 'Śnieżnica', 1006),
+(68, 'Beskid Wyspowy', '
+```
+
+## Kwerendy z rozwiazania
+
+```sql
+Zapytanie 1: SELECT pasmo, nazwa_gory, wysokosc FROM gory ORDER BY wysokosc DESC LIMIT 10;
+Zapytanie 2: SELECT nazwisko, imie, funkcja, email FROM osoby;
+Zapytanie 3: INSERT INTO osiagniecia VALUES (NULL, 182, 4, "2024-06-08");
+Zapytanie 4: INSERT INTO osoby VALUES (NULL, 'M.', 'Miłosz', 'uczestnik', 'm.milosz@zdobywcyxyz.pl'); 
+```

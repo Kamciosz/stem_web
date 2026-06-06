@@ -1,0 +1,148 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1"
+      description="SELECT id, nazwa, zdjecie FROM gry;"
+      mistake="Blad skladni SQL."
+      code={`SELECT id, nazwa, zdjecie FROM gry;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - funkcja LEFT()"
+      description="SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;"
+      mistake="Zla liczba znakow."
+      code={SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - sortowanie z LIMIT"
+      description="SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;"
+      mistake="Brak DESC sortuje A-Z."
+      code={SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - INSERT nowego rekordu"
+      description="INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu sto"
+      mistake="Pomylenie kolejnosci kolumn."
+      code={INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu stoi opuszczone zamczysko, w którym znajduje się skarb strzeżony przez złowrogie demony i duchy','200','50','zamczysko.jpg');`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>
+## Schemat bazy
+
+```sql
+-- phpMyAdmin SQL Dump
+-- version 5.0.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Czas generowania: 18 Sty 2022, 20:00
+-- Wersja serwera: 10.4.11-MariaDB
+-- Wersja PHP: 7.4.2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Baza danych: `piekarnia`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `wyroby`
+--
+
+CREATE TABLE `wyroby` (
+  `ID` int(11) NOT NULL,
+  `Rodzaj` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `Nazwa` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `Gramatura` float NOT NULL,
+  `Cena` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `wyroby`
+--
+
+INSERT INTO `wyroby` (`ID`, `Rodzaj`, `Nazwa`, `Gramatura`, `Cena`) VALUES
+(1, 'INNE', 'Bułka tarta', 0.5, 2),
+(2, 'INNE', 'Pieczywo okolicznościowe np. \"Wiejski Stół\"', 1, 35),
+(3, 'INNE', 'Paszteciki z kapustą i grzybami', 0.2, 4.65),
+(4, 'PIECZYWO DLA GASTRONOMII', 'Bułka do Hamburgera', 0.12, 1.8),
+(5, 'PIECZYWO DLA GASTRONOMII', 'Bułka do HotDoga', 0.1, 2.8),
+(6, 'PIECZYWO DLA GASTRONOMII', 'Bułka do zapiekanki 30cm', 0.2, 3.8),
+(7, 'PIECZYWO DLA GASTRONOMII', 'Bułka do zapiekanki 40cm', 0.25, 4.8),
+(8, 'PIECZYWO DLA GASTRONOMII', 'Bułka do zapiekanki 50cm', 0.3, 5.8),
+(9, 'PIECZYWO MIESZANE', 'Chleb baltonowski', 0.6, 3.45),
+(10, 'PIECZYWO MIESZANE', 'Chleb duży wiejski', 1, 5.05),
+(11, 'PIECZYWO MIESZANE', 'Chleb baltonowski krojony', 0.6, 3.45),
+(12, 'PIECZYWO MIESZANE', 'Chleb z soją i słonecznikiem', 0.5, 3.05),
+(13, 'PIECZYWO MIESZANE', 'Chleb wieloziarnisty \"Słońce\"', 0.4, 2.65),
+(14, 'PIECZYWO MIESZANE', 'Chleb razowy 4 ziarna', 0.5, 3.05),
+(15, 'PIECZYWO MIESZANE', 'Chleb mieszany 4 ziarna', 0.6, 3.45),
+(16, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Chleb oliwski', 0.5, 3.05),
+(17, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Chleb oliwski krojony', 0.5, 3.05),
+(18, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Chleb oliwski foremkowy', 0.5, 3.05),
+(19, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Chleb wiejski', 0.6, 3.45),
+(20, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Chleb wiejski duży', 1, 5.05),
+(21, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Chleb rozmaitości', 0.5, 3.05),
+(22, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Chleb oliwski z makiem', 0.5, 3.05),
+(23, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Chleb oliwski z sezamem', 0.5, 3.05),
+(24, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Chleb litewski', 0.5, 3.05),
+(25, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Chleb marmurkowy', 0.5, 3.05),
+(26, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Bułka razowa', 0.1, 1.45),
+(27, 'PIECZYWO MIESZANE (PSZENNO-ŻYTNIE)', 'Bułka obfitości', 0.5, 3.05),
+(28, 'PIECZYWO PÓŁCUKIERNICZE I FIRMOWE', 'Bułka nadziewana i Pączek', 0.08, 1.37),
+(29, 'PIECZYWO PÓŁCUKIERNICZE I FIRMOWE', 'Bułka turecka \"Żulik\"', 0.2, 1.85),
+(30, 'PIECZYWO PÓŁCUKIERNICZE I FIRMOWE', 'Rogalik ECO z serem i oregano', 0.07, 1.33),
+(31, 'PIECZYWO PÓŁCUKIERNICZE I FIRMOWE', 'Bulka PIZZA', 0.1, 1.45),
+(32, 'PIECZYWO PÓŁCUKIERNICZE I FIRMOWE', 'Rogalik z kapustą i grzybami', 0.12, 1.53),
+(33, 'PIECZYWO PÓŁCUKIERNICZE I FIRMOWE', 'Zapiekanka z pieczarkami i serem', 0.12, 1.53),
+(34, 'PIECZYWO PÓŁCUKIERNICZE I FIRMOWE', 'Bułka włoska CIABATTA', 0.06, 1.29),
+(35, 'PIECZYWO PÓŁCUKIERNICZE I FIRMOWE', 'Chleb ORKISZOWY', 0.3, 2.25),
+(36, 'PIECZYWO PSZENNE (BUŁKOWE)', 'Chleb pszenny', 0.4, 2.65),
+(37, 'PIECZYWO PSZENNE (BUŁKOWE)', 'Bułka mini', 0.03, 1.17),
+(38, 'PIECZYWO PSZENNE (BUŁKOWE)', 'Bułka paryska', 0.4, 2.65),
+(39, 'PIECZYWO PSZENNE (BUŁKOWE)', 'Bułka szwedka', 0.05, 1.25),
+(40, 'PIECZYWO PSZENNE (BUŁKOWE)', 'Bułka wrocławska', 0.05, 1.25),
+(41, 'PIECZYWO PSZENNE (BUŁKOWE)', 'Bułka kajzerka', 0.05, 1.25),
+(42, 'PIECZYWO PSZE
+```
+
+## Kwerendy z rozwiazania
+
+```sql
+Zapytanie 1: SELECT Rodzaj, Nazwa, Gramatura, Cena FROM wyroby WHERE Rodzaj = "INNE";
+Zapytanie 2: SELECT DISTINCT Rodzaj FROM wyroby ORDER BY Rodzaj DESC;
+Zapytanie 3: SELECT ID, Nazwa FROM wyroby WHERE Nazwa LIKE '%Chałka%';
+Zapytanie 4: SELECT Rodzaj, ROUND(AVG(Cena), 2) AS "Średnia_cena" FROM wyroby GROUP BY Rodzaj;
+```

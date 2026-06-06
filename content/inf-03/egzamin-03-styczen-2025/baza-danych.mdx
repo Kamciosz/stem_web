@@ -1,0 +1,175 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1"
+      description="SELECT id, nazwa, zdjecie FROM gry;"
+      mistake="Blad skladni SQL."
+      code={`SELECT id, nazwa, zdjecie FROM gry;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - funkcja LEFT()"
+      description="SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;"
+      mistake="Zla liczba znakow."
+      code={SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - sortowanie z LIMIT"
+      description="SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;"
+      mistake="Brak DESC sortuje A-Z."
+      code={SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - INSERT nowego rekordu"
+      description="INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu sto"
+      mistake="Pomylenie kolejnosci kolumn."
+      code={INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu stoi opuszczone zamczysko, w którym znajduje się skarb strzeżony przez złowrogie demony i duchy','200','50','zamczysko.jpg');`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>
+## Schemat bazy
+
+```sql
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Czas generowania: 09 Gru 2021, 13:44
+-- Wersja serwera: 10.4.22-MariaDB
+-- Wersja PHP: 7.3.33
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Baza danych: `mysql`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `imieniny`
+--
+
+CREATE TABLE `imieniny` (
+  `ID` int(11) NOT NULL,
+  `data` varchar(5) NOT NULL,
+  `imiona` varchar(34) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Zrzut danych tabeli `imieniny`
+--
+
+INSERT INTO `imieniny` (`ID`, `data`, `imiona`) VALUES
+(1, '01-01', 'Mieszka, Mieczysława, Marii'),
+(2, '01-02', 'Izydora, Bazylego, Grzegorza'),
+(3, '01-03', 'Arlety, Genowefy, Danuty'),
+(4, '01-04', 'Tytusa, Anieli, Eugeniusza'),
+(5, '01-05', 'Hanny, Szymona, Edwarda'),
+(6, '01-06', 'Kacpra, Melchiora, Baltazara'),
+(7, '01-07', 'Juliana, Lucjana, Rajmunda'),
+(8, '01-08', 'Seweryna, Mścisława, Juliusza'),
+(9, '01-09', 'Marceliny, Marianny, Juliana'),
+(10, '01-10', 'Wilhelma, Dobrosława, Danuty'),
+(11, '01-11', 'Honoraty, Teodozjusza, Matyldy'),
+(12, '01-12', 'Grety, Arkadiusza, Rajmunda'),
+(13, '01-13', 'Bogumiły, Weroniki, Hilarego'),
+(14, '01-14', 'Feliksa, Domosława, Niny'),
+(15, '01-15', 'Pawła, Arnolda, Izydora'),
+(16, '01-16', 'Marcelego, Włodzimierza, Waldemara'),
+(17, '01-17', 'Antoniego, Rościsława, Jana'),
+(18, '01-18', 'Piotra, Małgorzaty'),
+(19, '01-19', 'Henryka, Mariusza, Marty'),
+(20, '01-20', 'Fabiana, Sebastiana'),
+(21, '01-21', 'Agnieszki, Jarosława'),
+(22, '01-22', 'Anastazego, Wincentego'),
+(23, '01-23', 'Ildefonsa, Rajmunda'),
+(24, '01-24', 'Felicji, Franciszka, Rafała'),
+(25, '01-25', 'Pawła, Miłosza, Elwiry'),
+(26, '01-26', 'Tymoteusza, Michała, Tytusa'),
+(27, '01-27', 'Przybysława, Anieli, Jerzego'),
+(28, '01-28', 'Walerego, Radomira, Tomasza'),
+(29, '01-29', 'Zdzisława, Franciszka, Józefa'),
+(30, '01-30', 'Macieja, Martyny, Teofila'),
+(31, '01-31', 'Marceli, Ludwiki, Jana'),
+(32, '02-01', 'Brygidy, Ignacego, Seweryna'),
+(33, '02-02', 'Marii, Miłosława'),
+(34, '02-03', 'Błażeja, Oskara'),
+(35, '02-04', 'Andrzeja, Weroniki, Joanny'),
+(36, '02-05', 'Agaty, Adelajdy'),
+(37, '02-06', 'Doroty, Bogdana, Pawła'),
+(38, '02-07', 'Ryszarda, Teodora, Romana'),
+(39, '02-08', 'Hieronima, Sebastiana, Ireny'),
+(40, '02-09', 'Apolonii, Eryki, Cyryla'),
+(41, '02-10', 'Elwiry, Jacka, Scholastyki'),
+(42, '02-11', 'Lucjana, Olgierda'),
+(43, '02-12', 'Eulalii, Radosława, Modesta'),
+(44, '02-13', 'Grzegorza, Katarzyny'),
+(45, '02-14', 'Cyryla, Metodego, Walentego'),
+(46, '02-15', 'Jowity, Faustyna, Zygfryda'),
+(47, '02-16', 'Danuty, Julianny, Daniela'),
+(48, '02-17', 'Aleksego, Zbigniewa, Łukasza'),
+(49, '02-18', 'Szymona, Konstancji, Flawiana'),
+(50, '02-19', 'Arnolda, Konrada, Marcelego'),
+(51, '02-20', 'Leona, Ludomira, Zenobiusza'),
+(52, '02-21', 'Eleonory, Fortunata, Roberta'),
+(53, '02-22', 'Marty, Małgorzaty, Piotra'),
+(54, '02-23', 'Romany, Damiana, Polikarpa'),
+(55, '02-24', 'Macieja, Bogusza, Sergiusza'),
+(56, '02-25', 'Wiktora, Cezarego'),
+(57, '02-26', 'Mirosława, Aleksandra'),
+(58, '02-27', 'Gabriela, Anastazji'),
+(59, '02-28', 'Romana, Ludomira, Lecha'),
+(60, '02-29', 'Lecha, Lutosława'),
+(61, '03-01', 'Antoniny, Radosława, Dawida'),
+(62, '03-02', 'Heleny, Halszki, Pawła'),
+(63, '03-03', 'Maryny, Kunegundy, Tycjana'),
+(64, '03-04', 'Lucji, Kazimierza, Eugeniusza'),
+(65, '03-05', 'Adriana, Fryderyka, Teofila'),
+(66, '03-06', 'Róży, Jordana, Agnieszki'),
+(67, '03-07', 'Tomasza, Perpetuy, Felicyty'),
+(68, '03-08', 'Beaty, Wincentego, Jana'),
+(69, '03-09', 'Franciszki, Brunona'),
+(70, '03-10', 'Cypriana, Marcela, Aleksandra'),
+(71, '03-11', 'Ludosława, Konstantyna, Benedykta'),
+(72, '03
+```
+
+## Kwerendy z rozwiazania
+
+```sql
+Zapytanie 1: SELECT data FROM imieniny WHERE imiona LIKE '%Karola%';
+Zapytanie 2: SELECT imiona FROM imieniny WHERE data = "05-04";
+Zapytanie 3: SELECT COUNT(data) FROM imieniny WHERE imiona LIKE '%mir%';
+Zapytanie 4: ALTER TABLE imieniny ADD COLUMN zyczenia VARCHAR(500);
+```

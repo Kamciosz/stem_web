@@ -1,0 +1,105 @@
+{/*
+  Etap 3 — CSS
+*/}
+
+<div className="exam-step-lead">
+  Cel: <strong>wygladac dokladnie jak makieta</strong>.
+  Ani ladniej, ani inaczej.
+</div>
+
+## CSS
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="CSS"
+      title="Styl CSS - zgodnosc z makieta"
+      description="Odtworzenie layoutu i kolorow."
+      mistake="Wlasny projekt zamiast odpowiedzi."
+      code={`body {{
+    margin: 0;
+}}
+
+* {{
+    font-family: 'Verdana';
+}}
+
+aside {{
+    width: 20%;
+    height: 610px;
+    float: left;
+}}
+
+img {{
+    width: 100%;
+    height: 610px;
+}}
+
+header,
+nav,
+footer {{
+    background-color: MediumPurple;
+    color: white;
+    width: 80%;
+    height: 50px;
+    text-align: center;
+    text-shadow: 4px 4px DimGray;
+    float: right;
+}}
+
+nav {{
+    padding-top: 10px;
+}}
+
+main {{
+    background-color: Thistle;
+    width: 80%;
+    height: 450px;
+    overflow: auto;
+    float: right;
+}}
+
+main > ul > li > button {{
+    float: right;
+    background-color: MediumPurple;
+    color: white;
+    height: 30px;
+    border: none;
+}}
+
+ul {{
+    margin: 40px auto;
+    width: 70%;
+    font-size: 25px;
+    border: 2px solid MediumPurple;
+    list-style: none;
+}}
+
+ul > li {{
+    padding: 10px;
+}}
+
+ul`}
+    />
+</ExamCodeGrid>
+
+## Co sprawdza egzaminator
+
+- Kolory tla i czcionek zgodne z poleceniem.
+- Layout: float/flex, szerokosci sekcji.
+- Overflow: auto/scroll gdzie wymagane.
+- Hover: zmiana koloru przy najechaniu.
+
+<ExamWarnings
+  items={[
+    { title: "Wlasny projekt", impact: "Punkty leca za zgodnosc z makieta.", check: "Otworz makiete obok." },
+    { title: "Brak overflow", impact: "Tresc wylewa sie.", check: "Sprawdz wysokosci blokow." }
+  ]}
+/>
+
+## Punkty za ten etap
+
+- ~10 pkt za uklad zgodny z makieta.
+
+<div className="exam-step-next">
+  Wyglada jak makieta? Idz do <strong>Kontroli</strong>.
+</div>

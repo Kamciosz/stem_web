@@ -4,7 +4,7 @@
 */}
 
 <div className="exam-step-lead">
-  Tu sie oblewa egzamin. `set_charset("utf8")` od razu po polaczeniu, cena calkowita liczona
+  Tu sie oblewa egzamin. `set_charset` od razu po polaczeniu, cena calkowita liczona
   w PHP (nie w SQL), dokladnie dwa losowe pojazdy i tabela srodkowa z `rowspan="2"`.
 </div>
 
@@ -18,13 +18,13 @@
     mistake="Brak charset — lokalnie dziala, na egzaminie polskie znaki sie rozsypuja."
     code={`<?php
 $conn = new mysqli("localhost", "root", "", "samochody");
-$conn->set_charset("utf8");`}
+$conn->set_charset;}
   />
 </ExamCodeGrid>
 
 ## Lewa sekcja — tabela alfa
 
-JOIN + petla. **Cena calkowita liczona w PHP**, nie w `SELECT`.
+JOIN + petla. **Cena calkowita liczona w PHP**, nie w SELECT.
 
 <ExamCodeGrid>
   <ExamCodeBlock
@@ -32,7 +32,7 @@ JOIN + petla. **Cena calkowita liczona w PHP**, nie w `SELECT`.
     title="Tabela alfa z JOIN i cena w PHP"
     description="Pojazdy alfa z kolorem, cena calkowita = cena + doplata."
     mistake="Cena w SELECT zamiast w petli — wymaganie niespelnione, tracisz punkty."
-    code={`$query = "SELECT marka, model, cena, nazwa, doplata
+    code={$query = "SELECT marka, model, cena, nazwa, doplata
           FROM pojazdy
           INNER JOIN kolory ON pojazdy.kolor = kolory.id
           WHERE model = 'alfa'";
@@ -51,14 +51,14 @@ while ($row = $result->fetch_assoc()) {
     echo "</tr>";
 }
 
-echo "</table>";`}
+echo "</table>";}
   />
 </ExamCodeGrid>
 
 ## Srodkowa sekcja — dwa losowe + rowspan
 
-Dwa losowe pojazdy z `ORDER BY RAND() LIMIT 2`. Kazdy wyswietlany z obrazkiem (`a1.jpg`, `a2.jpg`)
-i tabelka z `rowspan="2"`.
+Dwa losowe pojazdy z ORDER BY RAND() LIMIT 2. Kazdy wyswietlany z obrazkiem (a1.jpg, a2.jpg)
+i tabelka z rowspan="2".
 
 <ExamCodeGrid>
   <ExamCodeBlock
@@ -66,7 +66,7 @@ i tabelka z `rowspan="2"`.
     title="Losowanie i rowspan"
     description="Dwa auta, dwa obrazki, tabela z rowspan='2' na kolumnie ceny."
     mistake="Brak rowspan — uklad wizualnie podobny do makiety, ale wymaganie niespelnione."
-    code={`$query = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
+    code={$query = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
 $result = $conn->query($query);
 $nr = 1;
 
@@ -78,7 +78,7 @@ while ($row = $result->fetch_assoc()) {
     echo "<tr><td>Model: " . $row['model'] . "</td></tr>";
     echo "</table>";
     $nr++;
-}`}
+}}
   />
 </ExamCodeGrid>
 
@@ -90,7 +90,7 @@ while ($row = $result->fetch_assoc()) {
     title="Kontakt + a3.png + close"
     description="Telefon, obrazek a3.png, $conn->close()."
     mistake="Zla nazwa pliku obrazka albo brak close()."
-    code={`echo "<p>Telefon: 111 222 444</p>";
+    code={echo "<p>Telefon: 111 222 444</p>";
 echo "<img src='a3.png' alt='Kontakt'>";
 
 $conn->close();`}

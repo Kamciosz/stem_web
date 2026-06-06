@@ -1,0 +1,50 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1 - MIN/MAX agregacja"
+      description="SELECT MIN(priorytet) FROM notatki WHERE Osoby_id = 3;"
+      mistake="Blad skladni SQL."
+      code={`SELECT MIN(priorytet) FROM notatki WHERE Osoby_id = 3;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - filtrowanie LIKE"
+      description="SELECT nazwa, priorytet FROM notatki WHERE nazwa LIKE '%na%';"
+      mistake="Brak % w LIKE."
+      code={SELECT nazwa, priorytet FROM notatki WHERE nazwa LIKE '%na%';}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - JOIN dwoch tabel"
+      description="SELECT imie, nazwa FROM notatki JOIN osoby ON osoby.id = Osoby_id WHERE priorytet=5;"
+      mistake="JOIN bez ON daje iloczyn kartezjanski."
+      code={SELECT imie, nazwa FROM notatki JOIN osoby ON osoby.id = Osoby_id WHERE priorytet=5;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - JOIN z agregacja"
+      description="SELECT imie, COUNT(Osoby_id) FROM notatki JOIN osoby ON Osoby_id = osoby.id GROUP BY imie;"
+      mistake="Brak GROUP BY lub zla agregacja."
+      code={SELECT imie, COUNT(Osoby_id) FROM notatki JOIN osoby ON Osoby_id = osoby.id GROUP BY imie;`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>

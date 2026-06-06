@@ -1,0 +1,304 @@
+<ExamGuideShell>
+
+<ExamHero
+  kicker="INF.03 · Czerwiec 2025 · Arkusz 01"
+  title="Arkusz 01 — Gry komputerowe"
+  description="Ranking gier komputerowych — zadanie PHP+MySQL+CSS."
+  rule="SQL → PHP/HTML → CSS → Kontrola"
+  stats={[
+    { label: "Czas", value: "150 min" },
+    { label: "Technologie", value: "PHP, SQL, CSS" },
+    { label: "Cel", value: "Gry komputerowe" },
+    { label: "Próg", value: "~22/30 pkt" }
+  ]}
+/>
+
+<ExamQuickNav
+  items={[
+    { href: "#plan", label: "Plan" },
+    { href: "#materialy", label: "Materialy" },
+    { href: "#strategia", label: "Strategia" },
+    { href: "#bledy", label: "Bledy" },
+    { href: "#kod", label: "Kod" },
+    { href: "#punktacja", label: "Punktacja" },
+    { href: "#checklista", label: "Checklista" }
+  ]}
+/>
+
+<ExamSection
+  id="plan"
+  eyebrow="Plan"
+  title="Co trzeba zrobic"
+  lead="Arkusz wymaga bazy danych, strony PHP i CSS. Rozwijaj etapy po kolei."
+>
+  <ExamPlan
+    steps={[
+      {
+        title: "Baza danych",
+        summary: "Import danych, 4 zapytania SQL.",
+        points: "Import tabel, 4 zapytania SQL, zrzuty ekranu.",
+        mistake: "Brak relacji lub zla skladnia SQL.",
+        details: <div className="exam-copy">Sprawdz kazde zapytanie w phpMyAdmin przed wklejeniem do PHP.</div>
+      },
+      {
+        title: "PHP/HTML",
+        summary: "Polaczenie z baza, petle, formularze.",
+        points: "mysqli, set_charset, fetch_assoc, close().",
+        mistake: "Brak set_charset — polskie znaki sie rozsypia.",
+        details: <div className="exam-copy">Uzyj <code>new mysqli()</code> i od razu <code>set_charset</code>.</div>
+      },
+      {
+        title: "CSS",
+        summary: "Odtworzenie makiety z arkusza.",
+        points: "Zgodnosc kolorow, layout, hover, overflow.",
+        mistake: "Wlasny projekt zamiast odpowiedzi na arkusz.",
+        details: <div className="exam-copy">Kolory, wymiary, czcionki — wszystko z polecenia, nie z glowy.</div>
+      },
+      {
+        title: "Kontrola",
+        summary: "20 minut na weryfikacje.",
+        points: "Sprawdz obrazki, formularze, layout.",
+        mistake: "Oddanie bez odswiezenia strony.",
+        details: <div className="exam-copy">Otworz w przegladarce: import.png, kw1-4, strona glowna.</div>
+      }
+    ]}
+  />
+</ExamSection>
+
+<ExamSection
+  id="materialy"
+  eyebrow="Materialy"
+  title="Pliki z arkusza"
+  lead="Obrazki i pliki zrodlowe do pobrania z archiwum."
+>
+  <ExamMaterials
+    materials={[
+      { src: "/img/egzaminy/e01-placeholder.jpg", alt: "placeholder", title: "e01", caption: "plik zrodlowy" }
+    ]}
+    result={{ src: "/img/egzaminy/e01-rozwiazanie.webp", alt: "Makieta koncowa", title: "Makieta koncowa", caption: "do odtworzenia 1:1" }}
+  />
+</ExamSection>
+
+<ExamSection
+  id="strategia"
+  eyebrow="Strategia"
+  title="150 minut, kolejnosc"
+  lead="Najpierw dzialajace dane, potem wyglad."
+>
+  <ExamTimeline
+    steps={[
+      { time: "0–25 min", title: "SQL", body: "4 zapytania sprawdzone w bazie.", tag: "latwe punkty" },
+      { time: "25–90 min", title: "PHP i baza", body: "Polaczenie, petle, formularze.", tag: "tu sie oblewa" },
+      { time: "90–130 min", title: "CSS pod makiete", body: "Layout, kolory, hover, overflow.", tag: "dopiecie" },
+      { time: "130–150 min", title: "Kontrola", body: "Porownanie z makieta.", tag: "ostatnie punkty" }
+    ]}
+  />
+</ExamSection>
+
+<ExamSection
+  id="bledy"
+  eyebrow="Bledy"
+  title="Co najczesciej kosztuje punkty"
+  lead="Sprawdz przed oddaniem."
+>
+  <ExamWarnings
+    items={[
+      { title: 'Brak set_charset', impact: "Polskie znaki sie rozsypuja.", check: "PHP zaraz po new mysqli()." },
+      { title: "Sciezki obrazkow", impact: "Brak obrazkow na stronie.", check: "Obrazki w katalogu i w src." },
+      { title: "CSS niezgodny z makieta", impact: "Twoj projekt zamiast odpowiedzi.", check: "Kolory, layout, hover, overflow." }
+    ]}
+  />
+</ExamSection>
+
+<ExamSection
+  id="kod"
+  eyebrow="Kod"
+  title="Rozwijaj fragmenty na biezaco"
+  lead="Przeczytaj opis i blad, kod pokaz gdy chcesz porownac."
+>
+  <h3>SQL</h3>
+  <ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1"
+      description="SELECT id, nazwa, zdjecie FROM gry;"
+      mistake="Blad skladni SQL."
+      code={`SELECT id, nazwa, zdjecie FROM gry;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - funkcja LEFT()"
+      description="SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;"
+      mistake="Zla liczba znakow."
+      code={SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - sortowanie z LIMIT"
+      description="SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;"
+      mistake="Brak DESC sortuje A-Z."
+      code={SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - INSERT nowego rekordu"
+      description="INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu sto"
+      mistake="Pomylenie kolejnosci kolumn."
+      code={INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu stoi opuszczone zamczysko, w którym znajduje się skarb strzeżony przez złowrogie demony i duchy','200','50','zamczysko.jpg');}
+    />
+  </ExamCodeGrid>
+
+  <h3>PHP</h3>
+  <ExamCodeGrid>
+
+    <ExamCodeBlock
+      language="PHP"
+      title="Glowny plik PHP"
+      description="Polaczenie + skrypty PHP."
+      mistake="Brak set_charset - polskie znaki sie rozsypia."
+      code={<?php
+    $conn = new mysqli('localhost', 'root', '', 'gry');
+
+    // Skrypt #4
+    if (isset($_POST['dodaj'])) {{
+        $nazwa = trim($_POST['nazwa'] ?? '');
+        $opis = trim($_POST['opis'] ?? '');
+        $cena = trim($_POST['cena'] ?? '0');
+        $zdjecie = trim($_POST['zdjecie'] ?? '');
+
+        $stmt = $conn->prepare("INSERT INTO gry (nazwa, opis, punkty, cena, zdjecie) VALUES (?, ?, 0, ?, ?)");
+        $stmt->bind_param("ssss", $nazwa, $opis, $cena, $zdjecie);
+        $stmt->execute();
+        $stmt->close();
+    }}
+?>
+
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gry komputerowe</title>
+        <link rel="stylesheet" href="styl.css">
+    </head>
+    <body}
+    />
+  </ExamCodeGrid>
+
+  <h3>CSS</h3>
+  <ExamCodeGrid>
+    <ExamCodeBlock
+      language="CSS"
+      title="Styl CSS - zgodnosc z makieta"
+      description="Odtworzenie layoutu i kolorow."
+      mistake="Wlasny projekt zamiast odpowiedzi."
+      code={* {{
+    font-family: 'Garamond';
+    color: white;
+    margin: 0;
+}}
+
+header {{
+    background-color: Indigo;
+    text-align: center;
+    padding: 2px;
+}}
+
+#lewy,
+#prawy {{
+    background-color: Indigo;
+    height: 600px;
+}}
+
+main {{
+    background-color: black;
+    height: 600px;
+    overflow: scroll;
+}}
+
+@media (min-width: 801px) {{
+    #lewy,
+    #prawy {{
+        width: 20%;
+        float: left;
+    }}
+
+    main {{
+        width: 60%;
+        float: left;
+    }}
+
+    footer {{
+        clear: both;
+    }}
+}}
+
+footer {{
+    background-color: Indigo;
+    height: 150px;
+}}
+
+#lewy > ul > li > span.pkt {{
+    background-color: Tomato;
+    border-radius: 50%;
+    padding: 5px;
+}}
+
+ul > li {{
+    padding: 5px;
+}}
+
+main > .gra {{
+    float: left;
+    text-align: center;
+    padding: 3px;
+}}
+
+input {{
+    margin: 10px;`}
+    />
+  </ExamCodeGrid>
+</ExamSection>
+
+<ExamSection
+  id="punktacja"
+  eyebrow="Punktacja"
+  title="Co sprawdza egzaminator"
+  lead="Pokazuje priorytety."
+>
+  <ExamScoring
+    items={[
+      { area: "SQL", points: "~8 pkt", criterion: "Skladnia, aliasy, JOIN, ORDER BY/LIMIT." },
+      { area: "Polaczenie z baza", points: "~2 pkt", criterion: "mysqli, UTF-8, close()." },
+      { area: "PHP frontend", points: "~10 pkt", criterion: "Petle, formularze, dane." },
+      { area: "CSS", points: "~10 pkt", criterion: "Uklad zgodny z makieta." }
+    ]}
+  />
+</ExamSection>
+
+<ExamSection
+  id="checklista"
+  eyebrow="Checklista"
+  title="Przed oddaniem"
+  lead="Sprawdz konkretne wymagania."
+>
+  <ExamChecklist
+    items={[
+      { label: <>SQL: 4 zapytania dzialaja.</> },
+      { label: <>PHP laczy sie z baza danych.</> },
+      { label: <>Ustawiono UTF-8 przez <code>set_charset</code>.</> },
+      { label: <>Wszystkie obrazki wyswietlaja sie.</> },
+      { label: <>Layout zgodny z makieta z arkusza.</> },
+      { label: <>Wszystkie pliki w folderze.</> }
+    ]}
+  />
+</ExamSection>
+
+<div className="exam-verdict final">
+  <div className="exam-verdict-label">cel</div>
+  <div className="exam-copy">
+    Zgodnosc z poleceniem, nie kreatywnosc. Punkty sa za spelnienie wymagan.
+  </div>
+</div>
+
+</ExamGuideShell>

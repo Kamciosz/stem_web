@@ -1,0 +1,50 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1 - filtrowanie WHERE"
+      description="SELECT nazwisko, imie, klasa, data_wypozyczenia FROM uczniowie WHERE data_wypozyczenia > '2020-03-02"
+      mistake="Blad skladni SQL."
+      code={`SELECT nazwisko, imie, klasa, data_wypozyczenia FROM uczniowie WHERE data_wypozyczenia > '2020-03-02';}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - JOIN dwoch tabel"
+      description="SELECT nazwisko, imie, data_wypozyczenia, autor, kod FROM uczniowie INNER JOIN ksiazki ON uczniowie."
+      mistake="JOIN bez ON daje iloczyn kartezjanski."
+      code={SELECT nazwisko, imie, data_wypozyczenia, autor, kod FROM uczniowie INNER JOIN ksiazki ON uczniowie.id_ksiazki = ksiazki.id;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - DELETE rekordow"
+      description="DELETE FROM ksiazki WHERE autor = '0';"
+      mistake="Brak WHERE usuwa wszystkie."
+      code={DELETE FROM ksiazki WHERE autor = '0';}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - losowanie (RAND)"
+      description="SELECT autor, tytul, kod FROM ksiazki ORDER BY RAND() LIMIT 5;"
+      mistake="LIMIT PRZED RAND() - nie losuje."
+      code={SELECT autor, tytul, kod FROM ksiazki ORDER BY RAND() LIMIT 5;`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>

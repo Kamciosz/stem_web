@@ -1,0 +1,160 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1"
+      description="SELECT id, nazwa, zdjecie FROM gry;"
+      mistake="Blad skladni SQL."
+      code={`SELECT id, nazwa, zdjecie FROM gry;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - funkcja LEFT()"
+      description="SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;"
+      mistake="Zla liczba znakow."
+      code={SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - sortowanie z LIMIT"
+      description="SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;"
+      mistake="Brak DESC sortuje A-Z."
+      code={SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - INSERT nowego rekordu"
+      description="INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu sto"
+      mistake="Pomylenie kolejnosci kolumn."
+      code={INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu stoi opuszczone zamczysko, w którym znajduje się skarb strzeżony przez złowrogie demony i duchy','200','50','zamczysko.jpg');`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>
+## Schemat
+
+```sql
+-- phpMyAdmin SQL Dump
+-- version 5.1.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Czas generowania: 04 Maj 2022, 10:27
+-- Wersja serwera: 10.4.22-MariaDB
+-- Wersja PHP: 8.1.2
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Baza danych: `motory`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `wycieczki`
+--
+
+CREATE TABLE `wycieczki` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `zdjecia_id` int(10) UNSIGNED NOT NULL,
+  `nazwa` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `opis` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `poczatek` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `koniec` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Zrzut danych tabeli `wycieczki`
+--
+
+INSERT INTO `wycieczki` (`id`, `zdjecia_id`, `nazwa`, `opis`, `poczatek`, `koniec`) VALUES
+(1, 1, 'Pętla Bieszczadzka', 'Bieszczadzkie pętle – mała i duża, od lat są chętnie odwiedzane przez motocyklistów z całej Polski. Piękna, dzika przyroda, ślady burzliwej historii regionu i atmosfera spokoju, wciąż nieskażona turystycznym zgiełkiem. Jeśli brakuje ci emocji, połącz bieszczadzkie serpentyny z najbardziej krętą drogą w Polsce – przełęczą Przysłup leżącą w Górach Słonnych na drodze z Sanoka do Przemyśla.', 'Lesko', 'Lesko'),
+(2, 5, 'Szlak Orlich Gniazd', 'Szlak Orlich Gniazd leżący na Jurze Krakowsko-Częstochowskiej, to kolejne miejsce chętnie odwiedzane przez motocyklistów. Wszystko za sprawą urokliwych dróg, tajemniczych i pięknych średniowiecznych ruin zamków i niezrównanych pstrągów, hodowanych tutaj od XIX wieku. Najpiękniejsze odcinki dróg to 793 z janowa do Żarek, 791 z Ogrodzieńca do Olkusza i 773 z Sieniczna do Ojcowa.', 'Olkusz', 'Kraków'),
+(3, 4, 'Wokół Kotliny Kłodzkiej', 'Kotlina Kłodzka, ze swoją historią, kuchnią, zabytkami i pięknymi trasami, to wymarzone miejsce na długi motocyklowy weekend. Znajdziesz tutaj niezliczone atrakcje, mnóstwo miejsc do zdjęć i trasy tak piękne, że chciałoby się jeździć nimi bez końca. Dobrym pomysłem jest zrobienie pętli ze Złotego Stoku, przez Lądek Zdrój do Bystrzycy Kłodzkiej, następnie Autostradą Sudecką z Międzylesia do Dusznik-Zdroju i potem Drogą Stu Zakrętów z Kudowy-Zdroju do Radkowa.', 'Kłodzko', 'Radków'),
+(4, 4, 'Kubalonka i Salmopolska', 'Biegnąca u podnóża Baraniej Góry droga ze Szczyrku do Istebnej składa się z dwóch krętych odcinków – 942 ze Szczyrku do Wisły i 941 z Wisły do Istebnej. Każdy z nich daje mnóstwo emocji na ekscytujących zakrętach, choć często trzeba uważać na zalegający na poboczach żwir. Oprócz pięknych widoków, na uwagę zasługuje tutejsza kuchnia – warto zatrzymać się w jednej z lokalnych karczm i spróbować lokalnych przysmaków.', 'Szczyrk', 'Istebna'),
+(5, 3, 'Podnóże Tatr', 'Ta trasa motocyklowa oferuje chyba jedne z najpiękniejszych widoków, jakie można zobaczyć w Polsce. Niezrównane piękno Tatr podziwiać można w wielu miejscach, jednak najbardziej okazała panorama czeka na Polanie Głodówce. Warto rozpocząć podróż z Chochołowa – pięknej wsi z unikalnym układem zabudowy, i kontynuować przez Kiry do Zakopanego, następnie Drogą Oswalda Balzera w stronę Morskiego Oka. Jeśli wrażeń będzie mało, można objechać Tatry po słowackiej stronie.', 'Chochołów', 'Palenica Białczańska'),
+(6, 3, 'Przez Warmię i Mazury', 'Choć wybrać najpiękniejszą trasę Warmii i Mazur bardzo trudno, niezmiennie od lat urzeka nas droga 58 z Olsztynka do Pisza. Położona wśród jezior i lasów, wije się łagodnymi łukami, które pozwalają na płynną, niespieszną jazdę. To prawdziwy relaks, który warto sobie okrasić zwiedzaniem licznych atrakcji regionu – szczególnie leżących na północy mostów w Stańczykach, piram
+```
+
+## Kwerendy
+
+```sql
+
+-- motory.sql --
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Paź 10, 2024 at 09:20 AM
+-- Wersja serwera: 10.4.32-MariaDB
+-- Wersja PHP: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `motory`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `wycieczki`
+--
+
+CREATE TABLE `wycieczki` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `zdjecia_id` int(10) UNSIGNED NOT NULL,
+  `nazwa` varchar(50) DEFAULT NULL,
+  `opis` text DEFAULT NULL,
+  `poczatek` varchar(30) DEFAULT NULL,
+  `koniec` varchar(30) DEFAULT NULL,
+  `ocena` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `wycieczki`
+--
+
+INSERT INTO `wycieczki` (`id`, `zdjecia_id`, `nazwa`, `opis`, `poczatek`, `koniec`, `ocena`) VALUES
+(1, 1, 'Pętla Bieszczadzka', 'Bieszczadzkie pętle – mała i duża, od lat są chętnie odwiedzane przez motocyklistów z całej Polski. Piękna, dzika przyroda, ślady burzliwej historii regionu i atmosfera spokoju, wciąż nieskażona turystycznym zgiełkiem. Jeśli brakuje ci emocji, połącz bieszczadzkie serpentyny z najbardziej krętą drogą w Polsce – przełęczą Przysłup leżącą w Górach Słonnych na drodze z Sanoka do Przemyśla.', 'Lesko', 'Lesko', NULL),
+(2, 5, 'Szlak Orlich Gniazd', 'Szlak Orlich Gniazd leżący na Jurze Krakowsko-Częstochowskiej, to kolejne miejsce chętnie odwiedzane przez motocyklistów. Wszystko za sprawą urokliwych dróg, tajemniczych i pięknych średniowiecznych ruin zamków i niezrównanych pstrągów, hodowanych tutaj od XIX wieku. Najpiękniejsze odcinki dróg to 793 z janowa do Żarek, 791 z Ogrodzieńca do Olkusza i 773 z Sieniczna do Ojcowa.', 'Olkusz', 'Kraków', NULL),
+(3, 4, 'Wokół Kotliny Kłodzkiej', 'Kotlina Kłodzka, ze swoją historią, kuchnią, zabytkami i pięknymi trasami, to wymarzone miejsce na długi motocyklowy weekend. Znajdziesz tutaj niezliczone atrakcje, mnóstwo miejsc do zdjęć i trasy tak piękne, że chciałoby się jeździć nimi bez końca. Dobrym pomysłem jest zrobienie pętli ze Złotego Stoku, przez Lądek Zdrój do Bystrzycy Kłodzkiej, następnie Autostradą Sudecką z Międzylesia do Dusznik-Zdroju i potem Drogą Stu Zakrętów z Kudowy-Zdroju do Radkowa.', 'Kłodzko', 'Radków', NULL),
+(4, 4, 'Kubalonka i Salmopolska', 'Biegnąca u podnóża Baraniej Góry droga ze Szczyrku do Istebnej składa się z dwóch krętych odcinków – 942 ze Szczyrku do Wisły i 941 z Wisły do Istebnej. Każdy z nich daje mnóstwo emocji na ekscytujących zakrętach, choć często trzeba uważać na zalegający na poboczach żwir. Oprócz pięknych widoków, na uwagę zasługuje tutejsza kuchnia – warto zatrzymać się w jednej z lokalnych karczm i spróbować lokalnych przysmaków.', 'Szczyrk', 'Istebna', NULL),
+(5, 3, 'Podnóże Tatr', 'Ta trasa motocyklowa oferuje chyba jedne z najpiękniejszych widoków, jakie można zobaczyć w Polsce. Niezrównane piękno Tatr podziwiać można w wielu miejscach, jednak najbardziej okazała panorama czeka na Polanie Głodówce. Warto rozpocząć podróż z Chochołowa – pięknej wsi z unikalnym układem zabudowy, i kontynuować przez Kiry do Zakopanego, następnie Drogą Oswalda Balzera w stronę Morskiego Oka. Jeśli wrażeń będzie mało, można objechać Tatry po słowackiej stronie.', 'Chochołów', 'Palenica Białczańska', NULL),
+(6, 3, 'Przez Warmię i Mazury', 'Choć wybrać najpiękniejszą trasę Warmii i Mazur bardzo trudno, niezmiennie od lat urzeka nas droga 58 z Olsztynka do Pisza. Położona wśród jezior i lasów, wije się łagodnymi łukami, które pozwalają na płynną, niespieszną jazdę. To prawdziwy relaks, który warto sobie okrasić zwiedzaniem licznych atrakcji regionu – szczególnie leżących na północy mostów w Stańczykach, pirami
+```

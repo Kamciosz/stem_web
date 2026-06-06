@@ -50,7 +50,7 @@
       {
         title: "PHP",
         summary: "Połączenie, pętle, obliczenia, tabela.",
-        points: "mysqli, <code>set_charset(\"utf8\")</code>, cena całkowita w PHP, dwa losowe pojazdy.",
+        points: "mysqli, <code>set_charset</code>, cena całkowita w PHP, dwa losowe pojazdy.",
         mistake: "Cena policzona w SQL lub brak <code>rowspan=\"2\"</code>.",
         details: <div className="exam-copy">Jeśli polecenie wymaga <ExamTooltip word="rowspan">rowspan</ExamTooltip>, ma być atrybut w kodzie — nie podobny wygląd.</div>
       },
@@ -112,7 +112,7 @@
 >
   <ExamWarnings
     items={[
-      { title: "Brak set_charset(\"utf8\")", impact: "Polskie znaki się rozsypują.", check: "PHP, zaraz po new mysqli()." },
+      { title: "Brak set_charset", impact: "Polskie znaki się rozsypują.", check: "PHP, zaraz po new mysqli()." },
       { title: "Zły JOIN", impact: "Błędne lub zduplikowane wiersze.", check: "Zapytanie 3 i lewa sekcja PHP." },
       { title: "Cena policzona w SQL", impact: "Polecenie wymaga obliczenia w PHP.", check: "Pętla w lewej sekcji." },
       { title: "Brak rowspan=\"2\"", impact: "Tabela środkowa niezgodna z makietą.", check: "HTML w sekcji środkowej." },
@@ -140,36 +140,36 @@
 FROM pojazdy
 WHERE marka = 'BM'
 ORDER BY cena DESC
-LIMIT 15;`}
+LIMIT 15;}
     />
     <ExamCodeBlock
       language="SQL"
       title="Zapytanie 2 — średnia i max meta"
       description="Dwie agregacje z aliasami z polecenia."
       mistake="Złe aliasy lub brak WHERE."
-      code={`SELECT AVG(cena) AS 'Średnia cena', MAX(cena) AS 'Maksymalna cena'
+      code={SELECT AVG(cena) AS 'Średnia cena', MAX(cena) AS 'Maksymalna cena'
 FROM pojazdy
-WHERE model = 'meta';`}
+WHERE model = 'meta';}
     />
     <ExamCodeBlock
       language="SQL"
       title="Zapytanie 3 — alfa z kolorem"
       description="JOIN z warunkiem ON na kluczu obcym."
       mistake="JOIN bez ON daje cartesian product."
-      code={`SELECT marka, model, cena, nazwa, doplata
+      code={SELECT marka, model, cena, nazwa, doplata
 FROM pojazdy
 INNER JOIN kolory ON pojazdy.kolor = kolory.id
-WHERE model = 'alfa';`}
+WHERE model = 'alfa';}
     />
     <ExamCodeBlock
       language="SQL"
       title="Zapytanie 4 — dwa losowe"
       description="RAND() i LIMIT 2."
       mistake="LIMIT przed ORDER BY."
-      code={`SELECT marka, model, cena
+      code={SELECT marka, model, cena
 FROM pojazdy
 ORDER BY RAND()
-LIMIT 2;`}
+LIMIT 2;}
     />
   </ExamCodeGrid>
 
@@ -180,16 +180,16 @@ LIMIT 2;`}
       title="Połączenie z bazą"
       description="mysqli + charset od razu po połączeniu."
       mistake="Brak charset — lokalnie działa, na egzaminie nie."
-      code={`<?php
+      code={<?php
 $conn = new mysqli("localhost", "root", "", "samochody");
-$conn->set_charset("utf8");`}
+$conn->set_charset;}
     />
     <ExamCodeBlock
       language="PHP"
       title="Lewa sekcja — tabela alfa"
       description="JOIN, pętla, cena całkowita liczona w PHP."
       mistake="Cena w SELECT zamiast w pętli — wymaganie niespełnione."
-      code={`$query = "SELECT marka, model, cena, nazwa, doplata
+      code={$query = "SELECT marka, model, cena, nazwa, doplata
           FROM pojazdy
           INNER JOIN kolory ON pojazdy.kolor = kolory.id
           WHERE model = 'alfa'";
@@ -208,14 +208,14 @@ while ($row = $result->fetch_assoc()) {
     echo "</tr>";
 }
 
-echo "</table>";`}
+echo "</table>";}
     />
     <ExamCodeBlock
       language="PHP"
       title="Środek — losowanie i rowspan"
       description="Dwa auta, dwa obrazki, tabela z rowspan='2'."
       mistake="Brak rowspan — niespełnione wymaganie z makiety."
-      code={`$query = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
+      code={$query = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
 $result = $conn->query($query);
 $nr = 1;
 
@@ -227,17 +227,17 @@ while ($row = $result->fetch_assoc()) {
     echo "<tr><td>Model: " . $row['model'] . "</td></tr>";
     echo "</table>";
     $nr++;
-}`}
+}}
     />
     <ExamCodeBlock
       language="PHP"
       title="Prawa sekcja i zamknięcie"
       description="Kontakt, obrazek a3.png, close()."
       mistake="Zła nazwa pliku lub brak close()."
-      code={`echo "<p>Telefon: 111 222 444</p>";
+      code={echo "<p>Telefon: 111 222 444</p>";
 echo "<img src='a3.png' alt='Kontakt'>";
 
-$conn->close();`}
+$conn->close();}
     />
   </ExamCodeGrid>
 
@@ -248,7 +248,7 @@ $conn->close();`}
       title="Układ zgodny z makietą"
       description="Trzy kolumny, kolory z polecenia, hover, overflow."
       mistake="Brak overflow lub sekcje nie po 33.3%."
-      code={`* {
+      code={* {
     text-align: center;
     font-family: Helvetica, sans-serif;
 }
@@ -321,7 +321,7 @@ table, th, td {
     items={[
       { label: <>4 zapytania SQL działają.</> },
       { label: <>PHP łączy się z bazą <code>samochody</code>.</> },
-      { label: <>Ustawiono UTF-8 przez <code>set_charset("utf8")</code>.</> },
+      { label: <>Ustawiono UTF-8 przez <code>set_charset</code>.</> },
       { label: <>Cena całkowita liczona w PHP.</> },
       { label: <>Dokładnie 2 losowe pojazdy.</> },
       { label: <>Tabela używa <code>rowspan="2"</code>.</> },

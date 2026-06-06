@@ -1,0 +1,63 @@
+{/*
+  Etap 2 — HTML / PHP
+*/}
+
+<div className="exam-step-lead">
+  Tu sie oblewa egzamin. `set_charset` od razu po polaczeniu.
+</div>
+
+## Polaczenie z baza
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Polaczenie z baza"
+    description="mysqli + charset od razu."
+    mistake="Brak charset - polskie znaki sie rozsypia."
+    code={`<?php
+$conn = new mysqli("localhost", "root", "", "NAZWA_BAZY");
+$conn->set_charset;}
+  />
+
+    <ExamCodeBlock
+      language="PHP"
+      title="Glowny plik PHP"
+      description="Polaczenie + skrypty PHP."
+      mistake="Brak set_charset - polskie znaki sie rozsypia."
+      code={<?php
+    $conn = new mysqli('localhost', 'root', '', 'gry');
+
+    // Skrypt #4
+    if (isset($_POST['dodaj'])) {{
+        $nazwa = trim($_POST['nazwa'] ?? '');
+        $opis = trim($_POST['opis'] ?? '');
+        $cena = trim($_POST['cena'] ?? '0');
+        $zdjecie = trim($_POST['zdjecie'] ?? '');
+
+        $stmt = $conn->prepare("INSERT INTO gry (nazwa, opis, punkty, cena, zdjecie) VALUES (?, ?, 0, ?, ?)");
+        $stmt->bind_param("ssss", $nazwa, $opis, $cena, $zdjecie);
+        $stmt->execute();
+        $stmt->close();
+    }}
+?>
+
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gry komputerowe</title>
+        <link rel="stylesheet" href="styl.css">
+    </head>
+    <body`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~2 pkt — polaczenie, UTF-8, close().
+- ~10 pkt — implementacja skryptow PHP.
+
+<div className="exam-step-next">
+  Strona dziala? Idz do <strong>CSS</strong> i odtwarzaj makiete.
+</div>

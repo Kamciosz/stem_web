@@ -1,0 +1,48 @@
+{/*
+  Etap 4 — Kontrola
+*/}
+
+<div className="exam-step-lead">
+  Ostatnie 20 minut. <strong>Nie pisze sie nowego kodu</strong>.
+  Tylko sprawdzanie.
+</div>
+
+## Punktacja
+
+<ExamScoring
+  items={[
+    { area: "SQL", points: "~8 pkt", criterion: "Skladnia, aliasy, JOIN." },
+    { area: "Polaczenie z baza", points: "~2 pkt", criterion: "mysqli, UTF-8, close()." },
+    { area: "PHP", points: "~10 pkt", criterion: "Petle, formularze, dane." },
+    { area: "CSS", points: "~10 pkt", criterion: "Uklad zgodny z makieta." }
+  ]}
+/>
+
+## Najczestsze bledy
+
+<ExamWarnings
+  items={[
+    { title: 'Brak set_charset', impact: "Polskie znaki sie rozsypuja.", check: "PHP zaraz po new mysqli()." },
+    { title: "Sciezki obrazkow", impact: "Brak obrazkow.", check: "Pliki w katalogu i w src." },
+    { title: "CSS niezgodny", impact: "Twoj projekt zamiast odpowiedzi.", check: "Kolory, layout, hover." },
+    { title: "Brak zrzutow SQL", impact: "Brak dowodu.", check: "import.png + kw1-4." }
+  ]}
+/>
+
+## Checklista przed oddaniem
+
+<ExamFlowChecklist
+  items={[
+    { label: <>4 zapytania SQL dzialaja poprawnie.</> },
+    { label: <>PHP laczy sie z baza danych.</> },
+    { label: <>Ustawiono UTF-8 przez <code>set_charset</code>.</> },
+    { label: <>Wszystkie obrazki wyswietlaja sie.</> },
+    { label: <>Layout zgodny z makieta.</> },
+    { label: <>Wszystkie pliki w folderze.</> },
+    { label: <>Strona dziala w przegladarce.</> }
+  ]}
+/>
+
+<div className="exam-step-next">
+  Gotowe? Otworz strone. Porownaj z makieta. Oddaj.
+</div>

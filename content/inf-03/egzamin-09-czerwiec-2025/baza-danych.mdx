@@ -1,0 +1,257 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1"
+      description="SELECT id, nazwa, zdjecie FROM gry;"
+      mistake="Blad skladni SQL."
+      code={`SELECT id, nazwa, zdjecie FROM gry;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - funkcja LEFT()"
+      description="SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;"
+      mistake="Zla liczba znakow."
+      code={SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - sortowanie z LIMIT"
+      description="SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;"
+      mistake="Brak DESC sortuje A-Z."
+      code={SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - INSERT nowego rekordu"
+      description="INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu sto"
+      mistake="Pomylenie kolejnosci kolumn."
+      code={INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu stoi opuszczone zamczysko, w którym znajduje się skarb strzeżony przez złowrogie demony i duchy','200','50','zamczysko.jpg');`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>
+## Schemat bazy
+
+```sql
+
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Baza danych: `remonty`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `klienci`
+--
+
+CREATE TABLE IF NOT EXISTS `klienci` (
+  `id_klienta` int(11) NOT NULL,
+  `imie` varchar(20) COLLATE utf8_polish_ci NOT NULL,
+  `miasto` varchar(30) COLLATE utf8_polish_ci NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `klienci`
+--
+
+INSERT INTO `klienci` (`id_klienta`, `imie`, `miasto`) VALUES
+(1, 'Tomasz', 'Gdańsk'),
+(2, 'Marta', 'Sopot'),
+(3, 'Łukasz', 'Gdynia'),
+(4, 'Michał', 'Gdańsk'),
+(5, 'Monika', 'Łeba'),
+(6, 'Mariusz', 'Sopot'),
+(7, 'Martyna', 'Łódź'),
+(8, 'Barbara', 'Lesko'),
+(9, 'Katarzyna', 'Rawicz'),
+(10, 'Natalia', 'Wrocław'),
+(11, 'Paweł', 'Poznań'),
+(12, 'Andrzej', 'Poznań'),
+(13, 'Luiza', 'Szczecin'),
+(14, 'Aleksander', 'Gdańsk'),
+(15, 'Klaudia', 'Wrocław'),
+(16, 'Filip', 'Sopot'),
+(17, 'Jakub', 'Warszawa'),
+(18, 'Kamil', 'Wrocław'),
+(19, 'Karol', 'Warszawa'),
+(20, 'Adam', 'Poznań'),
+(21, 'Piotr', 'Wrocław'),
+(22, 'Michał', 'Sopot'),
+(23, 'Karol', 'Łomża'),
+(24, 'Piotr', 'Malbork'),
+(25, 'Martyna', 'Mikołajki'),
+(26, 'Marcin', 'Toruń'),
+(27, 'Krzysztof', 'Warszawa'),
+(28, 'Paulina', 'Poznań'),
+(29, 'Marta', 'Wrocław'),
+(30, 'Kunegunda', 'Poznań'),
+(31, 'Filip', 'Warszawa'),
+(32, 'Urszula', 'Darłowo');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `wykonanie`
+--
+
+CREATE TABLE IF NOT EXISTS `wykonanie` (
+  `id_wykonawcy` int(11) NOT NULL,
+  `id_zlecenia` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `wykonanie`
+--
+
+INSERT INTO `wykonanie` (`id_wykonawcy`, `id_zlecenia`) VALUES
+(1, 1),
+(2, 2),
+(4, 2),
+(8, 2),
+(14, 2),
+(15, 4),
+(17, 4),
+(5, 5),
+(11, 6),
+(5, 7),
+(16, 7),
+(3, 10),
+(15, 11),
+(12, 12),
+(12, 13),
+(12, 14),
+(14, 14),
+(6, 15),
+(10, 15),
+(2, 16),
+(16, 16),
+(2, 17),
+(4, 17),
+(10, 17),
+(4, 18),
+(18, 18),
+(9, 19),
+(10, 19),
+(14, 23),
+(13, 25),
+(16, 28),
+(8, 31),
+(6, 32),
+(13, 32),
+(7, 34),
+(14, 34),
+(3, 35),
+(5, 35),
+(4, 37),
+(16, 39),
+(7, 41),
+(11, 42),
+(16, 42),
+(13, 43),
+(15, 43),
+(18, 43),
+(3, 44),
+(3, 45),
+(6, 45),
+(13, 45),
+(7, 46),
+(11, 46);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `wykonawcy`
+--
+
+CREATE TABLE IF NOT EXISTS `wykonawcy` (
+  `id_wykonawcy` int(11) NOT NULL,
+  `nazwa_firmy` varchar(50) COLLATE utf8_polish_ci NOT NULL,
+  `liczba_pracownikow` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `wykonawcy`
+--
+
+INSERT INTO `wykonawcy` (`id_wykonawcy`, `nazwa_firmy`, `liczba_pracownikow`) VALUES
+(1, 'ABud', 25),
+(2, 'BBud', 42),
+(3, 'CBud', 15),
+(4, 'DBud', 37),
+(5, 'EBud', 22),
+(6, 'FBud', 17),
+(7, 'GBud', 55),
+(8, 'HBud', 31),
+(9, 'IBud', 12),
+(10, 'JBud', 29),
+(11, 'KBud', 45),
+(12, 'LBud', 17),
+(13, 'MBud', 15),
+(14, 'NBud', 12),
+(15, 'OBud', 15),
+(16, 'PBud', 11),
+(17, 'RBud', 45),
+(18, 'SBud', 47);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `zlecenia`
+--
+
+CREATE TABLE IF NOT EXISTS `zlecenia` (
+  `id_zlecenia` int(11) NOT NULL,
+  `id_klienta` int(11) NOT NULL,
+  `cena` decimal(10,2) NOT NULL,
+  `rodzaj` varchar(10) COLLATE utf8_polish_ci NOT NULL DEFAULT 'malowanie'
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `zlecenia`
+--
+
+INSERT INTO `zlecenia` (`id_zlecenia`, `id_klienta`, `cena`, `rodzaj`) VALUES
+(1, 11, '2500.00', 'malowanie'),
+(2, 4, '1200.00', 'gipsowanie'),
+(3, 15, '600.00', 'malowanie'),
+(4, 18, '1750.00', 'malowanie'),
+(5, 1, '12000
+```
+
+## Kwerendy z rozwiazania
+
+```sql
+Zapytanie 1: SELECT AVG(liczba_pracownikow) AS "średnia", MIN(liczba_pracownikow) AS "najmniej", MAX(liczba_pracownikow) AS "najwięcej" FROM wykonawcy;
+Zapytanie 2: SELECT nazwa_firmy, liczba_pracownikow FROM wykonawcy WHERE liczba_pracownikow >= 40;
+Zapytanie 3: SELECT DISTINCT miasto FROM klienci ORDER BY miasto;
+Zapytanie 4: SELECT imie, cena FROM klienci JOIN zlecenia USING(id_klienta) WHERE miasto = "Poznań" AND rodzaj = "malowanie";
+Zapytanie 5: SELECT imie, nazwa_firmy FROM klienci JOIN zlecenia ON klienci.id_klienta = zlecenia.id_klienta JOIN wykonanie ON zlecenia.id_zlecenia = wykonanie.id_zlecenia JOIN wykonawcy ON wykonanie.id_wykonawcy = wykonawcy.id_wykonawcy;
+```

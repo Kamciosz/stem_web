@@ -1,0 +1,50 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1"
+      description="SELECT id_zadania, zadanie, data FROM zadania;"
+      mistake="Blad skladni SQL."
+      code={`SELECT id_zadania, zadanie, data FROM zadania;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - INSERT nowego rekordu"
+      description="INSERT INTO zadania VALUES (NULL, 'Spotkanie firmowe', '2024-05-10', 1);"
+      mistake="Pomylenie kolejnosci kolumn."
+      code={INSERT INTO zadania VALUES (NULL, 'Spotkanie firmowe', '2024-05-10', 1);}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - DELETE rekordow"
+      description="DELETE FROM zadania WHERE id_zadania = 2;"
+      mistake="Brak WHERE usuwa wszystkie."
+      code={DELETE FROM zadania WHERE id_zadania = 2;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - JOIN dwoch tabel"
+      description="SELECT imie, nazwisko, telefon, zadanie, data FROM zadania INNER JOIN osoby ON id_osoba = osoba_id;"
+      mistake="JOIN bez ON daje iloczyn kartezjanski."
+      code={SELECT imie, nazwisko, telefon, zadanie, data FROM zadania INNER JOIN osoby ON id_osoba = osoba_id;`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>

@@ -1,0 +1,31 @@
+{/*
+  Etap 2 — HTML / PHP
+*/}
+
+<div className="exam-step-lead">
+  Tu sie oblewa egzamin. `set_charset` od razu po polaczeniu.
+</div>
+
+## Polaczenie z baza
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Polaczenie z baza"
+    description="mysqli + charset od razu."
+    mistake="Brak charset - polskie znaki sie rozsypia."
+    code={`<?php
+$conn = new mysqli("localhost", "root", "", "NAZWA_BAZY");
+$conn->set_charset;`}
+  />
+
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~2 pkt — polaczenie, UTF-8, close().
+- ~10 pkt — implementacja skryptow PHP.
+
+<div className="exam-step-next">
+  Strona dziala? Idz do <strong>CSS</strong> i odtwarzaj makiete.
+</div>

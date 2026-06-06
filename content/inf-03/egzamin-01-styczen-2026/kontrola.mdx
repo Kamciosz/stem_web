@@ -24,7 +24,7 @@
 
 <ExamWarnings
   items={[
-    { title: "Brak set_charset(\"utf8\")", impact: "Polskie znaki sie rozsypuja.", check: "PHP, zaraz po new mysqli()." },
+    { title: "Brak set_charset", impact: "Polskie znaki sie rozsypuja.", check: "PHP, zaraz po new mysqli()." },
     { title: "Zly JOIN", impact: "Bledne lub zduplikowane wiersze.", check: "Zapytanie 3 i lewa sekcja PHP." },
     { title: "Cena policzona w SQL", impact: "Polecenie wymaga obliczenia w PHP.", check: "Petla w lewej sekcji." },
     { title: "Brak rowspan=\"2\"", impact: "Tabela srodkowa niezgodna z makieta.", check: "HTML w sekcji srodkowej." },
@@ -42,7 +42,7 @@ Pelna, klikana lokalnie. Stan zostaje w przegladarce — `localStorage`. Resetuj
   items={[
     { label: <>4 zapytania SQL dzialaja w bazie i zwracaja poprawne dane.</> },
     { label: <>PHP laczy sie z baza <code>samochody</code>.</> },
-    { label: <>Ustawiono UTF-8 przez <code>set_charset("utf8")</code>.</> },
+    { label: <>Ustawiono UTF-8 przez <code>set_charset</code>.</> },
     { label: <>Cena calkowita liczona w PHP, nie w SQL.</> },
     { label: <>Dokladnie 2 losowe pojazdy w sekcji srodkowej.</> },
     { label: <>Tabela srodkowa uzywa <code>rowspan="2"</code>.</> },

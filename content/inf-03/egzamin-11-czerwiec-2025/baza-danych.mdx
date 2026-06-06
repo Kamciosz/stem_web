@@ -1,0 +1,225 @@
+{/*
+  Etap 1 — Baza danych (4 zapytan SQL)
+*/}
+
+<div className="exam-step-lead">
+  Sprawdz wszystkie zapytania w bazie zanim cokolwiek wkleisz do PHP.
+  Tu lapie sie najwiecej tanich punktow.
+</div>
+
+## Zapytania SQL
+
+<ExamCodeGrid>
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 1"
+      description="SELECT id, nazwa, zdjecie FROM gry;"
+      mistake="Blad skladni SQL."
+      code={`SELECT id, nazwa, zdjecie FROM gry;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 2 - funkcja LEFT()"
+      description="SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;"
+      mistake="Zla liczba znakow."
+      code={SELECT nazwa, LEFT(opis, 100), punkty, cena FROM gry WHERE id=1;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 3 - sortowanie z LIMIT"
+      description="SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;"
+      mistake="Brak DESC sortuje A-Z."
+      code={SELECT nazwa, punkty FROM gry ORDER BY punkty DESC LIMIT 5;}
+    />
+    <ExamCodeBlock
+      language="SQL"
+      title="Zapytanie 4 - INSERT nowego rekordu"
+      description="INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu sto"
+      mistake="Pomylenie kolejnosci kolumn."
+      code={INSERT INTO gry(nazwa, opis, punkty, cena, zdjecie) VALUES ('Zamczysko','Na odludziu stoi opuszczone zamczysko, w którym znajduje się skarb strzeżony przez złowrogie demony i duchy','200','50','zamczysko.jpg');`}
+    />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie SQL, aliasy, JOIN, ORDER BY/LIMIT.
+- Zapytania DML/DDL wymagaja uwagi.
+
+<div className="exam-step-next">
+  Gdy wszystkie zapytania dzialaja, idz do <strong>HTML / PHP</strong>.
+</div>
+## Schemat bazy
+
+```sql
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Baza danych: `oponeum`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `klient`
+--
+
+CREATE TABLE `klient` (
+  `id` int(11) NOT NULL,
+  `imie` varchar(30) COLLATE utf8_polish_ci NOT NULL,
+  `nazwisko` varchar(30) COLLATE utf8_polish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `klient`
+--
+
+INSERT INTO `klient` (`id`, `imie`, `nazwisko`) VALUES
+(1, 'Jan', 'Kowalski'),
+(2, 'Leon', 'Kowalski'),
+(3, 'Janina', 'Kowalska'),
+(4, 'Tomsz', 'Kowalski'),
+(5, 'Anna', 'Kowalska'),
+(6, 'Jan', 'Nowak'),
+(7, 'Elżbieta', 'Kościow'),
+(8, 'Marcin', 'Sobierajski'),
+(9, 'Karolina', 'Antkowa');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `opony`
+--
+
+CREATE TABLE `opony` (
+  `nr_kat` int(11) NOT NULL,
+  `producent` varchar(50) COLLATE utf8_polish_ci NOT NULL,
+  `model` varchar(30) COLLATE utf8_polish_ci NOT NULL,
+  `sezon` varchar(20) COLLATE utf8_polish_ci NOT NULL DEFAULT 'letnia',
+  `cena` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `opony`
+--
+
+INSERT INTO `opony` (`nr_kat`, `producent`, `model`, `sezon`, `cena`) VALUES
+(1, 'uLFA', 'AL100', 'letnia', '290.50'),
+(2, 'uLFA', 'AL105', 'letnia', '105.50'),
+(3, 'uLFA', 'AL105', 'letnia', '210.50'),
+(4, 'uLFA', 'AL125', 'letnia', '110.50'),
+(5, 'uLFA', 'AL123', 'zimowa', '215.00'),
+(6, 'uLFA', 'AL205', 'zimowa', '212.50'),
+(7, 'uLFA', 'AL122', 'uniwersalna', '110.50'),
+(8, 'uLFA', 'AL305', 'zimowa', '110.00'),
+(9, 'uLFA', 'AL135', 'zimowa', '101.50'),
+(10, 'uLFA', 'AL103', 'zimowa', '220.50'),
+(11, 'uLFA', 'AL435', 'letnia', '212.00'),
+(12, 'uLFA', 'AL235', 'letnia', '210.50'),
+(13, 'uLFA', 'AL332', 'letnia', '214.00'),
+(14, 'uLFA', 'AL111', 'letnia', '220.50'),
+(15, 'eLFA', 'EL105', 'letnia', '210.50'),
+(16, 'eLFA', 'EL105', 'letnia', '199.00'),
+(17, 'eLFA', 'EL125', 'uniwersalna', '110.50'),
+(18, 'eLFA', 'EL123', 'uniwersalna', '215.00'),
+(19, 'eLFA', 'EL205', 'letnia', '292.50'),
+(20, 'eLFA', 'EL122', 'zimowa', '190.50'),
+(21, 'eLFA', 'EL305', 'zimowa', '110.00'),
+(22, 'LFA', 'LF135', 'letnia', '150.50'),
+(23, 'LFA', 'LF103', 'letnia', '220.50'),
+(24, 'ALF', 'AF435', 'letnia', '212.00'),
+(25, 'ALF', 'AF235', 'letnia', '310.50'),
+(26, 'ALF', 'AF332', 'letnia', '214.00'),
+(27, 'LFA', 'LL111', 'letnia', '220.50');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `zamowienie`
+--
+
+CREATE TABLE `zamowienie` (
+  `id_zam` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `nr_kat` int(11) NOT NULL,
+  `ilosc` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `zamowienie`
+--
+
+INSERT INTO `zamowienie` (`id_zam`, `id`, `nr_kat`, `ilosc`) VALUES
+(1, 7, 1, 4),
+(2, 8, 10, 2),
+(3, 6, 18, 3),
+(4, 2, 6, 4),
+(5, 5, 3, 3),
+(6, 1, 24, 4),
+(7, 1, 1, 4),
+(8, 8, 14, 3),
+(9, 9, 14, 1),
+(10, 4, 25, 2),
+(11, 2, 1, 3),
+(12, 4, 11, 1),
+(13, 6, 23, 4),
+(14, 8, 2, 1),
+(15, 6, 23, 4),
+(16, 3, 25, 2),
+(17, 7, 2, 4),
+(18, 7, 17, 1),
+(19, 3, 24, 2),
+(20, 1, 14, 2),
+(21, 6, 25, 1),
+(22, 6, 3, 3),
+(23, 4, 21, 2),
+(24, 2, 14, 1),
+(25, 6, 5, 2),
+(26, 6, 8, 4),
+(27, 2, 27, 1),
+(28, 2, 4, 1),
+(29, 3, 18, 1),
+(30, 8, 22, 1),
+(31, 1, 2, 3),
+(32, 2, 25, 4),
+(33, 7, 9, 3),
+(34, 1, 24, 1),
+(35, 2, 13, 2),
+(36, 5, 19, 2),
+(37, 1, 3, 4),
+(38, 6, 9, 3),
+(39, 7, 9, 4),
+(40, 2, 20, 4),
+(41, 6, 16, 1),
+(42, 6, 22, 4),
+(43, 1, 7, 2),
+(44, 4, 22, 2),
+(45, 7, 6, 3),
+(46, 4, 18, 3),
+(47, 9, 20, 4),
+(48, 2, 17, 4),
+(49, 1, 24, 2),
+(50, 9, 13, 2),
+(51, 7, 20, 3),
+(52, 5, 7, 1),
+(53, 4, 2, 1),
+(54, 4, 13, 3),
+(55, 7, 7, 4),
+```
+
+## Kwerendy z rozwiazania
+
+```sql
+Zapytanie 1: SELECT nr_kat, producent, model, sezon, cena FROM opony ORDER BY cena LIMIT 10;
+Zapytanie 2: SELECT producent, model, sezon, cena FROM opony WHERE nr_kat = 9;
+Zapytanie 3: SELECT id_zam, ilosc, model, cena FROM zamowienie JOIN opony USING (nr_kat) ORDER BY RAND() LIMIT 1;
+Zapytanie 4: UPDATE opony SET cena = cena - cena * 0.25 WHERE sezon = "letnia";
+```
