@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { examMeta, examSteps, getStepBySlug } from "@/lib/exams/inf-03-egzamin-12-styczen-2024";
 import { ExamFlowStagePageGeneric } from "@/components/courses/examflow/ExamFlowStagePageGeneric";
+import { RelatedExams } from "@/components/courses/examflow/RelatedExams";
 
 type StagePageProps = { params: Promise<{ step: string }>; };
 export const dynamic = "force-static";
@@ -114,6 +115,21 @@ export default async function ExamStagePage({ params }: StagePageProps) {
                         >
                             <Content />
                         </ExamFlowStagePageGeneric>
+                        <div className="exam-flow-related-wrap">
+                            <RelatedExams
+                                current={{
+                                    slug: examMeta.lessonSlug,
+                                    title: examMeta.title,
+                                    examId: examMeta.examId,
+                                    session: examMeta.session,
+                                    topic: examMeta.topic,
+                                    description: examMeta.description,
+                                    technologies: examMeta.technologies,
+                                    basePath,
+                                    courseId: examMeta.courseId,
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </article>

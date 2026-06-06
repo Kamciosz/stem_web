@@ -1341,3 +1341,73 @@
         color: black !important;
     }
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   RelatedExams
+   ───────────────────────────────────────────────────────────── */
+.exam-flow-related-wrap {
+    margin-top: clamp(28px, 4vw, 48px);
+    padding-top: clamp(20px, 3vw, 32px);
+    border-top: 1px solid rgba(139, 92, 246, 0.18);
+}
+.exam-lesson-page .related-exams-title {
+    font-family: var(--ef-font-display);
+    font-size: 1.1rem;
+    color: var(--ef-text);
+    margin: 0 0 0.3em;
+    font-weight: 600;
+}
+.exam-lesson-page .related-exams-lead {
+    color: var(--ef-muted);
+    font-size: 0.85rem;
+    margin: 0 0 1em;
+}
+.exam-lesson-page .related-exams-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+    gap: 0.6em;
+}
+.exam-lesson-page .related-exams-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+    padding: 0.9em 1em;
+    background: rgba(124, 58, 237, 0.04);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--ef-text);
+    transition: border-color 0.2s, transform 0.2s, background 0.2s;
+}
+.exam-lesson-page .related-exams-card:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(124, 58, 237, 0.1);
+    transform: translateY(-1px);
+}
+.exam-lesson-page .related-exams-id {
+    font-family: var(--ef-font-mono);
+    font-size: 0.7rem;
+    color: #a78bfa;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+.exam-lesson-page .related-exams-card-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ef-text);
+    line-height: 1.3;
+}
+.exam-lesson-page .related-exams-meta {
+    font-family: var(--ef-font-mono);
+    font-size: 0.7rem;
+    color: var(--ef-muted);
+}
+.exam-lesson-page .related-exams-cta {
+    color: #a78bfa;
+    align-self: flex-end;
+    font-size: 0.9rem;
+}
