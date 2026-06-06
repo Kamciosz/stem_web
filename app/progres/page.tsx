@@ -3,6 +3,8 @@ import { getExamIndex } from "@/lib/exam-index";
 import { ProgressDashboard } from "@/components/courses/examflow/ProgressDashboard";
 import { ProgressExport } from "@/components/courses/examflow/ProgressExport";
 import { ProgressBadges } from "@/components/courses/examflow/ProgressBadges";
+import { ProgressByTech } from "@/components/courses/examflow/ProgressByTech";
+import { RecentlyVisited } from "@/components/courses/examflow/RecentlyVisited";
 
 export const dynamic = "force-static";
 
@@ -39,7 +41,9 @@ export default function ProgresPage() {
                     </p>
                 </header>
                 <ProgressDashboard entries={entries} />
+                <ProgressByTech entries={entries} />
                 <ProgressBadges entries={entries} />
+                <RecentlyVisited />
                 <section className="progres-export-section">
                     <h2 className="progres-export-title">Kopia zapasowa progresu</h2>
                     <ProgressExport />
