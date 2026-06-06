@@ -16,6 +16,7 @@ import {
     ExamFlowInfoPanelGeneric,
 } from "./ExamFlowChromeGeneric";
 import { ExamProgressBadge } from "./ExamProgressBadge";
+import { RevealOnScroll } from "./RevealOnScroll";
 
 export type ExamMetaGeneric = {
     courseId: string;
@@ -79,22 +80,24 @@ export function ExamFlowDashboardGeneric({ meta, steps, strategy, materials, bas
                             bledami i punktacja.
                         </p>
                         <ol className="exam-flow-stages-grid">
-                            {stepViews.map((step) => (
+                            {stepViews.map((step, i) => (
                                 <li key={step.slug}>
-                                    <Link href={`${basePath}/${step.slug}`} className="exam-flow-stage-card">
-                                        <span className="exam-flow-stage-index">
-                                            {String(step.index).padStart(2, "0")}
-                                        </span>
-                                        <span className="exam-flow-stage-title">{step.label}</span>
-                                        <span className="exam-flow-stage-summary">{step.summary}</span>
-                                        <span className="exam-flow-stage-meta">
-                                            <span>{step.minutes}</span>
-                                            <span>{step.technologies.join(" · ")}</span>
-                                        </span>
-                                        <span className="exam-flow-stage-cta" aria-hidden="true">
-                                            Otworz →
-                                        </span>
-                                    </Link>
+                                    <RevealOnScroll delay={i * 60}>
+                                        <Link href={`${basePath}/${step.slug}`} className="exam-flow-stage-card">
+                                            <span className="exam-flow-stage-index">
+                                                {String(step.index).padStart(2, "0")}
+                                            </span>
+                                            <span className="exam-flow-stage-title">{step.label}</span>
+                                            <span className="exam-flow-stage-summary">{step.summary}</span>
+                                            <span className="exam-flow-stage-meta">
+                                                <span>{step.minutes}</span>
+                                                <span>{step.technologies.join(" · ")}</span>
+                                            </span>
+                                            <span className="exam-flow-stage-cta" aria-hidden="true">
+                                                Otworz →
+                                            </span>
+                                        </Link>
+                                    </RevealOnScroll>
                                 </li>
                             ))}
                         </ol>

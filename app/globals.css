@@ -6040,3 +6040,88 @@ a.lesson-nav-link:hover {
     color: #c4b5fd;
     border-radius: 4px;
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   404
+   ───────────────────────────────────────────────────────────── */
+.not-found-page {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: clamp(40px, 8vw, 100px);
+}
+.not-found-container {
+    max-width: 640px;
+    text-align: center;
+    padding-inline: clamp(16px, 3vw, 24px);
+}
+.not-found-eyebrow {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: clamp(4rem, 14vw, 8rem);
+    font-weight: 800;
+    color: #a78bfa;
+    line-height: 1;
+    margin: 0 0 0.2em;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 50%, #c4b5fd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.not-found-title {
+    font-family: var(--font-space-grotesk), sans-serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: #F5F3FF;
+    margin: 0 0 0.5em;
+    letter-spacing: -0.02em;
+}
+.not-found-lead {
+    color: #ccc3d8;
+    line-height: 1.6;
+    margin: 0 0 2em;
+    max-width: 48ch;
+    margin-left: auto;
+    margin-right: auto;
+}
+.not-found-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6em;
+    justify-content: center;
+    margin-bottom: 2.5em;
+}
+.not-found-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.7em 1.4em;
+    background: rgba(13, 10, 20, 0.6);
+    border: 1px solid rgba(139, 92, 246, 0.32);
+    border-radius: 8px;
+    color: #F5F3FF;
+    text-decoration: none;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.not-found-btn:hover {
+    border-color: rgba(139, 92, 246, 0.6);
+    background: rgba(124, 58, 237, 0.12);
+    transform: translateY(-1px);
+}
+.not-found-btn.primary {
+    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    border-color: transparent;
+}
+.not-found-btn.primary:hover {
+    background: linear-gradient(135deg, #8b5cf6, #c4b5fd);
+}
+.not-found-search-hint {
+    color: #6d717c;
+    font-size: 0.85rem;
+    font-family: var(--font-jetbrains-mono), monospace;
+    margin: 0;
+}
