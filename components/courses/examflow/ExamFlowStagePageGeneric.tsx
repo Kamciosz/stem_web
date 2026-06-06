@@ -15,6 +15,7 @@ import {
 import { useScrollMemory } from "./useScrollMemory";
 import { trackRecent } from "./RecentlyVisited";
 import { ShareButton } from "@/components/ShareButton";
+import { TableOfContents } from "@/components/TableOfContents";
 
 type StepView = {
     slug: string;
@@ -65,6 +66,9 @@ export function ExamFlowStagePageGeneric({ step, meta, stepViews, basePath, tota
             <ExamFlowStepNavGeneric stepViews={stepViews} basePath={basePath} />
             <div className="exam-flow-stage">
                 <main className="exam-flow-stage-main">
+                    <aside className="exam-flow-stage-toc">
+                        <TableOfContents />
+                    </aside>
                     <div className="exam-flow-stage-content lesson-content">{children}</div>
                 </main>
                 <ExamFlowStageAsideGeneric
