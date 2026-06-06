@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getExamIndex } from "@/lib/exam-index";
 import { ProgressDashboard } from "@/components/courses/examflow/ProgressDashboard";
+import { ProgressExport } from "@/components/courses/examflow/ProgressExport";
 
 export const dynamic = "force-static";
 
@@ -37,6 +38,10 @@ export default function ProgresPage() {
                     </p>
                 </header>
                 <ProgressDashboard entries={entries} />
+                <section className="progres-export-section">
+                    <h2 className="progres-export-title">Kopia zapasowa progresu</h2>
+                    <ProgressExport />
+                </section>
             </div>
         </article>
     );
