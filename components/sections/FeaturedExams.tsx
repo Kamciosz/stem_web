@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getExamIndex } from "@/lib/exam-index";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { RecentlyVisited } from "@/components/courses/examflow/RecentlyVisited";
 
 const SESSIONS_PROMO = ["Styczen 2026", "Styczen 2025", "Czerwiec 2025"];
 
@@ -59,6 +60,9 @@ export function FeaturedExams() {
                             Moj progres
                         </Link>
                     </div>
+                </ScrollReveal>
+                <ScrollReveal delay={500}>
+                    <RecentlyVisited />
                 </ScrollReveal>
             </div>
         </section>
