@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { examMeta, examSteps, getStepBySlug } from "@/lib/exams/inf-03-egzamin-09-czerwiec-2025";
 import { ExamFlowStagePageGeneric } from "@/components/courses/examflow/ExamFlowStagePageGeneric";
 import { RelatedExams } from "@/components/courses/examflow/RelatedExams";
+import { StageScrollProgress } from "@/components/courses/examflow/StageScrollProgress";
 
 type StagePageProps = { params: Promise<{ step: string }>; };
 export const dynamic = "force-static";
@@ -94,6 +95,7 @@ export default async function ExamStagePage({ params }: StagePageProps) {
             >
                 <div className="section-inner lesson-container exam-lesson-container">
                     <div className="lesson-main exam-lesson-main">
+                        <StageScrollProgress />
                         <ExamFlowStagePageGeneric
                             step={stepViews.find((s) => s.slug === step.slug)!}
                             meta={{

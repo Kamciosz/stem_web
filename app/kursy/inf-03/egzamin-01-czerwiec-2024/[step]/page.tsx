@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { examMeta, examSteps, getStepBySlug } from "@/lib/exams/inf-03-egzamin-01-czerwiec-2024";
 import { ExamFlowStagePageGeneric } from "@/components/courses/examflow/ExamFlowStagePageGeneric";
 import { RelatedExams } from "@/components/courses/examflow/RelatedExams";
+import { StageScrollProgress } from "@/components/courses/examflow/StageScrollProgress";
 
 type StagePageProps = { params: Promise<{ step: string }>; };
 export const dynamic = "force-static";
