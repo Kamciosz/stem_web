@@ -14,6 +14,7 @@ import {
 } from "./ExamFlowChromeGeneric";
 import { useScrollMemory } from "./useScrollMemory";
 import { trackRecent } from "./RecentlyVisited";
+import { ShareButton } from "@/components/ShareButton";
 
 type StepView = {
     slug: string;
@@ -124,6 +125,7 @@ function ExamFlowHeaderGeneric({
                             <dd>{step.technologies.join(" · ")}</dd>
                         </div>
                     </dl>
+                    <ShareButton title={`${meta.title} - ${step.label}`} url={`${basePath}/${step.slug}`} className="share-button-header" />
                 </div>
             </div>
         </header>

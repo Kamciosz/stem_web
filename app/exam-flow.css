@@ -1599,3 +1599,38 @@
     font-size: 0.85rem;
     margin: 0 0 1.2em;
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   ShareButton
+   ───────────────────────────────────────────────────────────── */
+.share-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.4em 0.9em;
+    background: rgba(13, 10, 20, 0.6);
+    border: 1px solid rgba(139, 92, 246, 0.32);
+    border-radius: 6px;
+    color: #F5F3FF;
+    font-family: var(--ef-font-mono);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+.share-button:hover {
+    border-color: rgba(139, 92, 246, 0.6);
+    background: rgba(124, 58, 237, 0.12);
+}
+.share-button:active {
+    transform: translateY(1px);
+}
+.exam-lesson-page .share-button-header {
+    margin-top: 0.8em;
+    align-self: flex-start;
+}
+@media print {
+    .share-button {
+        display: none !important;
+    }
+}
