@@ -10,6 +10,7 @@
  */
 
 import Link from "next/link";
+import { useEffect } from "react";
 import {
     ExamFlowShell,
     ExamFlowStepNavGeneric,
@@ -17,6 +18,7 @@ import {
 } from "./ExamFlowChromeGeneric";
 import { ExamProgressBadge } from "./ExamProgressBadge";
 import { RevealOnScroll } from "./RevealOnScroll";
+import { trackRecent } from "./RecentlyVisited";
 
 export type ExamMetaGeneric = {
     courseId: string;
@@ -66,6 +68,14 @@ export function ExamFlowDashboardGeneric({ meta, steps, strategy, materials, bas
         minutes: s.minutes,
         technologies: s.technologies,
     }));
+    useEffect(() => {
+        trackRecent({
+            slug: meta.lessonSlug,
+            title: meta.title,
+            examId: meta.examId,
+            basePath,
+        });
+    }, [meta.lessonSlug, meta.title, meta.examId, basePath]);
     return (
         <ExamFlowShell meta={meta} basePath={basePath}>
             <ExamFlowHeaderGeneric meta={meta} />

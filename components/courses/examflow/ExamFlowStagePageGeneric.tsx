@@ -5,7 +5,7 @@
  * Server-side MDX rendering -> Client component wrapper.
  */
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import {
     ExamFlowShell,
     ExamFlowInfoPanelGeneric,
@@ -13,6 +13,7 @@ import {
     ExamFlowStageAsideGeneric,
 } from "./ExamFlowChromeGeneric";
 import { useScrollMemory } from "./useScrollMemory";
+import { trackRecent } from "./RecentlyVisited";
 
 type StepView = {
     slug: string;
@@ -49,6 +50,14 @@ type Props = {
 
 export function ExamFlowStagePageGeneric({ step, meta, stepViews, basePath, totalChecklist, children }: Props) {
     useScrollMemory(meta.lessonSlug, step.slug);
+    useEffect(() => {
+        trackRecent({
+            slug: meta.lessonSlug,
+            title: meta.title,
+            examId: meta.examId,
+            basePath,
+        });
+    }, [meta.lessonSlug, meta.title, meta.examId, basePath]);
     return (
         <ExamFlowShell meta={meta} basePath={basePath}>
             <ExamFlowHeaderGeneric step={step} meta={meta} basePath={basePath} />

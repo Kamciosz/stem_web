@@ -6381,3 +6381,69 @@ a.lesson-nav-link:hover {
 .featured-exams-link.primary:hover {
     background: linear-gradient(135deg, #8b5cf6, #c4b5fd);
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   RecentlyVisited
+   ───────────────────────────────────────────────────────────── */
+.recently-visited {
+    margin-top: clamp(28px, 4vw, 48px);
+    padding: 1.2em 1.4em;
+    background: rgba(13, 10, 20, 0.4);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    border-radius: 10px;
+}
+.recently-visited.is-empty {
+    border-style: dashed;
+}
+.recently-visited-title {
+    font-family: var(--font-space-grotesk), sans-serif;
+    font-size: 1.05rem;
+    color: #F5F3FF;
+    margin: 0 0 0.8em;
+    font-weight: 600;
+}
+.recently-visited-empty {
+    color: #6d717c;
+    font-size: 0.85rem;
+    margin: 0;
+}
+.recently-visited-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+    gap: 0.5em;
+}
+.recently-visited-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    padding: 0.7em 0.9em;
+    background: rgba(13, 10, 20, 0.5);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    border-radius: 6px;
+    text-decoration: none;
+    color: #F5F3FF;
+    transition: border-color 0.15s, background 0.15s;
+}
+.recently-visited-item:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(124, 58, 237, 0.1);
+}
+.recently-visited-id {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.7rem;
+    color: #a78bfa;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.recently-visited-title {
+    /* nadpisanie - tu chce mniejszy font */
+    font-family: var(--font-inter), system-ui, sans-serif !important;
+    font-size: 0.85rem !important;
+    color: #F5F3FF !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+}

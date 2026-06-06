@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getExamIndex } from "@/lib/exam-index";
 import { ExamGrid } from "@/components/courses/examflow/ExamGrid";
+import { RecentlyVisited } from "@/components/courses/examflow/RecentlyVisited";
 
 export const dynamic = "force-static";
 
@@ -36,6 +37,7 @@ export default function EgzaminyPage() {
                     </p>
                 </header>
                 <ExamGrid entries={entries} />
+                <RecentlyVisited />
             </div>
         </article>
     );
