@@ -8,9 +8,11 @@
 import { ReactNode } from "react";
 import {
     ExamFlowShell,
+    ExamFlowInfoPanelGeneric,
     ExamFlowStepNavGeneric,
     ExamFlowStageAsideGeneric,
 } from "./ExamFlowChromeGeneric";
+import { useScrollMemory } from "./useScrollMemory";
 
 type StepView = {
     slug: string;
@@ -46,6 +48,7 @@ type Props = {
 };
 
 export function ExamFlowStagePageGeneric({ step, meta, stepViews, basePath, totalChecklist, children }: Props) {
+    useScrollMemory(meta.lessonSlug, step.slug);
     return (
         <ExamFlowShell meta={meta} basePath={basePath}>
             <ExamFlowHeaderGeneric step={step} meta={meta} basePath={basePath} />
