@@ -2,21 +2,45 @@
 
 /**
  * Pelna interaktywna checklista uzywana na podstronie Kontrola.
- * Stan w `localStorage` pod kluczem EXAM_PROGRESS_STORAGE_KEY,
- * dzielony z dashboardem (`useExamProgress`).
+ * Stan w `localStorage` pod kluczem globalnym `stem-exam-progress-v1`,
+ * per-egzamin dzięki slug z useParams().
  *
- * UWAGA: kolejnosc itemow musi pasowac do `examChecklistKeys`.
+ * Komponent czyta slug z URL: /kursy/inf-03/egzamin-XXX => slug = egzamin-XXX
  */
 
-import { ReactNode } from "react";
-import { examChecklistKeys } from "@/lib/exams/inf-03-egzamin-01";
-import { useExamProgressMutator } from "./useExamProgress";
+import { ReactNode, useMemo } from "react";
+import { useParams } from "next/navigation";
+import { useExamProgressMutator, useExamProgress } from "./useExamProgressGlobal";
 
 type Item = { label: ReactNode };
 
+function slugFromPath(path: string | string[] | undefined): string {
+    if (!path) return "";
+    const parts = Array.isArray(path) ? path : [path];
+    // Szukamy segmentu zaczynajacego sie od "egzamin-"
+    for (const p of parts) {
+        if (typeof p === "string" && p.startsWith("egzamin-")) return p;
+    }
+    // Fallback: ostatni segment
+    return (parts[parts.length - 1] as string) ?? "";
+}
+
 export function ExamFlowChecklist({ items }: { items: Item[] }) {
-    const total = examChecklistKeys.length;
-    const { state, toggle, reset, hydrated, done } = useExamProgressMutator(total);
+    const params = useParams();
+    const slug = useMemo(() => {
+        // useParams() returns obiekt, np. { step: "kontrola" } - nie ma slug
+        // wiec czytamy z window.location
+        if (typeof window === "undefined") return "";
+        const path = window.location.pathname;
+        const m = path.match(/\/(egzamin-[\w-]+)/);
+        return m ? m[1] : "";
+    }, [params]);
+
+    // Uzywamy totals z progress (max 16 items zwykle)
+    const tmp = useExamProgress(slug, items.length);
+    const total = tmp.total || items.length;
+
+    const { state, toggle, reset, hydrated, done } = useExamProgressMutator(slug, total);
 
     return (
         <div className="exam-flow-checklist">

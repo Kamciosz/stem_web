@@ -15,6 +15,7 @@ import {
     ExamFlowStepNavGeneric,
     ExamFlowInfoPanelGeneric,
 } from "./ExamFlowChromeGeneric";
+import { ExamProgressBadge } from "./ExamProgressBadge";
 
 export type ExamMetaGeneric = {
     courseId: string;
@@ -179,7 +180,10 @@ function ExamFlowHeaderGeneric({ meta }: { meta: ExamMetaGeneric }) {
             <div className="exam-flow-header-row">
                 <div className="exam-flow-header-copy">
                     <p className="exam-flow-eyebrow">{`${meta.examId} · ${meta.session}`}</p>
-                    <h1 className="exam-flow-title">{meta.title}</h1>
+                    <h1 className="exam-flow-title">
+                        {meta.title}
+                        <ExamProgressBadge examSlug={meta.lessonSlug} totalChecklist={8} />
+                    </h1>
                     <p className="exam-flow-lead">{meta.description}</p>
                 </div>
                 <div className="exam-flow-header-meta">

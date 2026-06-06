@@ -4,6 +4,7 @@ import { Logo } from "@/components/navigation/Logo";
 import { Footer } from "@/components/sections/Footer";
 import { ParallaxLayers } from "@/components/ui/ParallaxLayers";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { SearchPalette } from "@/components/SearchPalette";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -81,6 +82,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <ScrollProgress />
                 <ParallaxLayers />
                 <Logo />
+                <SearchPalette />
                 <main className="page-transition">{children}</main>
                 <Footer />
             </body>

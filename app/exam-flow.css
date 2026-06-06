@@ -1273,3 +1273,71 @@
         justify-self: start;
     }
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   Progress badge w header (ExamProgressBadge)
+   Scope ogolny - dziala dla wszystkich 53 egzaminow
+   ───────────────────────────────────────────────────────────── */
+.exam-lesson-page .exam-progress-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    margin-left: 0.75em;
+    padding: 0.2em 0.7em;
+    font-family: var(--ef-font-mono);
+    font-size: 0.6em;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 999px;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+.exam-lesson-page .exam-progress-badge.is-progress {
+    background: rgba(251, 191, 36, 0.12);
+    color: #FBBF24;
+    border-color: rgba(251, 191, 36, 0.32);
+}
+.exam-lesson-page .exam-progress-badge.is-done {
+    background: rgba(74, 222, 128, 0.12);
+    color: #4ADE80;
+    border-color: rgba(74, 222, 128, 0.32);
+}
+
+/* Print: ukryj niepotrzebne elementy */
+@media print {
+    .exam-flow-aside,
+    .exam-flow-stepnav,
+    .exam-flow-infopanel,
+    .exam-flow-progress,
+    .exam-flow-breadcrumb,
+    .exam-page-topbar,
+    .lesson-sidebar,
+    .scroll-progress,
+    .drawer-shell,
+    .drawer-backdrop,
+    .page-transition,
+    header.site-header,
+    footer.site-footer,
+    nav.main-nav {
+        display: none !important;
+    }
+    .exam-flow,
+    .exam-lesson-page,
+    .lesson-page {
+        background: white !important;
+        color: black !important;
+    }
+    .exam-flow-stage-content {
+        max-width: 100% !important;
+    }
+    a {
+        color: black !important;
+        text-decoration: underline;
+    }
+    .exam-flow-title {
+        color: black !important;
+    }
+}
