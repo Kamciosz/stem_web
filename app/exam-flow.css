@@ -1460,3 +1460,120 @@
         transition: none;
     }
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   Breadcrumbs (visual)
+   ───────────────────────────────────────────────────────────── */
+.exam-lesson-page .breadcrumbs {
+    margin-bottom: 1.2em;
+    font-family: var(--ef-font-mono);
+    font-size: 0.75rem;
+    color: var(--ef-muted);
+}
+.exam-lesson-page .breadcrumbs-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    align-items: center;
+}
+.exam-lesson-page .breadcrumbs-item {
+    display: inline-flex;
+    align-items: center;
+}
+.exam-lesson-page .breadcrumbs-link {
+    color: var(--ef-muted);
+    text-decoration: none;
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+}
+.exam-lesson-page .breadcrumbs-link:hover {
+    color: var(--ef-text);
+    background: rgba(124, 58, 237, 0.1);
+}
+.exam-lesson-page .breadcrumbs-current {
+    color: var(--ef-text);
+    padding: 0.15em 0.4em;
+    font-weight: 500;
+}
+.exam-lesson-page .breadcrumbs-sep {
+    color: rgba(139, 92, 246, 0.4);
+    margin: 0 0.1em;
+    user-select: none;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   StageNav (prev / next)
+   ───────────────────────────────────────────────────────────── */
+.exam-lesson-page .stage-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8em;
+    margin-top: clamp(24px, 4vw, 40px);
+    padding-top: clamp(20px, 3vw, 32px);
+    border-top: 1px solid rgba(139, 92, 246, 0.18);
+}
+.exam-lesson-page .stage-nav-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+    padding: 1em 1.2em;
+    background: rgba(13, 10, 20, 0.4);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--ef-text);
+    transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.exam-lesson-page .stage-nav-card:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(124, 58, 237, 0.1);
+    transform: translateY(-1px);
+}
+.exam-lesson-page .stage-nav-next {
+    text-align: right;
+    align-items: flex-end;
+}
+.exam-lesson-page .stage-nav-done {
+    text-align: right;
+    align-items: flex-end;
+    background: rgba(74, 222, 128, 0.06);
+    border-color: rgba(74, 222, 128, 0.32);
+}
+.exam-lesson-page .stage-nav-kicker {
+    font-family: var(--ef-font-mono);
+    font-size: 0.7rem;
+    color: #a78bfa;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+.exam-lesson-page .stage-nav-done .stage-nav-kicker {
+    color: #4ADE80;
+}
+.exam-lesson-page .stage-nav-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ef-text);
+}
+.exam-lesson-page .stage-nav-summary {
+    font-size: 0.8rem;
+    color: var(--ef-muted);
+}
+.exam-lesson-page .stage-nav-empty {
+    display: block;
+}
+@media (max-width: 560px) {
+    .exam-lesson-page .stage-nav {
+        grid-template-columns: 1fr;
+    }
+    .exam-lesson-page .stage-nav-next,
+    .exam-lesson-page .stage-nav-done {
+        text-align: left;
+        align-items: flex-start;
+    }
+}

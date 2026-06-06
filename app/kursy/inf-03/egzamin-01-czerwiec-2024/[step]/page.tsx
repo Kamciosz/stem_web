@@ -4,6 +4,8 @@ import { examMeta, examSteps, getStepBySlug } from "@/lib/exams/inf-03-egzamin-0
 import { ExamFlowStagePageGeneric } from "@/components/courses/examflow/ExamFlowStagePageGeneric";
 import { RelatedExams } from "@/components/courses/examflow/RelatedExams";
 import { StageScrollProgress } from "@/components/courses/examflow/StageScrollProgress";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { StageNav } from "@/components/courses/examflow/StageNav";
 
 type StagePageProps = { params: Promise<{ step: string }>; };
 export const dynamic = "force-static";
@@ -116,6 +118,7 @@ export default async function ExamStagePage({ params }: StagePageProps) {
                         >
                             <Content />
                         </ExamFlowStagePageGeneric>
+                        <StageNav steps={stepViews} currentSlug={step.slug} basePath={basePath} />
                         <div className="exam-flow-related-wrap">
                             <RelatedExams
                                 current={{
