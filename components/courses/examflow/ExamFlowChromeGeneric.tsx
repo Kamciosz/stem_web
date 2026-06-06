@@ -11,6 +11,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 import { useExamProgress } from "./useExamProgressGlobal";
+import { StepNotes } from "./StepNotes";
 import type { ExamStepView } from "@/lib/exams/inf-03-egzamin-01";
 
 type LocalStepView = {
