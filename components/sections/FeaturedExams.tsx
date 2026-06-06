@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getExamIndex } from "@/lib/exam-index";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 
-const SESSIONS_PROMO = ["styczen-2026", "styczen-2025", "czerwiec-2025"];
+const SESSIONS_PROMO = ["Styczen 2026", "Styczen 2025", "Czerwiec 2025"];
 
 export function FeaturedExams() {
     const all = getExamIndex();
