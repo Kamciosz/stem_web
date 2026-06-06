@@ -6,6 +6,7 @@ import { RelatedExams } from "@/components/courses/examflow/RelatedExams";
 import { StageScrollProgress } from "@/components/courses/examflow/StageScrollProgress";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { StageNav } from "@/components/courses/examflow/StageNav";
+import { ExamQuickQuiz } from "@/components/courses/examflow/ExamQuickQuiz";
 
 type StagePageProps = { params: Promise<{ step: string }>; };
 export const dynamic = "force-static";
@@ -118,6 +119,20 @@ export default async function ExamStagePage({ params }: StagePageProps) {
                         >
                             <Content />
                         </ExamFlowStagePageGeneric>
+                        <ExamQuickQuiz
+                            meta={{
+                                title: examMeta.title,
+                                examId: examMeta.examId,
+                                session: examMeta.session,
+                                topic: examMeta.topic,
+                                description: examMeta.description,
+                                technologies: examMeta.technologies,
+                                scoreTarget: examMeta.scoreTarget,
+                                scoringTotal: examMeta.scoringTotal,
+                                time: examMeta.time,
+                                rule: examMeta.rule,
+                            }}
+                        />
                         <StageNav steps={stepViews} currentSlug={step.slug} basePath={basePath} />
                         <div className="exam-flow-related-wrap">
                             <RelatedExams

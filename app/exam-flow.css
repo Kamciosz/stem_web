@@ -1577,3 +1577,25 @@
         align-items: flex-start;
     }
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   ExamQuickQuiz
+   ───────────────────────────────────────────────────────────── */
+.exam-lesson-page .exam-quick-quiz {
+    margin-top: clamp(28px, 4vw, 48px);
+    padding-top: clamp(20px, 3vw, 32px);
+    border-top: 1px solid rgba(139, 92, 246, 0.18);
+}
+.exam-lesson-page .exam-quick-quiz-title {
+    font-family: var(--ef-font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--ef-text);
+    margin: 0 0 0.3em;
+}
+.exam-lesson-page .exam-quick-quiz-lead {
+    color: var(--ef-muted);
+    font-size: 0.85rem;
+    margin: 0 0 1.2em;
+}
