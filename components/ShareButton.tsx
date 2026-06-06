@@ -24,9 +24,13 @@ export function ShareButton({
             ? `${window.location.origin}${url}`
             : url;
 
-        if (typeof navigator !== "undefined" && "share" in navigator) {
+        const nav = (typeof navigator !== "undefined" ? navigator : null) as
+            | (Navigator & { clipboard?: { writeText: (s: string) => Promise<void> } })
+            | null;
+
+        if (nav && "share" in nav && typeof (nav as Navigator & { share?: unknown }).share === "function") {
             try {
-                await (navigator as Navigator & { share: (data: { title: string; url: string }) => Promise<void> }).share({
+                await (nav as Navigator & { share: (data: { title: string; url: string }) => Promise<void> }).share({
                     title,
                     url: fullUrl,
                 });
@@ -36,19 +40,17 @@ export function ShareButton({
                     setMsg("Blad share");
                 }
             }
-        } else {
+        } else if (nav?.clipboard) {
             // Fallback - copy to clipboard
             try {
-                if (typeof navigator !== "undefined" && navigator.clipboard) {
-                    await navigator.clipboard.writeText(fullUrl);
-                    setMsg("Link skopiowany do schowka");
-                    setTimeout(() => setMsg(null), 2500);
-                } else {
-                    setMsg("Brak clipboard API");
-                }
+                await nav.clipboard.writeText(fullUrl);
+                setMsg("Link skopiowany do schowka");
+                setTimeout(() => setMsg(null), 2500);
             } catch {
                 setMsg("Nie udalo sie skopiowac");
             }
+        } else {
+            setMsg("Brak share ani clipboard API");
         }
     }
 
