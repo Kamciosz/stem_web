@@ -15,6 +15,7 @@ import {
 import { useScrollMemory } from "./useScrollMemory";
 import { trackRecent } from "./RecentlyVisited";
 import { ShareButton } from "@/components/ShareButton";
+import { PrintButton } from "@/components/PrintButton";
 import { TableOfContents } from "@/components/TableOfContents";
 
 type StepView = {
@@ -129,7 +130,10 @@ function ExamFlowHeaderGeneric({
                             <dd>{step.technologies.join(" · ")}</dd>
                         </div>
                     </dl>
-                    <ShareButton title={`${meta.title} - ${step.label}`} url={`${basePath}/${step.slug}`} className="share-button-header" />
+                    <div className="exam-flow-header-actions">
+                        <ShareButton title={`${meta.title} - ${step.label}`} url={`${basePath}/${step.slug}`} className="share-button-header" />
+                        <PrintButton label="Drukuj" className="print-button-header" />
+                    </div>
                 </div>
             </div>
         </header>
