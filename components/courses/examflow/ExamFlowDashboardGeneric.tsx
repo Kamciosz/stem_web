@@ -16,6 +16,7 @@ import {
     ExamFlowStepNavGeneric,
     ExamFlowInfoPanelGeneric,
 } from "./ExamFlowChromeGeneric";
+import { ExamImagePreview } from "./ExamImagePreview";
 import { ExamProgressBadge } from "./ExamProgressBadge";
 import { RevealOnScroll } from "./RevealOnScroll";
 import { trackRecent } from "./RecentlyVisited";
@@ -148,10 +149,7 @@ export function ExamFlowDashboardGeneric({ meta, steps, strategy, materials, bas
                                 <div className="exam-flow-materials-thumbs">
                                     {materials.files.map((file) => (
                                         <figure key={file.src}>
-                                            <a href={file.src} target="_blank" rel="noopener noreferrer">
-                                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                <img src={file.src} alt={file.alt} loading="lazy" />
-                                            </a>
+                                            <ExamImagePreview src={file.src} alt={file.alt} title={file.title} />
                                             <figcaption>
                                                 <strong>{file.title}</strong>
                                                 <span>{file.caption}</span>
@@ -160,10 +158,7 @@ export function ExamFlowDashboardGeneric({ meta, steps, strategy, materials, bas
                                     ))}
                                 </div>
                                 <figure className="exam-flow-materials-result">
-                                    <a href={materials.result.src} target="_blank" rel="noopener noreferrer">
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={materials.result.src} alt={materials.result.alt} loading="lazy" />
-                                    </a>
+                                    <ExamImagePreview src={materials.result.src} alt={materials.result.alt} title={materials.result.title} />
                                     <figcaption>
                                         <strong>{materials.result.title}</strong>
                                         <span>{materials.result.caption}</span>

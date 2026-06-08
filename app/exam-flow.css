@@ -399,28 +399,145 @@ main.page-transition > .exam-flow {
     border-radius: var(--ef-radius-md);
     overflow: hidden;
 }
-.exam-flow-materials-thumbs figure a,
-.exam-flow-materials-result a {
+.exam-image-preview {
+    position: relative;
     display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: var(--ef-bg);
     line-height: 0;
-    background: var(--ef-bg);
+    cursor: zoom-in;
+    overflow: hidden;
 }
-.exam-flow-materials-thumbs img {
+.exam-image-preview img {
+    display: block;
     width: 100%;
-    height: 100px;
-    object-fit: cover;
-    transition: opacity 0.15s ease;
-}
-.exam-flow-materials-result img {
-    width: 100%;
+    max-width: 100%;
     height: auto;
-    max-height: 480px;
-    object-fit: contain;
     background: var(--ef-bg);
+    transition: opacity 0.15s ease, transform 0.15s ease;
 }
-.exam-flow-materials-thumbs figure:hover img,
-.exam-flow-materials-result a:hover img {
-    opacity: 0.85;
+.exam-flow-materials-thumbs .exam-image-preview {
+    min-height: clamp(96px, 12vw, 150px);
+}
+.exam-flow-materials-thumbs .exam-image-preview img {
+    height: auto;
+    max-height: clamp(120px, 18vw, 190px);
+    object-fit: contain;
+}
+.exam-flow-materials-result .exam-image-preview img {
+    height: auto;
+    max-height: min(70vh, 720px);
+    object-fit: contain;
+}
+.exam-image-preview:hover img {
+    opacity: 0.92;
+    transform: scale(1.01);
+}
+.exam-image-preview-badge {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    padding: 5px 8px;
+    border: 1px solid var(--ef-border);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.72);
+    color: var(--ef-text);
+    font-family: var(--ef-font-mono);
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+.exam-image-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: clamp(10px, 2vw, 24px);
+}
+.exam-image-lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(0, 0, 0, 0.86);
+    cursor: zoom-out;
+}
+.exam-image-lightbox-panel {
+    position: relative;
+    z-index: 1;
+    width: min(96vw, 1320px);
+    height: min(92vh, 880px);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    border: 1px solid var(--ef-border);
+    border-radius: var(--ef-radius-lg);
+    background: #050505;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.65);
+}
+.exam-image-lightbox-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--ef-border);
+    background: rgba(255, 255, 255, 0.035);
+}
+.exam-image-lightbox-toolbar strong,
+.exam-image-lightbox-toolbar span {
+    display: block;
+    color: var(--ef-text);
+    font-family: var(--ef-font-mono);
+    font-size: 12px;
+}
+.exam-image-lightbox-toolbar span { color: var(--ef-dim); }
+.exam-image-lightbox-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.exam-image-lightbox-actions button,
+.exam-image-lightbox-actions a {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 10px;
+    border: 1px solid var(--ef-border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ef-text);
+    font-family: var(--ef-font-mono);
+    font-size: 11px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.exam-image-lightbox-actions button:hover,
+.exam-image-lightbox-actions a:hover {
+    border-color: var(--ef-accent);
+}
+.exam-image-lightbox-stage {
+    overflow: auto;
+    display: grid;
+    place-items: start center;
+    padding: clamp(12px, 2vw, 24px);
+}
+.exam-image-lightbox-stage img {
+    display: block;
+    max-width: min(100%, 1180px);
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+    transform-origin: top center;
+    transition: transform 0.12s ease;
 }
 .exam-flow-materials-thumbs figcaption,
 .exam-flow-materials-result figcaption {
@@ -1263,7 +1380,25 @@ main.page-transition > .exam-flow {
         -webkit-overflow-scrolling: touch;
     }
     .exam-flow-materials-thumbs figure {
-        flex: 0 0 clamp(120px, 20vw, 160px);
+        flex: 0 0 clamp(140px, 34vw, 220px);
+    }
+    .exam-flow-materials-thumbs .exam-image-preview {
+        min-height: clamp(96px, 24vw, 150px);
+    }
+}
+/* Lightbox mobile fallback */
+@media (max-width: 560px) {
+    .exam-image-lightbox-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .exam-image-lightbox-actions {
+        justify-content: flex-start;
+    }
+    .exam-image-lightbox-panel {
+        width: 100vw;
+        height: 100dvh;
+        border-radius: 0;
     }
 }
 

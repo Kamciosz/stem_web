@@ -9,6 +9,7 @@ import {
     ExamFlowStepNav,
 } from "./ExamFlowChrome";
 import { ExamFlowProvider } from "./ExamFlowContext";
+import { ExamImagePreview } from "./ExamImagePreview";
 
 /**
  * Dashboard egzaminu — entry point /kursy/inf-03/egzamin-XX-styczen-2026.
@@ -97,10 +98,7 @@ export function ExamFlowDashboard({ examData }: { examData: any }) {
                                 <div className="exam-flow-materials-thumbs">
                                     {examMaterials.files.map((file: any) => (
                                         <figure key={file.src}>
-                                            <a href={file.src} target="_blank" rel="noopener noreferrer">
-                                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                <img src={file.src} alt={file.alt} loading="lazy" />
-                                            </a>
+                                            <ExamImagePreview src={file.src} alt={file.alt} title={file.title} />
                                             <figcaption>
                                                 <strong>{file.title}</strong>
                                                 <span>{file.caption}</span>
@@ -109,10 +107,7 @@ export function ExamFlowDashboard({ examData }: { examData: any }) {
                                     ))}
                                 </div>
                                 <figure className="exam-flow-materials-result">
-                                    <a href={examMaterials.result.src} target="_blank" rel="noopener noreferrer">
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={examMaterials.result.src} alt={examMaterials.result.alt} loading="lazy" />
-                                    </a>
+                                    <ExamImagePreview src={examMaterials.result.src} alt={examMaterials.result.alt} title={examMaterials.result.title} />
                                     <figcaption>
                                         <strong>{examMaterials.result.title}</strong>
                                         <span>{examMaterials.result.caption}</span>
