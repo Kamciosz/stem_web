@@ -91,16 +91,6 @@ export function SearchPalette() {
 
     return (
         <>
-            <button
-                type="button"
-                className="search-palette-trigger"
-                onClick={() => setOpen(true)}
-                aria-label="Otworz wyszukiwarke egzaminow"
-            >
-                <span aria-hidden="true">⌘K</span>
-                <span className="search-palette-trigger-text">Szukaj egzaminu</span>
-            </button>
-
             {open && (
                 <div className="search-palette-backdrop" onClick={() => setOpen(false)} role="presentation">
                     <div
