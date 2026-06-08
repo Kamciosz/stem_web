@@ -1,5 +1,8 @@
 import createMDX from "@next/mdx";
 
+const isDev = process.env.NODE_ENV === "development";
+const cspScriptSrc = isDev ? "script-src 'self' 'unsafe-inline' 'unsafe-eval';" : "script-src 'self' 'unsafe-inline';";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
@@ -32,7 +35,7 @@ const nextConfig = {
                     {
                         key: "Content-Security-Policy",
                         value:
-                            "default-src 'self'; img-src 'self' https://images.unsplash.com data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';"
+                            `default-src 'self'; img-src 'self' https://images.unsplash.com data: blob:; style-src 'self' 'unsafe-inline'; ${cspScriptSrc} font-src 'self' data:; connect-src 'self' https://*.supabase.co; frame-ancestors 'none';`
                     }
                 ]
             }
