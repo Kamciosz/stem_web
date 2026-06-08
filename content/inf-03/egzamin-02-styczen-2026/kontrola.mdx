@@ -1,10 +1,36 @@
-# Kontrola
+{/*
+  Etap: kontrola przed oddaniem — INF.03-02 (Zdrowy bazarek).
+*/}
 
-> Treść w przygotowaniu. Zostanie uzupełniona szczegółowym przewodnikiem krok po kroku.
+<div className="exam-step-lead">
+  Ostatnie 15–20 minut to nie czas na dopisywanie dużych funkcji. To etap punktowania: usuwasz literówki, sprawdzasz ścieżki, formularze, zapytania i zgodność z poleceniem.
+</div>
 
-## Plan
+## Kontrola funkcjonalna
 
-1. Analiza wymagań
-2. Kod krok po kroku
-3. Najczęstsze błędy
-4. Punktacja
+- [ ] Strona startowa otwiera się bez błędów.
+- [ ] Formularze wysyłają dane metodą wymaganą w arkuszu.
+- [ ] Dane z bazy / plików są widoczne w miejscach opisanych w poleceniu.
+- [ ] Obliczenia, filtrowanie albo losowanie dają wynik, który da się wyjaśnić.
+- [ ] Po odświeżeniu strony aplikacja nie traci podstawowej funkcjonalności.
+
+## Kontrola plików
+
+- [ ] Nazwy plików są zgodne z arkuszem: `index.php`, `style.css`, obrazy, skrypty i pliki SQL.
+- [ ] Nie zostawiłeś duplikatów typu `index-kopia.php`, `nowy.css`, `test.php`.
+- [ ] Wszystkie obrazy użyte w HTML/CSS faktycznie istnieją w katalogu projektu.
+- [ ] Kod nie wskazuje na lokalne ścieżki z komputera, np. `C:\Users\...` albo `/Users/...`.
+
+<Callout type="exam" title="Za co bym obciął">
+
+Za rozwiązanie, które "działa u mnie", ale nie spełnia polecenia. W INF.03 liczy się zgodność z arkuszem: nazwy, układ, dane, wynik i pliki do oddania. Nie dopowiadaj wymagań, których nie ma.
+
+</Callout>
+
+## Kontrola SEO i czytelności notatki
+
+Ta strona jest materiałem do nauki, więc po rozwiązaniu zapamiętaj schemat: <strong>Zdrowy bazarek</strong> → dane wejściowe → logika aplikacji → CSS → kontrola. Tak samo analizuj kolejne arkusze INF.03.
+
+## Ostateczny werdykt
+
+Jeżeli masz mało czasu, popraw najpierw błędy blokujące punkty: brak połączenia z danymi, niedziałający formularz, zła nazwa pliku, brak wymaganego obrazka. Dopiero potem poprawiaj kosmetykę.
