@@ -1,42 +1,71 @@
-{/*
-  Etap: baza danych / dane wejściowe — INF.03-12 (Studio tatuażu).
-  Treść celowo w formacie case-study: wymagania → punkty → kontrola.
-*/}
+{/* Etap: baza danych / dane wejściowe — INF.03-12 (Studio tatuażu). */}
 
 <div className="exam-step-lead">
-  Zacznij od danych, bo bez poprawnych tabel, pól albo plików wejściowych reszta rozwiązania tylko udaje, że działa. W arkuszu INF.03-12 temat to <strong>Studio tatuażu</strong> — najpierw ustal, skąd aplikacja bierze dane i co egzaminator będzie sprawdzał.
+Ten etap ma nauczyć czytania arkusza przed pisaniem kodu. Najpierw ustalasz dane, tabele albo pliki wejściowe, potem zapytania. Kto zaczyna od CSS, ten zwykle kończy z ładną stroną, która nie spełnia polecenia.
 </div>
 
-## Co sprawdzasz w pierwszych 25 minutach
-
-- Czy arkusz wymaga importu bazy SQL, ręcznego utworzenia tabel, czy tylko pracy na danych z plików.
-- Jak nazywają się tabele, pola, obrazy i pliki — nazwy muszą być przepisane dokładnie.
-- Które dane mają być tylko wyświetlone, a które użyte w obliczeniach albo formularzu.
-- Czy relacje między tabelami wynikają z kluczy obcych, wspólnych identyfikatorów albo nazw plików.
-
-<Callout type="exam" title="Na egzaminie INF.03">
-
-Nie poprawiaj nazw tabel i pól "po swojemu". Jeżeli polecenie mówi `id_towar`, a w kodzie napiszesz `towar_id`, to problem nie jest kosmetyczny — zapytanie, formularz albo pętla PHP przestanie pasować do danych z arkusza.
-
+<Callout type="exam" title="Werdykt nauczyciela">
+Najpierw dowody, potem kod. W arkuszu INF.03-12 egzaminator nie ocenia twojej intuicji, tylko zgodność z wymaganiami: nazwy tabel, kolumn, plików, zapytań i wyników.
 </Callout>
 
-## Minimalna procedura pracy
+## Co rozwiązuje ten arkusz
 
-1. Otwórz pliki z arkusza i wypisz nazwy tabel, kolumn, obrazów oraz plików pomocniczych.
-2. Jeżeli jest skrypt SQL — zaimportuj go przed pisaniem PHP/JS.
-3. Uruchom każde zapytanie osobno w phpMyAdmin albo konsoli SQL.
-4. Dopiero potem przenoś zapytania do kodu aplikacji.
+Studio tatuażu — arkusz mieszany PHP+JS. Strona index.html z galerią miniatur, formularzem dodawania wzoru (input file + select + input number), skryptem JS tworzącym nowe elementy DOM. Własna czcionka Dancing Script z pliku. Efekt hover z transition na miniaturach.
 
-## Typowe straty punktów
+**Baza danych:** `studiotatuazu` — tabele: `tatauze` (id, wzor, kolor, cena, id_styl FK), `style` (id, nazwa).
 
-- Zapytanie działa tylko na Twoich testowych danych, ale nie na danych z arkusza.
-- Brakuje `WHERE`, `ORDER BY`, `LIMIT` albo warunku połączenia tabel.
-- W formularzu używasz innej wartości niż ta, której oczekuje zapytanie.
-- Obrazek lub plik ma literówkę w nazwie, więc layout wygląda jak uszkodzony.
+## Jak rozbić wymagania
 
-## Checklista etapu
+1. Wypisz dane wejściowe: baza, tabele, obrazy, formularze i pliki wynikowe.
+2. Oddziel rzeczy statyczne od dynamicznych. Statyczne robisz w HTML/CSS, dynamiczne w PHP albo JavaScript.
+3. Każde zapytanie uruchom osobno przed wklejeniem do kodu. Jeśli SQL nie działa w bazie, nie zacznie działać magicznie w PHP.
+4. Zachowaj nazwy z polecenia. Inna nazwa pliku, pola formularza albo tabeli to nie wariant — to błąd.
 
-- [ ] Dane z arkusza są w projekcie i mają niezmienione nazwy.
-- [ ] Każde zapytanie / źródło danych zostało sprawdzone przed podpięciem w kodzie.
-- [ ] Wiesz, które dane są wejściem formularza, a które wynikiem do wyświetlenia.
-- [ ] Nie ma zgadywania nazw pól — wszystko jest przepisane z arkusza.
+<Callout type="warning" title="Za co bym obciął">
+Za pisanie zapytań 'na oko', bez sprawdzenia wyniku. Za brak klucza obcego, złą nazwę kolumny, dopisanie sortowania którego nie było w poleceniu albo pominięcie ograniczenia LIMIT/WHERE.
+</Callout>
+
+## Zapytania SQL — gotowe rozwiązania
+
+### Zapytanie 1: czarne tatuaże powyżej 100 zł
+
+```sql
+SELECT wzor, cena FROM tatuaze
+WHERE kolor = 'czarny' AND cena > 100
+ORDER BY cena DESC;
+```
+
+### Zapytanie 2: liczba tatuaży wg koloru
+
+```sql
+SELECT kolor, COUNT(*) AS liczba FROM tatuaze
+GROUP BY kolor;
+```
+
+### Zapytanie 3: zielone tatuaże z nazwą stylu (JOIN)
+
+```sql
+SELECT t.wzor, s.nazwa
+FROM tatuaze t
+JOIN style s ON t.id_styl = s.id
+WHERE t.kolor = 'zielony';
+```
+
+### Zapytanie 4: podwyżka ceny o 10% dla czerwonych
+
+```sql
+UPDATE tatuaze SET cena = cena * 1.1
+WHERE kolor = 'czerwony';
+```
+
+<Callout type="exam">
+`UPDATE ... SET cena = cena * 1.1` — mnożenie przez 1.1 to podwyżka o 10%. Alternatywa: `cena + cena * 0.1`. Egzaminator sprawdza, czy cena naprawdę wzrosła (nie została nadpisana stałą wartością).
+</Callout>
+
+## Jak sprawdzić ten etap
+
+- wynik każdego zapytania ma dokładnie te kolumny, których żąda polecenie;
+- liczba rekordów zgadza się z warunkiem `LIMIT`, `WHERE` albo agregacją;
+- w zapytaniach z więcej niż jedną tabelą jest jawny warunek połączenia;
+- zapytanie modyfikujące dane nie wpisuje ręcznie wartości, które baza ma nadać automatycznie;
+- zrzuty ekranów/import bazy robisz dopiero po sprawdzeniu wyniku, nie przed.

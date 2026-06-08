@@ -1,42 +1,69 @@
-{/*
-  Etap: baza danych / dane wejściowe — INF.03-07 (Stacja meteorologiczna).
-  Treść celowo w formacie case-study: wymagania → punkty → kontrola.
-*/}
+{/* Etap: baza danych / dane wejściowe — INF.03-07 (Stacja meteorologiczna). */}
 
 <div className="exam-step-lead">
-  Zacznij od danych, bo bez poprawnych tabel, pól albo plików wejściowych reszta rozwiązania tylko udaje, że działa. W arkuszu INF.03-07 temat to <strong>Stacja meteorologiczna</strong> — najpierw ustal, skąd aplikacja bierze dane i co egzaminator będzie sprawdzał.
+Ten etap ma nauczyć czytania arkusza przed pisaniem kodu. Najpierw ustalasz dane, tabele albo pliki wejściowe, potem zapytania. Kto zaczyna od CSS, ten zwykle kończy z ładną stroną, która nie spełnia polecenia.
 </div>
 
-## Co sprawdzasz w pierwszych 25 minutach
-
-- Czy arkusz wymaga importu bazy SQL, ręcznego utworzenia tabel, czy tylko pracy na danych z plików.
-- Jak nazywają się tabele, pola, obrazy i pliki — nazwy muszą być przepisane dokładnie.
-- Które dane mają być tylko wyświetlone, a które użyte w obliczeniach albo formularzu.
-- Czy relacje między tabelami wynikają z kluczy obcych, wspólnych identyfikatorów albo nazw plików.
-
-<Callout type="exam" title="Na egzaminie INF.03">
-
-Nie poprawiaj nazw tabel i pól "po swojemu". Jeżeli polecenie mówi `id_towar`, a w kodzie napiszesz `towar_id`, to problem nie jest kosmetyczny — zapytanie, formularz albo pętla PHP przestanie pasować do danych z arkusza.
-
+<Callout type="exam" title="Werdykt nauczyciela">
+Najpierw dowody, potem kod. W arkuszu INF.03-07 egzaminator nie ocenia twojej intuicji, tylko zgodność z wymaganiami: nazwy tabel, kolumn, plików, zapytań i wyników.
 </Callout>
 
-## Minimalna procedura pracy
+## Co rozwiązuje ten arkusz
 
-1. Otwórz pliki z arkusza i wypisz nazwy tabel, kolumn, obrazów oraz plików pomocniczych.
-2. Jeżeli jest skrypt SQL — zaimportuj go przed pisaniem PHP/JS.
-3. Uruchom każde zapytanie osobno w phpMyAdmin albo konsoli SQL.
-4. Dopiero potem przenoś zapytania do kodu aplikacji.
+Witryna stacji meteorologicznej — tabela temperatur w lipcu z ikonami pogody (słońce/chmury/deszcz), odnośniki miesięcy z przekazywaniem id przez GET, obliczanie średniej temperatury.
 
-## Typowe straty punktów
+**Baza danych:** `pogoda` — tabele: `miejscowosc` (id, nazwa, kraj), `miesiace` (id, nazwa), `temperatura` (id, id_miejscowosc FK, id_miesiac FK, temp).
 
-- Zapytanie działa tylko na Twoich testowych danych, ale nie na danych z arkusza.
-- Brakuje `WHERE`, `ORDER BY`, `LIMIT` albo warunku połączenia tabel.
-- W formularzu używasz innej wartości niż ta, której oczekuje zapytanie.
-- Obrazek lub plik ma literówkę w nazwie, więc layout wygląda jak uszkodzony.
+## Jak rozbić wymagania
 
-## Checklista etapu
+1. Wypisz dane wejściowe: baza, tabele, obrazy, formularze i pliki wynikowe.
+2. Oddziel rzeczy statyczne od dynamicznych. Statyczne robisz w HTML/CSS, dynamiczne w PHP albo JavaScript.
+3. Każde zapytanie uruchom osobno przed wklejeniem do kodu. Jeśli SQL nie działa w bazie, nie zacznie działać magicznie w PHP.
+4. Zachowaj nazwy z polecenia. Inna nazwa pliku, pola formularza albo tabeli to nie wariant — to błąd.
 
-- [ ] Dane z arkusza są w projekcie i mają niezmienione nazwy.
-- [ ] Każde zapytanie / źródło danych zostało sprawdzone przed podpięciem w kodzie.
-- [ ] Wiesz, które dane są wejściem formularza, a które wynikiem do wyświetlenia.
-- [ ] Nie ma zgadywania nazw pól — wszystko jest przepisane z arkusza.
+<Callout type="warning" title="Za co bym obciął">
+Za pisanie zapytań 'na oko', bez sprawdzenia wyniku. Za brak klucza obcego, złą nazwę kolumny, dopisanie sortowania którego nie było w poleceniu albo pominięcie ograniczenia LIMIT/WHERE.
+</Callout>
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `pogoda`. Plik SQL: `pogoda.sql`.
+
+### Zapytanie 1: średnia temperatura dla miesiąca id=7
+
+```sql
+SELECT ROUND(AVG(temp), 2) AS srednia FROM temperatura
+WHERE id_miesiac = 7;
+```
+
+### Zapytanie 2: wstawienie nowej miejscowości
+
+```sql
+INSERT INTO miejscowosc (nazwa, kraj) VALUES ('Kijów', 'Ukraina');
+```
+
+### Zapytanie 3: miasta + temperatury w lipcu (JOIN)
+
+```sql
+SELECT m.nazwa, m.kraj, t.temp
+FROM miejscowosc m
+JOIN temperatura t ON m.id = t.id_miejscowosc
+WHERE t.id_miesiac = 7;
+```
+
+### Zapytanie 4: miesiące + średnie temperatury
+
+```sql
+SELECT mi.nazwa, AVG(t.temp) AS srednia
+FROM miesiace mi
+JOIN temperatura t ON mi.id = t.id_miesiac
+GROUP BY mi.id;
+```
+
+## Jak sprawdzić ten etap
+
+- wynik każdego zapytania ma dokładnie te kolumny, których żąda polecenie;
+- liczba rekordów zgadza się z warunkiem `LIMIT`, `WHERE` albo agregacją;
+- w zapytaniach z więcej niż jedną tabelą jest jawny warunek połączenia;
+- zapytanie modyfikujące dane nie wpisuje ręcznie wartości, które baza ma nadać automatycznie;
+- zrzuty ekranów/import bazy robisz dopiero po sprawdzeniu wyniku, nie przed.

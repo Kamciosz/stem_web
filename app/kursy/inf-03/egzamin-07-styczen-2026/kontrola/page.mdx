@@ -1,36 +1,68 @@
-{/*
-  Etap: kontrola przed oddaniem — INF.03-07 (Stacja meteorologiczna).
-*/}
+{/* Etap: kontrola przed oddaniem — INF.03-07 (Stacja meteorologiczna). */}
 
 <div className="exam-step-lead">
-  Ostatnie 15–20 minut to nie czas na dopisywanie dużych funkcji. To etap punktowania: usuwasz literówki, sprawdzasz ścieżki, formularze, zapytania i zgodność z poleceniem.
+Ostatnie 15–20 minut to nie czas na dopisywanie nowych funkcji. To kontrola strat. Weryfikator w złym humorze nie pyta, ile się napracowałeś. Pyta, czy wymaganie jest spełnione.
 </div>
 
-## Kontrola funkcjonalna
-
-- [ ] Strona startowa otwiera się bez błędów.
-- [ ] Formularze wysyłają dane metodą wymaganą w arkuszu.
-- [ ] Dane z bazy / plików są widoczne w miejscach opisanych w poleceniu.
-- [ ] Obliczenia, filtrowanie albo losowanie dają wynik, który da się wyjaśnić.
-- [ ] Po odświeżeniu strony aplikacja nie traci podstawowej funkcjonalności.
-
-## Kontrola plików
-
-- [ ] Nazwy plików są zgodne z arkuszem: `index.php`, `style.css`, obrazy, skrypty i pliki SQL.
-- [ ] Nie zostawiłeś duplikatów typu `index-kopia.php`, `nowy.css`, `test.php`.
-- [ ] Wszystkie obrazy użyte w HTML/CSS faktycznie istnieją w katalogu projektu.
-- [ ] Kod nie wskazuje na lokalne ścieżki z komputera, np. `C:\Users\...` albo `/Users/...`.
-
-<Callout type="exam" title="Za co bym obciął">
-
-Za rozwiązanie, które "działa u mnie", ale nie spełnia polecenia. W INF.03 liczy się zgodność z arkuszem: nazwy, układ, dane, wynik i pliki do oddania. Nie dopowiadaj wymagań, których nie ma.
-
+<Callout type="exam" title="Tryb egzaminatora">
+Otwórz arkusz, otwórz stronę, przechodź wymaganie po wymaganiu. Jeżeli nie umiesz wskazać miejsca w kodzie, które realizuje wymaganie, to prawdopodobnie nie masz za nie punktu.
 </Callout>
 
-## Kontrola SEO i czytelności notatki
+## Checklista techniczna
 
-Ta strona jest materiałem do nauki, więc po rozwiązaniu zapamiętaj schemat: <strong>Stacja meteorologiczna</strong> → dane wejściowe → logika aplikacji → CSS → kontrola. Tak samo analizuj kolejne arkusze INF.03.
+<ExamFlowChecklist
+  items={[
+    { label: "Baza/import jest wykonany, a zapytania dają wynik bez błędów." },
+    { label: "Nazwy plików i folderów są identyczne z poleceniem." },
+    { label: "Strona startowa otwiera się bez warningów PHP/JS." },
+    { label: "Formularze mają właściwą metodę i nazwy pól." },
+    { label: "Dane z bazy albo zdarzenia JavaScript faktycznie zmieniają treść strony." },
+    { label: "Obrazy mają poprawne ścieżki, rozmiary i formaty." },
+    { label: "CSS odtwarza makietę, a nie własny projekt." },
+    { label: "Kod nie zawiera testowych echo/console.log, które nie są częścią rozwiązania." },
+    { label: "Wynik po odświeżeniu strony jest powtarzalny i zgodny z wymaganiem." },
+    { label: "Ostatnie porównanie z arkuszem zrobiłeś punkt po punkcie." },
+  ]}
+/>
 
-## Ostateczny werdykt
+## Szybki test działania
 
-Jeżeli masz mało czasu, popraw najpierw błędy blokujące punkty: brak połączenia z danymi, niedziałający formularz, zła nazwa pliku, brak wymaganego obrazka. Dopiero potem poprawiaj kosmetykę.
+1. Uruchom stronę od zera, nie z otwartej wcześniej karty.
+2. Wykonaj czynność użytkownika z polecenia: wybór w formularzu, kliknięcie, najechanie, wpisanie liczby albo przejście po linku.
+3. Sprawdź, czy wynik pojawia się w tym samym miejscu, które wskazuje arkusz.
+4. Porównaj wygląd z makietą: nie ogólnie, tylko blok po bloku.
+5. Dopiero wtedy uznaj etap za skończony.
+
+<Callout type="warning" title="Za co bym obciął bez dyskusji">
+Za stronę, która działa tylko u autora, za błędne nazwy plików, za brak obrazów, za warningi PHP, za niedziałający formularz, za CSS niezgodny z makietą i za kod, który robi coś podobnego, ale nie to, co napisano w poleceniu.
+</Callout>
+
+## Omówienie punktacji
+
+<table className="exam-scoring-table">
+  <thead>
+    <tr><th>Element</th><th>Punkty</th><th>Na co patrzy egzaminator</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Operacje na bazie danych</td><td>~8 pkt</td><td>Import, 4 zapytania (ROUND, AVG, INSERT, JOIN)</td></tr>
+    <tr><td>Grafika</td><td>~4 pkt</td><td>3 ikony 100x100px z przezroczystością</td></tr>
+    <tr><td>Zawartość witryny</td><td>~4 pkt</td><td>Semantyka, 12 odnośników GET, tabela</td></tr>
+    <tr><td>Działanie witryny</td><td>~6 pkt</td><td>Skrypty 1-2, warunkowe ikony, średnia GET</td></tr>
+    <tr><td>Styl CSS</td><td>~4 pkt</td><td>Georgia, dashed border, hover zamiana kolorów</td></tr>
+    <tr><td>Skrypt połączenia</td><td>~4 pkt</td><td>mysqli, close()</td></tr>
+  </tbody>
+</table>
+
+## Wnioski z tego arkusza
+
+1. **Warunkowe obrazy w tabeli** — na podstawie wartości z bazy wyświetlasz różne ikony. To łączy PHP (logika `if`) z HTML (generowanie `img`).
+
+2. **GET przez odnośniki** — 12 odnośników typu `index.php?miesiac=1`. Po kliknięciu PHP odczytuje `$_GET['miesiac']` i modyfikuje zapytanie. To klasyczny wzorzec "filtrowanie przez linki".
+
+3. **ROUND(AVG(), 2)** — zaokrąglenie średniej do 2 miejsc po przecinku. Bez ROUND wynik może mieć 10+ cyfr po przecinku.
+
+4. **Dwa headery obok siebie** — `display: inline-block` lub flex. Pierwszy 20% (logo), drugi 80% (tytuł). Na egzaminie pamiętaj, że `header` to element blokowy — domyślnie zajmuje 100% szerokości.
+
+## Decyzja końcowa
+
+Jeżeli po tej kontroli dalej masz wątpliwość, nie poprawiaj losowo. Wróć do konkretnego wymagania z arkusza i popraw tylko ten fragment. Losowe poprawki w ostatnich minutach psują działające punkty.

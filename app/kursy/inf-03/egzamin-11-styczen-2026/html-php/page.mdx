@@ -9,6 +9,19 @@ Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii.
 
 </Callout>
 
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, event JS albo CSS pod makietę.
+</Callout>
+
 ## O czym jest ten arkusz
 
 Portal kina z bazą aktorów i filmów (relacja n:m). Dwie strony: index.php (siatka aktorów z awatarami jako klikalny grid) i aktor.php (szczegóły aktora + lista filmów). 5 zapytań SQL.
@@ -204,13 +217,31 @@ a:hover {
 
 ## Omówienie punktacji
 
-| Element | Punkty | Na co patrzy egzaminator |
-|---------|--------|--------------------------|
-| Operacje na bazie danych | ~10 pkt | Import, 5 zapytań (JOIN n:m, GROUP BY, alias) |
-| Zawartość witryny | ~4 pkt | Obie strony, em/strong semantyczne, title na img |
-| Działanie witryny | ~6 pkt | 3 skrypty, GET, num_rows, komunikat warunkowy |
-| Styl CSS | ~6 pkt | Gill Sans MT/Calibri, border-radius 50%, inline-block |
-| Skrypt połączenia | ~4 pkt | mysqli, close() |
+<table className="exam-scoring-table">
+  <thead>
+    <tr><th>Element</th><th>Punkty</th><th>Na co patrzy egzaminator</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Operacje na bazie danych</td><td>~10 pkt</td><td>Import, 5 zapytań (JOIN n:m, GROUP BY, alias)</td></tr>
+    <tr><td>Zawartość witryny</td><td>~4 pkt</td><td>Obie strony, em/strong semantyczne, title na img</td></tr>
+    <tr><td>Działanie witryny</td><td>~6 pkt</td><td>3 skrypty, GET, num_rows, komunikat warunkowy</td></tr>
+    <tr><td>Styl CSS</td><td>~6 pkt</td><td>Gill Sans MT/Calibri, border-radius 50%, inline-block</td></tr>
+    <tr><td>Skrypt połączenia</td><td>~4 pkt</td><td>mysqli, close()</td></tr>
+  </tbody>
+</table>
+
+
+## Weryfikator w złym humorze
+
+Sprawdzałbym tę pracę tak:
+
+- czy pliki mają nazwy z polecenia, a nie twoje własne;
+- czy formularz wysyła dane właściwą metodą i do właściwego pliku;
+- czy PHP/JS uruchamia się dopiero wtedy, kiedy ma dane wejściowe;
+- czy wynik jest widoczny na stronie bez warningów w przeglądarce i bez błędów PHP;
+- czy kod realizuje dokładnie polecenie, a nie 'podobny efekt'.
+
+To jest miejsce, gdzie odpadają punkty za drobiazgi. Drobiazg w arkuszu to nadal wymaganie.
 
 ## Wnioski z tego arkusza
 

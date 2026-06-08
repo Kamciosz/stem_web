@@ -9,6 +9,19 @@ Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii.
 
 </Callout>
 
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, event JS albo CSS pod makietę.
+</Callout>
+
 ## O czym jest ten arkusz
 
 Studio tatuażu — arkusz mieszany PHP+JS. Strona index.html z galerią miniatur, formularzem dodawania wzoru (input file + select + input number), skryptem JS tworzącym nowe elementy DOM. Własna czcionka Dancing Script z pliku. Efekt hover z transition na miniaturach.
@@ -198,14 +211,32 @@ label {
 
 ## Omówienie punktacji
 
-| Element | Punkty | Na co patrzy egzaminator |
-|---------|--------|--------------------------|
-| Operacje na bazie danych | ~8 pkt | Import, 4 zapytania (UPDATE, JOIN, GROUP BY) |
-| Grafika | ~4 pkt | logo.png — kadr ptaka, litery ST, czcionka, 300px |
-| Zawartość witryny | ~4 pkt | Semantyka, input file accept PNG, label+for |
-| Działanie witryny | ~6 pkt | Skrypt JS: createElement, appendChild, alert |
-| Styl CSS | ~4 pkt | @font-face Dancing Script, transition 1s, hover |
-| Skrypt | ~4 pkt | split fakepath, DOM manipulation |
+<table className="exam-scoring-table">
+  <thead>
+    <tr><th>Element</th><th>Punkty</th><th>Na co patrzy egzaminator</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Operacje na bazie danych</td><td>~8 pkt</td><td>Import, 4 zapytania (UPDATE, JOIN, GROUP BY)</td></tr>
+    <tr><td>Grafika</td><td>~4 pkt</td><td>logo.png — kadr ptaka, litery ST, czcionka, 300px</td></tr>
+    <tr><td>Zawartość witryny</td><td>~4 pkt</td><td>Semantyka, input file accept PNG, label+for</td></tr>
+    <tr><td>Działanie witryny</td><td>~6 pkt</td><td>Skrypt JS: createElement, appendChild, alert</td></tr>
+    <tr><td>Styl CSS</td><td>~4 pkt</td><td>@font-face Dancing Script, transition 1s, hover</td></tr>
+    <tr><td>Skrypt</td><td>~4 pkt</td><td>split fakepath, DOM manipulation</td></tr>
+  </tbody>
+</table>
+
+
+## Weryfikator w złym humorze
+
+Sprawdzałbym tę pracę tak:
+
+- czy pliki mają nazwy z polecenia, a nie twoje własne;
+- czy formularz wysyła dane właściwą metodą i do właściwego pliku;
+- czy PHP/JS uruchamia się dopiero wtedy, kiedy ma dane wejściowe;
+- czy wynik jest widoczny na stronie bez warningów w przeglądarce i bez błędów PHP;
+- czy kod realizuje dokładnie polecenie, a nie 'podobny efekt'.
+
+To jest miejsce, gdzie odpadają punkty za drobiazgi. Drobiazg w arkuszu to nadal wymaganie.
 
 ## Wnioski z tego arkusza
 

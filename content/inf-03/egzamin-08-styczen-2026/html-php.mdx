@@ -9,6 +9,19 @@ Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii.
 
 </Callout>
 
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, event JS albo CSS pod makietę.
+</Callout>
+
 ## O czym jest ten arkusz
 
 Portal turystyczny Korony Gór Polskich — dwie strony PHP. index.php z odnośnikami do szczytów (skrypt 1) i miniaturami zdjęć (skrypt 2). szczyty.php z detalami szczytu (skrypt 3). Własna czcionka Lato z pliku. Efekt nth-child na span.
@@ -187,14 +200,32 @@ span:nth-child(9), span:nth-child(25) { font-size: 160%; }
 
 ## Omówienie punktacji
 
-| Element | Punkty | Na co patrzy egzaminator |
-|---------|--------|--------------------------|
-| Operacje na bazie danych | ~8 pkt | Import, 4 zapytania (JOIN, LIKE, ORDER BY DESC) |
-| Grafika | ~4 pkt | logo.png — przezroczystość, kadr, skalowanie |
-| Zawartość witryny | ~4 pkt | Obie strony, 2 headery+2 footery, email mailto |
-| Działanie witryny | ~6 pkt | Skrypty 1-3, GET, miniatury z klasą |
-| Styl CSS | ~4 pkt | @font-face Lato, nth-child, overflow:hidden |
-| Skrypt połączenia | ~4 pkt | mysqli, close() |
+<table className="exam-scoring-table">
+  <thead>
+    <tr><th>Element</th><th>Punkty</th><th>Na co patrzy egzaminator</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Operacje na bazie danych</td><td>~8 pkt</td><td>Import, 4 zapytania (JOIN, LIKE, ORDER BY DESC)</td></tr>
+    <tr><td>Grafika</td><td>~4 pkt</td><td>logo.png — przezroczystość, kadr, skalowanie</td></tr>
+    <tr><td>Zawartość witryny</td><td>~4 pkt</td><td>Obie strony, 2 headery+2 footery, email mailto</td></tr>
+    <tr><td>Działanie witryny</td><td>~6 pkt</td><td>Skrypty 1-3, GET, miniatury z klasą</td></tr>
+    <tr><td>Styl CSS</td><td>~4 pkt</td><td>@font-face Lato, nth-child, overflow:hidden</td></tr>
+    <tr><td>Skrypt połączenia</td><td>~4 pkt</td><td>mysqli, close()</td></tr>
+  </tbody>
+</table>
+
+
+## Weryfikator w złym humorze
+
+Sprawdzałbym tę pracę tak:
+
+- czy pliki mają nazwy z polecenia, a nie twoje własne;
+- czy formularz wysyła dane właściwą metodą i do właściwego pliku;
+- czy PHP/JS uruchamia się dopiero wtedy, kiedy ma dane wejściowe;
+- czy wynik jest widoczny na stronie bez warningów w przeglądarce i bez błędów PHP;
+- czy kod realizuje dokładnie polecenie, a nie 'podobny efekt'.
+
+To jest miejsce, gdzie odpadają punkty za drobiazgi. Drobiazg w arkuszu to nadal wymaganie.
 
 ## Wnioski z tego arkusza
 

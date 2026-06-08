@@ -96,10 +96,10 @@ export const examSteps: ExamStep[] = [
 ];
 
 export const examStrategy = [
-    { time: "0–25 min", title: "SQL", body: "Zapytania do bazy.", tag: "łatwe punkty" },
-    { time: "25–90 min", title: "PHP i baza", body: "Logika i wyświetlanie.", tag: "główna część" },
-    { time: "90–130 min", title: "CSS", body: "Odtworzenie makiety.", tag: "dopięcie" },
-    { time: "130–150 min", title: "Kontrola", body: "Weryfikacja punkt po punkcie.", tag: "ostatnie punkty" },
+    { time: "0–25 min", title: "Analiza i SQL", body: "Rozpisz dane wejściowe, sprawdź zapytania albo wymagane pliki.", tag: "łatwe punkty" },
+    { time: "25–90 min", title: "PHP i baza", body: "Połączenie, charset, pętle, formularze, obliczenia i zapis danych.", tag: "główna część" },
+    { time: "90–130 min", title: "CSS pod makietę", body: "Odtwarzaj polecenie: fonty, kolory, układ, obrazy i formularze.", tag: "dopięcie" },
+    { time: "130–150 min", title: "Kontrola", body: "Porównaj wymagania, działanie i wygląd punkt po punkcie.", tag: "ostatnie punkty" },
 ];
 
 export function getStepBySlug(slug: string): ExamStep | undefined {
@@ -113,20 +113,33 @@ export function toExamStepView(step: ExamStep): ExamStepView {
     return view;
 }
 
-/** Materialy z arkusza — placeholder */
+/** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
-    files: [],
+    files: [
+        { src: "/img/egzaminy/e12-obraz1.jpg", alt: "e12-obraz1.jpg — materiał arkusza INF.03-12", title: "e12-obraz1.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-obraz2.png", alt: "e12-obraz2.png — materiał arkusza INF.03-12", title: "e12-obraz2.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-obraz3.png", alt: "e12-obraz3.png — materiał arkusza INF.03-12", title: "e12-obraz3.png", caption: "materiał z arkusza" },
+    ],
     result: {
-        src: "/img/placeholder.png",
-        alt: "Makieta końcowa",
-        title: "Makieta końcowa",
-        caption: "wkrótce",
+        src: "/img/egzaminy/e12-kw4.png",
+        alt: "Makieta lub wynik końcowy INF.03-12 — Studio tatuażu",
+        title: "e12-kw4.png",
+        caption: "porównaj z własnym rozwiązaniem",
     },
 } as const;
 
-/** Krotki blok strategii — placeholder */
-
-/** Pelna checklista — placeholder */
-export const examChecklistKeys = [] as const;
+/** Pelna checklista — uzywana na podstronie Kontrola i jako summary na dashboardzie. */
+export const examChecklistKeys = [
+    "sql-zapytania",
+    "php-polaczenie",
+    "utf8",
+    "petle",
+    "formularz-post",
+    "obliczenia-lub-insert",
+    "obrazy-sciezki",
+    "css-makieta",
+    "brak-warningow",
+    "makieta-zgodna",
+] as const;
 
 export const examFlowBasePath = `/kursy/${examMeta.courseId}/${examMeta.lessonSlug}`;

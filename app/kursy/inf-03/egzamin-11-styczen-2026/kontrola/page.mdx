@@ -1,36 +1,69 @@
-{/*
-  Etap: kontrola przed oddaniem — INF.03-11 (KinoTEKA).
-*/}
+{/* Etap: kontrola przed oddaniem — INF.03-11 (KinoTEKA). */}
 
 <div className="exam-step-lead">
-  Ostatnie 15–20 minut to nie czas na dopisywanie dużych funkcji. To etap punktowania: usuwasz literówki, sprawdzasz ścieżki, formularze, zapytania i zgodność z poleceniem.
+Ostatnie 15–20 minut to nie czas na dopisywanie nowych funkcji. To kontrola strat. Weryfikator w złym humorze nie pyta, ile się napracowałeś. Pyta, czy wymaganie jest spełnione.
 </div>
 
-## Kontrola funkcjonalna
-
-- [ ] Strona startowa otwiera się bez błędów.
-- [ ] Formularze wysyłają dane metodą wymaganą w arkuszu.
-- [ ] Dane z bazy / plików są widoczne w miejscach opisanych w poleceniu.
-- [ ] Obliczenia, filtrowanie albo losowanie dają wynik, który da się wyjaśnić.
-- [ ] Po odświeżeniu strony aplikacja nie traci podstawowej funkcjonalności.
-
-## Kontrola plików
-
-- [ ] Nazwy plików są zgodne z arkuszem: `index.php`, `style.css`, obrazy, skrypty i pliki SQL.
-- [ ] Nie zostawiłeś duplikatów typu `index-kopia.php`, `nowy.css`, `test.php`.
-- [ ] Wszystkie obrazy użyte w HTML/CSS faktycznie istnieją w katalogu projektu.
-- [ ] Kod nie wskazuje na lokalne ścieżki z komputera, np. `C:\Users\...` albo `/Users/...`.
-
-<Callout type="exam" title="Za co bym obciął">
-
-Za rozwiązanie, które "działa u mnie", ale nie spełnia polecenia. W INF.03 liczy się zgodność z arkuszem: nazwy, układ, dane, wynik i pliki do oddania. Nie dopowiadaj wymagań, których nie ma.
-
+<Callout type="exam" title="Tryb egzaminatora">
+Otwórz arkusz, otwórz stronę, przechodź wymaganie po wymaganiu. Jeżeli nie umiesz wskazać miejsca w kodzie, które realizuje wymaganie, to prawdopodobnie nie masz za nie punktu.
 </Callout>
 
-## Kontrola SEO i czytelności notatki
+## Checklista techniczna
 
-Ta strona jest materiałem do nauki, więc po rozwiązaniu zapamiętaj schemat: <strong>KinoTEKA</strong> → dane wejściowe → logika aplikacji → CSS → kontrola. Tak samo analizuj kolejne arkusze INF.03.
+<ExamFlowChecklist
+  items={[
+    { label: "Baza/import jest wykonany, a zapytania dają wynik bez błędów." },
+    { label: "Nazwy plików i folderów są identyczne z poleceniem." },
+    { label: "Strona startowa otwiera się bez warningów PHP/JS." },
+    { label: "Formularze mają właściwą metodę i nazwy pól." },
+    { label: "Dane z bazy albo zdarzenia JavaScript faktycznie zmieniają treść strony." },
+    { label: "Obrazy mają poprawne ścieżki, rozmiary i formaty." },
+    { label: "CSS odtwarza makietę, a nie własny projekt." },
+    { label: "Kod nie zawiera testowych echo/console.log, które nie są częścią rozwiązania." },
+    { label: "Wynik po odświeżeniu strony jest powtarzalny i zgodny z wymaganiem." },
+    { label: "Ostatnie porównanie z arkuszem zrobiłeś punkt po punkcie." },
+  ]}
+/>
 
-## Ostateczny werdykt
+## Szybki test działania
 
-Jeżeli masz mało czasu, popraw najpierw błędy blokujące punkty: brak połączenia z danymi, niedziałający formularz, zła nazwa pliku, brak wymaganego obrazka. Dopiero potem poprawiaj kosmetykę.
+1. Uruchom stronę od zera, nie z otwartej wcześniej karty.
+2. Wykonaj czynność użytkownika z polecenia: wybór w formularzu, kliknięcie, najechanie, wpisanie liczby albo przejście po linku.
+3. Sprawdź, czy wynik pojawia się w tym samym miejscu, które wskazuje arkusz.
+4. Porównaj wygląd z makietą: nie ogólnie, tylko blok po bloku.
+5. Dopiero wtedy uznaj etap za skończony.
+
+<Callout type="warning" title="Za co bym obciął bez dyskusji">
+Za stronę, która działa tylko u autora, za błędne nazwy plików, za brak obrazów, za warningi PHP, za niedziałający formularz, za CSS niezgodny z makietą i za kod, który robi coś podobnego, ale nie to, co napisano w poleceniu.
+</Callout>
+
+## Omówienie punktacji
+
+<table className="exam-scoring-table">
+  <thead>
+    <tr><th>Element</th><th>Punkty</th><th>Na co patrzy egzaminator</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Operacje na bazie danych</td><td>~10 pkt</td><td>Import, 5 zapytań (JOIN n:m, GROUP BY, alias)</td></tr>
+    <tr><td>Zawartość witryny</td><td>~4 pkt</td><td>Obie strony, em/strong semantyczne, title na img</td></tr>
+    <tr><td>Działanie witryny</td><td>~6 pkt</td><td>3 skrypty, GET, num_rows, komunikat warunkowy</td></tr>
+    <tr><td>Styl CSS</td><td>~6 pkt</td><td>Gill Sans MT/Calibri, border-radius 50%, inline-block</td></tr>
+    <tr><td>Skrypt połączenia</td><td>~4 pkt</td><td>mysqli, close()</td></tr>
+  </tbody>
+</table>
+
+## Wnioski z tego arkusza
+
+1. **Relacja n:m aktorzy-filmy** — identyczny wzorzec jak w arkuszu 06 (choroby-objawy) i 10 (potrawy-alergeny). JOIN przez tabelę łączącą to must-know na INF.03.
+
+2. **mysqli_num_rows()** — sprawdzenie, czy zapytanie zwróciło wyniki. Bez tego warunkowy komunikat nie zadziała. Funkcja rzadko pojawia się w innych arkuszach.
+
+3. **Cały div jako odnośnik** — `a` owijające `div` to poprawny HTML5 (ale nie HTML4). Na egzaminie INF.03 piszesz HTML5, więc jest OK.
+
+4. **border-radius: 50%** — okrągłe awatary. To samo co `border-radius: 100%` z arkusza 09 — oba dają koło na kwadratowym elemencie.
+
+5. **5 zapytań + 3 skrypty** — dużo pracy na 150 minut. Zacznij od bazy i SQL (szybkie punkty), potem HTML/CSS, na końcu skrypty PHP.
+
+## Decyzja końcowa
+
+Jeżeli po tej kontroli dalej masz wątpliwość, nie poprawiaj losowo. Wróć do konkretnego wymagania z arkusza i popraw tylko ten fragment. Losowe poprawki w ostatnich minutach psują działające punkty.
