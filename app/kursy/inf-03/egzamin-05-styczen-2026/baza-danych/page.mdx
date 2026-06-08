@@ -65,6 +65,30 @@ VALUES (1, 14, CURDATE());
 `CURDATE()` wstawia aktualną datę (format YYYY-MM-DD). Egzaminator sprawdza, czy użyłeś funkcji a nie wpisałeś datę na sztywno.
 </Callout>
 
+## Jak myśli egzaminator przy danych
+
+Egzaminator nie szuka pięknego opisu bazy. Szuka dowodu, że rozumiesz zależność między poleceniem a kodem:
+
+- jeśli polecenie wymaga listy z bazy, musi istnieć zapytanie zwracające dokładnie te pola;
+- jeśli wynik ma być ograniczony, w SQL musi być warunek albo `LIMIT`, a nie ręczne ukrywanie danych w HTML;
+- jeśli dane pochodzą z formularza, nazwa pola formularza musi zgadzać się z tym, co później czyta PHP albo JavaScript;
+- jeśli arkusz wymaga zapisu danych, `INSERT` ma dopisywać rekord do właściwej tabeli, bez ręcznego wymuszania klucza głównego;
+- jeśli arkusz nie ma klasycznej bazy, 'danymi' są pliki, nazwy funkcji, identyfikatory i parametry z polecenia.
+
+<Callout type="exam" title="Test zrozumienia">
+Po tym etapie powinieneś umieć powiedzieć jednym zdaniem: „Ten arkusz pobiera dane stąd, przetwarza je tak, a wynik pokazuje tutaj”. Jeżeli nie umiesz, to jeszcze nie rozwiązałeś zadania — tylko przepisałeś fragmenty.
+</Callout>
+
+## Minimalny dowód poprawności
+
+Przed przejściem do następnego etapu zrób trzy rzeczy:
+
+1. Uruchom każde zapytanie albo sprawdź każdy plik wejściowy osobno.
+2. Zanotuj, który fragment strony korzysta z którego wyniku.
+3. Wskaż miejsce, gdzie może polecieć punkt: zła nazwa pola, zły typ danych, brak relacji, brak warunku albo zła ścieżka pliku.
+
+To jest nudne, ale działa. Losowe pisanie kodu bez tej mapy kończy się debugowaniem wszystkiego naraz.
+
 ## Jak sprawdzić ten etap
 
 - wynik każdego zapytania ma dokładnie te kolumny, których żąda polecenie;

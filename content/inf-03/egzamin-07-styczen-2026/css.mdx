@@ -96,6 +96,23 @@ Weryfikator nie czyta twoich intencji. Patrzy na efekt i wymagania:
 
 Jeżeli któryś punkt jest „prawie”, to jest do poprawy. Na INF.03 „prawie jak makieta” oznacza utratę punktów za szczegół, który był wprost opisany.
 
+## Test zgodności z makietą
+
+Nie oceniaj CSS po tym, czy strona „wygląda dobrze”. Oceniaj po zgodności z arkuszem:
+
+1. Najpierw porównaj duże bloki: header, menu, main, sekcje boczne, footer.
+2. Potem porównaj typografię: font, rozmiar, pogrubienie, kursywa, wyrównanie.
+3. Następnie obrazy: rozmiar, obramowanie, zaokrąglenie, margines, pozycja.
+4. Na końcu formularze i tabele: czy są w dobrym miejscu i czy nie rozpychają układu.
+
+<Callout type="warning" title="To nie jest prawie dobrze">
+Jeżeli polecenie mówi `height: 150px` i `overflow: hidden`, a ty dajesz automatyczną wysokość, to nie jest „responsywność”. To brak wymaganego stylu. Tak samo z kolorami, selektorami i rozmiarami obrazów.
+</Callout>
+
+## Co zostawić na koniec
+
+Na końcu wolno poprawiać tylko rzeczy punktowane: brakujący kolor, zły margines, zły rozmiar obrazka, niedziałające ustawienie `display`, niezgodny selector. Nie zmieniaj całej struktury strony w ostatnich minutach, bo zepsujesz działające wymagania.
+
 ## Kontrola CSS przed przejściem dalej
 
 - strona nie ma poziomego scrolla;
