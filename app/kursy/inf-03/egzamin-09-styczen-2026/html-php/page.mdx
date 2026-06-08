@@ -1,0 +1,194 @@
+
+**Arkusz:** INF.03-09-26.01-SG (styczeń 2026)
+**Technologia:** PHP + JS + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki15.7z` · **Hasło:** `P@znoKcie?`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Salon stylizacji paznokci — arkusz mieszany PHP+JS. Trzy sekcje (Kolor/Kształt/Wzór) przełączane JavaScriptem (onmouseover), obrazy generowane pętlą PHP lub JS, baza danych z klientami i kształtami.
+
+**Baza danych:** `paznokcie` — tabele: `klienci` (id, imie, kolor, cena, data, topKlient 0/1), `ksztalty` (id, nazwa), `wzory` (id, nazwa).
+
+## Co musisz oddać — pliki
+
+paznokcie.html (lub .php): aside (manicure.jpg), main z header (h1), nav (3 przyciski: Kolor/Kształt/Wzór — onmouseover skrypt 2), sekcja1 (Kolor — kolory.png + input color), sekcja2 (Kształt — ksztalt.png + select), sekcja3 (Wzór — 10 obrazów skryptem 1 + input number 1-10), footer. Grafika: kolory.png skadrowana do butelek, 70px wysokości.
+
+## Zapytania SQL — gotowe rozwiązania
+
+### Zapytanie 1: ważni klienci
+
+```sql
+SELECT imie, kolor, cena FROM klienci WHERE topKlient = 1;
+```
+
+### Zapytanie 2: klienci z dnia 2024-05-23
+
+```sql
+SELECT imie, cena FROM klienci WHERE data = '2024-05-23';
+```
+
+### Zapytanie 3: klienci z kształtem migdał (JOIN)
+
+```sql
+SELECT k.imie, k.kolor, ks.nazwa
+FROM klienci k
+JOIN ksztalty ks ON k.ksztalt = ks.id
+WHERE ks.nazwa = 'migdał';
+```
+
+### Zapytanie 4: dodanie kolumny doplata
+
+```sql
+ALTER TABLE wzory ADD COLUMN doplata INT;
+```
+
+<Callout type="exam">
+`ALTER TABLE ... ADD COLUMN` — to jedyny arkusz w tej sesji, który wymaga modyfikacji struktury tabeli (DDL zamiast DML). Musisz znać różnicę między SELECT/INSERT (DML) a ALTER/CREATE (DDL).
+</Callout>
+
+## Skrypt 1 — 10 obrazów w pętli (JS lub PHP)
+
+### Wersja JavaScript:
+
+```javascript
+var sekcja3 = document.getElementById("sekcja3");
+for (var i = 1; i <= 10; i++) {
+    var img = document.createElement("img");
+    img.src = i + ".jpg";
+    img.className = "wzory";
+    img.title = i;
+    sekcja3.appendChild(img);
+}
+```
+
+### Wersja PHP:
+
+```php
+for ($i = 1; $i <= 10; $i++) {
+    echo "<img src='$i.jpg' class='wzory' title='$i'>";
+}
+```
+
+## Skrypt 2 — przełączanie sekcji (JavaScript onmouseover)
+
+```javascript
+function pokaz(nr) {
+    var sekcje = document.querySelectorAll("section");
+    var przyciski = document.querySelectorAll("nav button");
+
+    for (var i = 0; i < sekcje.length; i++) {
+        sekcje[i].style.display = "none";
+        przyciski[i].style.backgroundColor = "Crimson";
+    }
+
+    sekcje[nr].style.display = "block";
+    przyciski[nr].style.backgroundColor = "Salmon";
+}
+```
+
+HTML przycisków w nav:
+
+```html
+<button onmouseover="pokaz(0)">Kolor</button>
+<button onmouseover="pokaz(1)">Kształt</button>
+<button onmouseover="pokaz(2)">Wzór</button>
+```
+
+<Callout type="warning" title="onmouseover, nie onclick">
+Polecenie mówi "zdarzenie najechania kursorem" — to `onmouseover`. Użycie `onclick` = utrata punktu za "działanie witryny".
+</Callout>
+
+## Styl CSS (styl.css)
+
+```css
+* {
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+body {
+    background-color: BlanchedAlmond;
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+aside {
+    width: 20%;
+}
+
+aside img {
+    width: 100%;
+}
+
+main > :not(aside) {
+    width: 80%;
+}
+
+nav {
+    text-align: left;
+    margin-left: 10%;
+}
+
+section {
+    background-color: Salmon;
+    margin-left: 10%;
+    padding: 10px;
+    height: 250px;
+}
+
+#sekcja1 { display: block; }
+#sekcja2, #sekcja3 { display: none; }
+
+button {
+    width: 26%;
+    color: white;
+    border: none;
+    font-size: 200%;
+}
+
+button:first-of-type {
+    background-color: Salmon;
+}
+
+button:not(:first-of-type) {
+    background-color: Crimson;
+}
+
+.wzory {
+    width: 70px;
+    border-radius: 100%;
+    margin: 5px;
+}
+```
+
+## Omówienie punktacji
+
+| Element | Punkty | Na co patrzy egzaminator |
+|---------|--------|--------------------------|
+| Operacje na bazie danych | ~8 pkt | Import, 4 zapytania (JOIN, ALTER TABLE) |
+| Grafika | ~2 pkt | kolory.png — kadr do butelek, 70px |
+| Zawartość witryny | ~4 pkt | Semantyka, 3 sekcje, input color/number |
+| Działanie witryny | ~6 pkt | Skrypty 1-2, onmouseover, display toggle |
+| Styl CSS | ~6 pkt | display none/block, border-radius 100%, Salmon/Crimson |
+| Skrypt | ~4 pkt | Pętla obrazów, title, przełączanie sekcji |
+
+## Wnioski z tego arkusza
+
+1. **Arkusz mieszany PHP+JS** — skrypt 1 można napisać w PHP lub JS (polecenie daje wybór). Skrypt 2 MUSI być w JS (działa po stronie klienta).
+
+2. **onmouseover zamiast onclick** — najczęstszy błąd. Czytaj polecenie dosłownie.
+
+3. **display: none/block** — przełączanie widoczności sekcji. Domyślnie sekcja1 widoczna (block), reszta ukryta (none). Skrypt 2 odwraca to.
+
+4. **ALTER TABLE** — jedyny arkusz z DDL. Reszta arkuszy ma tylko SELECT/INSERT.
+
+5. **border-radius: 100%** — tworzy okrągłe miniaturki wzorów (klasa .wzory). Na prostokątnych obrazach daje elipsy.

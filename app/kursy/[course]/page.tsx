@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { courseDetails, getCourseDetail, examSessions } from "@/lib/courses";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { ExamPicker } from "@/components/ExamPicker";
+import { CourseLayout } from "@/components/CourseLayout";
 
 type CoursePageProps = {
     params: Promise<{ course: string }>;
@@ -61,96 +61,40 @@ export default async function CoursePage({ params }: CoursePageProps) {
         url: `https://stem-web-569q.vercel.app/kursy/${detail.id}`
     };
 
+    const breadcrumbs = [
+        { label: "Kursy", href: "/kursy" },
+        { label: detail.title }
+    ];
+
     return (
-        <section className="course-overview section-shell" aria-labelledby="course-overview-title">
+        <CourseLayout course={detail} breadcrumbs={breadcrumbs}>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(courseJsonLd) }}
             />
-            <div className="section-inner">
-                <header className="page-header">
-                    <p className="font-mono-industrial body-muted">KNOWLEDGE BASE / {detail.badge}</p>
-                    <h1 className="headline-large" id="course-overview-title">
-                        {detail.title}
-                    </h1>
-                    <p className="course-overview-subtitle">{detail.subtitle}</p>
-                    <p className="course-overview-intro">{detail.intro}</p>
-                    <div className="course-overview-stats">
-                        <span>
-                            <strong>{visibleModules.length}</strong> MODUŁÓW
-                        </span>
-                        <span>
-                            <strong>{publishedLessons}</strong> / {totalLessons} LEKCJI GOTOWYCH
-                        </span>
-                    </div>
-                </header>
 
-                <ol className="module-list">
-                    {visibleModules.map((module, mi) => (
-                        <ScrollReveal as="li" key={module.id} delay={mi * 0.05} className="module-item">
-                            <div className="module-head">
-                                <span className="module-index">{String(mi + 1).padStart(2, "0")}</span>
-                                <div>
-                                    <h2 className="module-title">{module.title}</h2>
-                                    <p className="module-desc">{module.description}</p>
-                                </div>
-                            </div>
-                            <ul className="lesson-list">
-                                {module.lessons.map((lesson) => {
-                                    const inner = (
-                                        <>
-                                            <span className="lesson-marker" aria-hidden="true">
-                                                {lesson.published ? "›" : "·"}
-                                            </span>
-                                            <span className="lesson-text">
-                                                <span className="lesson-title">{lesson.title}</span>
-                                                <span className="lesson-summary">{lesson.summary}</span>
-                                            </span>
-                                            <span className="lesson-status">
-                                                {lesson.published ? (
-                                                    lesson.minutes ? `${lesson.minutes} MIN` : "OTWÓRZ"
-                                                ) : (
-                                                    "WKRÓTCE"
-                                                )}
-                                            </span>
-                                        </>
-                                    );
-
-                                    return (
-                                        <li
-                                            key={lesson.slug}
-                                            className={`lesson-row ${lesson.published ? "lesson-open" : "lesson-locked"}`}
-                                        >
-                                            {lesson.published ? (
-                                                <Link
-                                                    href={`/kursy/${detail.id}/${lesson.slug}`}
-                                                    className="lesson-link"
-                                                >
-                                                    {inner}
-                                                </Link>
-                                            ) : (
-                                                <div className="lesson-link" aria-disabled="true">
-                                                    {inner}
-                                                </div>
-                                            )}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </ScrollReveal>
-                    ))}
-                </ol>
-
-                {detail.id === "inf-03" && examSessions.length > 0 && (
-                    <ExamPicker sessions={examSessions} courseId={detail.id} />
-                )}
-
-                <div className="course-overview-back">
-                    <Link href="/kursy" className="terminal-link">
-                        ← WSZYSTKIE KURSY
-                    </Link>
+            <header className="page-header">
+                <p className="font-mono-industrial body-muted">KNOWLEDGE BASE / {detail.badge}</p>
+                <h1 className="headline-large" id="course-overview-title">
+                    {detail.title}
+                </h1>
+                <p className="course-overview-subtitle">{detail.subtitle}</p>
+                <p className="course-overview-intro">{detail.intro}</p>
+                <div className="course-overview-stats">
+                    <span>
+                        <strong>{visibleModules.length}</strong> MODUŁÓW
+                    </span>
+                    <span>
+                        <strong>{publishedLessons}</strong> / {totalLessons} LEKCJI GOTOWYCH
+                    </span>
                 </div>
-            </div>
-        </section>
+            </header>
+
+            {detail.id === "inf-03" && examSessions.length > 0 && (
+                <ScrollReveal delay={0.1}>
+                    <ExamPicker sessions={examSessions} courseId={detail.id} />
+                </ScrollReveal>
+            )}
+        </CourseLayout>
     );
 }

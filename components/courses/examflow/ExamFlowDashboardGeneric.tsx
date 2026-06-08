@@ -68,6 +68,27 @@ export function ExamFlowDashboardGeneric({ meta, steps, strategy, materials, bas
         minutes: s.minutes,
         technologies: s.technologies,
     }));
+    const timeMinutes = Number.parseInt(String(meta.time ?? ""), 10);
+    const learningResourceJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "LearningResource",
+        name: meta.title,
+        description: meta.description,
+        learningResourceType: "exam walkthrough",
+        educationalLevel: "secondary education/vocational",
+        inLanguage: "pl",
+        isAccessibleForFree: true,
+        url: `https://stem-web-569q.vercel.app${basePath}`,
+        teaches: meta.technologies,
+        assesses: meta.objective,
+        ...(Number.isFinite(timeMinutes) ? { timeRequired: `PT${timeMinutes}M` } : {}),
+        provider: {
+            "@type": "EducationalOrganization",
+            name: "STEM | Koło Technologiczne",
+            url: "https://stem-web-569q.vercel.app",
+        },
+    };
+
     useEffect(() => {
         trackRecent({
             slug: meta.lessonSlug,
@@ -78,6 +99,10 @@ export function ExamFlowDashboardGeneric({ meta, steps, strategy, materials, bas
     }, [meta.lessonSlug, meta.title, meta.examId, basePath]);
     return (
         <ExamFlowShell meta={meta} basePath={basePath}>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(learningResourceJsonLd) }}
+            />
             <ExamFlowHeaderGeneric meta={meta} />
             <ExamFlowStepNavGeneric stepViews={stepViews} basePath={basePath} />
 

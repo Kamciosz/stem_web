@@ -55,7 +55,7 @@ export function ExamPicker({
     courseId: string;
     label?: string;
 }) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     const [idx, setIdx] = useState(0);
 
     const current = sessions[idx];

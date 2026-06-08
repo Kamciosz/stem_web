@@ -1,0 +1,218 @@
+
+**Arkusz:** INF.03-02-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki3-1.7z` · **Hasło:** `baz@rEk100%`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Portal dla sklepów z warzywami — baza `bazar`, strona PHP z nawigacją obrazkową, formularzem zamówień i obliczeniem wartości.
+
+**Baza danych:** `bazar` — tabele: `towar` (id, nazwa, rodzaj, cena, plik), `sklep` (id, nazwa, adres), `zamowienie` (id, id_towar FK, id_sklep FK, kilogramy).
+
+## Co musisz oddać — pliki
+
+index.php: header (h1 "Zdrowy bazarek"), nav (skrypt 1 — obrazki owoców z bazy), main z aside (market.png) i section (formularz z listą rozwijaną skryptu 2 + przycisk "Zamów" + wynik skryptu 3), footer (autor + numer zdającego). Grafika: jablko.png — przezroczyste tło. market.png — przeskalowane do 300px szerokości.
+
+## CSS — najważniejsze zasady
+
+Georgia serif, header+footer ForestGreen white centered padding 2px, nav DarkKhaki 150px overflow:hidden, aside+section Khaki 50% 400px, aside img padding 2px margin 10px dotted 2px ForestGreen border-radius 40px, p font-size 120% italic.
+
+## Grafika — co robić
+
+1. jablko.png — nadać przezroczyste tło (usunąć tło za pomocą narzędzia do edycji)
+2. market.png — przeskalować z zachowaniem proporcji do szerokości 300px
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `bazar`. Plik SQL: `baza-nowa.sql`.
+
+### Zapytanie 1: 10 pierwszych towarów — nazwa i plik
+
+```sql
+SELECT nazwa, plik FROM towar LIMIT 10;
+```
+
+<Callout type="tip" title="Dlaczego nie ORDER BY?">
+Polecenie mówi "10 pierwszych rekordów" — bez sortowania. `LIMIT 10` wystarczy. Nie dodawaj `ORDER BY` jeśli nie jest wymagany — egzaminator może uznać to za niezgodność z poleceniem.
+</Callout>
+
+### Zapytanie 2: identyfikator i nazwa towarów
+
+```sql
+SELECT id, nazwa FROM towar;
+```
+
+### Zapytanie 3: rodzaj, nazwa i cena towaru o id = 1
+
+```sql
+SELECT rodzaj, nazwa, cena FROM towar WHERE id = 1;
+```
+
+### Zapytanie 4: wstawienie rekordu do zamowienie
+
+```sql
+INSERT INTO zamowienie (id_towar, id_sklep, kilogramy)
+VALUES (9, 2, 20);
+```
+
+<Callout type="exam">
+Klucz główny jest nadawany automatycznie (AUTO_INCREMENT) — **nie wpisuj go** w INSERT. Egzaminator sprawdza, czy nie wymuszasz id ręcznie.
+</Callout>
+
+## Skrypty PHP — rozwiązanie krok po kroku
+
+### Połączenie z bazą
+
+```php
+<?php
+$conn = mysqli_connect("localhost", "root", "", "bazar");
+mysqli_query($conn, "SET CHARSET utf8");
+```
+
+### Skrypt 1 — obrazki owoców w nawigacji
+
+Skrypt wysyła zapytanie 1 i dla każdego wiersza wyświetla obraz:
+
+```php
+$wynik = mysqli_query($conn, "SELECT nazwa, plik FROM towar LIMIT 10");
+while ($row = mysqli_fetch_array($wynik)) {
+    echo "<img src='" . $row['plik'] . "' alt='" . $row['nazwa'] . "'>";
+}
+```
+
+<Callout type="tip" title="Nawigacja obrazkowa">
+Blok `nav` ma `overflow: hidden` i `height: 150px` — jeśli jest więcej owoców niż mieści się w 150px, reszta zostanie ukryta. To celowe zachowanie z polecenia.
+</Callout>
+
+### Skrypt 2 — lista rozwijana w formularzu
+
+```php
+echo "<select name='towar'>";
+$wynik2 = mysqli_query($conn, "SELECT id, nazwa FROM towar");
+while ($row = mysqli_fetch_array($wynik2)) {
+    echo "<option value='" . $row['id'] . "'>" . $row['nazwa'] . "</option>";
+}
+echo "</select>";
+```
+
+### Skrypt 3 — obliczenie wartości po wysłaniu formularza
+
+```php
+if (isset($_POST['towar'])) {
+    $id_towaru = $_POST['towar'];
+    $kilogramy = $_POST['kilogramy'];
+
+    $wynik3 = mysqli_query($conn,
+        "SELECT rodzaj, nazwa, cena FROM towar WHERE id = $id_towaru");
+    $row = mysqli_fetch_array($wynik3);
+
+    $wartosc = $row['cena'] * $kilogramy;
+
+    echo "<p>" . $row['rodzaj'] . " " . $row['nazwa']
+         . " wartość: " . $wartosc . " zł</p>";
+
+    mysqli_query($conn,
+        "INSERT INTO zamowienie (id_towar, id_sklep, kilogramy)
+         VALUES ($id_towaru, 2, $kilogramy)");
+}
+```
+
+<Callout type="warning" title="Metoda bezpieczna = POST">
+Polecenie mówi "formularz wysyłający dane metodą bezpieczną" — to znaczy `method="POST"`. Użycie GET = utrata punktu.
+</Callout>
+
+### Formularz HTML (wewnątrz section)
+
+```php
+echo "<p>Wybierz owoc lub warzywo i podaj jego wagę:</p>";
+echo "<form method='POST' action='index.php'>";
+// Tu skrypt 2 (lista rozwijana)
+echo "<input type='number' name='kilogramy'>";
+echo "<button type='submit'>Zamów</button>";
+echo "</form>";
+// Tu skrypt 3 (wynik)
+```
+
+### Zamknięcie połączenia
+
+```php
+mysqli_close($conn);
+?>
+```
+
+## Styl CSS (styl.css)
+
+```css
+* {
+    font-family: Georgia, serif;
+}
+
+header, footer {
+    background-color: ForestGreen;
+    color: white;
+    padding: 2px;
+    text-align: center;
+}
+
+nav {
+    background-color: DarkKhaki;
+    height: 150px;
+    overflow: hidden;
+}
+
+aside, section {
+    background-color: Khaki;
+    width: 50%;
+    height: 400px;
+}
+
+main {
+    display: flex;
+}
+
+aside img {
+    padding: 2px;
+    margin: 10px;
+    border: 2px dotted ForestGreen;
+    border-radius: 40px;
+}
+
+p {
+    font-size: 120%;
+    font-style: italic;
+}
+```
+
+<Callout type="exam">
+Polecenie mówi: "styl CSS paragrafu należy zdefiniować wyłącznie przy pomocy selektora tego znacznika" — to znaczy użyj `p { }`, NIE `.klasa` ani `#id`. Egzaminator to weryfikuje.
+</Callout>
+
+## Omówienie punktacji
+
+| Element | Punkty | Na co patrzy egzaminator |
+|---------|--------|--------------------------|
+| Operacje na bazie danych | ~8 pkt | Import, 4 zapytania SQL, zrzuty ekranu |
+| Zawartość witryny | ~4 pkt | Semantyczne bloki, formularz, elementy HTML |
+| Działanie witryny | ~6 pkt | Skrypty 1-3 działają, dane z formularza poprawne |
+| Styl CSS | ~6 pkt | Georgia, kolory, flex, overflow:hidden, border-radius |
+| Skrypt połączenia z bazą | ~6 pkt | mysqli, charset, close(), poprawne zapytania |
+
+**Łącznie:** ~30 punktów. Próg zdania: 75% = 22-23 punkty.
+
+## Wnioski z tego arkusza
+
+1. **Trzy skrypty PHP w jednym pliku** — skrypt 1 (nav), skrypt 2 (select), skrypt 3 (wynik). Musisz umieć dzielić logikę PHP na sekcje wewnątrz jednego pliku HTML.
+
+2. **Formularz POST + obliczenie** — typowy schemat INF.03: formularz wysyła dane do tego samego pliku, PHP sprawdza `isset($_POST[...])` i wyświetla wynik.
+
+3. **INSERT z danymi z formularza** — zapytanie 4 jest modyfikowane w skrypcie 3 tak, że id towaru i kilogramy pochodzą z `$_POST`. To częsty wzorzec na egzaminie.
+
+4. **overflow: hidden na nav** — nawigacja ma stałą wysokość i ukrywa nadmiar. Bez tego reszta owoców wylewa się na stronę.
+
+5. **Selektor `p` zamiast klasy** — polecenie wymaga, żeby styl paragrafu był zdefiniowany selektorem znacznika. To pułapka — wielu zdających tworzy klasę i traci punkt.

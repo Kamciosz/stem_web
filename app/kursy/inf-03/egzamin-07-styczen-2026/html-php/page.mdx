@@ -1,0 +1,219 @@
+
+**Arkusz:** INF.03-07-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki9-2.7z` · **Hasło:** `&M3t3oPogoDa%`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+## O czym jest ten arkusz
+
+Witryna stacji meteorologicznej — tabela temperatur w lipcu z ikonami pogody (słońce/chmury/deszcz), odnośniki miesięcy z przekazywaniem id przez GET, obliczanie średniej temperatury.
+
+**Baza danych:** `pogoda` — tabele: `miejscowosc` (id, nazwa, kraj), `miesiace` (id, nazwa), `temperatura` (id, id_miejscowosc FK, id_miesiac FK, temp).
+
+## Co musisz oddać — pliki
+
+index.php: dwa headery (logo slonce.png + h1 "Pogoda w Europie"), main z sekcją lewą (tabela 4-kolumnowa: Miasto/Kraj/Temperatura/Pogoda — skrypt 1) i sekcją prawą (12 odnośników miesięcy GET + średnia — skrypt 2), footer.
+
+## Grafika — co robić
+
+Z pogoda.png wyciąć 3 ikony (słońce, chmury, deszcz), każdą skadrować i przeskalować do 100x100px. Zapisać jako slonce.png, chmury.png, deszcz.png z przezroczystością.
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `pogoda`. Plik SQL: `pogoda.sql`.
+
+### Zapytanie 1: średnia temperatura dla miesiąca id=7
+
+```sql
+SELECT ROUND(AVG(temp), 2) AS srednia FROM temperatura
+WHERE id_miesiac = 7;
+```
+
+### Zapytanie 2: wstawienie nowej miejscowości
+
+```sql
+INSERT INTO miejscowosc (nazwa, kraj) VALUES ('Kijów', 'Ukraina');
+```
+
+### Zapytanie 3: miasta + temperatury w lipcu (JOIN)
+
+```sql
+SELECT m.nazwa, m.kraj, t.temp
+FROM miejscowosc m
+JOIN temperatura t ON m.id = t.id_miejscowosc
+WHERE t.id_miesiac = 7;
+```
+
+### Zapytanie 4: miesiące + średnie temperatury
+
+```sql
+SELECT mi.nazwa, AVG(t.temp) AS srednia
+FROM miesiace mi
+JOIN temperatura t ON mi.id = t.id_miesiac
+GROUP BY mi.id;
+```
+
+## Skrypty PHP — rozwiązanie krok po kroku
+
+### Połączenie z bazą
+
+```php
+<?php
+$conn = mysqli_connect("localhost", "root", "", "pogoda");
+mysqli_query($conn, "SET CHARSET utf8");
+```
+
+### Skrypt 1 — tabela temperatur z ikonami pogody
+
+```php
+$wynik = mysqli_query($conn,
+    "SELECT m.nazwa, m.kraj, t.temp
+     FROM miejscowosc m
+     JOIN temperatura t ON m.id = t.id_miejscowosc
+     WHERE t.id_miesiac = 7");
+
+echo "<table>";
+echo "<tr><th>Miasto</th><th>Kraj</th><th>Temperatura</th><th>Pogoda</th></tr>";
+while ($row = mysqli_fetch_array($wynik)) {
+    $temp = $row['temp'];
+    if ($temp > 30) {
+        $ikona = "slonce.png";
+    } elseif ($temp < 26) {
+        $ikona = "deszcz.png";
+    } else {
+        $ikona = "chmury.png";
+    }
+    echo "<tr>";
+    echo "<td>" . $row['nazwa'] . "</td>";
+    echo "<td>" . $row['kraj'] . "</td>";
+    echo "<td>" . $temp . "</td>";
+    echo "<td><img src='$ikona'></td>";
+    echo "</tr>";
+}
+echo "</table>";
+```
+
+<Callout type="exam">
+Warunki na temperaturę: powyżej 30 = słońce, poniżej 26 = deszcz, reszta (26-30) = chmury. Kolejność `if/elseif/else` ma znaczenie — jeśli zamienisz, wynik będzie błędny. Egzaminator sprawdza ikony.
+</Callout>
+
+### Skrypt 2 — średnia dla wybranego miesiąca (GET)
+
+```php
+if (isset($_GET['miesiac'])) {
+    $id_miesiaca = $_GET['miesiac'];
+    $wynik2 = mysqli_query($conn,
+        "SELECT ROUND(AVG(temp), 2) AS srednia FROM temperatura
+         WHERE id_miesiac = $id_miesiaca");
+    $row = mysqli_fetch_array($wynik2);
+    echo "<h3>" . $row['srednia'] . " stopni</h3>";
+}
+```
+
+### Odnośniki miesięcy (w HTML)
+
+```php
+$miesiace = ["Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec",
+             "Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień"];
+for ($i = 0; $i < 12; $i++) {
+    echo "<a href='index.php?miesiac=" . ($i + 1) . "'>" . $miesiace[$i] . "</a> ";
+}
+```
+
+### Zamknięcie
+
+```php
+mysqli_close($conn);
+?>
+```
+
+## Styl CSS (styl.css)
+
+```css
+body {
+    font-family: Georgia;
+    text-align: center;
+}
+
+header {
+    background-color: #388E3C;
+    color: white;
+    height: 100px;
+    display: inline-block;
+}
+
+header:first-of-type {
+    width: 20%;
+}
+
+header:last-of-type {
+    width: 80%;
+}
+
+main {
+    display: flex;
+}
+
+section {
+    background-color: #DCE775;
+    width: 50%;
+    height: 600px;
+}
+
+footer {
+    background-color: #388E3C;
+    color: white;
+}
+
+table {
+    width: 80%;
+    margin: auto;
+    border: 2px dashed #388E3C;
+}
+
+table img {
+    height: 70px;
+}
+
+a {
+    color: #388E3C;
+    margin: 20px;
+    font-style: italic;
+    font-size: 200%;
+}
+
+a:hover {
+    background-color: #388E3C;
+    color: #DCE775;
+}
+
+p {
+    margin: 0;
+}
+```
+
+## Omówienie punktacji
+
+| Element | Punkty | Na co patrzy egzaminator |
+|---------|--------|--------------------------|
+| Operacje na bazie danych | ~8 pkt | Import, 4 zapytania (ROUND, AVG, INSERT, JOIN) |
+| Grafika | ~4 pkt | 3 ikony 100x100px z przezroczystością |
+| Zawartość witryny | ~4 pkt | Semantyka, 12 odnośników GET, tabela |
+| Działanie witryny | ~6 pkt | Skrypty 1-2, warunkowe ikony, średnia GET |
+| Styl CSS | ~4 pkt | Georgia, dashed border, hover zamiana kolorów |
+| Skrypt połączenia | ~4 pkt | mysqli, close() |
+
+## Wnioski z tego arkusza
+
+1. **Warunkowe obrazy w tabeli** — na podstawie wartości z bazy wyświetlasz różne ikony. To łączy PHP (logika `if`) z HTML (generowanie `img`).
+
+2. **GET przez odnośniki** — 12 odnośników typu `index.php?miesiac=1`. Po kliknięciu PHP odczytuje `$_GET['miesiac']` i modyfikuje zapytanie. To klasyczny wzorzec "filtrowanie przez linki".
+
+3. **ROUND(AVG(), 2)** — zaokrąglenie średniej do 2 miejsc po przecinku. Bez ROUND wynik może mieć 10+ cyfr po przecinku.
+
+4. **Dwa headery obok siebie** — `display: inline-block` lub flex. Pierwszy 20% (logo), drugi 80% (tytuł). Na egzaminie pamiętaj, że `header` to element blokowy — domyślnie zajmuje 100% szerokości.

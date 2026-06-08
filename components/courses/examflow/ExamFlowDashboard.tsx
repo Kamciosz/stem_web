@@ -1,28 +1,61 @@
+"use client";
+
+import React from "react";
 import Link from "next/link";
-import {
-    examFlowBasePath,
-    examMaterials,
-    examMeta,
-    examStrategy,
-    examSteps,
-} from "@/lib/exams/inf-03-egzamin-01";
 import {
     ExamFlowHeader,
     ExamFlowInfoPanel,
     ExamFlowShell,
     ExamFlowStepNav,
 } from "./ExamFlowChrome";
+import { ExamFlowProvider } from "./ExamFlowContext";
 
 /**
- * Dashboard egzaminu — entry point /kursy/inf-03/egzamin-01-styczen-2026.
- * Server component. Client islands tylko tam gdzie potrzebne (`ExamFlowStepNav`,
- * `ExamFlowInfoPanel`).
+ * Dashboard egzaminu — entry point /kursy/inf-03/egzamin-XX-styczen-2026.
+ * Client component — otrzymuje metadata z server component.
  */
-export function ExamFlowDashboard() {
+export function ExamFlowDashboard({ examData }: { examData: any }) {
+    // Budujemy contextValue z examData
+    const contextValue = {
+        examFlowBasePath: examData.examFlowBasePath,
+        examMeta: examData.examMeta,
+        examStepsView: examData.examStepsView,
+        examChecklistKeys: examData.examChecklistKeys || [],
+        examMaterials: examData.examMaterials,
+        examStrategy: examData.examStrategy,
+    };
+
+    const { examFlowBasePath, examMeta, examStepsView, examMaterials, examStrategy } = contextValue;
+    const timeMinutes = Number.parseInt(String(examMeta.time ?? ""), 10);
+    const learningResourceJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "LearningResource",
+        name: examMeta.title,
+        description: examMeta.description,
+        learningResourceType: "exam walkthrough",
+        educationalLevel: "secondary education/vocational",
+        inLanguage: "pl",
+        isAccessibleForFree: true,
+        url: `https://stem-web-569q.vercel.app${examFlowBasePath}`,
+        teaches: examMeta.technologies,
+        assesses: examMeta.objective,
+        ...(Number.isFinite(timeMinutes) ? { timeRequired: `PT${timeMinutes}M` } : {}),
+        provider: {
+            "@type": "EducationalOrganization",
+            name: "STEM | Koło Technologiczne",
+            url: "https://stem-web-569q.vercel.app",
+        },
+    };
+
     return (
-        <ExamFlowShell>
-            <ExamFlowHeader />
-            <ExamFlowStepNav />
+        <ExamFlowProvider value={contextValue}>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(learningResourceJsonLd) }}
+            />
+            <ExamFlowShell>
+                <ExamFlowHeader />
+                <ExamFlowStepNav />
 
             <div className="exam-flow-dashboard">
                 <section className="exam-flow-dashboard-main">
@@ -33,7 +66,7 @@ export function ExamFlowDashboard() {
                             bledami i punktacja.
                         </p>
                         <ol className="exam-flow-stages-grid">
-                            {examSteps.map((step) => (
+                            {examStepsView.map((step: any) => (
                                 <li key={step.slug}>
                                     <Link href={`${examFlowBasePath}/${step.slug}`} className="exam-flow-stage-card">
                                         <span className="exam-flow-stage-index">
@@ -54,38 +87,40 @@ export function ExamFlowDashboard() {
                         </ol>
                     </section>
 
-                    <section className="exam-flow-materials" aria-label="Materialy arkusza">
-                        <h2 className="exam-flow-section-title">Materialy</h2>
-                        <p className="exam-flow-section-lead">
-                            Trzy obrazki z arkusza i makieta koncowa. Po lewej minatury, po prawej cel.
-                        </p>
-                        <div className="exam-flow-materials-layout">
-                            <div className="exam-flow-materials-thumbs">
-                                {examMaterials.files.map((file) => (
-                                    <figure key={file.src}>
-                                        <a href={file.src} target="_blank" rel="noopener noreferrer">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img src={file.src} alt={file.alt} loading="lazy" />
-                                        </a>
-                                        <figcaption>
-                                            <strong>{file.title}</strong>
-                                            <span>{file.caption}</span>
-                                        </figcaption>
-                                    </figure>
-                                ))}
+                    {examMaterials && (
+                        <section className="exam-flow-materials" aria-label="Materialy arkusza">
+                            <h2 className="exam-flow-section-title">Materialy</h2>
+                            <p className="exam-flow-section-lead">
+                                Trzy obrazki z arkusza i makieta koncowa. Po lewej minatury, po prawej cel.
+                            </p>
+                            <div className="exam-flow-materials-layout">
+                                <div className="exam-flow-materials-thumbs">
+                                    {examMaterials.files.map((file: any) => (
+                                        <figure key={file.src}>
+                                            <a href={file.src} target="_blank" rel="noopener noreferrer">
+                                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                <img src={file.src} alt={file.alt} loading="lazy" />
+                                            </a>
+                                            <figcaption>
+                                                <strong>{file.title}</strong>
+                                                <span>{file.caption}</span>
+                                            </figcaption>
+                                        </figure>
+                                    ))}
+                                </div>
+                                <figure className="exam-flow-materials-result">
+                                    <a href={examMaterials.result.src} target="_blank" rel="noopener noreferrer">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                                        <img src={examMaterials.result.src} alt={examMaterials.result.alt} loading="lazy" />
+                                    </a>
+                                    <figcaption>
+                                        <strong>{examMaterials.result.title}</strong>
+                                        <span>{examMaterials.result.caption}</span>
+                                    </figcaption>
+                                </figure>
                             </div>
-                            <figure className="exam-flow-materials-result">
-                                <a href={examMaterials.result.src} target="_blank" rel="noopener noreferrer">
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={examMaterials.result.src} alt={examMaterials.result.alt} loading="lazy" />
-                                </a>
-                                <figcaption>
-                                    <strong>{examMaterials.result.title}</strong>
-                                    <span>{examMaterials.result.caption}</span>
-                                </figcaption>
-                            </figure>
-                        </div>
-                    </section>
+                        </section>
+                    )}
 
                     <section className="exam-flow-strategy" aria-label="Strategia czasu">
                         <h2 className="exam-flow-section-title">Strategia</h2>
@@ -93,7 +128,7 @@ export function ExamFlowDashboard() {
                             Najpierw dzialajace dane, potem wyglad. Tak sie nie traci punktow na koncu.
                         </p>
                         <ol className="exam-flow-strategy-list">
-                            {examStrategy.map((step) => (
+                            {examStrategy.map((step: any) => (
                                 <li key={step.time}>
                                     <time>{step.time}</time>
                                     <div>
@@ -111,8 +146,11 @@ export function ExamFlowDashboard() {
                     </section>
                 </section>
 
-                <ExamFlowInfoPanel />
+                <aside className="exam-flow-dashboard-aside">
+                    <ExamFlowInfoPanel />
+                </aside>
             </div>
         </ExamFlowShell>
+        </ExamFlowProvider>
     );
 }

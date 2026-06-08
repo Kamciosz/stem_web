@@ -1,0 +1,81 @@
+{/*
+  Etap 1 — Baza danych
+  Cztery zapytania SQL i model relacji.
+  Reusable komponenty z ExamLessonGuide: ExamCodeGrid/ExamCodeBlock/ExamPlan.
+*/}
+
+<div className="exam-step-lead">
+  Najpierw dane. Sprawdz wszystkie cztery zapytania w bazie zanim cokolwiek wklejisz do PHP.
+  Tu lapie sie najwiecej taniego punktow — i tu sie traci, jak `JOIN` jest bez `ON`.
+</div>
+
+## Model danych
+
+Dwie tabele: `pojazdy` i `kolory`. Relacja przez `pojazdy.kolor → kolory.id`.
+
+- `kolory.id` — `PRIMARY KEY`
+- `pojazdy.kolor` — klucz obcy do `kolory.id`
+- Bez tej relacji `JOIN` w zapytaniu 3 zwroci albo blad, albo iloczyn kartezjanski.
+
+<ExamWarnings
+  items={[
+    { title: "Brak relacji pojazdy.kolor → kolory.id", impact: "Zapytanie 3 nie zwraca poprawnych wynikow.", check: "Schemat tabel przed zapytaniami." },
+    { title: "ORDER BY / LIMIT w zlej kolejnosci", impact: "Zle sortowanie lub zle losowanie 2 pojazdow.", check: "Zapytanie 1 i 4." },
+    { title: "JOIN bez ON", impact: "Iloczyn kartezjanski albo blad skladni.", check: "Zapytanie 3 — INNER JOIN ... ON pojazdy.kolor = kolory.id." }
+  ]}
+/>
+
+## Cztery zapytania
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 1 — 15 najdrozszych BM"
+    description="Filtr marki, sort malejaco, limit 15."
+    mistake="Brak DESC albo LIMIT bez ORDER BY."
+    code={`SELECT marka, model, cena
+FROM pojazdy
+WHERE marka = 'BM'
+ORDER BY cena DESC
+LIMIT 15;}
+  />
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 2 — srednia i max meta"
+    description="Dwie agregacje z aliasami z polecenia."
+    mistake="Zle aliasy albo brak WHERE."
+    code={SELECT AVG(cena) AS 'Średnia cena', MAX(cena) AS 'Maksymalna cena'
+FROM pojazdy
+WHERE model = 'meta';}
+  />
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 3 — alfa z kolorem"
+    description="JOIN z warunkiem ON na kluczu obcym."
+    mistake="JOIN bez ON daje cartesian product."
+    code={SELECT marka, model, cena, nazwa, doplata
+FROM pojazdy
+INNER JOIN kolory ON pojazdy.kolor = kolory.id
+WHERE model = 'alfa';}
+  />
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 4 — dwa losowe"
+    description="RAND() i LIMIT 2."
+    mistake="LIMIT przed ORDER BY."
+    code={SELECT marka, model, cena
+FROM pojazdy
+ORDER BY RAND()
+LIMIT 2;`}
+  />
+</ExamCodeGrid>
+
+## Punkty za ten etap
+
+- ~8 pkt za skladnie, aliasy, `JOIN`, kolejnosc `ORDER BY` i `LIMIT`.
+- Zapytania 1, 2 i 4 to czyste punkty — bez pulapek.
+- Zapytanie 3 (`JOIN`) to glowny test: brak `ON` = 0 pkt.
+
+<div className="exam-step-next">
+  Gdy wszystkie 4 zapytania wracaja poprawne dane w bazie, idz do <strong>HTML / PHP</strong> i wklejaj je jako $query.
+</div>

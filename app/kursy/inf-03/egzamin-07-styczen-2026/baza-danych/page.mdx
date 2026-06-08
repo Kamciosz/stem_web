@@ -1,0 +1,42 @@
+{/*
+  Etap: baza danych / dane wejściowe — INF.03-07 (Stacja meteorologiczna).
+  Treść celowo w formacie case-study: wymagania → punkty → kontrola.
+*/}
+
+<div className="exam-step-lead">
+  Zacznij od danych, bo bez poprawnych tabel, pól albo plików wejściowych reszta rozwiązania tylko udaje, że działa. W arkuszu INF.03-07 temat to <strong>Stacja meteorologiczna</strong> — najpierw ustal, skąd aplikacja bierze dane i co egzaminator będzie sprawdzał.
+</div>
+
+## Co sprawdzasz w pierwszych 25 minutach
+
+- Czy arkusz wymaga importu bazy SQL, ręcznego utworzenia tabel, czy tylko pracy na danych z plików.
+- Jak nazywają się tabele, pola, obrazy i pliki — nazwy muszą być przepisane dokładnie.
+- Które dane mają być tylko wyświetlone, a które użyte w obliczeniach albo formularzu.
+- Czy relacje między tabelami wynikają z kluczy obcych, wspólnych identyfikatorów albo nazw plików.
+
+<Callout type="exam" title="Na egzaminie INF.03">
+
+Nie poprawiaj nazw tabel i pól "po swojemu". Jeżeli polecenie mówi `id_towar`, a w kodzie napiszesz `towar_id`, to problem nie jest kosmetyczny — zapytanie, formularz albo pętla PHP przestanie pasować do danych z arkusza.
+
+</Callout>
+
+## Minimalna procedura pracy
+
+1. Otwórz pliki z arkusza i wypisz nazwy tabel, kolumn, obrazów oraz plików pomocniczych.
+2. Jeżeli jest skrypt SQL — zaimportuj go przed pisaniem PHP/JS.
+3. Uruchom każde zapytanie osobno w phpMyAdmin albo konsoli SQL.
+4. Dopiero potem przenoś zapytania do kodu aplikacji.
+
+## Typowe straty punktów
+
+- Zapytanie działa tylko na Twoich testowych danych, ale nie na danych z arkusza.
+- Brakuje `WHERE`, `ORDER BY`, `LIMIT` albo warunku połączenia tabel.
+- W formularzu używasz innej wartości niż ta, której oczekuje zapytanie.
+- Obrazek lub plik ma literówkę w nazwie, więc layout wygląda jak uszkodzony.
+
+## Checklista etapu
+
+- [ ] Dane z arkusza są w projekcie i mają niezmienione nazwy.
+- [ ] Każde zapytanie / źródło danych zostało sprawdzone przed podpięciem w kodzie.
+- [ ] Wiesz, które dane są wejściem formularza, a które wynikiem do wyświetlenia.
+- [ ] Nie ma zgadywania nazw pól — wszystko jest przepisane z arkusza.

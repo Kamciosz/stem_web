@@ -10,25 +10,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
-import {
-    examFlowBasePath,
-    examMeta,
-    examStepsView,
-    examChecklistKeys,
-    type ExamStepView,
-} from "@/lib/exams/inf-03-egzamin-01";
+import { useExamFlow } from "./ExamFlowContext";
 import { useExamProgress } from "./useExamProgress";
-
-const TOTAL_CHECKLIST = examChecklistKeys.length;
+import type { ExamStepView } from "./ExamFlowContext";
 
 /* ─────────────────────────────────────────────────────────────
    Shell — root wrapper, scope CSS
    ───────────────────────────────────────────────────────────── */
 
 export function ExamFlowShell({ children }: { children: ReactNode }) {
+    const { examMeta } = useExamFlow();
     return (
         <div className="exam-flow" data-exam-flow={examMeta.lessonSlug}>
-            <div className="exam-flow-inner">{children}</div>
+            {children}
         </div>
     );
 }
@@ -38,6 +32,7 @@ export function ExamFlowShell({ children }: { children: ReactNode }) {
    ───────────────────────────────────────────────────────────── */
 
 export function ExamFlowBreadcrumb({ currentStep }: { currentStep?: ExamStepView }) {
+    const { examMeta, examFlowBasePath } = useExamFlow();
     return (
         <nav className="exam-flow-breadcrumb" aria-label="Sciezka egzaminu">
             <Link href="/kursy">Kursy</Link>
@@ -68,6 +63,7 @@ export function ExamFlowHeader({
     currentStep?: ExamStepView;
     eyebrow?: string;
 }) {
+    const { examMeta } = useExamFlow();
     return (
         <header className="exam-flow-header">
             <ExamFlowBreadcrumb currentStep={currentStep} />
@@ -112,6 +108,7 @@ export function ExamFlowHeader({
    ───────────────────────────────────────────────────────────── */
 
 export function ExamFlowStepNav() {
+    const { examFlowBasePath, examStepsView } = useExamFlow();
     const pathname = usePathname() ?? "";
     const dashboardActive = pathname === examFlowBasePath;
 
@@ -149,6 +146,8 @@ export function ExamFlowStepNav() {
    ───────────────────────────────────────────────────────────── */
 
 export function ExamFlowInfoPanel() {
+    const { examMeta, examFlowBasePath, examChecklistKeys } = useExamFlow();
+    const TOTAL_CHECKLIST = examChecklistKeys.length;
     const progress = useExamProgress(TOTAL_CHECKLIST);
     const pct = progress.total === 0 ? 0 : Math.round((progress.done / progress.total) * 100);
 
@@ -201,6 +200,8 @@ export function ExamFlowInfoPanel() {
    ───────────────────────────────────────────────────────────── */
 
 export function ExamFlowStageAside({ step }: { step: ExamStepView }) {
+    const { examFlowBasePath, examStepsView, examChecklistKeys } = useExamFlow();
+    const TOTAL_CHECKLIST = examChecklistKeys.length;
     const progress = useExamProgress(TOTAL_CHECKLIST);
     const pct = progress.total === 0 ? 0 : Math.round((progress.done / progress.total) * 100);
 

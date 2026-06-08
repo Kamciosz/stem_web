@@ -5,13 +5,33 @@ import { courseDetails, getLesson, getFlatLessons, lessonHasQuiz } from "@/lib/c
 import { VideoEmbed } from "@/components/courses/VideoEmbed";
 import { ExamFlowDashboard } from "@/components/courses/examflow/ExamFlowDashboard";
 import { examMeta as examFlow01Meta } from "@/lib/exams/inf-03-egzamin-01";
+import { examMeta as examFlow02Meta } from "@/lib/exams/inf-03-egzamin-02";
+import { examMeta as examFlow03Meta } from "@/lib/exams/inf-03-egzamin-03";
+import { examMeta as examFlow04Meta } from "@/lib/exams/inf-03-egzamin-04";
+import { examMeta as examFlow05Meta } from "@/lib/exams/inf-03-egzamin-05";
+import { examMeta as examFlow06Meta } from "@/lib/exams/inf-03-egzamin-06";
+import { examMeta as examFlow07Meta } from "@/lib/exams/inf-03-egzamin-07";
+import { examMeta as examFlow08Meta } from "@/lib/exams/inf-03-egzamin-08";
+import { examMeta as examFlow09Meta } from "@/lib/exams/inf-03-egzamin-09";
+import { examMeta as examFlow10Meta } from "@/lib/exams/inf-03-egzamin-10";
+import { examMeta as examFlow11Meta } from "@/lib/exams/inf-03-egzamin-11";
+import { examMeta as examFlow12Meta } from "@/lib/exams/inf-03-egzamin-12";
 
 /** Mapa lekcji z dedykowanym dashboard-em zamiast renderowania MDX 1:1. */
-const examFlowDashboards: Record<string, Record<string, () => React.ReactElement>> = {
-    "inf-03": {
-        [examFlow01Meta.lessonSlug]: () => <ExamFlowDashboard />,
-    },
-};
+const examFlowDashboards = new Set([
+    examFlow01Meta.lessonSlug,
+    examFlow02Meta.lessonSlug,
+    examFlow03Meta.lessonSlug,
+    examFlow04Meta.lessonSlug,
+    examFlow05Meta.lessonSlug,
+    examFlow06Meta.lessonSlug,
+    examFlow07Meta.lessonSlug,
+    examFlow08Meta.lessonSlug,
+    examFlow09Meta.lessonSlug,
+    examFlow10Meta.lessonSlug,
+    examFlow11Meta.lessonSlug,
+    examFlow12Meta.lessonSlug,
+]);
 
 type LessonPageProps = {
     params: Promise<{ course: string; lesson: string }>;
@@ -67,8 +87,59 @@ export default async function LessonPage({ params }: LessonPageProps) {
 
     // Dedykowany dashboard egzaminu — renderowany zamiast jednolitego MDX.
     // Subpages etapow zyja w app/kursy/inf-03/egzamin-01-styczen-2026/[step]/page.tsx.
-    const dashboard = examFlowDashboards[courseId]?.[lessonSlug];
-    if (dashboard) {
+    if (examFlowDashboards.has(lessonSlug)) {
+        // Bezpośredni import metadanych egzaminu (static export wymaga statycznych importów)
+        let examModule: any;
+        switch (lessonSlug) {
+            case "egzamin-01-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-01");
+                break;
+            case "egzamin-02-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-02");
+                break;
+            case "egzamin-03-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-03");
+                break;
+            case "egzamin-04-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-04");
+                break;
+            case "egzamin-05-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-05");
+                break;
+            case "egzamin-06-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-06");
+                break;
+            case "egzamin-07-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-07");
+                break;
+            case "egzamin-08-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-08");
+                break;
+            case "egzamin-09-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-09");
+                break;
+            case "egzamin-10-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-10");
+                break;
+            case "egzamin-11-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-11");
+                break;
+            case "egzamin-12-styczen-2026":
+                examModule = await import("@/lib/exams/inf-03-egzamin-12");
+                break;
+            default:
+                notFound();
+        }
+
+        // Wyciągnij tylko serialzowalne pola (bez funkcji mdx)
+        const examData = {
+            examFlowBasePath: examModule.examFlowBasePath,
+            examMaterials: examModule.examMaterials,
+            examMeta: examModule.examMeta,
+            examStrategy: examModule.examStrategy,
+            examStepsView: examModule.examStepsView,
+        };
+
         return (
             <article
                 className="lesson-page section-shell exam-lesson-page"
@@ -76,7 +147,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
             >
                 <div className="section-inner lesson-container exam-lesson-container">
                     <div className="lesson-main exam-lesson-main">
-                        {dashboard()}
+                        <ExamFlowDashboard examData={examData} />
                     </div>
                 </div>
             </article>

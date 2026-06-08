@@ -1,7 +1,7 @@
 /*
- * Exam Flow — redesign INF.03 / Styczeń 2026 / Arkusz 01
+ * Exam Flow — redesign INF.03 / wszystkie arkusze ExamFlow
  *
- * Scope: .exam-flow wewnatrz article.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"]
+ * Scope: .exam-flow[data-exam-flow^="egzamin-"] — wszystkie arkusze INF.03
  *
  * Paleta z brief:
  *   bg #070312 / panel #120A24 / panel-2 #1A1033
@@ -14,7 +14,7 @@
  * Wysoka specyficznosc (atrybut + klasa) — wygrywa z .exam-lesson-page z globals.css.
  */
 
-.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] {
+.exam-flow[data-exam-flow^="egzamin-"] {
     /* tokeny — zgodne z globals.css (czarne tlo + #7c3aed laser + clinical #e8e8e8) */
     --ef-bg:           #000000;
     --ef-panel:        #0d0a14;          /* nieco fioletowy ciemny, ledwo widoczny */
@@ -47,22 +47,22 @@
 }
 
 /* Wyzeruj dziedziczone wrappery z .exam-lesson-page w globals.css */
-.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .lesson-container,
-.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-lesson-container {
+.exam-flow[data-exam-flow^="egzamin-"] .lesson-container,
+.exam-flow[data-exam-flow^="egzamin-"] .exam-lesson-container {
     background: transparent;
     padding: 0;
     max-width: none;
 }
-.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-lesson-main,
-.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .lesson-main {
+.exam-flow[data-exam-flow^="egzamin-"] .exam-lesson-main,
+.exam-flow[data-exam-flow^="egzamin-"] .lesson-main {
     background: transparent;
     padding: 0;
 }
-.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .lesson-content {
+.exam-flow[data-exam-flow^="egzamin-"] .lesson-content {
     padding: 0;
 }
 /* Re-apply padding for exam-flow stage content (overrides the reset above) */
-.exam-lesson-page[data-exam-slug] .exam-flow-stage-content {
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-stage-content {
     padding: 24px clamp(16px, 2vw, 24px);
 }
 
@@ -76,6 +76,10 @@
     line-height: 1.55;
     min-height: 60vh;
     padding: 0 0 32px;
+}
+
+main.page-transition > .exam-flow {
+    padding: clamp(16px, 2vw, 24px) clamp(16px, 4vw, 64px) 32px;
 }
 .exam-flow-inner {
     max-width: 1240px;
@@ -961,7 +965,7 @@
 }
 /* WAZNE: te selektory MUSZA przebic regule z globals.css `.exam-lesson-page .exam-code-actions button`,
    ktora dawala bialy tekst na ledwo widocznym tle (4% bialy). Wyzsza specyficznosc atrybutu. */
-.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-actions button,
+.exam-flow[data-exam-flow^="egzamin-"] .exam-code-actions button,
 .exam-flow-stage-content .exam-code-actions button {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--ef-border);
@@ -977,8 +981,8 @@
     text-transform: none;
     min-height: 32px;
 }
-.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-actions button:hover,
-.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-actions button:focus-visible,
+.exam-flow[data-exam-flow^="egzamin-"] .exam-code-actions button:hover,
+.exam-flow[data-exam-flow^="egzamin-"] .exam-code-actions button:focus-visible,
 .exam-flow-stage-content .exam-code-actions button:hover,
 .exam-flow-stage-content .exam-code-actions button:focus-visible {
     background: rgba(124, 58, 237, 0.12);
@@ -986,7 +990,7 @@
     border-color: var(--ef-border-em);
     outline: none;
 }
-.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-card pre,
+.exam-flow[data-exam-flow^="egzamin-"] .exam-code-card pre,
 .exam-flow-stage-content .exam-code-card pre {
     margin: 0;
     padding: 16px 18px;
@@ -999,7 +1003,7 @@
     color: #d4d4d4;
     tab-size: 4;
 }
-.exam-lesson-page[data-exam-slug="egzamin-01-styczen-2026"] .exam-code-card pre code,
+.exam-flow[data-exam-flow^="egzamin-"] .exam-code-card pre code,
 .exam-flow-stage-content .exam-code-card pre code {
     background: transparent;
     color: inherit;
