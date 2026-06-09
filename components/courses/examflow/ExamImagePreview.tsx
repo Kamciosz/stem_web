@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 type ExamImagePreviewProps = {
@@ -11,13 +11,28 @@ type ExamImagePreviewProps = {
 };
 
 function clampZoom(value: number) {
-    return Math.min(4, Math.max(0.5, Number(value.toFixed(2))));
+    return Math.min(6, Math.max(0.5, Number(value.toFixed(2))));
+}
+
+function fitZoom(naturalWidth: number, naturalHeight: number) {
+    if (!naturalWidth || !naturalHeight || typeof window === "undefined") return 1;
+    const toolbarSpace = window.innerWidth <= 560 ? 120 : 110;
+    const maxWidth = Math.max(240, window.innerWidth - 48);
+    const maxHeight = Math.max(240, window.innerHeight - toolbarSpace);
+    const fit = Math.min(maxWidth / naturalWidth, maxHeight / naturalHeight);
+    return clampZoom(Math.max(1, fit));
 }
 
 export function ExamImagePreview({ src, alt, title, className }: ExamImagePreviewProps) {
     const [open, setOpen] = useState(false);
     const [zoom, setZoom] = useState(1);
+    const imageRef = useRef<HTMLImageElement | null>(null);
     const titleId = useId();
+
+    function resetZoom() {
+        const image = imageRef.current;
+        setZoom(image ? fitZoom(image.naturalWidth, image.naturalHeight) : 1);
+    }
 
     function close() {
         setOpen(false);
@@ -31,7 +46,7 @@ export function ExamImagePreview({ src, alt, title, className }: ExamImagePrevie
             if (event.key === "Escape") close();
             if (event.key === "+" || event.key === "=") setZoom((value) => clampZoom(value + 0.25));
             if (event.key === "-") setZoom((value) => clampZoom(value - 0.25));
-            if (event.key === "0") setZoom(1);
+            if (event.key === "0") resetZoom();
         };
         document.body.style.overflow = "hidden";
         document.documentElement.classList.add("exam-lightbox-open");
@@ -65,7 +80,7 @@ export function ExamImagePreview({ src, alt, title, className }: ExamImagePrevie
                             <button type="button" onClick={() => setZoom((value) => clampZoom(value - 0.25))} aria-label="Pomniejsz obraz">−</button>
                             <span className="exam-image-lightbox-zoom" aria-live="polite">{zoomPercent}%</span>
                             <button type="button" onClick={() => setZoom((value) => clampZoom(value + 0.25))} aria-label="Powiększ obraz">+</button>
-                            <button type="button" className="exam-image-lightbox-reset" onClick={() => setZoom(1)} aria-label="Przywróć zoom 100%">100%</button>
+                            <button type="button" className="exam-image-lightbox-fit" onClick={resetZoom} aria-label="Dopasuj obraz do okna">Fit</button>
                         </div>
                         <a className="exam-image-lightbox-secondary" href={src} target="_blank" rel="noopener noreferrer">Otwórz plik</a>
                         <button type="button" className="exam-image-lightbox-close" onClick={close} aria-label="Zamknij podgląd">×</button>
@@ -77,6 +92,8 @@ export function ExamImagePreview({ src, alt, title, className }: ExamImagePrevie
                         className="exam-image-lightbox-image"
                         src={src}
                         alt={alt}
+                        ref={imageRef}
+                        onLoad={(event) => setZoom(fitZoom(event.currentTarget.naturalWidth, event.currentTarget.naturalHeight))}
                         style={imageStyle}
                     />
                 </div>

@@ -1466,16 +1466,16 @@ html.exam-lightbox-open body {
 }
 .exam-image-lightbox-actions {
     flex: 0 0 auto;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto 40px;
     align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-    flex-wrap: wrap;
+    justify-content: end;
+    gap: 10px;
 }
 .exam-image-lightbox-zoomgroup {
-    min-height: 38px;
+    min-height: 40px;
     display: inline-grid;
-    grid-template-columns: 38px minmax(62px, auto) 38px 54px;
+    grid-template-columns: 40px 72px 40px 48px;
     align-items: stretch;
     overflow: hidden;
     border: 1px solid var(--ef-border);
@@ -1485,7 +1485,7 @@ html.exam-lightbox-open body {
 .exam-image-lightbox-zoomgroup button,
 .exam-image-lightbox-zoom {
     min-width: 0;
-    min-height: 36px;
+    min-height: 38px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1507,7 +1507,7 @@ html.exam-lightbox-open body {
     color: var(--ef-muted) !important;
     background: rgba(255, 255, 255, 0.025);
 }
-.exam-image-lightbox-reset {
+.exam-image-lightbox-fit {
     font-size: 11px !important;
     color: var(--ef-muted) !important;
 }
@@ -1516,7 +1516,8 @@ html.exam-lightbox-open body {
     color: var(--ef-text) !important;
 }
 .exam-image-lightbox-secondary {
-    min-height: 38px;
+    min-height: 40px;
+    height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1535,8 +1536,10 @@ html.exam-lightbox-open body {
     color: var(--ef-muted) !important;
 }
 .exam-image-lightbox-close {
-    min-width: 38px;
-    min-height: 38px;
+    min-width: 40px;
+    min-height: 40px;
+    width: 40px;
+    height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1637,15 +1640,21 @@ html.exam-lightbox-open body {
 @media (max-width: 560px) {
     .exam-image-lightbox-toolbar {
         align-items: flex-start;
-        flex-direction: column;
+        grid-template-columns: 1fr;
+        align-items: stretch;
+        justify-content: stretch;
     }
     .exam-image-lightbox-actions {
-        justify-content: flex-start;
+        justify-content: stretch;
         width: 100%;
-        gap: 6px;
+        grid-template-columns: 1fr auto 40px;
+        gap: 8px;
     }
     .exam-image-lightbox-zoomgroup {
-        grid-template-columns: 38px minmax(58px, auto) 38px 50px;
+        grid-template-columns: 40px minmax(68px, 1fr) 40px 48px;
+    }
+    .exam-image-lightbox-secondary {
+        padding: 0 10px;
     }
     .exam-image-lightbox {
         padding: 0;
