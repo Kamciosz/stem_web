@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
+import { createPortal } from "react-dom";
 
 type ExamImagePreviewProps = {
     src: string;
@@ -33,9 +34,11 @@ export function ExamImagePreview({ src, alt, title, className }: ExamImagePrevie
             if (event.key === "0") setZoom(1);
         };
         document.body.style.overflow = "hidden";
+        document.documentElement.classList.add("exam-lightbox-open");
         window.addEventListener("keydown", onKey);
         return () => {
             document.body.style.overflow = previousOverflow;
+            document.documentElement.classList.remove("exam-lightbox-open");
             window.removeEventListener("keydown", onKey);
         };
     }, [open]);
@@ -43,6 +46,41 @@ export function ExamImagePreview({ src, alt, title, className }: ExamImagePrevie
     const label = title ?? alt;
     const zoomPercent = Math.round(zoom * 100);
     const imageStyle = { "--exam-image-zoom": String(zoom) };
+    const lightbox = open ? (
+        <div
+            className="exam-image-lightbox"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
+        >
+            <button type="button" className="exam-image-lightbox-backdrop" onClick={close} aria-label="Zamknij podgląd" />
+            <div className="exam-image-lightbox-panel">
+                <div className="exam-image-lightbox-toolbar">
+                    <div className="exam-image-lightbox-titleblock">
+                        <strong id={titleId}>{label}</strong>
+                        <span>Podgląd materiału egzaminacyjnego</span>
+                    </div>
+                    <div className="exam-image-lightbox-actions" aria-label="Sterowanie obrazem">
+                        <span className="exam-image-lightbox-zoom" aria-live="polite">Zoom {zoomPercent}%</span>
+                        <button type="button" onClick={() => setZoom((value) => clampZoom(value - 0.25))} aria-label="Pomniejsz obraz">−</button>
+                        <button type="button" onClick={() => setZoom(1)} aria-label="Przywróć domyślny rozmiar obrazu">Reset</button>
+                        <button type="button" onClick={() => setZoom((value) => clampZoom(value + 0.25))} aria-label="Powiększ obraz">+</button>
+                        <a href={src} target="_blank" rel="noopener noreferrer">Nowa karta</a>
+                        <button type="button" className="exam-image-lightbox-close" onClick={close} aria-label="Zamknij podgląd">×</button>
+                    </div>
+                </div>
+                <div className="exam-image-lightbox-stage">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        className="exam-image-lightbox-image"
+                        src={src}
+                        alt={alt}
+                        style={imageStyle}
+                    />
+                </div>
+            </div>
+        </div>
+    ) : null;
 
     return (
         <>
@@ -57,41 +95,7 @@ export function ExamImagePreview({ src, alt, title, className }: ExamImagePrevie
                 <span className="exam-image-preview-badge" aria-hidden="true">Powiększ</span>
             </button>
 
-            {open && (
-                <div
-                    className="exam-image-lightbox"
-                    role="dialog"
-                    aria-modal="true"
-                    aria-labelledby={titleId}
-                >
-                    <button type="button" className="exam-image-lightbox-backdrop" onClick={close} aria-label="Zamknij podgląd" />
-                    <div className="exam-image-lightbox-panel">
-                        <div className="exam-image-lightbox-toolbar">
-                            <div className="exam-image-lightbox-titleblock">
-                                <strong id={titleId}>{label}</strong>
-                                <span>Podgląd materiału egzaminacyjnego</span>
-                            </div>
-                            <div className="exam-image-lightbox-actions" aria-label="Sterowanie obrazem">
-                                <span className="exam-image-lightbox-zoom" aria-live="polite">Zoom {zoomPercent}%</span>
-                                <button type="button" onClick={() => setZoom((value) => clampZoom(value - 0.25))} aria-label="Pomniejsz obraz">−</button>
-                                <button type="button" onClick={() => setZoom(1)} aria-label="Przywróć domyślny rozmiar obrazu">Reset</button>
-                                <button type="button" onClick={() => setZoom((value) => clampZoom(value + 0.25))} aria-label="Powiększ obraz">+</button>
-                                <a href={src} target="_blank" rel="noopener noreferrer">Nowa karta</a>
-                                <button type="button" className="exam-image-lightbox-close" onClick={close} aria-label="Zamknij podgląd">×</button>
-                            </div>
-                        </div>
-                        <div className="exam-image-lightbox-stage">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                                className="exam-image-lightbox-image"
-                                src={src}
-                                alt={alt}
-                                style={imageStyle}
-                            />
-                        </div>
-                    </div>
-                </div>
-            )}
+            {typeof document !== "undefined" && lightbox ? createPortal(lightbox, document.body) : null}
         </>
     );
 }
