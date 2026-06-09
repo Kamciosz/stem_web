@@ -43,6 +43,46 @@ Witryna stacji meteorologicznej — tabela temperatur w lipcu z ikonami pogody (
 
 index.php: dwa headery (logo slonce.png + h1 "Pogoda w Europie"), main z sekcją lewą (tabela 4-kolumnowa: Miasto/Kraj/Temperatura/Pogoda — skrypt 1) i sekcją prawą (12 odnośników miesięcy GET + średnia — skrypt 2), footer.
 
+## HTML — szkielet zgodny z arkuszem
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="index.php — HTML pogody"
+    description="Minimalny szkielet HTML, który pokazuje gdzie wpadają skrypty i elementy punktowane."
+    mistake="Nie zmieniaj nazw plików, id, name, action, method ani zdarzeń względem polecenia."
+    code={`<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Pogoda w Europie</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header><img src="slonce.png" alt="słońce"></header>
+    <header><h1>Pogoda w Europie</h1></header>
+    <main>
+        <section>
+            <table>
+                <tr><th>Miasto</th><th>Kraj</th><th>Temperatura</th><th>Pogoda</th></tr>
+                <!-- skrypt PHP 1 wypisuje wiersze tabeli -->
+            </table>
+        </section>
+        <section>
+            <nav><!-- 12 odnośników index.php?miesiac=... --></nav>
+            <!-- skrypt PHP 2 wypisuje średnią temperaturę -->
+        </section>
+    </main>
+    <footer>Autor: [numer zdającego]</footer>
+</body>
+</html>`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam" title="Jak czytać ten HTML">
+To jest szkielet pod punkty: nagłówki, sekcje, formularze, linki i obrazy są równie ważne jak PHP/JS. Jeżeli PHP generuje fragment strony, w HTML zostawiasz miejsce dokładnie tam, gdzie egzaminator ma zobaczyć wynik.
+</Callout>
+
 ## Minimum do zapamiętania z HTML
 
 - Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.

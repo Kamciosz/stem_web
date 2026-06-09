@@ -43,6 +43,38 @@ Portal kina z bazą aktorów i filmów (relacja n:m). Dwie strony: index.php (si
 
 index.php + aktor.php. Wspólne: header1 (h2 z odnośnikiem "Portal kina" do index.php), header2 (paragraf em "W naszej bazie..."), footer (autor strong). index.php: main z h1 + bloki aktorów (skrypt 1 — awatar + imię + nazwisko jako odnośnik do aktor.php). aktor.php: main z blokiem aktora (skrypt 2 — awatar + h1 imię nazwisko) + lista filmów (skrypt 3).
 
+## HTML — szkielet zgodny z arkuszem
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="index.php / aktor.php — struktura portalu kina"
+    description="Minimalny szkielet HTML, który pokazuje gdzie wpadają skrypty i elementy punktowane."
+    mistake="Nie zmieniaj nazw plików, id, name, action, method ani zdarzeń względem polecenia."
+    code={`<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Portal kina</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header><h2><a href="index.php">Portal kina</a></h2></header>
+    <header><p><em>W naszej bazie znajdziesz najlepszych aktorów i filmy.</em></p></header>
+    <main>
+        <!-- index.php: karty aktorów jako linki do aktor.php?id=... -->
+        <!-- aktor.php: awatar, imię, nazwisko i lista filmów aktora -->
+    </main>
+    <footer>Autor: <strong>[numer zdającego]</strong></footer>
+</body>
+</html>`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam" title="Jak czytać ten HTML">
+To jest szkielet pod punkty: nagłówki, sekcje, formularze, linki i obrazy są równie ważne jak PHP/JS. Jeżeli PHP generuje fragment strony, w HTML zostawiasz miejsce dokładnie tam, gdzie egzaminator ma zobaczyć wynik.
+</Callout>
+
 ## Minimum do zapamiętania z HTML
 
 - Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.

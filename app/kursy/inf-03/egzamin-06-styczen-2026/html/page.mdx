@@ -43,6 +43,52 @@ Portal do diagnostyki chorób z relacją n:m (choroba ↔ objawy przez tabelę �
 
 zdrowie.php: header (h1), nav (3 odnośniki external target=_blank), main z sekcją lewą (lista numerowana chorób zakaźnych — skrypt 1) i sekcją prawą (formularz z listą rozwijaną — skrypt 2, przycisk Sprawdź, div z objawami w span — skrypt 3), footer, obraz zdrowia.png poza blokami (position absolute).
 
+## HTML — szkielet zgodny z arkuszem
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="zdrowie.php — struktura strony"
+    description="Minimalny szkielet HTML, który pokazuje gdzie wpadają skrypty i elementy punktowane."
+    mistake="Nie zmieniaj nazw plików, id, name, action, method ani zdarzeń względem polecenia."
+    code={`<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Zdrowie online</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header><h1>Diagnostyka online</h1></header>
+    <nav>
+        <a href="https://www.gov.pl/web/zdrowie" target="_blank">Zdrowie</a>
+        <a href="https://pacjent.gov.pl" target="_blank">Pacjent</a>
+        <a href="https://www.nfz.gov.pl" target="_blank">NFZ</a>
+    </nav>
+    <main>
+        <section>
+            <h2>Choroby zakaźne</h2>
+            <ol><!-- skrypt PHP 1 --></ol>
+        </section>
+        <section>
+            <form method="post" action="zdrowie.php">
+                <!-- skrypt PHP 2 wypisuje select name="choroba" -->
+                <button type="submit">Sprawdź</button>
+            </form>
+            <div class="objawy"><!-- skrypt PHP 3 wypisuje span --></div>
+        </section>
+    </main>
+    <img src="zdrowia.png" alt="zdrowia">
+    <footer>Autor: [numer zdającego]</footer>
+</body>
+</html>`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam" title="Jak czytać ten HTML">
+To jest szkielet pod punkty: nagłówki, sekcje, formularze, linki i obrazy są równie ważne jak PHP/JS. Jeżeli PHP generuje fragment strony, w HTML zostawiasz miejsce dokładnie tam, gdzie egzaminator ma zobaczyć wynik.
+</Callout>
+
 ## Minimum do zapamiętania z HTML
 
 - Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.

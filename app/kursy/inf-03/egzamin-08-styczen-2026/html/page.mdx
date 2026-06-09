@@ -43,6 +43,41 @@ Portal turystyczny Korony Gór Polskich — dwie strony PHP. index.php z odnośn
 
 index.php + szczyty.php. Wspólne: header1 (logo.png) + header2 (h1 "Korona Gór Polskich"), sekcja (miniatury — skrypt 2), footer1 (Kontakt + email), footer2 (autor). Main index: nazwy szczytów jako odnośniki w span (skrypt 1). Main szczyty: obraz + nazwa + wysokość + pasmo + opis (skrypt 3).
 
+## HTML — szkielet zgodny z arkuszem
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="index.php / szczyty.php — struktura HTML"
+    description="Minimalny szkielet HTML, który pokazuje gdzie wpadają skrypty i elementy punktowane."
+    mistake="Nie zmieniaj nazw plików, id, name, action, method ani zdarzeń względem polecenia."
+    code={`<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Korona Gór Polskich</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header><img src="logo.png" alt="logo"></header>
+    <header><h1>Korona Gór Polskich</h1></header>
+    <main>
+        <!-- index.php: linki do szczytów; szczyty.php: szczegóły wybranego szczytu -->
+    </main>
+    <section>
+        <!-- skrypt PHP 2 wypisuje miniatury zdjęć -->
+    </section>
+    <footer>Kontakt: kontakt@example.com</footer>
+    <footer>Autor: [numer zdającego]</footer>
+</body>
+</html>`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam" title="Jak czytać ten HTML">
+To jest szkielet pod punkty: nagłówki, sekcje, formularze, linki i obrazy są równie ważne jak PHP/JS. Jeżeli PHP generuje fragment strony, w HTML zostawiasz miejsce dokładnie tam, gdzie egzaminator ma zobaczyć wynik.
+</Callout>
+
 ## Minimum do zapamiętania z HTML
 
 - Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.

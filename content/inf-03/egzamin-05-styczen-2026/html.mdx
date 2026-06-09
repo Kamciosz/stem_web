@@ -43,6 +43,52 @@ Portal zgłoszeń wypadków — rejestr personelu (policjanci i ratownicy), poja
 
 index.php: header (h1 "Zgłoszenia wydarzeń"), main z sekcją lewą (formularz radio Policjant/Ratownik + przycisk Pokaż + tabela skryptu 1) i sekcją prawą (h2 "Nowe zgłoszenie" + lista numerowana skryptu 2 + formularz z polem edycyjnym + przycisk "Dodaj zgłoszenie" skryptu 3), footer.
 
+## HTML — szkielet zgodny z arkuszem
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="index.php — formularze zgłoszeń"
+    description="Minimalny szkielet HTML, który pokazuje gdzie wpadają skrypty i elementy punktowane."
+    mistake="Nie zmieniaj nazw plików, id, name, action, method ani zdarzeń względem polecenia."
+    code={`<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Zgłoszenia wydarzeń</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header><h1>Zgłoszenia wydarzeń</h1></header>
+    <main>
+        <section>
+            <form method="post" action="index.php">
+                <input type="radio" name="status" value="policjant" checked> Policjant
+                <input type="radio" name="status" value="ratownik"> Ratownik
+                <button type="submit">Pokaż</button>
+            </form>
+            <!-- tutaj PHP wypisuje tabelę personelu -->
+        </section>
+        <section>
+            <h2>Nowe zgłoszenie</h2>
+            <ol><!-- tutaj PHP wypisuje osoby bez zgłoszeń --></ol>
+            <form method="post" action="index.php">
+                <label for="id_osoby">Id osoby:</label>
+                <input type="number" name="id_osoby" id="id_osoby">
+                <button type="submit">Dodaj zgłoszenie</button>
+            </form>
+        </section>
+    </main>
+    <footer>Autor: [numer zdającego]</footer>
+</body>
+</html>`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam" title="Jak czytać ten HTML">
+To jest szkielet pod punkty: nagłówki, sekcje, formularze, linki i obrazy są równie ważne jak PHP/JS. Jeżeli PHP generuje fragment strony, w HTML zostawiasz miejsce dokładnie tam, gdzie egzaminator ma zobaczyć wynik.
+</Callout>
+
 ## Minimum do zapamiętania z HTML
 
 - Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.

@@ -95,6 +95,27 @@ WHERE ks.nazwa = 'migdał';`}
 `ALTER TABLE ... ADD COLUMN` — to jedyny arkusz w tej sesji, który wymaga modyfikacji struktury tabeli (DDL zamiast DML). Musisz znać różnicę między SELECT/INSERT (DML) a ALTER/CREATE (DDL).
 </Callout>
 
+
+## PHP — opcjonalna pętla obrazów wzorów
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Wersja PHP skryptu 1"
+    description="Jeżeli wybierasz wariant PHP, generujesz 10 obrazów w pętli po stronie serwera."
+    mistake="Nie pomyl nazw plików: wzory są numerowane od 1.jpg do 10.jpg, a pętla musi objąć wszystkie 10 elementów."
+    code={`<?php
+for ($i = 1; $i <= 10; $i++) {
+    echo "<img src='$i.jpg' class='wzory' title='$i' alt='Wzór $i'>";
+}
+?>`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam" title="PHP czy JavaScript?">
+Arkusz dopuszcza wariant generowania obrazów w PHP albo w JavaScripcie. Wybierz jeden i zrób go konsekwentnie. Etap PHP pokazuje wariant serwerowy, a etap JavaScript pokazuje wariant DOM.
+</Callout>
+
 ## Minimum do zapamiętania z PHP
 
 - Po `mysqli_connect()` ustaw kodowanie (`SET CHARSET utf8` albo odpowiednik z arkusza).

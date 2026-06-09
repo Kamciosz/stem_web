@@ -43,6 +43,51 @@ System informacji dla maturzystów. Dwie strony: index.php (lista uczniów jako 
 
 index.php + wynik.php. Wspólne: h1 "System informacji dla maturzystów", aside (3 grafiki ma.jpg/tu.jpg/ra.jpg), sekcja dolna z 4 blokami (Przedmioty, Lata, Najlepszy wynik, Najgorszy wynik — skrypt 1), footer. Sekcja górna index.php: lista uczniów (skrypt 2). Sekcja górna wynik.php: tabela wyników (skrypt 3).
 
+## HTML — szkielet zgodny z arkuszem
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="index.php / wynik.php — wspólna struktura HTML"
+    description="Minimalny szkielet HTML, który pokazuje gdzie wpadają skrypty i elementy punktowane."
+    mistake="Nie zmieniaj nazw plików, id, name, action, method ani zdarzeń względem polecenia."
+    code={`<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>System informacji dla maturzystów</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header>
+        <h1>System informacji dla maturzystów</h1>
+    </header>
+    <aside>
+        <img src="ma.jpg" alt="matura">
+        <img src="tu.jpg" alt="uczeń">
+        <img src="ra.jpg" alt="arkusz">
+    </aside>
+    <main>
+        <section id="gorna">
+            <!-- index.php: lista uczniów; wynik.php: tabela wyników ucznia -->
+        </section>
+        <section id="dolna">
+            <div class="blok"><h4>Przedmioty</h4></div>
+            <div class="blok"><h4>Lata</h4></div>
+            <div class="blok"><h4>Najlepszy wynik</h4></div>
+            <div class="blok"><h4>Najgorszy wynik</h4></div>
+        </section>
+    </main>
+    <footer>Autor: [numer zdającego]</footer>
+</body>
+</html>`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam" title="Jak czytać ten HTML">
+To jest szkielet pod punkty: nagłówki, sekcje, formularze, linki i obrazy są równie ważne jak PHP/JS. Jeżeli PHP generuje fragment strony, w HTML zostawiasz miejsce dokładnie tam, gdzie egzaminator ma zobaczyć wynik.
+</Callout>
+
 ## Minimum do zapamiętania z HTML
 
 - Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.

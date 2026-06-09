@@ -43,6 +43,48 @@ Blog kulinarny z relacją n:m (potrawy ↔ alergeny). Jedna strona przepisy.php 
 
 przepisy.php: aside (10 odnośników GET + autor), main (h1 rodzaj — skrypt 1, h2 nazwa + trudność/kalorie — skrypt 2, separator.png, p alergeny — skrypt 3, h2 Składniki + lista, p przepis — skrypt 4), section (tło inline z bazy + h1 "Blog Kulinarny"). Grafika: separator.png skadrowany do pierwszego separatora.
 
+## HTML — szkielet zgodny z arkuszem
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="przepisy.php — struktura bloga kulinarnego"
+    description="Minimalny szkielet HTML, który pokazuje gdzie wpadają skrypty i elementy punktowane."
+    mistake="Nie zmieniaj nazw plików, id, name, action, method ani zdarzeń względem polecenia."
+    code={`<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog kulinarny</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <aside>
+        <nav><!-- 10 odnośników przepisy.php?id=... --></nav>
+        <p>Autor: [numer zdającego]</p>
+    </aside>
+    <main>
+        <h1><!-- rodzaj potrawy z PHP --></h1>
+        <h2><!-- nazwa potrawy z PHP --></h2>
+        <p><!-- trudność i kalorie --></p>
+        <img src="separator.png" alt="separator">
+        <p><!-- alergeny --></p>
+        <h2>Składniki</h2>
+        <ul><!-- składniki --></ul>
+        <p><!-- przepis --></p>
+    </main>
+    <section>
+        <h1>Blog Kulinarny</h1>
+    </section>
+</body>
+</html>`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam" title="Jak czytać ten HTML">
+To jest szkielet pod punkty: nagłówki, sekcje, formularze, linki i obrazy są równie ważne jak PHP/JS. Jeżeli PHP generuje fragment strony, w HTML zostawiasz miejsce dokładnie tam, gdzie egzaminator ma zobaczyć wynik.
+</Callout>
+
 ## Minimum do zapamiętania z HTML
 
 - Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.

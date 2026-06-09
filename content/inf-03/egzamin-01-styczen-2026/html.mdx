@@ -12,6 +12,55 @@
 
 Struktura portalu samochodowego jest oceniana razem z PHP: sekcje lewa/środkowa/prawa, tabele, obrazki `a1.jpg`, `a2.jpg`, `a3.png` i `rowspan="2"`. W praktyce HTML nie jest tu osobnym plikiem — PHP generuje część znaczników, ale nadal egzaminator sprawdza wynikowy HTML.
 
+## HTML — szkielet zgodny z arkuszem
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="index.php — wynikowy HTML portalu samochodowego"
+    description="Minimalny szkielet HTML, który pokazuje gdzie wpadają skrypty i elementy punktowane."
+    mistake="Nie zmieniaj nazw plików, id, name, action, method ani zdarzeń względem polecenia."
+    code={`<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Portal samochodowy</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header>
+        <h1>Portal samochodowy</h1>
+    </header>
+    <nav>
+        <a href="index.php">Strona główna</a>
+    </nav>
+    <main>
+        <section>
+            <h2>Samochody Alfa</h2>
+            <!-- tutaj PHP wypisuje tabelę alfa z ceną całkowitą -->
+        </section>
+        <section>
+            <h2>Losowe samochody</h2>
+            <!-- tutaj PHP wypisuje dwa losowe auta, a w tabeli używa rowspan="2" -->
+        </section>
+        <section>
+            <h2>Kontakt</h2>
+            <p>Telefon: 111 222 444</p>
+            <img src="a3.png" alt="Kontakt">
+        </section>
+    </main>
+    <footer>
+        <p>Autor: [numer zdającego]</p>
+    </footer>
+</body>
+</html>`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam" title="Jak czytać ten HTML">
+To jest szkielet pod punkty: nagłówki, sekcje, formularze, linki i obrazy są równie ważne jak PHP/JS. Jeżeli PHP generuje fragment strony, w HTML zostawiasz miejsce dokładnie tam, gdzie egzaminator ma zobaczyć wynik.
+</Callout>
+
 ## Minimum do zapamiętania z HTML
 
 - Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.
