@@ -34,7 +34,7 @@ export function ExamFlowShell({ children }: { children: ReactNode }) {
 export function ExamFlowBreadcrumb({ currentStep }: { currentStep?: ExamStepView }) {
     const { examMeta, examFlowBasePath } = useExamFlow();
     return (
-        <nav className="exam-flow-breadcrumb" aria-label="Sciezka egzaminu">
+        <nav className="exam-flow-breadcrumb" aria-label="Ścieżka egzaminu">
             <Link href="/kursy">Kursy</Link>
             <span aria-hidden="true">/</span>
             <Link href={`/kursy/${examMeta.courseId}`}>{examMeta.courseId.toUpperCase().replace("-", ".")}</Link>
@@ -120,7 +120,7 @@ export function ExamFlowStepNav() {
                 aria-current={dashboardActive ? "page" : undefined}
             >
                 <span className="exam-flow-step-index">00</span>
-                <span className="exam-flow-step-label">Przeglad</span>
+                <span className="exam-flow-step-label">Przegląd</span>
             </Link>
             {examStepsView.map((step) => {
                 const href = `${examFlowBasePath}/${step.slug}`;
@@ -163,7 +163,7 @@ export function ExamFlowInfoPanel() {
                     <dd>{examMeta.technologies.join(" · ")}</dd>
                 </div>
                 <div>
-                    <dt>Prog</dt>
+                    <dt>Próg</dt>
                     <dd>{examMeta.scoreTarget}</dd>
                 </div>
                 <div>
@@ -174,7 +174,7 @@ export function ExamFlowInfoPanel() {
 
             <div className="exam-flow-progress">
                 <div className="exam-flow-progress-head">
-                    <span>Postep checklisty</span>
+                    <span>Postęp checklisty</span>
                     <strong>
                         {progress.done}/{progress.total}
                     </strong>
@@ -183,12 +183,12 @@ export function ExamFlowInfoPanel() {
                     <div className="exam-flow-progress-bar-fill" style={{ width: `${pct}%` }} />
                 </div>
                 <Link href={`${examFlowBasePath}/kontrola`} className="exam-flow-progress-link">
-                    Otworz pelna checkliste →
+                    Otwórz pełną checklistę →
                 </Link>
             </div>
 
             <div className="exam-flow-rule">
-                <span>Zasada kolejnosci</span>
+                <span>Zasada kolejności</span>
                 <strong>{examMeta.rule}</strong>
             </div>
         </aside>
@@ -210,9 +210,9 @@ export function ExamFlowStageAside({ step }: { step: ExamStepView }) {
     const next = idx < examStepsView.length - 1 ? examStepsView[idx + 1] : null;
 
     return (
-        <aside className="exam-flow-aside" aria-label="Postep etapu">
+        <aside className="exam-flow-aside" aria-label="Postęp etapu">
             <div className="exam-flow-aside-block">
-                <p className="exam-flow-aside-kicker">Postep ogolny</p>
+                <p className="exam-flow-aside-kicker">Postęp ogólny</p>
                 <div className="exam-flow-progress-head">
                     <span>Checklista</span>
                     <strong>
@@ -248,19 +248,19 @@ export function ExamFlowStageAside({ step }: { step: ExamStepView }) {
                         </Link>
                     ) : (
                         <Link href={examFlowBasePath} className="exam-flow-aside-link">
-                            <span>← Wroc</span>
-                            <strong>Przeglad</strong>
+                            <span>← Wróć</span>
+                            <strong>Przegląd</strong>
                         </Link>
                     )}
                     {next ? (
                         <Link href={`${examFlowBasePath}/${next.slug}`} className="exam-flow-aside-link is-next">
-                            <span>Nastepny →</span>
+                            <span>Następny →</span>
                             <strong>{next.label}</strong>
                         </Link>
                     ) : (
                         <Link href={examFlowBasePath} className="exam-flow-aside-link is-next">
                             <span>Koniec →</span>
-                            <strong>Wroc na dashboard</strong>
+                            <strong>Wróć na dashboard</strong>
                         </Link>
                     )}
                 </div>
@@ -269,7 +269,7 @@ export function ExamFlowStageAside({ step }: { step: ExamStepView }) {
             <div className="exam-flow-aside-block exam-flow-aside-help">
                 <p className="exam-flow-aside-kicker">Pomoc</p>
                 <p>
-                    Punkty leca za <strong>zgodnosc z poleceniem</strong>, nie kreatywnosc. Przy watpliwosciach
+                    Punkty lecą za <strong>zgodność z poleceniem</strong>, nie kreatywność. Przy wątpliwościach
                     wracaj do polecenia w arkuszu.
                 </p>
             </div>

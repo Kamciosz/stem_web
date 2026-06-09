@@ -1,14 +1,5 @@
 "use client";
 
-/**
- * Generyczny, props-based ExamFlowDashboard.
- * Dla kazdego egzaminu page.tsx importuje swoj lib i przekazuje meta/steps/strategy/materials.
- * Stary `ExamFlowDashboard` (hardcoded import) zostaje dla egzamin-01-styczen-2026.
- *
- * Typy zdefiniowane lokalnie (niezalezne od konkretnego lib file) - rozne lib files
- * maja literal type dla `lessonSlug`, co uniemozliwia structural assignability.
- */
-
 import Link from "next/link";
 import { useEffect } from "react";
 import {
@@ -49,7 +40,7 @@ export type ExamStepViewGeneric = {
 
 type StrategyItem = { time: string; title: string; body: string; tag: string };
 type MaterialFile = { src: string; title: string; caption: string; alt: string };
-type Materials = { files: MaterialFile[]; result: MaterialFile };
+type Materials = { files: readonly MaterialFile[]; result: MaterialFile };
 
 type Props = {
     meta: ExamMetaGeneric;
@@ -58,6 +49,51 @@ type Props = {
     materials: Materials;
     basePath: string;
 };
+
+function ExamFutureVideoSlot({ examId }: { examId: string }) {
+    return (
+        <section className="exam-flow-video-slot" aria-hidden="true" data-video-state="reserved" hidden>
+            {/*
+              Reserved for future lesson video embeds per exam.
+              Intended data shape:
+              const videoSources = {
+                  youtubeId?: "...",
+                  cloudflareStreamId?: "...",
+                  poster?: "/img/egzaminy/...",
+              };
+              Runtime rule for future implementation:
+              1. Prefer Cloudflare Stream when cloudflareStreamId is configured and playable.
+              2. Fallback to YouTube when youtubeId is configured or Cloudflare errors.
+              3. If both fail/missing, render nothing for students; only log a developer warning in non-production.
+              This placeholder is hidden intentionally so unfinished video support is invisible in frontend.
+            */}
+            <span>{examId}</span>
+        </section>
+    );
+}
+
+function MaterialsGallery({ materials }: { materials: Materials }) {
+    const allMaterials = [...materials.files, materials.result];
+    return (
+        <section className="exam-flow-materials" aria-label="Materiały arkusza">
+            <h2 className="exam-flow-section-title">Materiały</h2>
+            <p className="exam-flow-section-lead">
+                Wszystkie obrazy potrzebne w arkuszu są w jednej responsywnej galerii. Miniatury nie są ucinane; kliknięcie otwiera podgląd z zoomem.
+            </p>
+            <div className="exam-flow-materials-grid" data-count={allMaterials.length}>
+                {allMaterials.map((file, index) => (
+                    <figure key={`${file.src}-${index}`} className={index === allMaterials.length - 1 ? "is-result" : undefined}>
+                        <ExamImagePreview src={file.src} alt={file.alt} title={file.title} />
+                        <figcaption>
+                            <strong>{file.title}</strong>
+                            <span>{index === allMaterials.length - 1 ? "wzór końcowy" : file.caption}</span>
+                        </figcaption>
+                    </figure>
+                ))}
+            </div>
+        </section>
+    );
+}
 
 export function ExamFlowDashboardGeneric({ meta, steps, strategy, materials, basePath }: Props) {
     const stepViews: ExamStepViewGeneric[] = steps.map((s) => ({
@@ -106,14 +142,14 @@ export function ExamFlowDashboardGeneric({ meta, steps, strategy, materials, bas
             />
             <ExamFlowHeaderGeneric meta={meta} />
             <ExamFlowStepNavGeneric stepViews={stepViews} basePath={basePath} />
+            <ExamFutureVideoSlot examId={meta.examId} />
 
             <div className="exam-flow-dashboard">
                 <section className="exam-flow-dashboard-main">
                     <section className="exam-flow-stages" aria-label="Etapy">
                         <h2 className="exam-flow-section-title">Etapy</h2>
                         <p className="exam-flow-section-lead">
-                            Cztery etapy w kolejnosci pracy. Kazdy na osobnej stronie z wlasnym kodem,
-                            bledami i punktacja.
+                            Cztery etapy w kolejności pracy. Każdy ma osobną stronę z kodem, błędami i punktacją.
                         </p>
                         <ol className="exam-flow-stages-grid">
                             {stepViews.map((step, i) => (
@@ -130,7 +166,7 @@ export function ExamFlowDashboardGeneric({ meta, steps, strategy, materials, bas
                                                 <span>{step.technologies.join(" · ")}</span>
                                             </span>
                                             <span className="exam-flow-stage-cta" aria-hidden="true">
-                                                Otworz →
+                                                Otwórz →
                                             </span>
                                         </Link>
                                     </RevealOnScroll>
@@ -139,39 +175,12 @@ export function ExamFlowDashboardGeneric({ meta, steps, strategy, materials, bas
                         </ol>
                     </section>
 
-                    {materials.files.length > 0 && (
-                        <section className="exam-flow-materials" aria-label="Materialy arkusza">
-                            <h2 className="exam-flow-section-title">Materialy</h2>
-                            <p className="exam-flow-section-lead">
-                                Trzy obrazki z arkusza i makieta koncowa. Po lewej minatury, po prawej cel.
-                            </p>
-                            <div className="exam-flow-materials-layout">
-                                <div className="exam-flow-materials-thumbs">
-                                    {materials.files.map((file) => (
-                                        <figure key={file.src}>
-                                            <ExamImagePreview src={file.src} alt={file.alt} title={file.title} />
-                                            <figcaption>
-                                                <strong>{file.title}</strong>
-                                                <span>{file.caption}</span>
-                                            </figcaption>
-                                        </figure>
-                                    ))}
-                                </div>
-                                <figure className="exam-flow-materials-result">
-                                    <ExamImagePreview src={materials.result.src} alt={materials.result.alt} title={materials.result.title} />
-                                    <figcaption>
-                                        <strong>{materials.result.title}</strong>
-                                        <span>{materials.result.caption}</span>
-                                    </figcaption>
-                                </figure>
-                            </div>
-                        </section>
-                    )}
+                    {materials.files.length > 0 && <MaterialsGallery materials={materials} />}
 
                     <section className="exam-flow-strategy" aria-label="Strategia czasu">
                         <h2 className="exam-flow-section-title">Strategia</h2>
                         <p className="exam-flow-section-lead">
-                            Najpierw dzialajace dane, potem wyglad. Tak sie nie traci punktow na koncu.
+                            Najpierw działające dane, potem wygląd. Tak nie traci się punktów na końcu.
                         </p>
                         <ol className="exam-flow-strategy-list">
                             {strategy.map((s) => (
@@ -201,7 +210,7 @@ export function ExamFlowDashboardGeneric({ meta, steps, strategy, materials, bas
 function ExamFlowHeaderGeneric({ meta }: { meta: ExamMetaGeneric }) {
     return (
         <header className="exam-flow-header">
-            <nav className="exam-flow-breadcrumb" aria-label="Sciezka egzaminu">
+            <nav className="exam-flow-breadcrumb" aria-label="Ścieżka egzaminu">
                 <Link href="/kursy">Kursy</Link>
                 <span aria-hidden="true">/</span>
                 <Link href={`/kursy/${meta.courseId}`}>
@@ -219,16 +228,14 @@ function ExamFlowHeaderGeneric({ meta }: { meta: ExamMetaGeneric }) {
                     </h1>
                     <p className="exam-flow-lead">{meta.description}</p>
                 </div>
-                <div className="exam-flow-header-meta">
+                <div className="exam-flow-header-meta" aria-label="Parametry egzaminu">
                     <dl>
-                        <div>
-                            <dt>Czas</dt>
-                            <dd>{meta.time}</dd>
-                        </div>
-                        <div>
-                            <dt>Technologie</dt>
-                            <dd>{meta.technologies.join(" · ")}</dd>
-                        </div>
+                        <dt>Czas</dt>
+                        <dd>{meta.time}</dd>
+                        <dt>Punktacja</dt>
+                        <dd>{meta.scoringTotal}</dd>
+                        <dt>Technologie</dt>
+                        <dd>{meta.technologies.join(" · ")}</dd>
                     </dl>
                 </div>
             </div>

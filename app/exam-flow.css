@@ -16,10 +16,10 @@
 
 .exam-flow[data-exam-flow^="egzamin-"] {
     /* tokeny — zgodne z globals.css (czarne tlo + #7c3aed laser + clinical #e8e8e8) */
-    --ef-bg:           #000000;
-    --ef-panel:        #0d0a14;          /* nieco fioletowy ciemny, ledwo widoczny */
-    --ef-panel-2:      #15121b;          /* = --surface */
-    --ef-panel-3:      #1d1a24;          /* = --surface-container-low */
+    --ef-bg:           #070910;
+    --ef-panel:        #0f111a;          /* nieco fioletowy ciemny, ledwo widoczny */
+    --ef-panel-2:      #151824;          /* = --surface */
+    --ef-panel-3:      #1b2030;          /* = --surface-container-low */
     --ef-accent:       #7c3aed;          /* = --laser */
     --ef-accent-2:     #a78bfa;          /* jasniejszy fiolet dla hover */
     --ef-accent-soft:  rgba(124, 58, 237, 0.10);
@@ -1352,6 +1352,190 @@ main.page-transition > .exam-flow {
     line-height: 1.5;
 }
 
+
+/* Unified exam dashboard pattern — single gallery, viewport-centered lightbox, clearer stage/code layout */
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-stepnav {
+    margin-bottom: clamp(14px, 2vw, 22px);
+    gap: 8px;
+    padding: 6px;
+    background: var(--ef-panel-2);
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-dashboard,
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-stage {
+    margin-top: 0;
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-stages-grid {
+    grid-template-columns: repeat(2, minmax(min(260px, 100%), 1fr));
+    align-items: stretch;
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-stages-grid > li,
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-stage-card {
+    height: 100%;
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-materials-layout {
+    display: block;
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+    gap: clamp(10px, 1.6vw, 16px);
+    align-items: stretch;
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-materials-grid figure {
+    margin: 0;
+    min-width: 0;
+    background: var(--ef-panel);
+    border: 1px solid var(--ef-border);
+    border-radius: var(--ef-radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-materials-grid figure.is-result {
+    border-color: var(--ef-border-em);
+    background: linear-gradient(180deg, rgba(124, 58, 237, 0.08), var(--ef-panel));
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-materials-grid .exam-image-preview {
+    min-height: clamp(150px, 18vw, 240px);
+    background: #0b0d14;
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-materials-grid .exam-image-preview img {
+    width: 100%;
+    height: clamp(150px, 18vw, 240px);
+    object-fit: contain;
+    object-position: center;
+    background: #0b0d14;
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-materials-grid figcaption,
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-materials-thumbs figcaption,
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-materials-result figcaption {
+    min-height: 56px;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.015);
+}
+.exam-image-lightbox {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: clamp(10px, 2vw, 24px);
+}
+.exam-image-lightbox-backdrop {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    border: 0;
+    background: rgba(7, 9, 16, 0.88);
+    cursor: zoom-out;
+}
+.exam-image-lightbox-panel {
+    position: relative;
+    z-index: 1;
+    width: min(96vw, 1320px);
+    height: min(92dvh, 880px);
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    border: 1px solid var(--ef-border);
+    border-radius: var(--ef-radius-lg);
+    background: #0b0d14;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.65);
+}
+.exam-image-lightbox-toolbar {
+    min-width: 0;
+    background: #10131d;
+}
+.exam-image-lightbox-titleblock {
+    min-width: 0;
+}
+.exam-image-lightbox-actions {
+    flex: 0 0 auto;
+}
+.exam-image-lightbox-zoom {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 10px;
+    border: 1px solid var(--ef-border);
+    border-radius: 999px;
+    color: var(--ef-muted) !important;
+    background: rgba(255, 255, 255, 0.035);
+}
+.exam-image-lightbox-close {
+    min-width: 36px;
+    font-size: 18px !important;
+    line-height: 1;
+}
+.exam-image-lightbox-stage {
+    min-height: 0;
+    overflow: auto;
+    display: grid;
+    place-items: center;
+    padding: clamp(12px, 2vw, 24px);
+    background: #070910;
+}
+.exam-image-lightbox-stage img,
+.exam-image-lightbox-image {
+    display: block;
+    max-width: min(100%, 1180px);
+    max-height: calc(92dvh - 92px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    transform: scale(var(--exam-image-zoom, 1));
+    transform-origin: center center;
+    transition: transform 0.12s ease;
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-flow-stage-content {
+    background: #0f111a;
+}
+.exam-flow-stage-content .exam-code-card {
+    position: relative;
+    background: #11131c;
+}
+.exam-flow-stage-content .exam-code-card header {
+    padding-right: 18px;
+}
+.exam-flow-stage-content .exam-code-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 0 18px 14px;
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-code-card pre,
+.exam-flow-stage-content .exam-code-card pre {
+    background: #1e1e1e;
+    border-top: 1px solid #2d2d2d;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+.exam-flow[data-exam-flow^="egzamin-"] .exam-code-card pre::before,
+.exam-flow-stage-content .exam-code-card pre::before {
+    content: "";
+    display: block;
+    height: 10px;
+    margin: -4px 0 10px;
+    background:
+        radial-gradient(circle at 5px 5px, #ff5f57 0 4px, transparent 4px),
+        radial-gradient(circle at 20px 5px, #ffbd2e 0 4px, transparent 4px),
+        radial-gradient(circle at 35px 5px, #28c840 0 4px, transparent 4px);
+    opacity: 0.9;
+}
+.exam-flow-aside-link {
+    min-height: auto;
+    align-items: stretch;
+}
+.exam-flow-aside-link.is-next {
+    text-align: left;
+}
+.exam-flow-aside-help p {
+    overflow-wrap: anywhere;
+}
+
 /* ─────────────────────────────────────────────────────────────
    Responsive — tylko strukturalne zmiany layoutu.
    Sizing jest fluid (clamp/min), tu tylko zmiany kolumn.
@@ -1371,19 +1555,8 @@ main.page-transition > .exam-flow {
     .exam-flow-header-row {
         grid-template-columns: 1fr;
     }
-    .exam-flow-materials-layout {
+    .exam-flow[data-exam-flow^="egzamin-"] .exam-flow-stages-grid {
         grid-template-columns: 1fr;
-    }
-    .exam-flow-materials-thumbs {
-        flex-direction: row;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    .exam-flow-materials-thumbs figure {
-        flex: 0 0 clamp(140px, 34vw, 220px);
-    }
-    .exam-flow-materials-thumbs .exam-image-preview {
-        min-height: clamp(96px, 24vw, 150px);
     }
 }
 /* Lightbox mobile fallback */
@@ -1395,10 +1568,18 @@ main.page-transition > .exam-flow {
     .exam-image-lightbox-actions {
         justify-content: flex-start;
     }
+    .exam-image-lightbox {
+        padding: 0;
+    }
     .exam-image-lightbox-panel {
         width: 100vw;
         height: 100dvh;
         border-radius: 0;
+    }
+    .exam-image-lightbox-stage img,
+    .exam-image-lightbox-image {
+        max-width: 100%;
+        max-height: calc(100dvh - 132px);
     }
 }
 

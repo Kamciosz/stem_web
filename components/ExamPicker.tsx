@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 
 export type ExamEntry = {
@@ -55,60 +54,21 @@ export function ExamPicker({
     courseId: string;
     label?: string;
 }) {
-    const [open, setOpen] = useState(true);
-    const [idx, setIdx] = useState(0);
-
-    const current = sessions[idx];
-    const hasPrev = idx > 0;
-    const hasNext = idx < sessions.length - 1;
+    const current = sessions[0];
 
     return (
         <div className="exam-picker">
-            {/* Toggle */}
-            <button
-                className="exam-picker-toggle"
-                onClick={() => setOpen(!open)}
-                aria-expanded={open}
-            >
+            <header className="exam-picker-static-head">
                 <span className="exam-picker-label">{label}</span>
-                <svg
-                    className={`exam-picker-chevron ${open ? "open" : ""}`}
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    width="18"
-                    height="18"
-                >
-                    <path
-                        fillRule="evenodd"
-                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                        clipRule="evenodd"
-                    />
-                </svg>
-            </button>
+                <span className="exam-picker-static-note">zawsze widoczne</span>
+            </header>
 
-            {/* Panel */}
-            <div className={`exam-picker-panel ${open ? "open" : ""}`}>
+            <div className="exam-picker-panel open">
                 {/* Session navigator */}
                 <div className="exam-nav">
-                    <button
-                        className="exam-nav-arrow"
-                        onClick={() => setIdx(idx - 1)}
-                        disabled={!hasPrev}
-                        aria-label="Poprzednia sesja"
-                    >
-                        ‹
-                    </button>
                     <span className="exam-nav-title">
                         {current.month.toUpperCase()} {current.year}
                     </span>
-                    <button
-                        className="exam-nav-arrow"
-                        onClick={() => setIdx(idx + 1)}
-                        disabled={!hasNext}
-                        aria-label="Następna sesja"
-                    >
-                        ›
-                    </button>
                 </div>
 
                 {/* Exams list or "coming soon" */}
@@ -131,17 +91,6 @@ export function ExamPicker({
                     <p className="exam-empty">WKRÓTCE</p>
                 )}
 
-                {/* Dots indicator */}
-                <div className="exam-dots">
-                    {sessions.map((s, i) => (
-                        <button
-                            key={`${s.year}-${s.month}`}
-                            className={`exam-dot ${i === idx ? "active" : ""} ${s.exams.length > 0 ? "has-content" : ""}`}
-                            onClick={() => setIdx(i)}
-                            aria-label={`${s.month} ${s.year}`}
-                        />
-                    ))}
-                </div>
             </div>
         </div>
     );

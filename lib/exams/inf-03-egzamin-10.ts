@@ -116,9 +116,17 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
+        { src: "/img/egzaminy/e10-pankejki.jpg", alt: "e10-pankejki.jpg — materiał arkusza INF.03-10", title: "e10-pankejki.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e10-losos.jpg", alt: "e10-losos.jpg — materiał arkusza INF.03-10", title: "e10-losos.jpg", caption: "materiał z arkusza" },
         { src: "/img/egzaminy/e10-churros.jpg", alt: "e10-churros.jpg — materiał arkusza INF.03-10", title: "e10-churros.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e10-kociolek.jpg", alt: "e10-kociolek.jpg — materiał arkusza INF.03-10", title: "e10-kociolek.jpg", caption: "materiał z arkusza" },
         { src: "/img/egzaminy/e10-hamburger.jpg", alt: "e10-hamburger.jpg — materiał arkusza INF.03-10", title: "e10-hamburger.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e10-jagniecina.jpg", alt: "e10-jagniecina.jpg — materiał arkusza INF.03-10", title: "e10-jagniecina.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e10-eklerki.jpg", alt: "e10-eklerki.jpg — materiał arkusza INF.03-10", title: "e10-eklerki.jpg", caption: "materiał z arkusza" },
         { src: "/img/egzaminy/e10-sernik.jpg", alt: "e10-sernik.jpg — materiał arkusza INF.03-10", title: "e10-sernik.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e10-salatka.jpg", alt: "e10-salatka.jpg — materiał arkusza INF.03-10", title: "e10-salatka.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e10-nugetsy.jpg", alt: "e10-nugetsy.jpg — materiał arkusza INF.03-10", title: "e10-nugetsy.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e10-separator.png", alt: "e10-separator.png — materiał arkusza INF.03-10", title: "e10-separator.png", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e10-kw4.png",

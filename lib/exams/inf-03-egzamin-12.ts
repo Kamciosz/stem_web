@@ -117,8 +117,16 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 export const examMaterials = {
     files: [
         { src: "/img/egzaminy/e12-logo.png", alt: "e12-logo.png — materiał arkusza INF.03-12", title: "e12-logo.png", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e12-smok.png", alt: "e12-smok.png — materiał arkusza INF.03-12", title: "e12-smok.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-kwiat.png", alt: "e12-kwiat.png — materiał arkusza INF.03-12", title: "e12-kwiat.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-koliber.png", alt: "e12-koliber.png — materiał arkusza INF.03-12", title: "e12-koliber.png", caption: "materiał z arkusza" },
         { src: "/img/egzaminy/e12-tygrys.png", alt: "e12-tygrys.png — materiał arkusza INF.03-12", title: "e12-tygrys.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-angel.png", alt: "e12-angel.png — materiał arkusza INF.03-12", title: "e12-angel.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-rozeta.png", alt: "e12-rozeta.png — materiał arkusza INF.03-12", title: "e12-rozeta.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-celtic.png", alt: "e12-celtic.png — materiał arkusza INF.03-12", title: "e12-celtic.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-delfin.png", alt: "e12-delfin.png — materiał arkusza INF.03-12", title: "e12-delfin.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-waz.png", alt: "e12-waz.png — materiał arkusza INF.03-12", title: "e12-waz.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-kwiaty.png", alt: "e12-kwiaty.png — materiał arkusza INF.03-12", title: "e12-kwiaty.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-smok.png", alt: "e12-smok.png — materiał arkusza INF.03-12", title: "e12-smok.png", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e12-kw4.png",

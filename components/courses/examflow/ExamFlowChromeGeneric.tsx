@@ -1,12 +1,5 @@
 "use client";
 
-/**
- * Generyczne wersje komponentow ExamFlow.
- * Kazdy komponent przyjmuje meta/basePath/stepViews jako props.
- * Stary `ExamFlowChrome.tsx` (hardcoded import) zostaje dla prototypu
- * egzamin-01-styczen-2026 - ten plik jest dla pozostalych 53 egzaminow.
- */
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
@@ -40,10 +33,6 @@ type BaseProps = {
     basePath: string;
 };
 
-/* ─────────────────────────────────────────────────────────────
-   Shell
-   ───────────────────────────────────────────────────────────── */
-
 export function ExamFlowShell({
     children,
     meta,
@@ -60,17 +49,13 @@ export function ExamFlowShell({
     );
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Breadcrumb
-   ───────────────────────────────────────────────────────────── */
-
 export function ExamFlowBreadcrumbGeneric({
     meta,
     basePath,
     currentStep,
 }: BaseProps & { currentStep?: LocalStepView }) {
     return (
-        <nav className="exam-flow-breadcrumb" aria-label="Sciezka egzaminu">
+        <nav className="exam-flow-breadcrumb" aria-label="Ścieżka egzaminu">
             <Link href="/kursy">Kursy</Link>
             <span aria-hidden="true">/</span>
             <Link href={`/kursy/${meta.courseId}`}>
@@ -90,10 +75,6 @@ export function ExamFlowBreadcrumbGeneric({
     );
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Step Nav — routing pills
-   ───────────────────────────────────────────────────────────── */
-
 export function ExamFlowStepNavGeneric({
     stepViews,
     basePath,
@@ -112,7 +93,7 @@ export function ExamFlowStepNavGeneric({
                 aria-current={dashboardActive ? "page" : undefined}
             >
                 <span className="exam-flow-step-index">00</span>
-                <span className="exam-flow-step-label">Przeglad</span>
+                <span className="exam-flow-step-label">Przegląd</span>
             </Link>
             {stepViews.map((step) => {
                 const href = `${basePath}/${step.slug}`;
@@ -135,10 +116,6 @@ export function ExamFlowStepNavGeneric({
     );
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Info panel — right column on dashboard
-   ───────────────────────────────────────────────────────────── */
-
 export function ExamFlowInfoPanelGeneric({
     meta,
     basePath,
@@ -159,7 +136,7 @@ export function ExamFlowInfoPanelGeneric({
                     <dd>{meta.technologies.join(" · ")}</dd>
                 </div>
                 <div>
-                    <dt>Prog</dt>
+                    <dt>Próg</dt>
                     <dd>{meta.scoreTarget}</dd>
                 </div>
                 <div>
@@ -170,7 +147,7 @@ export function ExamFlowInfoPanelGeneric({
 
             <div className="exam-flow-progress">
                 <div className="exam-flow-progress-head">
-                    <span>Postep checklisty</span>
+                    <span>Postęp checklisty</span>
                     <strong>
                         {progress.done}/{progress.total}
                     </strong>
@@ -179,21 +156,17 @@ export function ExamFlowInfoPanelGeneric({
                     <div className="exam-flow-progress-bar-fill" style={{ width: `${pct}%` }} />
                 </div>
                 <Link href={`${basePath}/kontrola`} className="exam-flow-progress-link">
-                    Otworz pelna checkliste →
+                    Otwórz pełną checklistę →
                 </Link>
             </div>
 
             <div className="exam-flow-rule">
-                <span>Zasada kolejnosci</span>
+                <span>Zasada kolejności</span>
                 <strong>{meta.rule}</strong>
             </div>
         </aside>
     );
 }
-
-/* ─────────────────────────────────────────────────────────────
-   Stage Aside — slim aside on stage page
-   ───────────────────────────────────────────────────────────── */
 
 export function ExamFlowStageAsideGeneric({
     step,
@@ -215,9 +188,9 @@ export function ExamFlowStageAsideGeneric({
     const next = idx < stepViews.length - 1 ? stepViews[idx + 1] : null;
 
     return (
-        <aside className="exam-flow-aside" aria-label="Postep etapu">
+        <aside className="exam-flow-aside" aria-label="Postęp etapu">
             <div className="exam-flow-aside-block">
-                <p className="exam-flow-aside-kicker">Postep ogolny</p>
+                <p className="exam-flow-aside-kicker">Postęp ogólny</p>
                 <div className="exam-flow-progress-head">
                     <span>Checklista</span>
                     <strong>
@@ -253,8 +226,8 @@ export function ExamFlowStageAsideGeneric({
                         </Link>
                     ) : (
                         <Link href={basePath} className="exam-flow-aside-link">
-                            <span>← Wroc</span>
-                            <strong>Przeglad</strong>
+                            <span>← Wróć</span>
+                            <strong>Przegląd</strong>
                         </Link>
                     )}
                     {next ? (
@@ -262,13 +235,13 @@ export function ExamFlowStageAsideGeneric({
                             href={`${basePath}/${next.slug}`}
                             className="exam-flow-aside-link is-next"
                         >
-                            <span>Nastepny →</span>
+                            <span>Następny →</span>
                             <strong>{next.label}</strong>
                         </Link>
                     ) : (
                         <Link href={basePath} className="exam-flow-aside-link is-next">
                             <span>Koniec →</span>
-                            <strong>Wroc na dashboard</strong>
+                            <strong>Wróć na dashboard</strong>
                         </Link>
                     )}
                 </div>

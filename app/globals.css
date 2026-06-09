@@ -3518,20 +3518,31 @@ a.lesson-nav-link:hover {
     overflow: hidden;
 }
 
+.exam-picker-static-head,
 .exam-picker-toggle {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
     padding: 16px 20px;
     background: transparent;
     border: none;
-    cursor: pointer;
     color: var(--on-surface);
+}
+.exam-picker-toggle {
+    cursor: pointer;
     transition: background 0.15s;
 }
 .exam-picker-toggle:hover {
     background: var(--surface-container);
+}
+.exam-picker-static-note {
+    font-family: var(--font-jetbrains-mono), monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--on-surface-variant);
 }
 
 .exam-picker-label {
@@ -3552,13 +3563,10 @@ a.lesson-nav-link:hover {
 }
 
 .exam-picker-panel {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease, padding 0.3s ease;
-    padding: 0 20px;
+    overflow: visible;
+    padding: 0 20px 20px;
 }
 .exam-picker-panel.open {
-    max-height: 2000px;
     padding: 0 20px 20px;
 }
 
@@ -3609,27 +3617,19 @@ a.lesson-nav-link:hover {
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-}
-
-@media (min-width: 640px) {
-    .exam-list {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1024px) {
-    .exam-list {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+    gap: 10px;
+    align-items: stretch;
 }
 
 .exam-row {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+        "badge id"
+        "topic topic";
+    align-items: start;
+    gap: 8px 10px;
     padding: 14px 16px;
     border-radius: 12px;
     border: 1px solid var(--outline-variant);
@@ -3645,6 +3645,7 @@ a.lesson-nav-link:hover {
 }
 
 .exam-tech-badge {
+    grid-area: badge;
     height: 16px;
     flex-shrink: 0;
 }
@@ -3655,6 +3656,7 @@ a.lesson-nav-link:hover {
 }
 
 .exam-row-id {
+    grid-area: id;
     font-size: 0.75rem;
     color: var(--on-surface-variant);
     font-weight: 600;
@@ -3663,6 +3665,7 @@ a.lesson-nav-link:hover {
 }
 
 .exam-row-topic {
+    grid-area: topic;
     font-size: 0.95rem;
     font-weight: 500;
     line-height: 1.4;
@@ -5886,6 +5889,9 @@ a.lesson-nav-link:hover {
 .footer-social-links a {
     font-family: var(--font-jetbrains-mono), monospace;
     font-size: 0.78rem;
+    width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 

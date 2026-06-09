@@ -116,7 +116,18 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
-
+        { src: "/img/egzaminy/e05-baner.jpg", alt: "e05-baner.jpg — materiał arkusza INF.03-05", title: "e05-baner.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e05-kod.jpg", alt: "e05-kod.jpg — materiał arkusza INF.03-05", title: "e05-kod.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e05-1.jpg", alt: "e05-1.jpg — materiał arkusza INF.03-05", title: "e05-1.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e05-2.jpg", alt: "e05-2.jpg — materiał arkusza INF.03-05", title: "e05-2.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e05-3.jpg", alt: "e05-3.jpg — materiał arkusza INF.03-05", title: "e05-3.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e05-4.jpg", alt: "e05-4.jpg — materiał arkusza INF.03-05", title: "e05-4.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e05-5.jpg", alt: "e05-5.jpg — materiał arkusza INF.03-05", title: "e05-5.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e05-6.jpg", alt: "e05-6.jpg — materiał arkusza INF.03-05", title: "e05-6.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e05-7.jpg", alt: "e05-7.jpg — materiał arkusza INF.03-05", title: "e05-7.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e05-8.jpg", alt: "e05-8.jpg — materiał arkusza INF.03-05", title: "e05-8.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e05-9.jpg", alt: "e05-9.jpg — materiał arkusza INF.03-05", title: "e05-9.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e05-10.jpg", alt: "e05-10.jpg — materiał arkusza INF.03-05", title: "e05-10.jpg", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e05-kw4.png",

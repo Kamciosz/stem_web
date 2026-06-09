@@ -118,6 +118,14 @@ export const examMaterials = {
     files: [
         { src: "/img/egzaminy/e11-awatar_1.jpg", alt: "e11-awatar_1.jpg — materiał arkusza INF.03-11", title: "e11-awatar_1.jpg", caption: "materiał z arkusza" },
         { src: "/img/egzaminy/e11-awatar_2.jpg", alt: "e11-awatar_2.jpg — materiał arkusza INF.03-11", title: "e11-awatar_2.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e11-awatar_3.jpg", alt: "e11-awatar_3.jpg — materiał arkusza INF.03-11", title: "e11-awatar_3.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e11-awatar_4.jpg", alt: "e11-awatar_4.jpg — materiał arkusza INF.03-11", title: "e11-awatar_4.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e11-awatar_5.jpg", alt: "e11-awatar_5.jpg — materiał arkusza INF.03-11", title: "e11-awatar_5.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e11-awatar_6.jpg", alt: "e11-awatar_6.jpg — materiał arkusza INF.03-11", title: "e11-awatar_6.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e11-awatar_7.jpg", alt: "e11-awatar_7.jpg — materiał arkusza INF.03-11", title: "e11-awatar_7.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e11-awatar_8.jpg", alt: "e11-awatar_8.jpg — materiał arkusza INF.03-11", title: "e11-awatar_8.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e11-awatar_9.jpg", alt: "e11-awatar_9.jpg — materiał arkusza INF.03-11", title: "e11-awatar_9.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e11-awatar_10.jpg", alt: "e11-awatar_10.jpg — materiał arkusza INF.03-11", title: "e11-awatar_10.jpg", caption: "materiał z arkusza" },
         { src: "/img/egzaminy/e11-awatar_nieznany.png", alt: "e11-awatar_nieznany.png — materiał arkusza INF.03-11", title: "e11-awatar_nieznany.png", caption: "materiał z arkusza" },
     ],
     result: {
