@@ -3,7 +3,7 @@
  * Dashboard + 4 podstrony etapow.
  */
 
-export type ExamStepSlug = "baza-danych" | "html-php" | "css" | "kontrola";
+export type ExamStepSlug = "baza-danych" | "html" | "php" | "css" | "kontrola";
 
 export type ExamStepView = {
     slug: ExamStepSlug;
@@ -58,34 +58,44 @@ export const examSteps: ExamStep[] = [
         index: 1,
         label: "Baza danych",
         short: "Baza",
-        summary: "Struktura tabel, klucze obce, zapytania SQL.",
+        summary: "Baza matura, pięć zapytań, średnie wyniki i JOIN z arkuszem.",
         minutes: "0–25 min",
         technologies: ["SQL", "MySQL"],
         mdx: () => import("@/content/inf-03/egzamin-04-styczen-2026/baza-danych.mdx"),
     },
     {
-        slug: "html-php",
+        slug: "html",
         index: 2,
-        label: "HTML / PHP",
-        short: "HTML/PHP",
-        summary: "Połączenie z bazą, logika biznesowa, wyświetlanie danych.",
-        minutes: "25–90 min",
-        technologies: ["PHP", "HTML"],
-        mdx: () => import("@/content/inf-03/egzamin-04-styczen-2026/html-php.mdx"),
+        label: "HTML",
+        short: "HTML",
+        summary: "Dwie strony: index.php i wynik.php, wspólne sekcje, grafiki i odnośniki GET.",
+        minutes: "25–45 min",
+        technologies: ["HTML"],
+        mdx: () => import("@/content/inf-03/egzamin-04-styczen-2026/html.mdx"),
+    },
+    {
+        slug: "php",
+        index: 3,
+        label: "PHP",
+        short: "PHP",
+        summary: "Bloki statystyk, lista uczniów, wynik maturzysty i przekazywanie id przez GET.",
+        minutes: "45–90 min",
+        technologies: ["PHP", "MySQL"],
+        mdx: () => import("@/content/inf-03/egzamin-04-styczen-2026/php.mdx"),
     },
     {
         slug: "css",
-        index: 3,
+        index: 4,
         label: "CSS",
         short: "CSS",
-        summary: "Layout, kolory, odtworzenie makiety.",
+        summary: "Układ bloków, sekcje, obrazy i style zgodne z makietą maturzystów.",
         minutes: "90–130 min",
         technologies: ["CSS"],
         mdx: () => import("@/content/inf-03/egzamin-04-styczen-2026/css.mdx"),
     },
     {
         slug: "kontrola",
-        index: 4,
+        index: 5,
         label: "Kontrola",
         short: "Kontrola",
         summary: "Weryfikacja wymagań, punktacja, checklista.",
@@ -95,9 +105,10 @@ export const examSteps: ExamStep[] = [
     },
 ];
 
+
 export const examStrategy = [
-    { time: "0–25 min", title: "Analiza i SQL", body: "Rozpisz dane wejściowe, sprawdź zapytania albo wymagane pliki.", tag: "łatwe punkty" },
-    { time: "25–90 min", title: "PHP i baza", body: "Połączenie, charset, pętle, formularze, obliczenia i zapis danych.", tag: "główna część" },
+    { time: "0–25 min", title: "Baza / analiza", body: "Rozpisz dane wejściowe, sprawdź zapytania SQL albo wymagane pliki.", tag: "łatwe punkty" },
+    { time: "25–90 min", title: "HTML i PHP", body: "Struktura HTML, logika skryptów i dane wejściowe zgodnie z arkuszem.", tag: "główna część" },
     { time: "90–130 min", title: "CSS pod makietę", body: "Odtwarzaj polecenie: fonty, kolory, układ, obrazy i formularze.", tag: "dopięcie" },
     { time: "130–150 min", title: "Kontrola", body: "Porównaj wymagania, działanie i wygląd punkt po punkcie.", tag: "ostatnie punkty" },
 ];

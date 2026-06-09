@@ -1,0 +1,98 @@
+{/*
+  Etap — HTML albo PHP
+  Polaczenie, lewa/srodek/prawa sekcja, rowspan.
+*/}
+
+<div className="exam-step-lead">
+  Tu sie oblewa egzamin. `set_charset` od razu po polaczeniu, cena calkowita liczona
+  w PHP (nie w SQL), dokladnie dwa losowe pojazdy i tabela srodkowa z `rowspan="2"`.
+</div>
+
+## PHP — co jest oceniane
+
+PHP w INF.03 działa po stronie serwera: łączy się z MySQL, wykonuje zapytania, odczytuje GET/POST, generuje HTML i zamyka połączenie. Nie mieszaj tego z JavaScriptem — JS nie połączy się z bazą w tych arkuszach.
+
+## Polaczenie z baza
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Tabela alfa z JOIN i cena w PHP"
+    description="Pojazdy alfa z kolorem, cena całkowita = cena + dopłata."
+    mistake="Cena w SELECT zamiast w pętli — wymaganie niespełnione, tracisz punkty."
+    code={`$query = "SELECT marka, model, cena, nazwa, doplata
+          FROM pojazdy
+          INNER JOIN kolory ON pojazdy.kolor = kolory.id
+          WHERE model = 'alfa'";
+$result = $conn->query($query);
+
+echo "<table>";
+echo "<tr><th>Marka</th><th>Model</th><th>Kolor</th><th>Cena całkowita</th></tr>";
+
+while ($row = $result->fetch_assoc()) {
+    $cena_calkowita = $row['cena'] + $row['doplata'];
+    echo "<tr>";
+    echo "<td>" . $row['marka'] . "</td>";
+    echo "<td>" . $row['model'] . "</td>";
+    echo "<td>" . $row['nazwa'] . "</td>";
+    echo "<td>" . $cena_calkowita . "</td>";
+    echo "</tr>";
+}
+
+echo "</table>";`}
+  />
+</ExamCodeGrid>
+
+## Lewa sekcja — tabela alfa
+
+JOIN + petla. **Cena calkowita liczona w PHP**, nie w SELECT.
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Losowanie i rowspan"
+    description="Dwa auta, dwa obrazki, tabela z rowspan='2' na kolumnie ceny."
+    mistake="Brak rowspan — układ wizualnie podobny do makiety, ale wymaganie niespełnione."
+    code={`$query = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
+$result = $conn->query($query);
+$nr = 1;
+
+while ($row = $result->fetch_assoc()) {
+    echo "<img src='a{$nr}.jpg' alt='Pojazd {$nr}'>";
+    echo "<table>";
+    echo "<tr><td rowspan='2'>" . $row['cena'] . "</td>";
+    echo "<td>Marka: " . $row['marka'] . "</td></tr>";
+    echo "<tr><td>Model: " . $row['model'] . "</td></tr>";
+    echo "</table>";
+    $nr++;
+}`}
+  />
+</ExamCodeGrid>
+
+## Srodkowa sekcja — dwa losowe + rowspan
+
+Dwa losowe pojazdy z ORDER BY RAND() LIMIT 2. Kazdy wyswietlany z obrazkiem (a1.jpg, a2.jpg)
+i tabelka z rowspan="2".
+
+## Prawa sekcja i zamkniecie polaczenia
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kontakt + a3.png + close"
+    description="Telefon, obrazek a3.png, $conn->close()."
+    mistake="Zla nazwa pliku obrazka albo brak close()."
+    code={`echo "<p>Telefon: 111 222 444</p>";
+echo "<img src='a3.png' alt='Kontakt'>";
+
+$conn->close();`}
+  />
+</ExamCodeGrid>
+
+## Minimum do zapamiętania z PHP
+
+- Po `mysqli_connect()` ustaw kodowanie (`SET CHARSET utf8` albo odpowiednik z arkusza).
+- Najpierw testuj SQL w bazie, potem wklejaj do PHP.
+- Dane z formularza czytaj przez `$_POST`/`$_GET` zgodnie z poleceniem.
+- `while + mysqli_fetch_array/fetch_assoc` to podstawowy wzorzec renderowania wyników.
+- Zamknij połączenie, jeśli arkusz tego wymaga.

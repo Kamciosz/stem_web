@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import type { ExamStepView } from "@/lib/exams/inf-03-egzamin-01";
+import type { ExamStepView } from "./ExamFlowContext";
 import { ExamFlowProvider } from "./ExamFlowContext";
 import {
     ExamFlowHeader,

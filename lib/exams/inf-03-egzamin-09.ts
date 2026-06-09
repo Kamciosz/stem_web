@@ -3,7 +3,7 @@
  * Dashboard + 4 podstrony etapow.
  */
 
-export type ExamStepSlug = "baza-danych" | "html-php" | "css" | "kontrola";
+export type ExamStepSlug = "baza-danych" | "html" | "php" | "javascript" | "css" | "kontrola";
 
 export type ExamStepView = {
     slug: ExamStepSlug;
@@ -58,34 +58,54 @@ export const examSteps: ExamStep[] = [
         index: 1,
         label: "Baza danych",
         short: "Baza",
-        summary: "Struktura tabel, klucze obce, zapytania SQL.",
+        summary: "Klienci, kształty, wzory, JOIN oraz ALTER TABLE dla dopłaty.",
         minutes: "0–25 min",
         technologies: ["SQL", "MySQL"],
         mdx: () => import("@/content/inf-03/egzamin-09-styczen-2026/baza-danych.mdx"),
     },
     {
-        slug: "html-php",
+        slug: "html",
         index: 2,
-        label: "HTML / PHP",
-        short: "HTML/PHP",
-        summary: "Połączenie z bazą, logika biznesowa, wyświetlanie danych.",
-        minutes: "25–90 min",
-        technologies: ["PHP", "HTML"],
-        mdx: () => import("@/content/inf-03/egzamin-09-styczen-2026/html-php.mdx"),
+        label: "HTML",
+        short: "HTML",
+        summary: "Struktura salonu: aside, nav, trzy sekcje, input color/select/number i przyciski.",
+        minutes: "25–45 min",
+        technologies: ["HTML"],
+        mdx: () => import("@/content/inf-03/egzamin-09-styczen-2026/html.mdx"),
+    },
+    {
+        slug: "php",
+        index: 3,
+        label: "PHP",
+        short: "PHP",
+        summary: "Opcjonalna pętla PHP generująca 10 obrazów wzorów zgodnie z poleceniem.",
+        minutes: "45–65 min",
+        technologies: ["PHP"],
+        mdx: () => import("@/content/inf-03/egzamin-09-styczen-2026/php.mdx"),
+    },
+    {
+        slug: "javascript",
+        index: 4,
+        label: "JavaScript",
+        short: "JS",
+        summary: "Pętla obrazów w DOM oraz przełączanie sekcji onmouseover bez starego deklarowania zmiennych.",
+        minutes: "65–95 min",
+        technologies: ["JavaScript"],
+        mdx: () => import("@/content/inf-03/egzamin-09-styczen-2026/javascript.mdx"),
     },
     {
         slug: "css",
-        index: 3,
+        index: 5,
         label: "CSS",
         short: "CSS",
-        summary: "Layout, kolory, odtworzenie makiety.",
-        minutes: "90–130 min",
+        summary: "Salmon/Crimson, display none/block, border-radius 100% i układ salonu.",
+        minutes: "95–130 min",
         technologies: ["CSS"],
         mdx: () => import("@/content/inf-03/egzamin-09-styczen-2026/css.mdx"),
     },
     {
         slug: "kontrola",
-        index: 4,
+        index: 6,
         label: "Kontrola",
         short: "Kontrola",
         summary: "Weryfikacja wymagań, punktacja, checklista.",
@@ -95,9 +115,10 @@ export const examSteps: ExamStep[] = [
     },
 ];
 
+
 export const examStrategy = [
-    { time: "0–25 min", title: "Analiza i SQL", body: "Rozpisz dane wejściowe, sprawdź zapytania albo wymagane pliki.", tag: "łatwe punkty" },
-    { time: "25–90 min", title: "PHP i baza", body: "Połączenie, charset, pętle, formularze, obliczenia i zapis danych.", tag: "główna część" },
+    { time: "0–25 min", title: "Baza / analiza", body: "Rozpisz dane wejściowe, sprawdź zapytania SQL albo wymagane pliki.", tag: "łatwe punkty" },
+    { time: "25–90 min", title: "HTML, PHP i JS", body: "Struktura HTML, logika skryptów i dane wejściowe zgodnie z arkuszem.", tag: "główna część" },
     { time: "90–130 min", title: "CSS pod makietę", body: "Odtwarzaj polecenie: fonty, kolory, układ, obrazy i formularze.", tag: "dopięcie" },
     { time: "130–150 min", title: "Kontrola", body: "Porównaj wymagania, działanie i wygląd punkt po punkcie.", tag: "ostatnie punkty" },
 ];

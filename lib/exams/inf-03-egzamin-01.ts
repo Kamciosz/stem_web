@@ -3,7 +3,7 @@
  * Dashboard + 4 podstrony etapow zywia sie z tego pliku.
  */
 
-export type ExamStepSlug = "baza-danych" | "html-php" | "css" | "kontrola";
+export type ExamStepSlug = "baza-danych" | "html" | "php" | "css" | "kontrola";
 
 export type ExamStepView = {
     slug: ExamStepSlug;
@@ -65,18 +65,28 @@ export const examSteps: ExamStep[] = [
         mdx: () => import("@/content/inf-03/egzamin-01-styczen-2026/baza-danych.mdx"),
     },
     {
-        slug: "html-php",
+        slug: "html",
         index: 2,
-        label: "HTML / PHP",
-        short: "HTML/PHP",
-        summary: "Połączenie z bazą, pętle, obliczenia, losowanie i tabela z rowspan.",
-        minutes: "25–90 min",
-        technologies: ["PHP", "HTML"],
-        mdx: () => import("@/content/inf-03/egzamin-01-styczen-2026/html-php.mdx"),
+        label: "HTML",
+        short: "HTML",
+        summary: "Struktura sekcji portalu samochodowego, tabele i obrazy zgodne z arkuszem.",
+        minutes: "25–45 min",
+        technologies: ["HTML"],
+        mdx: () => import("@/content/inf-03/egzamin-01-styczen-2026/html.mdx"),
+    },
+    {
+        slug: "php",
+        index: 3,
+        label: "PHP",
+        short: "PHP",
+        summary: "Połączenie z bazą, pętle, cena całkowita, dwa losowe pojazdy i rowspan.",
+        minutes: "45–90 min",
+        technologies: ["PHP", "MySQL"],
+        mdx: () => import("@/content/inf-03/egzamin-01-styczen-2026/php.mdx"),
     },
     {
         slug: "css",
-        index: 3,
+        index: 4,
         label: "CSS",
         short: "CSS",
         summary: "Trzy kolumny, kolory z polecenia, hover, overflow — odtworzenie makiety.",
@@ -86,7 +96,7 @@ export const examSteps: ExamStep[] = [
     },
     {
         slug: "kontrola",
-        index: 4,
+        index: 5,
         label: "Kontrola",
         short: "Kontrola",
         summary: "Ostatnie 20 minut — punktacja, błędy, checklista przed oddaniem.",
@@ -95,6 +105,7 @@ export const examSteps: ExamStep[] = [
         mdx: () => import("@/content/inf-03/egzamin-01-styczen-2026/kontrola.mdx"),
     },
 ];
+
 
 /** Materialy z arkusza — thumbnails + makieta koncowa */
 export const examMaterials = {
@@ -113,8 +124,8 @@ export const examMaterials = {
 
 /** Krotki blok strategii — pokazany na dashboard */
 export const examStrategy = [
-    { time: "0–25 min", title: "SQL", body: "Cztery zapytania sprawdzone w bazie.", tag: "łatwe punkty" },
-    { time: "25–90 min", title: "PHP i baza", body: "Połączenie, charset, pętle, cena, losowanie, tabela z rowspan.", tag: "tu się oblewa" },
+    { time: "0–25 min", title: "Baza danych", body: "Cztery zapytania SQL sprawdzone w bazie przed kodem strony.", tag: "łatwe punkty" },
+    { time: "25–90 min", title: "HTML i PHP", body: "Najpierw struktura sekcji, potem PHP: charset, pętle, cena, losowanie i rowspan.", tag: "tu się oblewa" },
     { time: "90–130 min", title: "CSS pod makietę", body: "Trzy kolumny, kolory, hover, overflow.", tag: "dopięcie" },
     { time: "130–150 min", title: "Kontrola", body: "Porównanie z makietą punkt po punkcie.", tag: "ostatnie punkty" },
 ];

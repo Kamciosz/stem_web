@@ -1,0 +1,226 @@
+**Arkusz:** INF.03-10-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki14.7z` · **Hasło:** `BLog+#KuLinarnY@`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+
+
+## Mapa technologii INF.03 dla tego arkusza
+
+INF.03 obejmuje tworzenie stron i aplikacji internetowych oraz baz danych. Dlatego w tym kursie rozbijamy front-end na konkretne technologie zamiast trzymać wszystko w jednym dziale. Ucz się etapami:
+
+- **HTML** — struktura dokumentu, nazwy plików, formularze, linki, grafika i semantyczne bloki.
+- **PHP** — połączenie z bazą, mysqli/charset, pętle po wyniku, GET/POST, obliczenia lub zapis danych.
+
+<Callout type="exam" title="Dlaczego osobno HTML, PHP i JavaScript?">
+HTML opisuje strukturę strony, CSS wygląd, PHP działa po stronie serwera i zwykle łączy się z bazą, a JavaScript działa w przeglądarce. Na egzaminie punkt jest za wymaganie, nie za nazwę działu — dlatego technologię trzeba rozpoznać po tym, gdzie kod się wykonuje.
+</Callout>
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, zdarzenie JS albo CSS pod makietę.
+</Callout>
+
+## PHP — co jest oceniane
+
+PHP w INF.03 działa po stronie serwera: łączy się z MySQL, wykonuje zapytania, odczytuje GET/POST, generuje HTML i zamyka połączenie. Nie mieszaj tego z JavaScriptem — JS nie połączy się z bazą w tych arkuszach.
+
+## Zapytania SQL — gotowe rozwiązania
+
+### Zapytanie 1: nazwa, trudność, kalorie potrawy id=7
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT nazwa, trudnosc, kalorie FROM potrawy WHERE id = 7;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 2: nazwa i rodzaj potrawy id=7 (JOIN)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT p.nazwa, r.rodzaj FROM potrawy p
+JOIN rodzaje r ON p.id_rodzaj = r.id
+WHERE p.id = 7;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 3: nazwa i alergeny potrawy id=7 (JOIN n:m)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT p.nazwa, a.nazwa AS alergen
+FROM potrawy p
+JOIN lista_alergenow la ON p.id = la.id_potrawy
+JOIN alergeny a ON la.id_alergenu = a.id
+WHERE p.id = 7;`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam">
+Zapytanie 3 łączy TRZY tabele przez relację n:m — to najtrudniejsze zapytanie w tym arkuszu. Musisz przejść: potrawy → lista_alergenow → alergeny. Przećwicz ten wzorzec.
+</Callout>
+
+### Zapytanie 4: przepis i plik potrawy id=7
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT przepis, plik FROM potrawy WHERE id = 7;`}
+  />
+</ExamCodeGrid>
+
+## Skrypty PHP — rozwiązanie krok po kroku
+
+### Połączenie z bazą + inicjalizacja ID
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<?php
+$conn = mysqli_connect("localhost", "root", "", "przepisy");
+mysqli_query($conn, "SET CHARSET utf8");
+
+$id = isset($_GET['id']) ? $_GET['id'] : 7;`}
+  />
+</ExamCodeGrid>
+
+<Callout type="tip" title="Domyślna wartość ID">
+Polecenie mówi: "jeśli nie wysłano GET, zmienna = 7". To typowy wzorzec — strona pokazuje domyślną potrawę gdy użytkownik jeszcze nic nie wybrał.
+</Callout>
+
+### Skrypt 1 — rodzaj potrawy (nagłówek h1)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik1 = mysqli_query($conn,
+    "SELECT r.rodzaj FROM potrawy p
+     JOIN rodzaje r ON p.id_rodzaj = r.id WHERE p.id = $id");
+$row = mysqli_fetch_array($wynik1);
+echo "<h1>" . $row['rodzaj'] . "</h1>";`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 2 — nazwa, trudność, kalorie
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik2 = mysqli_query($conn,
+    "SELECT nazwa, trudnosc, kalorie FROM potrawy WHERE id = $id");
+$row = mysqli_fetch_array($wynik2);
+echo "<h2>" . $row['nazwa'] . "</h2>";
+
+$trudnosc_tekst = ["", "łatwe", "średnie", "trudne"];
+echo "<p>Trudność: " . $trudnosc_tekst[$row['trudnosc']]
+     . ", Kalorie: " . $row['kalorie'] . "</p>";`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 3 — alergeny
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik3 = mysqli_query($conn,
+    "SELECT a.nazwa FROM potrawy p
+     JOIN lista_alergenow la ON p.id = la.id_potrawy
+     JOIN alergeny a ON la.id_alergenu = a.id
+     WHERE p.id = $id");
+echo "Alergeny: ";
+while ($row = mysqli_fetch_array($wynik3)) {
+    echo $row['nazwa'] . " ";
+}`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 4 — przepis + plik do tła sekcji
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik4 = mysqli_query($conn,
+    "SELECT przepis, plik FROM potrawy WHERE id = $id");
+$row = mysqli_fetch_array($wynik4);
+echo "<p>" . $row['przepis'] . "</p>";
+$plik_tla = $row['plik'];`}
+  />
+</ExamCodeGrid>
+
+Sekcja z tłem inline (w HTML):
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`echo "<section style=\"background-image: url('$plik_tla'); background-size: cover;\">";
+echo "<h1>Blog Kulinarny</h1>";
+echo "</section>";`}
+  />
+</ExamCodeGrid>
+
+### Zamknięcie
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`mysqli_close($conn);
+?>`}
+  />
+</ExamCodeGrid>
+
+## Minimum do zapamiętania z PHP
+
+- Po `mysqli_connect()` ustaw kodowanie (`SET CHARSET utf8` albo odpowiednik z arkusza).
+- Najpierw testuj SQL w bazie, potem wklejaj do PHP.
+- Dane z formularza czytaj przez `$_POST`/`$_GET` zgodnie z poleceniem.
+- `while + mysqli_fetch_array/fetch_assoc` to podstawowy wzorzec renderowania wyników.
+- Zamknij połączenie, jeśli arkusz tego wymaga.

@@ -1,0 +1,209 @@
+**Arkusz:** INF.03-07-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki9-2.7z` · **Hasło:** `&M3t3oPogoDa%`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+
+
+## Mapa technologii INF.03 dla tego arkusza
+
+INF.03 obejmuje tworzenie stron i aplikacji internetowych oraz baz danych. Dlatego w tym kursie rozbijamy front-end na konkretne technologie zamiast trzymać wszystko w jednym dziale. Ucz się etapami:
+
+- **HTML** — struktura dokumentu, nazwy plików, formularze, linki, grafika i semantyczne bloki.
+- **PHP** — połączenie z bazą, mysqli/charset, pętle po wyniku, GET/POST, obliczenia lub zapis danych.
+
+<Callout type="exam" title="Dlaczego osobno HTML, PHP i JavaScript?">
+HTML opisuje strukturę strony, CSS wygląd, PHP działa po stronie serwera i zwykle łączy się z bazą, a JavaScript działa w przeglądarce. Na egzaminie punkt jest za wymaganie, nie za nazwę działu — dlatego technologię trzeba rozpoznać po tym, gdzie kod się wykonuje.
+</Callout>
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, zdarzenie JS albo CSS pod makietę.
+</Callout>
+
+## PHP — co jest oceniane
+
+PHP w INF.03 działa po stronie serwera: łączy się z MySQL, wykonuje zapytania, odczytuje GET/POST, generuje HTML i zamyka połączenie. Nie mieszaj tego z JavaScriptem — JS nie połączy się z bazą w tych arkuszach.
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `pogoda`. Plik SQL: `pogoda.sql`.
+
+### Zapytanie 1: średnia temperatura dla miesiąca id=7
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT ROUND(AVG(temp), 2) AS srednia FROM temperatura
+WHERE id_miesiac = 7;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 2: wstawienie nowej miejscowości
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`INSERT INTO miejscowosc (nazwa, kraj) VALUES ('Kijów', 'Ukraina');`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 3: miasta + temperatury w lipcu (JOIN)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT m.nazwa, m.kraj, t.temp
+FROM miejscowosc m
+JOIN temperatura t ON m.id = t.id_miejscowosc
+WHERE t.id_miesiac = 7;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 4: miesiące + średnie temperatury
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT mi.nazwa, AVG(t.temp) AS srednia
+FROM miesiace mi
+JOIN temperatura t ON mi.id = t.id_miesiac
+GROUP BY mi.id;`}
+  />
+</ExamCodeGrid>
+
+## Skrypty PHP — rozwiązanie krok po kroku
+
+### Połączenie z bazą
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<?php
+$conn = mysqli_connect("localhost", "root", "", "pogoda");
+mysqli_query($conn, "SET CHARSET utf8");`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 1 — tabela temperatur z ikonami pogody
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik = mysqli_query($conn,
+    "SELECT m.nazwa, m.kraj, t.temp
+     FROM miejscowosc m
+     JOIN temperatura t ON m.id = t.id_miejscowosc
+     WHERE t.id_miesiac = 7");
+
+echo "<table>";
+echo "<tr><th>Miasto</th><th>Kraj</th><th>Temperatura</th><th>Pogoda</th></tr>";
+while ($row = mysqli_fetch_array($wynik)) {
+    $temp = $row['temp'];
+    if ($temp > 30) {
+        $ikona = "slonce.png";
+    } elseif ($temp < 26) {
+        $ikona = "deszcz.png";
+    } else {
+        $ikona = "chmury.png";
+    }
+    echo "<tr>";
+    echo "<td>" . $row['nazwa'] . "</td>";
+    echo "<td>" . $row['kraj'] . "</td>";
+    echo "<td>" . $temp . "</td>";
+    echo "<td><img src='$ikona'></td>";
+    echo "</tr>";
+}
+echo "</table>";`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam">
+Warunki na temperaturę: powyżej 30 = słońce, poniżej 26 = deszcz, reszta (26-30) = chmury. Kolejność `if/elseif/else` ma znaczenie — jeśli zamienisz, wynik będzie błędny. Egzaminator sprawdza ikony.
+</Callout>
+
+### Skrypt 2 — średnia dla wybranego miesiąca (GET)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`if (isset($_GET['miesiac'])) {
+    $id_miesiaca = $_GET['miesiac'];
+    $wynik2 = mysqli_query($conn,
+        "SELECT ROUND(AVG(temp), 2) AS srednia FROM temperatura
+         WHERE id_miesiac = $id_miesiaca");
+    $row = mysqli_fetch_array($wynik2);
+    echo "<h3>" . $row['srednia'] . " stopni</h3>";
+}`}
+  />
+</ExamCodeGrid>
+
+### Odnośniki miesięcy (w HTML)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$miesiace = ["Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec",
+             "Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień"];
+for ($i = 0; $i < 12; $i++) {
+    echo "<a href='index.php?miesiac=" . ($i + 1) . "'>" . $miesiace[$i] . "</a> ";
+}`}
+  />
+</ExamCodeGrid>
+
+### Zamknięcie
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`mysqli_close($conn);
+?>`}
+  />
+</ExamCodeGrid>
+
+## Minimum do zapamiętania z PHP
+
+- Po `mysqli_connect()` ustaw kodowanie (`SET CHARSET utf8` albo odpowiednik z arkusza).
+- Najpierw testuj SQL w bazie, potem wklejaj do PHP.
+- Dane z formularza czytaj przez `$_POST`/`$_GET` zgodnie z poleceniem.
+- `while + mysqli_fetch_array/fetch_assoc` to podstawowy wzorzec renderowania wyników.
+- Zamknij połączenie, jeśli arkusz tego wymaga.

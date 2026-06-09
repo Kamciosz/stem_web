@@ -1,0 +1,196 @@
+**Arkusz:** INF.03-06-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki9-1.7z` · **Hasło:** `*ZdroWia!!!`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+
+
+## Mapa technologii INF.03 dla tego arkusza
+
+INF.03 obejmuje tworzenie stron i aplikacji internetowych oraz baz danych. Dlatego w tym kursie rozbijamy front-end na konkretne technologie zamiast trzymać wszystko w jednym dziale. Ucz się etapami:
+
+- **HTML** — struktura dokumentu, nazwy plików, formularze, linki, grafika i semantyczne bloki.
+- **PHP** — połączenie z bazą, mysqli/charset, pętle po wyniku, GET/POST, obliczenia lub zapis danych.
+
+<Callout type="exam" title="Dlaczego osobno HTML, PHP i JavaScript?">
+HTML opisuje strukturę strony, CSS wygląd, PHP działa po stronie serwera i zwykle łączy się z bazą, a JavaScript działa w przeglądarce. Na egzaminie punkt jest za wymaganie, nie za nazwę działu — dlatego technologię trzeba rozpoznać po tym, gdzie kod się wykonuje.
+</Callout>
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, zdarzenie JS albo CSS pod makietę.
+</Callout>
+
+## PHP — co jest oceniane
+
+PHP w INF.03 działa po stronie serwera: łączy się z MySQL, wykonuje zapytania, odczytuje GET/POST, generuje HTML i zamyka połączenie. Nie mieszaj tego z JavaScriptem — JS nie połączy się z bazą w tych arkuszach.
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `choroby`. Plik SQL: `choroby.sql`.
+
+### Zapytanie 1: choroby zakaźne posortowane
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT nazwa FROM choroba WHERE zakazna = 'T' ORDER BY nazwa ASC;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 2: wszystkie choroby — id i nazwa
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, nazwa FROM choroba;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 3: objawy choroby id=5 przez relację
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT o.nazwa FROM objawy o
+JOIN choroba_objawy co ON o.id = co.id_objaw
+WHERE co.id_choroba = 5;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 4: choroby zakaźne + liczba objawów
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT c.nazwa, COUNT(*) AS liczba_objawow
+FROM choroba c
+JOIN choroba_objawy co ON c.id = co.id_choroba
+WHERE c.zakazna = 'T'
+GROUP BY c.id;`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam">
+Zapytanie 4 łączy JOIN + WHERE + GROUP BY — trzy klauzule naraz na relacji n:m. To najtrudniejsze zapytanie w tym arkuszu. Przećwicz pisanie takich z pamięci.
+</Callout>
+
+## Skrypty PHP — rozwiązanie krok po kroku
+
+### Połączenie z bazą
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<?php
+$conn = mysqli_connect("localhost", "root", "", "choroby");
+mysqli_query($conn, "SET CHARSET utf8");`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 1 — lista chorób zakaźnych
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik = mysqli_query($conn,
+    "SELECT nazwa FROM choroba WHERE zakazna = 'T' ORDER BY nazwa ASC");
+echo "<ol>";
+while ($row = mysqli_fetch_array($wynik)) {
+    echo "<li>" . $row['nazwa'] . "</li>";
+}
+echo "</ol>";`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 2 — lista rozwijana wszystkich chorób
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`echo "<select name='choroba'>";
+$wynik2 = mysqli_query($conn, "SELECT id, nazwa FROM choroba");
+while ($row = mysqli_fetch_array($wynik2)) {
+    echo "<option value='" . $row['id'] . "'>" . $row['nazwa'] . "</option>";
+}
+echo "</select>";`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 3 — objawy wybranej choroby w span
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`if (isset($_POST['choroba'])) {
+    $id_choroby = $_POST['choroba'];
+    $wynik3 = mysqli_query($conn,
+        "SELECT o.nazwa FROM objawy o
+         JOIN choroba_objawy co ON o.id = co.id_objaw
+         WHERE co.id_choroba = $id_choroby");
+
+    echo "<div class='objawy'>";
+    while ($row = mysqli_fetch_array($wynik3)) {
+        echo "<span>" . $row['nazwa'] . "</span> ";
+    }
+    echo "</div>";
+}`}
+  />
+</ExamCodeGrid>
+
+### Zamknięcie
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`mysqli_close($conn);
+?>`}
+  />
+</ExamCodeGrid>
+
+## Minimum do zapamiętania z PHP
+
+- Po `mysqli_connect()` ustaw kodowanie (`SET CHARSET utf8` albo odpowiednik z arkusza).
+- Najpierw testuj SQL w bazie, potem wklejaj do PHP.
+- Dane z formularza czytaj przez `$_POST`/`$_GET` zgodnie z poleceniem.
+- `while + mysqli_fetch_array/fetch_assoc` to podstawowy wzorzec renderowania wyników.
+- Zamknij połączenie, jeśli arkusz tego wymaga.

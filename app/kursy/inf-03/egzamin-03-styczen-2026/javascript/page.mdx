@@ -1,0 +1,99 @@
+**Arkusz:** INF.03-03-26.01-SG (styczeń 2026)
+**Technologia:** JavaScript (bez bazy danych) · **Czas:** 150 minut
+**Archiwum:** `pliki2.7z` · **Hasło:** `*M@tem@tyk@6`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+
+
+## Mapa technologii INF.03 dla tego arkusza
+
+INF.03 obejmuje tworzenie stron i aplikacji internetowych oraz baz danych. Dlatego w tym kursie rozbijamy front-end na konkretne technologie zamiast trzymać wszystko w jednym dziale. Ucz się etapami:
+
+- **HTML** — struktura dokumentu, nazwy plików, formularze, linki, grafika i semantyczne bloki.
+- **JavaScript** — zdarzenia użytkownika, DOM, obliczenia po stronie klienta, createElement/appendChild albo przełączanie widoku.
+
+<Callout type="exam" title="Dlaczego osobno HTML, PHP i JavaScript?">
+HTML opisuje strukturę strony, CSS wygląd, PHP działa po stronie serwera i zwykle łączy się z bazą, a JavaScript działa w przeglądarce. Na egzaminie punkt jest za wymaganie, nie za nazwę działu — dlatego technologię trzeba rozpoznać po tym, gdzie kod się wykonuje.
+</Callout>
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, zdarzenie JS albo CSS pod makietę.
+</Callout>
+
+## JavaScript — co jest oceniane
+
+JS w tych arkuszach działa w przeglądarce: obsługuje kliknięcia lub `onmouseover`, zmienia DOM, liczy wynik albo dodaje obraz. Używaj `const` dla wartości nieprzypisywanych ponownie i `let` dla liczników pętli. Nie używaj starego deklarowania zmiennych w nowych rozwiązaniach.
+
+## JavaScript — skrypty (skrypt.js)
+
+### Skrypt 1 — zmiana dużego obrazu po kliknięciu miniatury
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="JAVASCRIPT"
+    title="Kod JavaScript"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`function zmienObraz(miniatura) {
+    const duzy = document.getElementById("duzy");
+    if (miniatura.src.includes("1m")) {
+        duzy.src = "1d.bmp";
+    } else {
+        duzy.src = "2d.bmp";
+    }
+}`}
+  />
+</ExamCodeGrid>
+
+<Callout type="warning" title="Uwaga na src">
+`miniatura.src` zwraca pełny URL (np. `file:///C:/...1m.bmp`), dlatego używamy `includes("1m")` zamiast porównania `==`. To częsty błąd na egzaminie — `== "1m.bmp"` nie zadziała.
+</Callout>
+
+### Skrypt 2 — obliczenie pola figury
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="JAVASCRIPT"
+    title="Kod JavaScript"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`function oblicz() {
+    const a = parseFloat(document.getElementById("bok1").value);
+    const b = parseFloat(document.getElementById("bok2").value);
+    const duzy = document.getElementById("duzy");
+    const wynik = document.getElementById("wynik");
+
+    if (duzy.src.includes("2d")) {
+        // Prostokąt: P = a * b
+        wynik.innerHTML = "Pole prostokąta = " + (a * b);
+    } else {
+        // Trójkąt: P = a * b / 2
+        wynik.innerHTML = "Pole trójkąta = " + (a * b / 2);
+    }
+}`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam">
+Polecenie mówi: "obliczenia powinny też działać dla stanu początkowego witryny (Skrypt 1 nie wykonał się ani razu), wtedy liczone jest pole trójkąta". Domyślnie duży obraz to 1d.bmp (trójkąt) — warunek `else` pokrywa ten przypadek. Egzaminator testuje to jako pierwszy krok.
+</Callout>
+
+## Minimum do zapamiętania z JS
+
+- Elementy DOM pobieraj przez `const`, np. `const wynik = document.getElementById("wynik")`.
+- Liczniki pętli zapisuj jako `let`, np. `for (let i = 1; i <= 10; i++)`.
+- `input[type=file].value` może zwracać `C:\fakepath\plik.png` — wytnij nazwę pliku przed użyciem.
+- `element.src` zwykle jest pełnym URL-em, więc przy nazwach plików używaj `includes()`.

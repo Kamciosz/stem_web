@@ -1,0 +1,50 @@
+**Arkusz:** INF.03-07-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki9-2.7z` · **Hasło:** `&M3t3oPogoDa%`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+
+
+## Mapa technologii INF.03 dla tego arkusza
+
+INF.03 obejmuje tworzenie stron i aplikacji internetowych oraz baz danych. Dlatego w tym kursie rozbijamy front-end na konkretne technologie zamiast trzymać wszystko w jednym dziale. Ucz się etapami:
+
+- **HTML** — struktura dokumentu, nazwy plików, formularze, linki, grafika i semantyczne bloki.
+- **PHP** — połączenie z bazą, mysqli/charset, pętle po wyniku, GET/POST, obliczenia lub zapis danych.
+
+<Callout type="exam" title="Dlaczego osobno HTML, PHP i JavaScript?">
+HTML opisuje strukturę strony, CSS wygląd, PHP działa po stronie serwera i zwykle łączy się z bazą, a JavaScript działa w przeglądarce. Na egzaminie punkt jest za wymaganie, nie za nazwę działu — dlatego technologię trzeba rozpoznać po tym, gdzie kod się wykonuje.
+</Callout>
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, zdarzenie JS albo CSS pod makietę.
+</Callout>
+
+## O czym jest ten arkusz
+
+Witryna stacji meteorologicznej — tabela temperatur w lipcu z ikonami pogody (słońce/chmury/deszcz), odnośniki miesięcy z przekazywaniem id przez GET, obliczanie średniej temperatury.
+
+**Baza danych:** `pogoda` — tabele: `miejscowosc` (id, nazwa, kraj), `miesiace` (id, nazwa), `temperatura` (id, id_miejscowosc FK, id_miesiac FK, temp).
+
+## Co musisz oddać — pliki
+
+index.php: dwa headery (logo slonce.png + h1 "Pogoda w Europie"), main z sekcją lewą (tabela 4-kolumnowa: Miasto/Kraj/Temperatura/Pogoda — skrypt 1) i sekcją prawą (12 odnośników miesięcy GET + średnia — skrypt 2), footer.
+
+## Minimum do zapamiętania z HTML
+
+- Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.
+- Formularze muszą mieć poprawne `name`, `method` i elementy, z których korzysta PHP albo JavaScript.
+- Obrazki i linki są punktowane literalnie — zła ścieżka to brak punktu, nie kosmetyka.

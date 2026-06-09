@@ -1,0 +1,150 @@
+**Arkusz:** INF.03-03-26.01-SG (styczeń 2026)
+**Technologia:** JavaScript (bez bazy danych) · **Czas:** 150 minut
+**Archiwum:** `pliki2.7z` · **Hasło:** `*M@tem@tyk@6`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+
+
+## Mapa technologii INF.03 dla tego arkusza
+
+INF.03 obejmuje tworzenie stron i aplikacji internetowych oraz baz danych. Dlatego w tym kursie rozbijamy front-end na konkretne technologie zamiast trzymać wszystko w jednym dziale. Ucz się etapami:
+
+- **HTML** — struktura dokumentu, nazwy plików, formularze, linki, grafika i semantyczne bloki.
+- **JavaScript** — zdarzenia użytkownika, DOM, obliczenia po stronie klienta, createElement/appendChild albo przełączanie widoku.
+
+<Callout type="exam" title="Dlaczego osobno HTML, PHP i JavaScript?">
+HTML opisuje strukturę strony, CSS wygląd, PHP działa po stronie serwera i zwykle łączy się z bazą, a JavaScript działa w przeglądarce. Na egzaminie punkt jest za wymaganie, nie za nazwę działu — dlatego technologię trzeba rozpoznać po tym, gdzie kod się wykonuje.
+</Callout>
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, zdarzenie JS albo CSS pod makietę.
+</Callout>
+
+## O czym jest ten arkusz
+
+Witryna matematyczna do obliczania pól figur. **Bez bazy danych** — ten arkusz sprawdza JavaScript, HTML i CSS.
+
+Dwie strony: index.html (prostokąt i trójkąt — obliczenia JS) i kolo.html (animacja GIF + wzór).
+
+## Co musisz oddać — pliki
+
+index.html + kolo.html. Wspólne: h2 "Witryna matematyczna płaskich", nawigacja (Prostokąt i trójkąt = index, Okrąg i koło = kolo). Index: obraz 1d.bmp, miniatury 1m.bmp/2m.bmp (skrypt 1 zmienia duży obraz), formularz z dwoma polami + przycisk Oblicz (skrypt 2 liczy pole). kolo.html: animacja kolo.gif, wzór z Pi i indeksem górnym.
+
+## HTML — index.html
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="Kod HTML"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Witryna matematyczna</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header>
+        <h2>Witryna matematyczna płaskich</h2>
+    </header>
+    <main>
+        <nav>
+            <h3>MENU</h3>
+            <ul>
+                <li><a href="index.html">Prostokąt i trójkąt</a></li>
+                <li><a href="kolo.html">Okrąg i koło</a></li>
+            </ul>
+        </nav>
+        <section>
+            <img id="duzy" src="1d.bmp" alt="Figura">
+            <br>
+            <img src="1m.bmp" alt="Wybierz trójkąt"
+                 class="miniatura" onclick="zmienObraz(this)">
+            <img src="2m.bmp" alt="Wybierz prostokąt"
+                 class="miniatura" onclick="zmienObraz(this)">
+        </section>
+        <aside>
+            <h3>Pole prostokąta / pole trójkąta</h3>
+            <label for="bok1">Bok prostokąta / podstawa trójkąta:</label>
+            <input type="number" id="bok1"><br>
+            <label for="bok2">Drugi bok prostokąta / wysokość trójkąta:</label>
+            <input type="number" id="bok2"><br>
+            <button onclick="oblicz()">Oblicz</button>
+            <p id="wynik"></p>
+        </aside>
+    </main>
+    <footer>
+        <p>Autor: [numer zdającego]</p>
+    </footer>
+    <script src="skrypt.js"></script>
+</body>
+</html>`}
+  />
+</ExamCodeGrid>
+
+## HTML — kolo.html
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="Kod HTML"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Witryna matematyczna</title>
+    <link rel="stylesheet" href="styl.css">
+</head>
+<body>
+    <header>
+        <h2>Witryna matematyczna płaskich</h2>
+    </header>
+    <main>
+        <nav>
+            <h3>MENU</h3>
+            <ul>
+                <li><a href="index.html">Prostokąt i trójkąt</a></li>
+                <li><a href="kolo.html">Okrąg i koło</a></li>
+            </ul>
+        </nav>
+        <section>
+            <img src="kolo.gif" alt="koło">
+        </section>
+        <aside>
+            <p>Pole koła: P = &Pi; * r<sup>2</sup></p>
+        </aside>
+    </main>
+    <footer>
+        <p>Autor: [numer zdającego]</p>
+    </footer>
+</body>
+</html>`}
+  />
+</ExamCodeGrid>
+
+<Callout type="tip" title="Znak Pi i indeks górny">
+`&Pi;` daje wielką literę Pi (Π). `r<sup>2</sup>` daje r z indeksem górnym. Oba wymagane w poleceniu — bez nich tracisz punkty za "zawartość witryny".
+</Callout>
+
+## Minimum do zapamiętania z HTML
+
+- Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.
+- Formularze muszą mieć poprawne `name`, `method` i elementy, z których korzysta PHP albo JavaScript.
+- Obrazki i linki są punktowane literalnie — zła ścieżka to brak punktu, nie kosmetyka.

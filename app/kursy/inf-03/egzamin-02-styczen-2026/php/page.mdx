@@ -1,0 +1,224 @@
+**Arkusz:** INF.03-02-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki3-1.7z` · **Hasło:** `baz@rEk100%`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+
+
+## Mapa technologii INF.03 dla tego arkusza
+
+INF.03 obejmuje tworzenie stron i aplikacji internetowych oraz baz danych. Dlatego w tym kursie rozbijamy front-end na konkretne technologie zamiast trzymać wszystko w jednym dziale. Ucz się etapami:
+
+- **HTML** — struktura dokumentu, nazwy plików, formularze, linki, grafika i semantyczne bloki.
+- **PHP** — połączenie z bazą, mysqli/charset, pętle po wyniku, GET/POST, obliczenia lub zapis danych.
+
+<Callout type="exam" title="Dlaczego osobno HTML, PHP i JavaScript?">
+HTML opisuje strukturę strony, CSS wygląd, PHP działa po stronie serwera i zwykle łączy się z bazą, a JavaScript działa w przeglądarce. Na egzaminie punkt jest za wymaganie, nie za nazwę działu — dlatego technologię trzeba rozpoznać po tym, gdzie kod się wykonuje.
+</Callout>
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, zdarzenie JS albo CSS pod makietę.
+</Callout>
+
+## PHP — co jest oceniane
+
+PHP w INF.03 działa po stronie serwera: łączy się z MySQL, wykonuje zapytania, odczytuje GET/POST, generuje HTML i zamyka połączenie. Nie mieszaj tego z JavaScriptem — JS nie połączy się z bazą w tych arkuszach.
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `bazar`. Plik SQL: `baza-nowa.sql`.
+
+### Zapytanie 1: 10 pierwszych towarów — nazwa i plik
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 1: 10 pierwszych towarów — nazwa i plik"
+    description="Zapytanie uruchom najpierw w bazie, dopiero potem użyj w PHP."
+    mistake="Nie zmieniaj warunków, LIMIT ani kolumn względem polecenia."
+    code={`SELECT nazwa, plik FROM towar LIMIT 10;`}
+  />
+</ExamCodeGrid>
+
+<Callout type="tip" title="Dlaczego nie ORDER BY?">
+Polecenie mówi "10 pierwszych rekordów" — bez sortowania. `LIMIT 10` wystarczy. Nie dodawaj `ORDER BY` jeśli nie jest wymagany — egzaminator może uznać to za niezgodność z poleceniem.
+</Callout>
+
+### Zapytanie 2: identyfikator i nazwa towarów
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 2: identyfikator i nazwa towarów"
+    description="Zapytanie uruchom najpierw w bazie, dopiero potem użyj w PHP."
+    mistake="Nie zmieniaj warunków, LIMIT ani kolumn względem polecenia."
+    code={`SELECT id, nazwa FROM towar;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 3: rodzaj, nazwa i cena towaru o id = 1
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 3: rodzaj, nazwa i cena towaru o id = 1"
+    description="Zapytanie uruchom najpierw w bazie, dopiero potem użyj w PHP."
+    mistake="Nie zmieniaj warunków, LIMIT ani kolumn względem polecenia."
+    code={`SELECT rodzaj, nazwa, cena FROM towar WHERE id = 1;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 4: wstawienie rekordu do zamowienie
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 4: wstawienie rekordu do zamowienie"
+    description="Zapytanie uruchom najpierw w bazie, dopiero potem użyj w PHP."
+    mistake="Nie zmieniaj warunków, LIMIT ani kolumn względem polecenia."
+    code={`INSERT INTO zamowienie (id_towar, id_sklep, kilogramy)
+  VALUES (9, 2, 20);`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam">
+Klucz główny jest nadawany automatycznie (AUTO_INCREMENT) — **nie wpisuj go** w INSERT. Egzaminator sprawdza, czy nie wymuszasz id ręcznie.
+</Callout>
+
+## Skrypty PHP — rozwiązanie krok po kroku
+
+### Połączenie z bazą
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Połączenie z bazą"
+    description="Kod z rozwiązania arkusza INF.03-02."
+    mistake="Najczęstszy błąd: literówka w nazwie pola, tabeli, pliku albo metoda formularza niezgodna z poleceniem."
+    code={`<?php
+  $conn = mysqli_connect("localhost", "root", "", "bazar");
+  mysqli_query($conn, "SET CHARSET utf8");`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 1 — obrazki owoców w nawigacji
+
+Skrypt wysyła zapytanie 1 i dla każdego wiersza wyświetla obraz:
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik = mysqli_query($conn, "SELECT nazwa, plik FROM towar LIMIT 10");
+while ($row = mysqli_fetch_array($wynik)) {
+    echo "<img src='" . $row['plik'] . "' alt='" . $row['nazwa'] . "'>";
+}`}
+  />
+</ExamCodeGrid>
+
+<Callout type="tip" title="Nawigacja obrazkowa">
+Blok `nav` ma `overflow: hidden` i `height: 150px` — jeśli jest więcej owoców niż mieści się w 150px, reszta zostanie ukryta. To celowe zachowanie z polecenia.
+</Callout>
+
+### Skrypt 2 — lista rozwijana w formularzu
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Skrypt 2 — lista rozwijana w formularzu"
+    description="Kod z rozwiązania arkusza INF.03-02."
+    mistake="Najczęstszy błąd: literówka w nazwie pola, tabeli, pliku albo metoda formularza niezgodna z poleceniem."
+    code={`echo "<select name='towar'>";
+  $wynik2 = mysqli_query($conn, "SELECT id, nazwa FROM towar");
+  while ($row = mysqli_fetch_array($wynik2)) {
+      echo "<option value='" . $row['id'] . "'>" . $row['nazwa'] . "</option>";
+  }
+  echo "</select>";`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 3 — obliczenie wartości po wysłaniu formularza
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Skrypt 3 — obliczenie wartości po wysłaniu formularza"
+    description="Kod z rozwiązania arkusza INF.03-02."
+    mistake="Najczęstszy błąd: literówka w nazwie pola, tabeli, pliku albo metoda formularza niezgodna z poleceniem."
+    code={`if (isset($_POST['towar'])) {
+      $id_towaru = $_POST['towar'];
+      $kilogramy = $_POST['kilogramy'];
+  
+      $wynik3 = mysqli_query($conn,
+          "SELECT rodzaj, nazwa, cena FROM towar WHERE id = $id_towaru");
+      $row = mysqli_fetch_array($wynik3);
+  
+      $wartosc = $row['cena'] * $kilogramy;
+  
+      echo "<p>" . $row['rodzaj'] . " " . $row['nazwa']
+           . " wartość: " . $wartosc . " zł</p>";
+  
+      mysqli_query($conn,
+          "INSERT INTO zamowienie (id_towar, id_sklep, kilogramy)
+           VALUES ($id_towaru, 2, $kilogramy)");
+  }`}
+  />
+</ExamCodeGrid>
+
+<Callout type="warning" title="Metoda bezpieczna = POST">
+Polecenie mówi "formularz wysyłający dane metodą bezpieczną" — to znaczy `method="POST"`. Użycie GET = utrata punktu.
+</Callout>
+
+### Formularz HTML (wewnątrz section)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Formularz HTML (wewnątrz section)"
+    description="Kod z rozwiązania arkusza INF.03-02."
+    mistake="Najczęstszy błąd: literówka w nazwie pola, tabeli, pliku albo metoda formularza niezgodna z poleceniem."
+    code={`echo "<p>Wybierz owoc lub warzywo i podaj jego wagę:</p>";
+  echo "<form method='POST' action='index.php'>";
+  // Tu skrypt 2 (lista rozwijana)
+  echo "<input type='number' name='kilogramy'>";
+  echo "<button type='submit'>Zamów</button>";
+  echo "</form>";
+  // Tu skrypt 3 (wynik)`}
+  />
+</ExamCodeGrid>
+
+### Zamknięcie połączenia
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Zamknięcie połączenia"
+    description="Kod z rozwiązania arkusza INF.03-02."
+    mistake="Najczęstszy błąd: literówka w nazwie pola, tabeli, pliku albo metoda formularza niezgodna z poleceniem."
+    code={`mysqli_close($conn);
+  ?>`}
+  />
+</ExamCodeGrid>
+
+## Minimum do zapamiętania z PHP
+
+- Po `mysqli_connect()` ustaw kodowanie (`SET CHARSET utf8` albo odpowiednik z arkusza).
+- Najpierw testuj SQL w bazie, potem wklejaj do PHP.
+- Dane z formularza czytaj przez `$_POST`/`$_GET` zgodnie z poleceniem.
+- `while + mysqli_fetch_array/fetch_assoc` to podstawowy wzorzec renderowania wyników.
+- Zamknij połączenie, jeśli arkusz tego wymaga.

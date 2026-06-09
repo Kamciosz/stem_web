@@ -1,0 +1,50 @@
+**Arkusz:** INF.03-10-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki14.7z` · **Hasło:** `BLog+#KuLinarnY@`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+
+
+## Mapa technologii INF.03 dla tego arkusza
+
+INF.03 obejmuje tworzenie stron i aplikacji internetowych oraz baz danych. Dlatego w tym kursie rozbijamy front-end na konkretne technologie zamiast trzymać wszystko w jednym dziale. Ucz się etapami:
+
+- **HTML** — struktura dokumentu, nazwy plików, formularze, linki, grafika i semantyczne bloki.
+- **PHP** — połączenie z bazą, mysqli/charset, pętle po wyniku, GET/POST, obliczenia lub zapis danych.
+
+<Callout type="exam" title="Dlaczego osobno HTML, PHP i JavaScript?">
+HTML opisuje strukturę strony, CSS wygląd, PHP działa po stronie serwera i zwykle łączy się z bazą, a JavaScript działa w przeglądarce. Na egzaminie punkt jest za wymaganie, nie za nazwę działu — dlatego technologię trzeba rozpoznać po tym, gdzie kod się wykonuje.
+</Callout>
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, zdarzenie JS albo CSS pod makietę.
+</Callout>
+
+## O czym jest ten arkusz
+
+Blog kulinarny z relacją n:m (potrawy ↔ alergeny). Jedna strona przepisy.php z nawigacją odnośnikową (GET), 4 skryptami PHP, tłem sekcji ustawianym inline z bazy danych. Grafika separator.png do kadrowania.
+
+**Baza danych:** `przepisy` — tabele: `potrawy` (id, nazwa, trudnosc, kalorie, przepis, plik), `rodzaje` (id, rodzaj), `alergeny` (id, nazwa), `lista_alergenow` (id_potrawy FK, id_alergenu FK) — relacja n:m.
+
+## Co musisz oddać — pliki
+
+przepisy.php: aside (10 odnośników GET + autor), main (h1 rodzaj — skrypt 1, h2 nazwa + trudność/kalorie — skrypt 2, separator.png, p alergeny — skrypt 3, h2 Składniki + lista, p przepis — skrypt 4), section (tło inline z bazy + h1 "Blog Kulinarny"). Grafika: separator.png skadrowany do pierwszego separatora.
+
+## Minimum do zapamiętania z HTML
+
+- Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.
+- Formularze muszą mieć poprawne `name`, `method` i elementy, z których korzysta PHP albo JavaScript.
+- Obrazki i linki są punktowane literalnie — zła ścieżka to brak punktu, nie kosmetyka.

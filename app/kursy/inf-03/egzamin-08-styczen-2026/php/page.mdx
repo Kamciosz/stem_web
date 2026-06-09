@@ -1,0 +1,193 @@
+**Arkusz:** INF.03-08-26.01-SG (styczeń 2026)
+**Technologia:** PHP + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki13.7z` · **Hasło:** `Gory^PoLskie!`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+
+
+## Mapa technologii INF.03 dla tego arkusza
+
+INF.03 obejmuje tworzenie stron i aplikacji internetowych oraz baz danych. Dlatego w tym kursie rozbijamy front-end na konkretne technologie zamiast trzymać wszystko w jednym dziale. Ucz się etapami:
+
+- **HTML** — struktura dokumentu, nazwy plików, formularze, linki, grafika i semantyczne bloki.
+- **PHP** — połączenie z bazą, mysqli/charset, pętle po wyniku, GET/POST, obliczenia lub zapis danych.
+
+<Callout type="exam" title="Dlaczego osobno HTML, PHP i JavaScript?">
+HTML opisuje strukturę strony, CSS wygląd, PHP działa po stronie serwera i zwykle łączy się z bazą, a JavaScript działa w przeglądarce. Na egzaminie punkt jest za wymaganie, nie za nazwę działu — dlatego technologię trzeba rozpoznać po tym, gdzie kod się wykonuje.
+</Callout>
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, zdarzenie JS albo CSS pod makietę.
+</Callout>
+
+## PHP — co jest oceniane
+
+PHP w INF.03 działa po stronie serwera: łączy się z MySQL, wykonuje zapytania, odczytuje GET/POST, generuje HTML i zamyka połączenie. Nie mieszaj tego z JavaScriptem — JS nie połączy się z bazą w tych arkuszach.
+
+## Zapytania SQL — gotowe rozwiązania
+
+Baza: `korona`. Plik SQL: `korona.sql`.
+
+### Zapytanie 1: szczyty posortowane malejąco wg wysokości
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, nazwa FROM szczyty ORDER BY wysokosc DESC;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 2: pliki i nazwy pierwszych 10 szczytów
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT plik, nazwa FROM szczyty LIMIT 10;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 3: szczyt id=1 z opisem (JOIN)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT s.plik, s.nazwa, s.wysokosc, s.pasmo, o.tekst
+FROM szczyty s
+JOIN opis o ON s.id = o.id_szczyt
+WHERE s.id = 1;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 4: szczyty w Beskidach (LIKE)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT nazwa, wysokosc, pasmo FROM szczyty
+WHERE pasmo LIKE 'Beskid%';`}
+  />
+</ExamCodeGrid>
+
+<Callout type="tip" title="LIKE z %">
+`LIKE 'Beskid%'` — znajduje wszystkie pasma zaczynające się od "Beskid" (Beskid Żywiecki, Beskid Śląski itd.). Znak `%` zastępuje dowolną liczbę znaków.
+</Callout>
+
+## Skrypty PHP — rozwiązanie krok po kroku
+
+### Połączenie z bazą
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<?php
+$conn = mysqli_connect("localhost", "root", "", "korona");
+mysqli_query($conn, "SET CHARSET utf8");`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 1 — nazwy szczytów jako odnośniki (index.php)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik = mysqli_query($conn,
+    "SELECT id, nazwa FROM szczyty ORDER BY wysokosc DESC");
+while ($row = mysqli_fetch_array($wynik)) {
+    echo "<span><a href='szczyty.php?id=" . $row['id'] . "'>"
+         . $row['nazwa'] . "</a></span>";
+}`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 2 — miniatury zdjęć
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik2 = mysqli_query($conn, "SELECT plik, nazwa FROM szczyty LIMIT 10");
+while ($row = mysqli_fetch_array($wynik2)) {
+    echo "<img src='" . $row['plik'] . "' alt='" . $row['nazwa']
+         . "' class='miniatura'>";
+}`}
+  />
+</ExamCodeGrid>
+
+### Skrypt 3 — detale szczytu (szczyty.php)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $wynik3 = mysqli_query($conn,
+        "SELECT s.plik, s.nazwa, s.wysokosc, s.pasmo, o.tekst
+         FROM szczyty s JOIN opis o ON s.id = o.id_szczyt
+         WHERE s.id = $id");
+    $row = mysqli_fetch_array($wynik3);
+
+    echo "<img src='" . $row['plik'] . "' alt='szczyt'>";
+    echo "<h2>" . $row['nazwa'] . "</h2>";
+    echo "<h3>wysokość: " . $row['wysokosc'] . " metrów n.p.m.</h3>";
+    echo "<h3>pasmo górskie: " . $row['pasmo'] . "</h3>";
+    echo "<p>" . $row['tekst'] . "</p>";
+}`}
+  />
+</ExamCodeGrid>
+
+### Zamknięcie
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`mysqli_close($conn);
+?>`}
+  />
+</ExamCodeGrid>
+
+## Minimum do zapamiętania z PHP
+
+- Po `mysqli_connect()` ustaw kodowanie (`SET CHARSET utf8` albo odpowiednik z arkusza).
+- Najpierw testuj SQL w bazie, potem wklejaj do PHP.
+- Dane z formularza czytaj przez `$_POST`/`$_GET` zgodnie z poleceniem.
+- `while + mysqli_fetch_array/fetch_assoc` to podstawowy wzorzec renderowania wyników.
+- Zamknij połączenie, jeśli arkusz tego wymaga.

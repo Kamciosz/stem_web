@@ -3,7 +3,7 @@
  * Dashboard + 4 podstrony etapow.
  */
 
-export type ExamStepSlug = "baza-danych" | "html-php" | "css" | "kontrola";
+export type ExamStepSlug = "baza-danych" | "html" | "javascript" | "css" | "kontrola";
 
 export type ExamStepView = {
     slug: ExamStepSlug;
@@ -46,7 +46,7 @@ export const examMeta: ExamMeta = {
         "Przewodnik po rozwiązaniu w kolejności pracy. Cztery etapy, każdy na osobnej stronie. Plan, materiały, błędy i kod — bez jednego długiego scrolla.",
     rule: "SQL → PHP → CSS → Kontrola",
     time: "150 min",
-    technologies: ["PHP", "SQL", "CSS", "HTML"],
+    technologies: ["HTML", "JavaScript", "CSS", "SQL"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
     objective: "Wykonanie aplikacji internetowej studia tatuażu",
@@ -58,34 +58,44 @@ export const examSteps: ExamStep[] = [
         index: 1,
         label: "Baza danych",
         short: "Baza",
-        summary: "Struktura tabel, klucze obce, zapytania SQL.",
+        summary: "Zapytania SQL dla studia tatuażu: SELECT, GROUP BY, JOIN i UPDATE ceny.",
         minutes: "0–25 min",
         technologies: ["SQL", "MySQL"],
         mdx: () => import("@/content/inf-03/egzamin-12-styczen-2026/baza-danych.mdx"),
     },
     {
-        slug: "html-php",
+        slug: "html",
         index: 2,
-        label: "HTML / PHP",
-        short: "HTML/PHP",
-        summary: "Połączenie z bazą, logika biznesowa, wyświetlanie danych.",
-        minutes: "25–90 min",
-        technologies: ["PHP", "HTML"],
-        mdx: () => import("@/content/inf-03/egzamin-12-styczen-2026/html-php.mdx"),
+        label: "HTML",
+        short: "HTML",
+        summary: "Index.html: header z logo, galeria, formularz z input file/select/number i footer.",
+        minutes: "25–50 min",
+        technologies: ["HTML"],
+        mdx: () => import("@/content/inf-03/egzamin-12-styczen-2026/html.mdx"),
+    },
+    {
+        slug: "javascript",
+        index: 3,
+        label: "JavaScript",
+        short: "JS",
+        summary: "Dodawanie wzoru: fakepath, alert, createElement, appendChild i let/const.",
+        minutes: "50–85 min",
+        technologies: ["JavaScript"],
+        mdx: () => import("@/content/inf-03/egzamin-12-styczen-2026/javascript.mdx"),
     },
     {
         slug: "css",
-        index: 3,
+        index: 4,
         label: "CSS",
         short: "CSS",
-        summary: "Layout, kolory, odtworzenie makiety.",
-        minutes: "90–130 min",
+        summary: "Dancing Script, transition 1s, hover, RosyBrown/Bisque i overflow galerii.",
+        minutes: "85–130 min",
         technologies: ["CSS"],
         mdx: () => import("@/content/inf-03/egzamin-12-styczen-2026/css.mdx"),
     },
     {
         slug: "kontrola",
-        index: 4,
+        index: 5,
         label: "Kontrola",
         short: "Kontrola",
         summary: "Weryfikacja wymagań, punktacja, checklista.",
@@ -95,9 +105,10 @@ export const examSteps: ExamStep[] = [
     },
 ];
 
+
 export const examStrategy = [
-    { time: "0–25 min", title: "Analiza i SQL", body: "Rozpisz dane wejściowe, sprawdź zapytania albo wymagane pliki.", tag: "łatwe punkty" },
-    { time: "25–90 min", title: "PHP i baza", body: "Połączenie, charset, pętle, formularze, obliczenia i zapis danych.", tag: "główna część" },
+    { time: "0–25 min", title: "Baza / analiza", body: "Rozpisz dane wejściowe, sprawdź zapytania SQL albo wymagane pliki.", tag: "łatwe punkty" },
+    { time: "25–90 min", title: "HTML i JS", body: "Struktura HTML, logika skryptów i dane wejściowe zgodnie z arkuszem.", tag: "główna część" },
     { time: "90–130 min", title: "CSS pod makietę", body: "Odtwarzaj polecenie: fonty, kolory, układ, obrazy i formularze.", tag: "dopięcie" },
     { time: "130–150 min", title: "Kontrola", body: "Porównaj wymagania, działanie i wygląd punkt po punkcie.", tag: "ostatnie punkty" },
 ];

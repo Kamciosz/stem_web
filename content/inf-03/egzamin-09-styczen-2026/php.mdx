@@ -1,0 +1,104 @@
+**Arkusz:** INF.03-09-26.01-SG (styczeń 2026)
+**Technologia:** PHP + JS + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki15.7z` · **Hasło:** `P@znoKcie?`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+
+
+## Mapa technologii INF.03 dla tego arkusza
+
+INF.03 obejmuje tworzenie stron i aplikacji internetowych oraz baz danych. Dlatego w tym kursie rozbijamy front-end na konkretne technologie zamiast trzymać wszystko w jednym dziale. Ucz się etapami:
+
+- **HTML** — struktura dokumentu, nazwy plików, formularze, linki, grafika i semantyczne bloki.
+- **PHP** — połączenie z bazą, mysqli/charset, pętle po wyniku, GET/POST, obliczenia lub zapis danych.
+- **JavaScript** — zdarzenia użytkownika, DOM, obliczenia po stronie klienta, createElement/appendChild albo przełączanie widoku.
+
+<Callout type="exam" title="Dlaczego osobno HTML, PHP i JavaScript?">
+HTML opisuje strukturę strony, CSS wygląd, PHP działa po stronie serwera i zwykle łączy się z bazą, a JavaScript działa w przeglądarce. Na egzaminie punkt jest za wymaganie, nie za nazwę działu — dlatego technologię trzeba rozpoznać po tym, gdzie kod się wykonuje.
+</Callout>
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, zdarzenie JS albo CSS pod makietę.
+</Callout>
+
+## PHP — co jest oceniane
+
+PHP w INF.03 działa po stronie serwera: łączy się z MySQL, wykonuje zapytania, odczytuje GET/POST, generuje HTML i zamyka połączenie. Nie mieszaj tego z JavaScriptem — JS nie połączy się z bazą w tych arkuszach.
+
+## Zapytania SQL — gotowe rozwiązania
+
+### Zapytanie 1: ważni klienci
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT imie, kolor, cena FROM klienci WHERE topKlient = 1;`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 2: klienci z dnia 2024-05-23
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT imie, cena FROM klienci WHERE data = '2024-05-23';`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 3: klienci z kształtem migdał (JOIN)
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT k.imie, k.kolor, ks.nazwa
+FROM klienci k
+JOIN ksztalty ks ON k.ksztalt = ks.id
+WHERE ks.nazwa = 'migdał';`}
+  />
+</ExamCodeGrid>
+
+### Zapytanie 4: dodanie kolumny doplata
+
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`ALTER TABLE wzory ADD COLUMN doplata INT;`}
+  />
+</ExamCodeGrid>
+
+<Callout type="exam">
+`ALTER TABLE ... ADD COLUMN` — to jedyny arkusz w tej sesji, który wymaga modyfikacji struktury tabeli (DDL zamiast DML). Musisz znać różnicę między SELECT/INSERT (DML) a ALTER/CREATE (DDL).
+</Callout>
+
+## Minimum do zapamiętania z PHP
+
+- Po `mysqli_connect()` ustaw kodowanie (`SET CHARSET utf8` albo odpowiednik z arkusza).
+- Najpierw testuj SQL w bazie, potem wklejaj do PHP.
+- Dane z formularza czytaj przez `$_POST`/`$_GET` zgodnie z poleceniem.
+- `while + mysqli_fetch_array/fetch_assoc` to podstawowy wzorzec renderowania wyników.
+- Zamknij połączenie, jeśli arkusz tego wymaga.

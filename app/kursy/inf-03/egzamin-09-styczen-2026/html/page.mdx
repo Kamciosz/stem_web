@@ -1,0 +1,51 @@
+**Arkusz:** INF.03-09-26.01-SG (styczeń 2026)
+**Technologia:** PHP + JS + SQL · **Czas:** 150 minut
+**Archiwum:** `pliki15.7z` · **Hasło:** `P@znoKcie?`
+
+<Callout type="exam" title="Podejście do egzaminu">
+
+Ten arkusz omawiam jako **zadanie egzaminacyjne**, nie jako lekcję technologii. Masz tu: gotowe rozwiązanie, wyjaśnienie dlaczego tak, i tipy punktowe. Rozwiąż najpierw sam, potem porównaj.
+
+</Callout>
+
+
+
+## Mapa technologii INF.03 dla tego arkusza
+
+INF.03 obejmuje tworzenie stron i aplikacji internetowych oraz baz danych. Dlatego w tym kursie rozbijamy front-end na konkretne technologie zamiast trzymać wszystko w jednym dziale. Ucz się etapami:
+
+- **HTML** — struktura dokumentu, nazwy plików, formularze, linki, grafika i semantyczne bloki.
+- **PHP** — połączenie z bazą, mysqli/charset, pętle po wyniku, GET/POST, obliczenia lub zapis danych.
+- **JavaScript** — zdarzenia użytkownika, DOM, obliczenia po stronie klienta, createElement/appendChild albo przełączanie widoku.
+
+<Callout type="exam" title="Dlaczego osobno HTML, PHP i JavaScript?">
+HTML opisuje strukturę strony, CSS wygląd, PHP działa po stronie serwera i zwykle łączy się z bazą, a JavaScript działa w przeglądarce. Na egzaminie punkt jest za wymaganie, nie za nazwę działu — dlatego technologię trzeba rozpoznać po tym, gdzie kod się wykonuje.
+</Callout>
+
+## Jak się z tego uczyć
+
+Nie przepisuj kodu jednym blokiem. Czytaj go w trzech przejściach:
+
+1. **Wejście** — skąd biorą się dane: baza, formularz, pliki graficzne albo zdarzenie JavaScript.
+2. **Przetwarzanie** — co kod robi z danymi: filtruje, liczy, zapisuje, wybiera albo wyświetla.
+3. **Wyjście** — co ma zobaczyć egzaminator: tabela, lista, komunikat, obraz albo zmieniony fragment strony.
+
+<Callout type="warning" title="Nie ucz się tego jak gotowca">
+Gotowiec bez rozumienia działa tylko do pierwszej zmiany w arkuszu. Na egzaminie rozpoznajesz wzorzec: połączenie z bazą, pętla po wyniku, formularz POST, obliczenie, INSERT, zdarzenie JS albo CSS pod makietę.
+</Callout>
+
+## O czym jest ten arkusz
+
+Salon stylizacji paznokci — arkusz mieszany PHP+JS. Trzy sekcje (Kolor/Kształt/Wzór) przełączane JavaScriptem (onmouseover), obrazy generowane pętlą PHP lub JS, baza danych z klientami i kształtami.
+
+**Baza danych:** `paznokcie` — tabele: `klienci` (id, imie, kolor, cena, data, topKlient 0/1), `ksztalty` (id, nazwa), `wzory` (id, nazwa).
+
+## Co musisz oddać — pliki
+
+paznokcie.html (lub .php): aside (manicure.jpg), main z header (h1), nav (3 przyciski: Kolor/Kształt/Wzór — onmouseover skrypt 2), sekcja1 (Kolor — kolory.png + input color), sekcja2 (Kształt — ksztalt.png + select), sekcja3 (Wzór — 10 obrazów skryptem 1 + input number 1-10), footer. Grafika: kolory.png skadrowana do butelek, 70px wysokości.
+
+## Minimum do zapamiętania z HTML
+
+- Najpierw nazwy plików i struktura z polecenia, dopiero potem skrypt.
+- Formularze muszą mieć poprawne `name`, `method` i elementy, z których korzysta PHP albo JavaScript.
+- Obrazki i linki są punktowane literalnie — zła ścieżka to brak punktu, nie kosmetyka.
