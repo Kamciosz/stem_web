@@ -38,24 +38,42 @@ Baza: `zgloszenia`. Plik SQL: `zgloszenia.sql`.
 
 ### Zapytanie 1: policjanci z personelu
 
-```sql
-SELECT id, imie, nazwisko FROM personel
-WHERE status = 'policjant';
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, imie, nazwisko FROM personel
+WHERE status = 'policjant';`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: liczba pojazdów wg typu
 
-```sql
-SELECT typ, COUNT(*) AS liczba FROM pojazdy
-GROUP BY typ;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT typ, COUNT(*) AS liczba FROM pojazdy
+GROUP BY typ;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: osoby bez zgłoszeń (NOT IN)
 
-```sql
-SELECT id, nazwisko FROM personel
-WHERE id NOT IN (SELECT id_personel FROM rejestr);
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, nazwisko FROM personel
+WHERE id NOT IN (SELECT id_personel FROM rejestr);`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 Podzapytanie `NOT IN` — to zaawansowany wzorzec. Alternatywnie można użyć `LEFT JOIN ... WHERE rejestr.id IS NULL`, ale NOT IN jest prostszy do napisania na egzaminie.
@@ -63,10 +81,16 @@ Podzapytanie `NOT IN` — to zaawansowany wzorzec. Alternatywnie można użyć `
 
 ### Zapytanie 4: wstawienie rekordu z aktualną datą
 
-```sql
-INSERT INTO rejestr (id_personel, id_pojazd, data)
-VALUES (1, 14, CURDATE());
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`INSERT INTO rejestr (id_personel, id_pojazd, data)
+VALUES (1, 14, CURDATE());`}
+  />
+</ExamCodeGrid>
 
 <Callout type="tip" title="CURDATE()">
 `CURDATE()` wstawia aktualną datę (format YYYY-MM-DD). Egzaminator sprawdza, czy użyłeś funkcji a nie wpisałeś datę na sztywno.
@@ -76,16 +100,27 @@ VALUES (1, 14, CURDATE());
 
 ### Połączenie z bazą
 
-```php
-<?php
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<?php
 $conn = mysqli_connect("localhost", "root", "", "zgloszenia");
-mysqli_query($conn, "SET CHARSET utf8");
-```
+mysqli_query($conn, "SET CHARSET utf8");`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 1 — tabela personelu wg opcji z formularza
 
-```php
-$opcja = isset($_POST['status']) ? $_POST['status'] : 'policjant';
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$opcja = isset($_POST['status']) ? $_POST['status'] : 'policjant';
 
 echo "<h3>Wybrano opcję: $opcja</h3>";
 
@@ -97,8 +132,9 @@ while ($row = mysqli_fetch_array($wynik)) {
     echo "<tr><td>" . $row['id'] . "</td><td>" . $row['imie'] . "</td>"
          . "<td>" . $row['nazwisko'] . "</td></tr>";
 }
-echo "</table>";
-```
+echo "</table>";`}
+  />
+</ExamCodeGrid>
 
 <Callout type="warning" title="Stan początkowy">
 Polecenie mówi: "w stanie początkowym z opcją policjant". Dlatego `$opcja` ma domyślną wartość `'policjant'` gdy formularz nie został jeszcze wysłany.
@@ -106,37 +142,60 @@ Polecenie mówi: "w stanie początkowym z opcją policjant". Dlatego `$opcja` ma
 
 ### Skrypt 2 — lista osób bez zgłoszeń
 
-```php
-$wynik2 = mysqli_query($conn,
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik2 = mysqli_query($conn,
     "SELECT id, nazwisko FROM personel
      WHERE id NOT IN (SELECT id_personel FROM rejestr)");
 while ($row = mysqli_fetch_array($wynik2)) {
     echo "<li>" . $row['id'] . " - " . $row['nazwisko'] . "</li>";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 3 — dodanie zgłoszenia
 
-```php
-if (isset($_POST['id_osoby'])) {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`if (isset($_POST['id_osoby'])) {
     $id_osoby = $_POST['id_osoby'];
     mysqli_query($conn,
         "INSERT INTO rejestr (id_personel, id_pojazd, data)
          VALUES ($id_osoby, 14, CURDATE())");
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Zamknięcie
 
-```php
-mysqli_close($conn);
-?>
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`mysqli_close($conn);
+?>`}
+  />
+</ExamCodeGrid>
 
 ## Styl CSS (styl.css)
 
-```css
-* {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`* {
     font-family: Tahoma;
 }
 
@@ -193,8 +252,9 @@ button {
 button:hover {
     background-color: white;
     color: Maroon;
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `border-collapse: collapse` + `margin: auto` na tabeli — pierwszy łączy krawędzie, drugi centruje tabelę w sekcji. Bez `margin: auto` tabela będzie wyrównana do lewej.

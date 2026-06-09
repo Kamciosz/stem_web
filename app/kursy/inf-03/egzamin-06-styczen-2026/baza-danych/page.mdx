@@ -31,33 +31,57 @@ Baza: `choroby`. Plik SQL: `choroby.sql`.
 
 ### Zapytanie 1: choroby zakaźne posortowane
 
-```sql
-SELECT nazwa FROM choroba WHERE zakazna = 'T' ORDER BY nazwa ASC;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT nazwa FROM choroba WHERE zakazna = 'T' ORDER BY nazwa ASC;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: wszystkie choroby — id i nazwa
 
-```sql
-SELECT id, nazwa FROM choroba;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, nazwa FROM choroba;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: objawy choroby id=5 przez relację
 
-```sql
-SELECT o.nazwa FROM objawy o
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT o.nazwa FROM objawy o
 JOIN choroba_objawy co ON o.id = co.id_objaw
-WHERE co.id_choroba = 5;
-```
+WHERE co.id_choroba = 5;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: choroby zakaźne + liczba objawów
 
-```sql
-SELECT c.nazwa, COUNT(*) AS liczba_objawow
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT c.nazwa, COUNT(*) AS liczba_objawow
 FROM choroba c
 JOIN choroba_objawy co ON c.id = co.id_choroba
 WHERE c.zakazna = 'T'
-GROUP BY c.id;
-```
+GROUP BY c.id;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 Zapytanie 4 łączy JOIN + WHERE + GROUP BY — trzy klauzule naraz na relacji n:m. To najtrudniejsze zapytanie w tym arkuszu. Przećwicz pisanie takich z pamięci.

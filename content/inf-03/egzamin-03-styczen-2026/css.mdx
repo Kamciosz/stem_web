@@ -21,8 +21,13 @@ Za `ładniej niż w makiecie`, za pominięcie `overflow`, za zły font, za brak 
 
 ## CSS — pełne rozwiązanie (styl.css)
 
-```css
-* {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`* {
     font-family: Garamond, serif;
 }
 
@@ -74,8 +79,9 @@ p {
     border-radius: 10px;
     margin: 5px;
     cursor: pointer;
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `h3::first-letter` — pseudo-element, który powiększa pierwszą literę nagłówka do 200%. To rzadko spotykane na egzaminie, ale polecenie mówi wprost. Zapamiętaj składnię z podwójnym dwukropkiem.

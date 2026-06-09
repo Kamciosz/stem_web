@@ -30,45 +30,84 @@ Dwie tabele: `pojazdy` i `kolory`. Relacja przez `pojazdy.kolor → kolory.id`.
 <ExamCodeGrid>
   <ExamCodeBlock
     language="SQL"
-    title="Zapytanie 1 — 15 najdrozszych BM"
-    description="Filtr marki, sort malejaco, limit 15."
+    title="Zapytanie 1 — 15 najdroższych BM"
+    description="Filtr marki, sort malejąco, limit 15."
     mistake="Brak DESC albo LIMIT bez ORDER BY."
     code={`SELECT marka, model, cena
 FROM pojazdy
 WHERE marka = 'BM'
 ORDER BY cena DESC
-LIMIT 15;}
+LIMIT 15;`}
   />
   <ExamCodeBlock
     language="SQL"
-    title="Zapytanie 2 — srednia i max meta"
+    title="Zapytanie 2 — średnia i max meta"
     description="Dwie agregacje z aliasami z polecenia."
-    mistake="Zle aliasy albo brak WHERE."
-    code={SELECT AVG(cena) AS 'Średnia cena', MAX(cena) AS 'Maksymalna cena'
+    mistake="Złe aliasy albo brak WHERE."
+    code={`SELECT AVG(cena) AS 'Średnia cena', MAX(cena) AS 'Maksymalna cena'
 FROM pojazdy
-WHERE model = 'meta';}
+WHERE model = 'meta';`}
   />
   <ExamCodeBlock
     language="SQL"
     title="Zapytanie 3 — alfa z kolorem"
     description="JOIN z warunkiem ON na kluczu obcym."
-    mistake="JOIN bez ON daje cartesian product."
-    code={SELECT marka, model, cena, nazwa, doplata
+    mistake="JOIN bez ON daje iloczyn kartezjański."
+    code={`SELECT marka, model, cena, nazwa, doplata
 FROM pojazdy
 INNER JOIN kolory ON pojazdy.kolor = kolory.id
-WHERE model = 'alfa';}
+WHERE model = 'alfa';`}
   />
   <ExamCodeBlock
     language="SQL"
     title="Zapytanie 4 — dwa losowe"
     description="RAND() i LIMIT 2."
     mistake="LIMIT przed ORDER BY."
-    code={SELECT marka, model, cena
+    code={`SELECT marka, model, cena
 FROM pojazdy
 ORDER BY RAND()
 LIMIT 2;`}
   />
 </ExamCodeGrid>
+
+
+## Werdykt nauczyciela
+
+Ten etap jest prosty tylko wtedy, gdy traktujesz bazę jak dowód, nie jak formalność. Egzaminator nie ocenia, czy „mniej więcej wiesz”, tylko czy zapytanie zwraca dokładnie te rekordy, które potem mają wejść do strony. W tym arkuszu najważniejszy jest `JOIN`: kolor samochodu nie jest tekstem w tabeli `pojazdy`, tylko relacją przez `pojazdy.kolor`.
+
+## Jak myśli egzaminator przy danych
+
+Egzaminator patrzy na cztery rzeczy:
+
+- czy filtrujesz po właściwym polu (`marka = 'BM'`, `model = 'meta'`, `model = 'alfa'`),
+- czy sortowanie i `LIMIT` są po tej samej stronie logiki co polecenie,
+- czy aliasy agregacji są czytelne i zgodne z oczekiwanym wynikiem,
+- czy relacja `pojazdy.kolor = kolory.id` jest jawna, a nie zgadywana.
+
+<Callout type="exam" title="Test zrozumienia">
+  Umiesz powiedzieć jednym zdaniem, skąd bierze się każdy wynik? Przykład: zapytanie 3 bierze auta `alfa` z `pojazdy`, dociąga nazwę koloru i dopłatę z `kolory`, a potem PHP liczy cenę całkowitą. Jeśli nie umiesz tego opisać, jeszcze nie rozumiesz etapu.
+</Callout>
+
+## Minimalny dowód poprawności
+
+Po odpaleniu zapytań w phpMyAdmin zrób kontrolę:
+
+1. Zapytanie 1 ma maksymalnie 15 rekordów i ceny malejąco.
+2. Zapytanie 2 zwraca jeden wiersz z agregacjami, nie listę samochodów.
+3. Zapytanie 3 pokazuje pola z obu tabel: samochód, kolor i dopłatę.
+4. Zapytanie 4 zwraca dokładnie 2 wiersze i przy odświeżeniu może dawać inny zestaw.
+
+## Za co bym obciął
+
+- `JOIN` bez `ON` — to nie jest drobna literówka, tylko błędny model danych.
+- `LIMIT 15` bez sortowania — wyciągasz piętnaście losowo ułożonych rekordów, nie najdroższe.
+- Liczenie ceny całkowitej w SQL w miejscu, gdzie polecenie wymaga później obliczenia w PHP.
+- Zmienione aliasy, które utrudniają porównanie z wymaganiem.
+
+## Jak sprawdzić ten etap
+
+Nie przechodź do PHP, dopóki każde zapytanie nie przejdzie osobno w bazie. Skopiuj wynik zapytania 3 i sprawdź, czy dla każdego auta masz nazwę koloru i dopłatę. To jest baza dla tabeli w lewej sekcji — jeśli tu jest błąd, PHP tylko go ładniej pokaże.
+
 
 ## Punkty za ten etap
 

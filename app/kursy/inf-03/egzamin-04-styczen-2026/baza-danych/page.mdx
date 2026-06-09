@@ -31,33 +31,57 @@ Baza: `matura`. Plik SQL: `egzamin.sql`.
 
 ### Zapytanie 1: uczniowie ze szkoły T3
 
-```sql
-SELECT id, imie, nazwisko FROM maturzysta
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, imie, nazwisko FROM maturzysta
 WHERE szkola = 'T3'
-ORDER BY nazwisko ASC;
-```
+ORDER BY nazwisko ASC;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: unikalne przedmioty
 
-```sql
-SELECT DISTINCT przedmiot FROM arkusz;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT DISTINCT przedmiot FROM arkusz;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: najstarszy i najmłodszy arkusz
 
-```sql
-SELECT MIN(rok) AS 'Najstarszy', MAX(rok) AS 'Najmłodszy' FROM arkusz;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT MIN(rok) AS 'Najstarszy', MAX(rok) AS 'Najmłodszy' FROM arkusz;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: maturzysta z najlepszą średnią
 
-```sql
-SELECT id_maturzysta, AVG(punkty) AS Wynik
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id_maturzysta, AVG(punkty) AS Wynik
 FROM wyniki
 GROUP BY id_maturzysta
 ORDER BY Wynik DESC
-LIMIT 1;
-```
+LIMIT 1;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 Zapytanie 4 łączy GROUP BY + ORDER BY + LIMIT — trzy klauzule naraz. Alias `Wynik` w ORDER BY działa w MySQL/MariaDB (w innych bazach nie zawsze). Na egzaminie INF.03 używasz MySQL, więc jest OK.
@@ -65,12 +89,18 @@ Zapytanie 4 łączy GROUP BY + ORDER BY + LIMIT — trzy klauzule naraz. Alias `
 
 ### Zapytanie 5: wyniki maturzysty id=31 z JOIN
 
-```sql
-SELECT a.rok, a.sesja, a.przedmiot, w.punkty
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT a.rok, a.sesja, a.przedmiot, w.punkty
 FROM wyniki w
 JOIN arkusz a ON w.id_arkusz = a.id
-WHERE w.id_maturzysta = 31;
-```
+WHERE w.id_maturzysta = 31;`}
+  />
+</ExamCodeGrid>
 
 ## Jak myśli egzaminator przy danych
 

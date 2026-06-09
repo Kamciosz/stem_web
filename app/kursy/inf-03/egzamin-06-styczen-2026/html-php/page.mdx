@@ -42,33 +42,57 @@ Baza: `choroby`. Plik SQL: `choroby.sql`.
 
 ### Zapytanie 1: choroby zakaźne posortowane
 
-```sql
-SELECT nazwa FROM choroba WHERE zakazna = 'T' ORDER BY nazwa ASC;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT nazwa FROM choroba WHERE zakazna = 'T' ORDER BY nazwa ASC;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: wszystkie choroby — id i nazwa
 
-```sql
-SELECT id, nazwa FROM choroba;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, nazwa FROM choroba;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: objawy choroby id=5 przez relację
 
-```sql
-SELECT o.nazwa FROM objawy o
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT o.nazwa FROM objawy o
 JOIN choroba_objawy co ON o.id = co.id_objaw
-WHERE co.id_choroba = 5;
-```
+WHERE co.id_choroba = 5;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: choroby zakaźne + liczba objawów
 
-```sql
-SELECT c.nazwa, COUNT(*) AS liczba_objawow
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT c.nazwa, COUNT(*) AS liczba_objawow
 FROM choroba c
 JOIN choroba_objawy co ON c.id = co.id_choroba
 WHERE c.zakazna = 'T'
-GROUP BY c.id;
-```
+GROUP BY c.id;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 Zapytanie 4 łączy JOIN + WHERE + GROUP BY — trzy klauzule naraz na relacji n:m. To najtrudniejsze zapytanie w tym arkuszu. Przećwicz pisanie takich z pamięci.
@@ -78,39 +102,62 @@ Zapytanie 4 łączy JOIN + WHERE + GROUP BY — trzy klauzule naraz na relacji n
 
 ### Połączenie z bazą
 
-```php
-<?php
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<?php
 $conn = mysqli_connect("localhost", "root", "", "choroby");
-mysqli_query($conn, "SET CHARSET utf8");
-```
+mysqli_query($conn, "SET CHARSET utf8");`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 1 — lista chorób zakaźnych
 
-```php
-$wynik = mysqli_query($conn,
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik = mysqli_query($conn,
     "SELECT nazwa FROM choroba WHERE zakazna = 'T' ORDER BY nazwa ASC");
 echo "<ol>";
 while ($row = mysqli_fetch_array($wynik)) {
     echo "<li>" . $row['nazwa'] . "</li>";
 }
-echo "</ol>";
-```
+echo "</ol>";`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 2 — lista rozwijana wszystkich chorób
 
-```php
-echo "<select name='choroba'>";
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`echo "<select name='choroba'>";
 $wynik2 = mysqli_query($conn, "SELECT id, nazwa FROM choroba");
 while ($row = mysqli_fetch_array($wynik2)) {
     echo "<option value='" . $row['id'] . "'>" . $row['nazwa'] . "</option>";
 }
-echo "</select>";
-```
+echo "</select>";`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 3 — objawy wybranej choroby w span
 
-```php
-if (isset($_POST['choroba'])) {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`if (isset($_POST['choroba'])) {
     $id_choroby = $_POST['choroba'];
     $wynik3 = mysqli_query($conn,
         "SELECT o.nazwa FROM objawy o
@@ -122,20 +169,32 @@ if (isset($_POST['choroba'])) {
         echo "<span>" . $row['nazwa'] . "</span> ";
     }
     echo "</div>";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Zamknięcie
 
-```php
-mysqli_close($conn);
-?>
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`mysqli_close($conn);
+?>`}
+  />
+</ExamCodeGrid>
 
 ## Styl CSS (styl.css)
 
-```css
-* {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`* {
     font-family: 'Trebuchet MS', sans-serif;
 }
 
@@ -192,8 +251,9 @@ span:nth-child(4) { font-size: 240%; }
 span:nth-child(5) { font-size: 150%; }
 span:nth-child(7) { font-size: 160%; }
 span:nth-child(9) { font-size: 130%; }
-span:nth-child(10) { font-size: 190%; }
-```
+span:nth-child(10) { font-size: 190%; }`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `span:nth-child(n)` — pseudo-klasa, która wybiera n-ty element potomny. Polecenie wymaga różnych rozmiarów czcionki dla 2., 4., 5., 7., 9. i 10. spanu. To tworzy efekt "chmury tagów" z objawami o różnych wielkościach.

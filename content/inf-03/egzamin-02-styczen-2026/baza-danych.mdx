@@ -29,34 +29,41 @@ Za pisanie zapytań 'na oko', bez sprawdzenia wyniku. Za brak klucza obcego, zł
 
 Baza: `bazar`. Plik SQL: `baza-nowa.sql`.
 
-### Zapytanie 1: 10 pierwszych towarów — nazwa i plik
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 1 — 10 pierwszych towarów"
+    description="Nazwa i plik obrazka dla nawigacji owoców."
+    mistake="Dodanie ORDER BY zmienia „pierwsze rekordy” z polecenia."
+    code={`SELECT nazwa, plik FROM towar LIMIT 10;`}
+  />
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 2 — lista do selecta"
+    description="Id i nazwa każdego towaru do pola wyboru."
+    mistake="Brak id uniemożliwia późniejsze pobranie szczegółów towaru."
+    code={`SELECT id, nazwa FROM towar;`}
+  />
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 3 — szczegóły towaru"
+    description="Rodzaj, nazwa i cena konkretnego towaru."
+    mistake="Brak WHERE zwróci wszystkie towary i popsuje obliczenie."
+    code={`SELECT rodzaj, nazwa, cena FROM towar WHERE id = 1;`}
+  />
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 4 — zapis zamówienia"
+    description="INSERT dopisuje rekord bez ręcznego id głównego."
+    mistake="Wpisanie kolumny id ręcznie łamie AUTO_INCREMENT."
+    code={`INSERT INTO zamowienie (id_towar, id_sklep, kilogramy)
+  VALUES (9, 2, 20);`}
+  />
+</ExamCodeGrid>
 
-```sql
-SELECT nazwa, plik FROM towar LIMIT 10;
-```
-
-<Callout type="tip" title="Dlaczego nie ORDER BY?">
-Polecenie mówi "10 pierwszych rekordów" — bez sortowania. `LIMIT 10` wystarczy. Nie dodawaj `ORDER BY` jeśli nie jest wymagany — egzaminator może uznać to za niezgodność z poleceniem.
+<Callout type="tip" title="Dlaczego nie ORDER BY w zapytaniu 1?">
+Polecenie mówi "10 pierwszych rekordów" — bez sortowania. `LIMIT 10` wystarczy. Nie dodawaj `ORDER BY` jeśli nie jest wymagany.
 </Callout>
-
-### Zapytanie 2: identyfikator i nazwa towarów
-
-```sql
-SELECT id, nazwa FROM towar;
-```
-
-### Zapytanie 3: rodzaj, nazwa i cena towaru o id = 1
-
-```sql
-SELECT rodzaj, nazwa, cena FROM towar WHERE id = 1;
-```
-
-### Zapytanie 4: wstawienie rekordu do zamowienie
-
-```sql
-INSERT INTO zamowienie (id_towar, id_sklep, kilogramy)
-VALUES (9, 2, 20);
-```
 
 <Callout type="exam">
 Klucz główny jest nadawany automatycznie (AUTO_INCREMENT) — **nie wpisuj go** w INSERT. Egzaminator sprawdza, czy nie wymuszasz id ręcznie.

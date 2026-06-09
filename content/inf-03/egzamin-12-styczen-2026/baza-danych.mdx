@@ -29,34 +29,58 @@ Za pisanie zapytań 'na oko', bez sprawdzenia wyniku. Za brak klucza obcego, zł
 
 ### Zapytanie 1: czarne tatuaże powyżej 100 zł
 
-```sql
-SELECT wzor, cena FROM tatuaze
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT wzor, cena FROM tatuaze
 WHERE kolor = 'czarny' AND cena > 100
-ORDER BY cena DESC;
-```
+ORDER BY cena DESC;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: liczba tatuaży wg koloru
 
-```sql
-SELECT kolor, COUNT(*) AS liczba FROM tatuaze
-GROUP BY kolor;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT kolor, COUNT(*) AS liczba FROM tatuaze
+GROUP BY kolor;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: zielone tatuaże z nazwą stylu (JOIN)
 
-```sql
-SELECT t.wzor, s.nazwa
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT t.wzor, s.nazwa
 FROM tatuaze t
 JOIN style s ON t.id_styl = s.id
-WHERE t.kolor = 'zielony';
-```
+WHERE t.kolor = 'zielony';`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: podwyżka ceny o 10% dla czerwonych
 
-```sql
-UPDATE tatuaze SET cena = cena * 1.1
-WHERE kolor = 'czerwony';
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`UPDATE tatuaze SET cena = cena * 1.1
+WHERE kolor = 'czerwony';`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `UPDATE ... SET cena = cena * 1.1` — mnożenie przez 1.1 to podwyżka o 10%. Alternatywa: `cena + cena * 0.1`. Egzaminator sprawdza, czy cena naprawdę wzrosła (nie została nadpisana stałą wartością).

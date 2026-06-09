@@ -31,31 +31,55 @@ Baza: `korona`. Plik SQL: `korona.sql`.
 
 ### Zapytanie 1: szczyty posortowane malejąco wg wysokości
 
-```sql
-SELECT id, nazwa FROM szczyty ORDER BY wysokosc DESC;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, nazwa FROM szczyty ORDER BY wysokosc DESC;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: pliki i nazwy pierwszych 10 szczytów
 
-```sql
-SELECT plik, nazwa FROM szczyty LIMIT 10;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT plik, nazwa FROM szczyty LIMIT 10;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: szczyt id=1 z opisem (JOIN)
 
-```sql
-SELECT s.plik, s.nazwa, s.wysokosc, s.pasmo, o.tekst
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT s.plik, s.nazwa, s.wysokosc, s.pasmo, o.tekst
 FROM szczyty s
 JOIN opis o ON s.id = o.id_szczyt
-WHERE s.id = 1;
-```
+WHERE s.id = 1;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: szczyty w Beskidach (LIKE)
 
-```sql
-SELECT nazwa, wysokosc, pasmo FROM szczyty
-WHERE pasmo LIKE 'Beskid%';
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT nazwa, wysokosc, pasmo FROM szczyty
+WHERE pasmo LIKE 'Beskid%';`}
+  />
+</ExamCodeGrid>
 
 <Callout type="tip" title="LIKE z %">
 `LIKE 'Beskid%'` — znajduje wszystkie pasma zaczynające się od "Beskid" (Beskid Żywiecki, Beskid Śląski itd.). Znak `%` zastępuje dowolną liczbę znaków.

@@ -36,34 +36,58 @@ index.html: header1 (logo.png), header2 (h1 "Studio Tatuażu"), main z section (
 
 ### Zapytanie 1: czarne tatuaże powyżej 100 zł
 
-```sql
-SELECT wzor, cena FROM tatuaze
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT wzor, cena FROM tatuaze
 WHERE kolor = 'czarny' AND cena > 100
-ORDER BY cena DESC;
-```
+ORDER BY cena DESC;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: liczba tatuaży wg koloru
 
-```sql
-SELECT kolor, COUNT(*) AS liczba FROM tatuaze
-GROUP BY kolor;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT kolor, COUNT(*) AS liczba FROM tatuaze
+GROUP BY kolor;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: zielone tatuaże z nazwą stylu (JOIN)
 
-```sql
-SELECT t.wzor, s.nazwa
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT t.wzor, s.nazwa
 FROM tatuaze t
 JOIN style s ON t.id_styl = s.id
-WHERE t.kolor = 'zielony';
-```
+WHERE t.kolor = 'zielony';`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: podwyżka ceny o 10% dla czerwonych
 
-```sql
-UPDATE tatuaze SET cena = cena * 1.1
-WHERE kolor = 'czerwony';
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`UPDATE tatuaze SET cena = cena * 1.1
+WHERE kolor = 'czerwony';`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `UPDATE ... SET cena = cena * 1.1` — mnożenie przez 1.1 to podwyżka o 10%. Alternatywa: `cena + cena * 0.1`. Egzaminator sprawdza, czy cena naprawdę wzrosła (nie została nadpisana stałą wartością).
@@ -71,8 +95,13 @@ WHERE kolor = 'czerwony';
 
 ## Skrypt JavaScript — dodawanie wzoru do galerii
 
-```javascript
-function dodajWzor() {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="JAVASCRIPT"
+    title="Kod JavaScript"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`function dodajWzor() {
     // Pobranie danych z kontrolek
     var wzor = document.getElementById("wzor").value;
     var plikInput = document.getElementById("plik");
@@ -94,8 +123,9 @@ function dodajWzor() {
 
     var sekcja = document.querySelector("section");
     sekcja.appendChild(img);
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 <Callout type="warning" title="Ścieżka pliku w input file">
 `input[type=file].value` zwraca `C:\fakepath\plik.png`. Musisz wyciąć samą nazwę pliku: `split("\\").pop()` lub `split("/").pop()`. To pułapka z polecenia — jest nawet podpowiedź w arkuszu: "JS Value property: C:\fakepath\fileName.png".
@@ -103,8 +133,13 @@ function dodajWzor() {
 
 ## HTML — index.html
 
-```html
-<!DOCTYPE html>
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="Kod HTML"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
@@ -145,13 +180,19 @@ function dodajWzor() {
     </footer>
     <script src="skrypt.js"></script>
 </body>
-</html>
-```
+</html>`}
+  />
+</ExamCodeGrid>
 
 ## Styl CSS (styl.css)
 
-```css
-@font-face {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`@font-face {
     font-family: 'Dancing Script';
     src: url('czcionki/DancingScript-Regular.ttf');
     font-weight: normal;
@@ -202,8 +243,9 @@ label {
 .miniatura:hover {
     background-color: Bisque;
     width: 200px;
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `transition: width 1s` + `.miniatura:hover { width: 200px }` — powiększenie miniatury z animacją 1 sekundy. To jedyny arkusz z `transition` w CSS. Egzaminator sprawdza płynność animacji — bez `transition` zmiana jest natychmiastowa i tracisz punkt.

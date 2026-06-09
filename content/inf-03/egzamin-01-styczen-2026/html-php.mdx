@@ -13,26 +13,10 @@
 <ExamCodeGrid>
   <ExamCodeBlock
     language="PHP"
-    title="Polaczenie + UTF-8"
-    description="mysqli + charset od razu po new mysqli()."
-    mistake="Brak charset — lokalnie dziala, na egzaminie polskie znaki sie rozsypuja."
-    code={`<?php
-$conn = new mysqli("localhost", "root", "", "samochody");
-$conn->set_charset;}
-  />
-</ExamCodeGrid>
-
-## Lewa sekcja — tabela alfa
-
-JOIN + petla. **Cena calkowita liczona w PHP**, nie w SELECT.
-
-<ExamCodeGrid>
-  <ExamCodeBlock
-    language="PHP"
     title="Tabela alfa z JOIN i cena w PHP"
-    description="Pojazdy alfa z kolorem, cena calkowita = cena + doplata."
-    mistake="Cena w SELECT zamiast w petli — wymaganie niespelnione, tracisz punkty."
-    code={$query = "SELECT marka, model, cena, nazwa, doplata
+    description="Pojazdy alfa z kolorem, cena całkowita = cena + dopłata."
+    mistake="Cena w SELECT zamiast w pętli — wymaganie niespełnione, tracisz punkty."
+    code={`$query = "SELECT marka, model, cena, nazwa, doplata
           FROM pojazdy
           INNER JOIN kolory ON pojazdy.kolor = kolory.id
           WHERE model = 'alfa'";
@@ -51,22 +35,21 @@ while ($row = $result->fetch_assoc()) {
     echo "</tr>";
 }
 
-echo "</table>";}
+echo "</table>";`}
   />
 </ExamCodeGrid>
 
-## Srodkowa sekcja — dwa losowe + rowspan
+## Lewa sekcja — tabela alfa
 
-Dwa losowe pojazdy z ORDER BY RAND() LIMIT 2. Kazdy wyswietlany z obrazkiem (a1.jpg, a2.jpg)
-i tabelka z rowspan="2".
+JOIN + petla. **Cena calkowita liczona w PHP**, nie w SELECT.
 
 <ExamCodeGrid>
   <ExamCodeBlock
     language="PHP"
     title="Losowanie i rowspan"
     description="Dwa auta, dwa obrazki, tabela z rowspan='2' na kolumnie ceny."
-    mistake="Brak rowspan — uklad wizualnie podobny do makiety, ale wymaganie niespelnione."
-    code={$query = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
+    mistake="Brak rowspan — układ wizualnie podobny do makiety, ale wymaganie niespełnione."
+    code={`$query = "SELECT marka, model, cena FROM pojazdy ORDER BY RAND() LIMIT 2";
 $result = $conn->query($query);
 $nr = 1;
 
@@ -78,9 +61,14 @@ while ($row = $result->fetch_assoc()) {
     echo "<tr><td>Model: " . $row['model'] . "</td></tr>";
     echo "</table>";
     $nr++;
-}}
+}`}
   />
 </ExamCodeGrid>
+
+## Srodkowa sekcja — dwa losowe + rowspan
+
+Dwa losowe pojazdy z ORDER BY RAND() LIMIT 2. Kazdy wyswietlany z obrazkiem (a1.jpg, a2.jpg)
+i tabelka z rowspan="2".
 
 ## Prawa sekcja i zamkniecie polaczenia
 
@@ -90,12 +78,35 @@ while ($row = $result->fetch_assoc()) {
     title="Kontakt + a3.png + close"
     description="Telefon, obrazek a3.png, $conn->close()."
     mistake="Zla nazwa pliku obrazka albo brak close()."
-    code={echo "<p>Telefon: 111 222 444</p>";
+    code={`echo "<p>Telefon: 111 222 444</p>";
 echo "<img src='a3.png' alt='Kontakt'>";
 
 $conn->close();`}
   />
 </ExamCodeGrid>
+
+
+## Jak się z tego uczyć
+
+Nie ucz się tego jako „dużego pliku PHP”. Rozbij etap na odpowiedzialności:
+
+1. połączenie z bazą i UTF-8,
+2. zapytanie do lewej sekcji,
+3. pętla `while` i tabela,
+4. obliczenie ceny całkowitej w PHP,
+5. losowanie dwóch rekordów,
+6. zamknięcie połączenia.
+
+Jeśli któryś element nie działa, testujesz tylko ten fragment. Nie poprawiaj CSS, gdy problemem jest puste `$result`.
+
+## Weryfikator w złym humorze
+
+Weryfikator nie będzie doceniał, że „prawie wygląda”. Sprawdzi, czy wymaganie jest wykonane literalnie: cena całkowita ma być liczona w PHP, w środkowej tabeli ma być `rowspan="2"`, a obrazki mają mieć dokładnie te nazwy, które są w arkuszu. Pomyłka w `a3.png` kontra `a3.jpg` to brak obrazka, nie kosmetyka.
+
+## Wnioski z tego arkusza
+
+Ten arkusz uczy klasycznego schematu INF.03: SQL przygotowuje dane, PHP wykonuje logikę wyświetlania, a HTML ma tylko pokazać wynik. Najbardziej opłaca się zapamiętać wzorzec: `query → result → fetch_assoc() → echo`. Pojawia się w prawie każdym wariancie z PHP.
+
 
 ## Punkty za ten etap
 

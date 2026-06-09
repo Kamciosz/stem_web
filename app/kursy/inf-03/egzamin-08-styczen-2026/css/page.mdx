@@ -21,8 +21,13 @@ Za `ładniej niż w makiecie`, za pominięcie `overflow`, za zły font, za brak 
 
 ## Styl CSS (styl.css)
 
-```css
-@font-face {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`@font-face {
     font-family: 'Lato';
     src: url('czcionka/Lato-Regular.ttf');
     font-weight: normal;
@@ -81,8 +86,9 @@ span:nth-child(3), span:nth-child(15) { font-size: 150%; }
 span:nth-child(4), span:nth-child(17) { font-size: 120%; }
 span:nth-child(5), span:nth-child(21) { font-size: 170%; }
 span:nth-child(7), span:nth-child(27) { font-size: 130%; }
-span:nth-child(9), span:nth-child(25) { font-size: 160%; }
-```
+span:nth-child(9), span:nth-child(25) { font-size: 160%; }`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `@font-face` — ładowanie czcionki Lato z pliku. To wymaganie wprost z polecenia. Musisz zdefiniować dwa warianty: regular i bold. Plik czcionki jest w folderze `czcionka/` z archiwum.

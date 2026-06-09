@@ -21,8 +21,13 @@ Za `ładniej niż w makiecie`, za pominięcie `overflow`, za zły font, za brak 
 
 ## Styl CSS (styl.css)
 
-```css
-* {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`* {
     font-family: 'Trebuchet MS', sans-serif;
 }
 
@@ -79,8 +84,9 @@ span:nth-child(4) { font-size: 240%; }
 span:nth-child(5) { font-size: 150%; }
 span:nth-child(7) { font-size: 160%; }
 span:nth-child(9) { font-size: 130%; }
-span:nth-child(10) { font-size: 190%; }
-```
+span:nth-child(10) { font-size: 190%; }`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `span:nth-child(n)` — pseudo-klasa, która wybiera n-ty element potomny. Polecenie wymaga różnych rozmiarów czcionki dla 2., 4., 5., 7., 9. i 10. spanu. To tworzy efekt "chmury tagów" z objawami o różnych wielkościach.

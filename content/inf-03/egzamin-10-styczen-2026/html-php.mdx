@@ -36,27 +36,45 @@ przepisy.php: aside (10 odnośników GET + autor), main (h1 rodzaj — skrypt 1,
 
 ### Zapytanie 1: nazwa, trudność, kalorie potrawy id=7
 
-```sql
-SELECT nazwa, trudnosc, kalorie FROM potrawy WHERE id = 7;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT nazwa, trudnosc, kalorie FROM potrawy WHERE id = 7;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: nazwa i rodzaj potrawy id=7 (JOIN)
 
-```sql
-SELECT p.nazwa, r.rodzaj FROM potrawy p
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT p.nazwa, r.rodzaj FROM potrawy p
 JOIN rodzaje r ON p.id_rodzaj = r.id
-WHERE p.id = 7;
-```
+WHERE p.id = 7;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: nazwa i alergeny potrawy id=7 (JOIN n:m)
 
-```sql
-SELECT p.nazwa, a.nazwa AS alergen
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT p.nazwa, a.nazwa AS alergen
 FROM potrawy p
 JOIN lista_alergenow la ON p.id = la.id_potrawy
 JOIN alergeny a ON la.id_alergenu = a.id
-WHERE p.id = 7;
-```
+WHERE p.id = 7;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 Zapytanie 3 łączy TRZY tabele przez relację n:m — to najtrudniejsze zapytanie w tym arkuszu. Musisz przejść: potrawy → lista_alergenow → alergeny. Przećwicz ten wzorzec.
@@ -64,21 +82,33 @@ Zapytanie 3 łączy TRZY tabele przez relację n:m — to najtrudniejsze zapytan
 
 ### Zapytanie 4: przepis i plik potrawy id=7
 
-```sql
-SELECT przepis, plik FROM potrawy WHERE id = 7;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT przepis, plik FROM potrawy WHERE id = 7;`}
+  />
+</ExamCodeGrid>
 
 ## Skrypty PHP — rozwiązanie krok po kroku
 
 ### Połączenie z bazą + inicjalizacja ID
 
-```php
-<?php
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<?php
 $conn = mysqli_connect("localhost", "root", "", "przepisy");
 mysqli_query($conn, "SET CHARSET utf8");
 
-$id = isset($_GET['id']) ? $_GET['id'] : 7;
-```
+$id = isset($_GET['id']) ? $_GET['id'] : 7;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="tip" title="Domyślna wartość ID">
 Polecenie mówi: "jeśli nie wysłano GET, zmienna = 7". To typowy wzorzec — strona pokazuje domyślną potrawę gdy użytkownik jeszcze nic nie wybrał.
@@ -86,31 +116,48 @@ Polecenie mówi: "jeśli nie wysłano GET, zmienna = 7". To typowy wzorzec — s
 
 ### Skrypt 1 — rodzaj potrawy (nagłówek h1)
 
-```php
-$wynik1 = mysqli_query($conn,
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik1 = mysqli_query($conn,
     "SELECT r.rodzaj FROM potrawy p
      JOIN rodzaje r ON p.id_rodzaj = r.id WHERE p.id = $id");
 $row = mysqli_fetch_array($wynik1);
-echo "<h1>" . $row['rodzaj'] . "</h1>";
-```
+echo "<h1>" . $row['rodzaj'] . "</h1>";`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 2 — nazwa, trudność, kalorie
 
-```php
-$wynik2 = mysqli_query($conn,
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik2 = mysqli_query($conn,
     "SELECT nazwa, trudnosc, kalorie FROM potrawy WHERE id = $id");
 $row = mysqli_fetch_array($wynik2);
 echo "<h2>" . $row['nazwa'] . "</h2>";
 
 $trudnosc_tekst = ["", "łatwe", "średnie", "trudne"];
 echo "<p>Trudność: " . $trudnosc_tekst[$row['trudnosc']]
-     . ", Kalorie: " . $row['kalorie'] . "</p>";
-```
+     . ", Kalorie: " . $row['kalorie'] . "</p>";`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 3 — alergeny
 
-```php
-$wynik3 = mysqli_query($conn,
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik3 = mysqli_query($conn,
     "SELECT a.nazwa FROM potrawy p
      JOIN lista_alergenow la ON p.id = la.id_potrawy
      JOIN alergeny a ON la.id_alergenu = a.id
@@ -118,38 +165,62 @@ $wynik3 = mysqli_query($conn,
 echo "Alergeny: ";
 while ($row = mysqli_fetch_array($wynik3)) {
     echo $row['nazwa'] . " ";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 4 — przepis + plik do tła sekcji
 
-```php
-$wynik4 = mysqli_query($conn,
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik4 = mysqli_query($conn,
     "SELECT przepis, plik FROM potrawy WHERE id = $id");
 $row = mysqli_fetch_array($wynik4);
 echo "<p>" . $row['przepis'] . "</p>";
-$plik_tla = $row['plik'];
-```
+$plik_tla = $row['plik'];`}
+  />
+</ExamCodeGrid>
 
 Sekcja z tłem inline (w HTML):
 
-```php
-echo "<section style=\"background-image: url('$plik_tla'); background-size: cover;\">";
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`echo "<section style=\"background-image: url('$plik_tla'); background-size: cover;\">";
 echo "<h1>Blog Kulinarny</h1>";
-echo "</section>";
-```
+echo "</section>";`}
+  />
+</ExamCodeGrid>
 
 ### Zamknięcie
 
-```php
-mysqli_close($conn);
-?>
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`mysqli_close($conn);
+?>`}
+  />
+</ExamCodeGrid>
 
 ## Styl CSS (styl.css)
 
-```css
-* {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`* {
     font-family: Garamond;
     text-align: center;
 }
@@ -203,8 +274,9 @@ a {
 
 a:hover {
     color: white;
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `background-size: cover` — obraz tła automatycznie dopasowuje się do rozmiaru bloku. `rgba(211,211,211,0.3)` — przezroczysty szary na h1 (opacity 0.3). `font-variant: small-caps` — kapitaliki. Te trzy właściwości razem tworzą profesjonalny layout bloga.

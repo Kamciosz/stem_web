@@ -78,6 +78,34 @@ table, th, td {
   ]}
 />
 
+
+## Mini-rubryka CSS
+
+- Układ: `main { display: flex; }` i trzy sekcje po `33.3%`.
+- Kolory: wartości z polecenia, bez własnej palety.
+- Wysokość: sekcje mają `550px`, więc przepełnienie kontroluje `overflow: auto`.
+- Tabele: obramowania i `border-collapse`, bo inaczej wygląd będzie inny niż w makiecie.
+- Interakcja: hover w lewej tabeli jest punktowanym wymaganiem, nie dodatkiem.
+
+## Test zgodności z makietą
+
+Otwórz stronę i porównaj od góry do dołu:
+
+1. Czy nagłówek i stopka mają ten sam kolor oraz biały tekst?
+2. Czy trzy kolumny są równe i mieszczą się w jednym rzędzie?
+3. Czy tabela nie wychodzi poza zielony blok?
+4. Czy hover działa tylko tam, gdzie ma działać?
+5. Czy obrazki są w środkowej sekcji i mają właściwą szerokość?
+
+<Callout type="warning" title="To nie jest prawie dobrze">
+  Na egzaminie CSS nie jest miejscem na redesign. Jeśli użyjesz ładniejszego odcienia zieleni, innej wysokości albo siatki zamiast flexa, strona może wyglądać poprawnie dla ciebie, ale nie spełniać polecenia.
+</Callout>
+
+## Kontrola CSS przed przejściem dalej
+
+Przed oddaniem usuń eksperymentalne reguły i zostaw tylko to, co jest potrzebne do makiety. Najpierw układ, potem kolory, potem tabele, na końcu drobiazgi typu `border-radius`. Nie odwrotnie.
+
+
 ## Punkty za ten etap
 
 - ~10 pkt za uklad zgodny z makieta.

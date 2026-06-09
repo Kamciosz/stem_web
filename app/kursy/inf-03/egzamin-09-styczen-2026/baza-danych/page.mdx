@@ -29,30 +29,54 @@ Za pisanie zapytań 'na oko', bez sprawdzenia wyniku. Za brak klucza obcego, zł
 
 ### Zapytanie 1: ważni klienci
 
-```sql
-SELECT imie, kolor, cena FROM klienci WHERE topKlient = 1;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT imie, kolor, cena FROM klienci WHERE topKlient = 1;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: klienci z dnia 2024-05-23
 
-```sql
-SELECT imie, cena FROM klienci WHERE data = '2024-05-23';
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT imie, cena FROM klienci WHERE data = '2024-05-23';`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: klienci z kształtem migdał (JOIN)
 
-```sql
-SELECT k.imie, k.kolor, ks.nazwa
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT k.imie, k.kolor, ks.nazwa
 FROM klienci k
 JOIN ksztalty ks ON k.ksztalt = ks.id
-WHERE ks.nazwa = 'migdał';
-```
+WHERE ks.nazwa = 'migdał';`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: dodanie kolumny doplata
 
-```sql
-ALTER TABLE wzory ADD COLUMN doplata INT;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`ALTER TABLE wzory ADD COLUMN doplata INT;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `ALTER TABLE ... ADD COLUMN` — to jedyny arkusz w tej sesji, który wymaga modyfikacji struktury tabeli (DDL zamiast DML). Musisz znać różnicę między SELECT/INSERT (DML) a ALTER/CREATE (DDL).

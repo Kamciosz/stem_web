@@ -29,39 +29,69 @@ Za pisanie zapytań 'na oko', bez sprawdzenia wyniku. Za brak klucza obcego, zł
 
 ### Zapytanie 1: filmy trwające min. 100 minut
 
-```sql
-SELECT id, tytul, rok, czas_trwania FROM filmy
-WHERE czas_trwania >= 100;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, tytul, rok, czas_trwania FROM filmy
+WHERE czas_trwania >= 100;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: aktor o id=3
 
-```sql
-SELECT imie, nazwisko, plik_awatara FROM aktorzy WHERE id = 3;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT imie, nazwisko, plik_awatara FROM aktorzy WHERE id = 3;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: wszyscy aktorzy posortowani
 
-```sql
-SELECT * FROM aktorzy ORDER BY nazwisko ASC, imie ASC;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT * FROM aktorzy ORDER BY nazwisko ASC, imie ASC;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: filmy aktora id=3 (JOIN n:m)
 
-```sql
-SELECT f.id, f.tytul, f.rok
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT f.id, f.tytul, f.rok
 FROM filmy f
 JOIN filmy_aktorzy fa ON f.id = fa.id_film
-WHERE fa.id_aktor = 3;
-```
+WHERE fa.id_aktor = 3;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 5: liczba filmów każdego aktora
 
-```sql
-SELECT id_aktor, COUNT(*) AS liczba_filmow
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id_aktor, COUNT(*) AS liczba_filmow
 FROM filmy_aktorzy
-GROUP BY id_aktor;
-```
+GROUP BY id_aktor;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 5 zapytań SQL — tak jak w arkuszu 04 (matura). Zapytanie 4 (JOIN n:m) i 5 (GROUP BY + COUNT + alias) to najtrudniejsze. Zwróć uwagę na alias `liczba_filmow` — egzaminator sprawdza dokładną nazwę.

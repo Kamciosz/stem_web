@@ -42,31 +42,55 @@ Baza: `korona`. Plik SQL: `korona.sql`.
 
 ### Zapytanie 1: szczyty posortowane malejąco wg wysokości
 
-```sql
-SELECT id, nazwa FROM szczyty ORDER BY wysokosc DESC;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, nazwa FROM szczyty ORDER BY wysokosc DESC;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: pliki i nazwy pierwszych 10 szczytów
 
-```sql
-SELECT plik, nazwa FROM szczyty LIMIT 10;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT plik, nazwa FROM szczyty LIMIT 10;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: szczyt id=1 z opisem (JOIN)
 
-```sql
-SELECT s.plik, s.nazwa, s.wysokosc, s.pasmo, o.tekst
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT s.plik, s.nazwa, s.wysokosc, s.pasmo, o.tekst
 FROM szczyty s
 JOIN opis o ON s.id = o.id_szczyt
-WHERE s.id = 1;
-```
+WHERE s.id = 1;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: szczyty w Beskidach (LIKE)
 
-```sql
-SELECT nazwa, wysokosc, pasmo FROM szczyty
-WHERE pasmo LIKE 'Beskid%';
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT nazwa, wysokosc, pasmo FROM szczyty
+WHERE pasmo LIKE 'Beskid%';`}
+  />
+</ExamCodeGrid>
 
 <Callout type="tip" title="LIKE z %">
 `LIKE 'Beskid%'` — znajduje wszystkie pasma zaczynające się od "Beskid" (Beskid Żywiecki, Beskid Śląski itd.). Znak `%` zastępuje dowolną liczbę znaków.
@@ -76,37 +100,60 @@ WHERE pasmo LIKE 'Beskid%';
 
 ### Połączenie z bazą
 
-```php
-<?php
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<?php
 $conn = mysqli_connect("localhost", "root", "", "korona");
-mysqli_query($conn, "SET CHARSET utf8");
-```
+mysqli_query($conn, "SET CHARSET utf8");`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 1 — nazwy szczytów jako odnośniki (index.php)
 
-```php
-$wynik = mysqli_query($conn,
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik = mysqli_query($conn,
     "SELECT id, nazwa FROM szczyty ORDER BY wysokosc DESC");
 while ($row = mysqli_fetch_array($wynik)) {
     echo "<span><a href='szczyty.php?id=" . $row['id'] . "'>"
          . $row['nazwa'] . "</a></span>";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 2 — miniatury zdjęć
 
-```php
-$wynik2 = mysqli_query($conn, "SELECT plik, nazwa FROM szczyty LIMIT 10");
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik2 = mysqli_query($conn, "SELECT plik, nazwa FROM szczyty LIMIT 10");
 while ($row = mysqli_fetch_array($wynik2)) {
     echo "<img src='" . $row['plik'] . "' alt='" . $row['nazwa']
          . "' class='miniatura'>";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 3 — detale szczytu (szczyty.php)
 
-```php
-if (isset($_GET['id'])) {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $wynik3 = mysqli_query($conn,
         "SELECT s.plik, s.nazwa, s.wysokosc, s.pasmo, o.tekst
@@ -119,20 +166,32 @@ if (isset($_GET['id'])) {
     echo "<h3>wysokość: " . $row['wysokosc'] . " metrów n.p.m.</h3>";
     echo "<h3>pasmo górskie: " . $row['pasmo'] . "</h3>";
     echo "<p>" . $row['tekst'] . "</p>";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Zamknięcie
 
-```php
-mysqli_close($conn);
-?>
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`mysqli_close($conn);
+?>`}
+  />
+</ExamCodeGrid>
 
 ## Styl CSS (styl.css)
 
-```css
-@font-face {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`@font-face {
     font-family: 'Lato';
     src: url('czcionka/Lato-Regular.ttf');
     font-weight: normal;
@@ -191,8 +250,9 @@ span:nth-child(3), span:nth-child(15) { font-size: 150%; }
 span:nth-child(4), span:nth-child(17) { font-size: 120%; }
 span:nth-child(5), span:nth-child(21) { font-size: 170%; }
 span:nth-child(7), span:nth-child(27) { font-size: 130%; }
-span:nth-child(9), span:nth-child(25) { font-size: 160%; }
-```
+span:nth-child(9), span:nth-child(25) { font-size: 160%; }`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `@font-face` — ładowanie czcionki Lato z pliku. To wymaganie wprost z polecenia. Musisz zdefiniować dwa warianty: regular i bold. Plik czcionki jest w folderze `czcionka/` z archiwum.

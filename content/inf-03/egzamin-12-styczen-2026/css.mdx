@@ -21,8 +21,13 @@ Za `ładniej niż w makiecie`, za pominięcie `overflow`, za zły font, za brak 
 
 ## Styl CSS (styl.css)
 
-```css
-@font-face {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`@font-face {
     font-family: 'Dancing Script';
     src: url('czcionki/DancingScript-Regular.ttf');
     font-weight: normal;
@@ -73,8 +78,9 @@ label {
 .miniatura:hover {
     background-color: Bisque;
     width: 200px;
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `transition: width 1s` + `.miniatura:hover { width: 200px }` — powiększenie miniatury z animacją 1 sekundy. To jedyny arkusz z `transition` w CSS. Egzaminator sprawdza płynność animacji — bez `transition` zmiana jest natychmiastowa i tracisz punkt.

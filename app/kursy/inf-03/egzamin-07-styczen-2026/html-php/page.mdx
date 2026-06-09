@@ -42,49 +42,84 @@ Baza: `pogoda`. Plik SQL: `pogoda.sql`.
 
 ### Zapytanie 1: średnia temperatura dla miesiąca id=7
 
-```sql
-SELECT ROUND(AVG(temp), 2) AS srednia FROM temperatura
-WHERE id_miesiac = 7;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT ROUND(AVG(temp), 2) AS srednia FROM temperatura
+WHERE id_miesiac = 7;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: wstawienie nowej miejscowości
 
-```sql
-INSERT INTO miejscowosc (nazwa, kraj) VALUES ('Kijów', 'Ukraina');
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`INSERT INTO miejscowosc (nazwa, kraj) VALUES ('Kijów', 'Ukraina');`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: miasta + temperatury w lipcu (JOIN)
 
-```sql
-SELECT m.nazwa, m.kraj, t.temp
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT m.nazwa, m.kraj, t.temp
 FROM miejscowosc m
 JOIN temperatura t ON m.id = t.id_miejscowosc
-WHERE t.id_miesiac = 7;
-```
+WHERE t.id_miesiac = 7;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: miesiące + średnie temperatury
 
-```sql
-SELECT mi.nazwa, AVG(t.temp) AS srednia
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT mi.nazwa, AVG(t.temp) AS srednia
 FROM miesiace mi
 JOIN temperatura t ON mi.id = t.id_miesiac
-GROUP BY mi.id;
-```
+GROUP BY mi.id;`}
+  />
+</ExamCodeGrid>
 
 ## Skrypty PHP — rozwiązanie krok po kroku
 
 ### Połączenie z bazą
 
-```php
-<?php
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<?php
 $conn = mysqli_connect("localhost", "root", "", "pogoda");
-mysqli_query($conn, "SET CHARSET utf8");
-```
+mysqli_query($conn, "SET CHARSET utf8");`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 1 — tabela temperatur z ikonami pogody
 
-```php
-$wynik = mysqli_query($conn,
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik = mysqli_query($conn,
     "SELECT m.nazwa, m.kraj, t.temp
      FROM miejscowosc m
      JOIN temperatura t ON m.id = t.id_miejscowosc
@@ -108,8 +143,9 @@ while ($row = mysqli_fetch_array($wynik)) {
     echo "<td><img src='$ikona'></td>";
     echo "</tr>";
 }
-echo "</table>";
-```
+echo "</table>";`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 Warunki na temperaturę: powyżej 30 = słońce, poniżej 26 = deszcz, reszta (26-30) = chmury. Kolejność `if/elseif/else` ma znaczenie — jeśli zamienisz, wynik będzie błędny. Egzaminator sprawdza ikony.
@@ -117,38 +153,61 @@ Warunki na temperaturę: powyżej 30 = słońce, poniżej 26 = deszcz, reszta (2
 
 ### Skrypt 2 — średnia dla wybranego miesiąca (GET)
 
-```php
-if (isset($_GET['miesiac'])) {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`if (isset($_GET['miesiac'])) {
     $id_miesiaca = $_GET['miesiac'];
     $wynik2 = mysqli_query($conn,
         "SELECT ROUND(AVG(temp), 2) AS srednia FROM temperatura
          WHERE id_miesiac = $id_miesiaca");
     $row = mysqli_fetch_array($wynik2);
     echo "<h3>" . $row['srednia'] . " stopni</h3>";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Odnośniki miesięcy (w HTML)
 
-```php
-$miesiace = ["Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec",
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$miesiace = ["Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec",
              "Lipiec","Sierpień","Wrzesień","Październik","Listopad","Grudzień"];
 for ($i = 0; $i < 12; $i++) {
     echo "<a href='index.php?miesiac=" . ($i + 1) . "'>" . $miesiace[$i] . "</a> ";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Zamknięcie
 
-```php
-mysqli_close($conn);
-?>
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`mysqli_close($conn);
+?>`}
+  />
+</ExamCodeGrid>
 
 ## Styl CSS (styl.css)
 
-```css
-body {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`body {
     font-family: Georgia;
     text-align: center;
 }
@@ -207,8 +266,9 @@ a:hover {
 
 p {
     margin: 0;
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ## Omówienie punktacji
 

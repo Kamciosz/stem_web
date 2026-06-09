@@ -29,27 +29,45 @@ Za pisanie zapytań 'na oko', bez sprawdzenia wyniku. Za brak klucza obcego, zł
 
 ### Zapytanie 1: nazwa, trudność, kalorie potrawy id=7
 
-```sql
-SELECT nazwa, trudnosc, kalorie FROM potrawy WHERE id = 7;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT nazwa, trudnosc, kalorie FROM potrawy WHERE id = 7;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: nazwa i rodzaj potrawy id=7 (JOIN)
 
-```sql
-SELECT p.nazwa, r.rodzaj FROM potrawy p
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT p.nazwa, r.rodzaj FROM potrawy p
 JOIN rodzaje r ON p.id_rodzaj = r.id
-WHERE p.id = 7;
-```
+WHERE p.id = 7;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: nazwa i alergeny potrawy id=7 (JOIN n:m)
 
-```sql
-SELECT p.nazwa, a.nazwa AS alergen
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT p.nazwa, a.nazwa AS alergen
 FROM potrawy p
 JOIN lista_alergenow la ON p.id = la.id_potrawy
 JOIN alergeny a ON la.id_alergenu = a.id
-WHERE p.id = 7;
-```
+WHERE p.id = 7;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 Zapytanie 3 łączy TRZY tabele przez relację n:m — to najtrudniejsze zapytanie w tym arkuszu. Musisz przejść: potrawy → lista_alergenow → alergeny. Przećwicz ten wzorzec.
@@ -57,9 +75,15 @@ Zapytanie 3 łączy TRZY tabele przez relację n:m — to najtrudniejsze zapytan
 
 ### Zapytanie 4: przepis i plik potrawy id=7
 
-```sql
-SELECT przepis, plik FROM potrawy WHERE id = 7;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT przepis, plik FROM potrawy WHERE id = 7;`}
+  />
+</ExamCodeGrid>
 
 ## Jak myśli egzaminator przy danych
 

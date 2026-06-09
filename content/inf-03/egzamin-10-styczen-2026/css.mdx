@@ -21,8 +21,13 @@ Za `ładniej niż w makiecie`, za pominięcie `overflow`, za zły font, za brak 
 
 ## Styl CSS (styl.css)
 
-```css
-* {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`* {
     font-family: Garamond;
     text-align: center;
 }
@@ -76,8 +81,9 @@ a {
 
 a:hover {
     color: white;
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `background-size: cover` — obraz tła automatycznie dopasowuje się do rozmiaru bloku. `rgba(211,211,211,0.3)` — przezroczysty szary na h1 (opacity 0.3). `font-variant: small-caps` — kapitaliki. Te trzy właściwości razem tworzą profesjonalny layout bloga.

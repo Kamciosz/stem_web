@@ -38,33 +38,57 @@ Baza: `matura`. Plik SQL: `egzamin.sql`.
 
 ### Zapytanie 1: uczniowie ze szkoły T3
 
-```sql
-SELECT id, imie, nazwisko FROM maturzysta
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, imie, nazwisko FROM maturzysta
 WHERE szkola = 'T3'
-ORDER BY nazwisko ASC;
-```
+ORDER BY nazwisko ASC;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: unikalne przedmioty
 
-```sql
-SELECT DISTINCT przedmiot FROM arkusz;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT DISTINCT przedmiot FROM arkusz;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: najstarszy i najmłodszy arkusz
 
-```sql
-SELECT MIN(rok) AS 'Najstarszy', MAX(rok) AS 'Najmłodszy' FROM arkusz;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT MIN(rok) AS 'Najstarszy', MAX(rok) AS 'Najmłodszy' FROM arkusz;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: maturzysta z najlepszą średnią
 
-```sql
-SELECT id_maturzysta, AVG(punkty) AS Wynik
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id_maturzysta, AVG(punkty) AS Wynik
 FROM wyniki
 GROUP BY id_maturzysta
 ORDER BY Wynik DESC
-LIMIT 1;
-```
+LIMIT 1;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 Zapytanie 4 łączy GROUP BY + ORDER BY + LIMIT — trzy klauzule naraz. Alias `Wynik` w ORDER BY działa w MySQL/MariaDB (w innych bazach nie zawsze). Na egzaminie INF.03 używasz MySQL, więc jest OK.
@@ -72,27 +96,44 @@ Zapytanie 4 łączy GROUP BY + ORDER BY + LIMIT — trzy klauzule naraz. Alias `
 
 ### Zapytanie 5: wyniki maturzysty id=31 z JOIN
 
-```sql
-SELECT a.rok, a.sesja, a.przedmiot, w.punkty
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT a.rok, a.sesja, a.przedmiot, w.punkty
 FROM wyniki w
 JOIN arkusz a ON w.id_arkusz = a.id
-WHERE w.id_maturzysta = 31;
-```
+WHERE w.id_maturzysta = 31;`}
+  />
+</ExamCodeGrid>
 
 ## Skrypty PHP — rozwiązanie krok po kroku
 
 ### Połączenie z bazą
 
-```php
-<?php
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<?php
 $conn = mysqli_connect("localhost", "root", "", "matura");
-mysqli_query($conn, "SET CHARSET utf8");
-```
+mysqli_query($conn, "SET CHARSET utf8");`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 1 — 4 bloki statystyk (index.php i wynik.php)
 
-```php
-// Blok Przedmioty
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`// Blok Przedmioty
 $wynik = mysqli_query($conn, "SELECT DISTINCT przedmiot FROM arkusz");
 echo "<div class='blok'><h4>Przedmioty</h4>";
 while ($row = mysqli_fetch_array($wynik)) {
@@ -117,25 +158,37 @@ $wynik = mysqli_query($conn,
     "SELECT AVG(punkty) AS Wynik FROM wyniki
      GROUP BY id_maturzysta ORDER BY Wynik ASC LIMIT 1");
 $row = mysqli_fetch_array($wynik);
-echo "<div class='blok'><h4>Najgorszy wynik</h4>" . round($row['Wynik']) . "%</div>";
-```
+echo "<div class='blok'><h4>Najgorszy wynik</h4>" . round($row['Wynik']) . "%</div>";`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 2 — lista uczniów jako odnośniki (index.php)
 
-```php
-echo "<h3>Wybierz ucznia z listy:</h3>";
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`echo "<h3>Wybierz ucznia z listy:</h3>";
 $wynik = mysqli_query($conn,
     "SELECT id, imie, nazwisko FROM maturzysta WHERE szkola = 'T3' ORDER BY nazwisko ASC");
 while ($row = mysqli_fetch_array($wynik)) {
     echo "<a href='wynik.php?id=" . $row['id'] . "'>"
          . $row['imie'] . " " . $row['nazwisko'] . "</a><br>";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 3 — wyniki wybranego maturzysty (wynik.php)
 
-```php
-if (isset($_GET['id'])) {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`if (isset($_GET['id'])) {
     $id = $_GET['id'];
     $wynik = mysqli_query($conn,
         "SELECT a.rok, a.sesja, a.przedmiot, w.punkty
@@ -148,20 +201,32 @@ if (isset($_GET['id'])) {
              . "<td>" . $row['przedmiot'] . "</td><td>" . $row['punkty'] . "</td></tr>";
     }
     echo "</table>";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Zamknięcie
 
-```php
-mysqli_close($conn);
-?>
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`mysqli_close($conn);
+?>`}
+  />
+</ExamCodeGrid>
 
 ## Styl CSS (styl.css)
 
-```css
-body {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`body {
     font-family: cursive, sans-serif;
     background-color: #4682B4;
 }
@@ -217,8 +282,9 @@ a:hover {
     border-radius: 10px;
     box-shadow: 3px 3px 5px black;
     display: inline-block;
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ## Omówienie punktacji
 

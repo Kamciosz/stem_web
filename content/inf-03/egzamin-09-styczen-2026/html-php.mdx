@@ -36,30 +36,54 @@ paznokcie.html (lub .php): aside (manicure.jpg), main z header (h1), nav (3 przy
 
 ### Zapytanie 1: ważni klienci
 
-```sql
-SELECT imie, kolor, cena FROM klienci WHERE topKlient = 1;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT imie, kolor, cena FROM klienci WHERE topKlient = 1;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: klienci z dnia 2024-05-23
 
-```sql
-SELECT imie, cena FROM klienci WHERE data = '2024-05-23';
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT imie, cena FROM klienci WHERE data = '2024-05-23';`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: klienci z kształtem migdał (JOIN)
 
-```sql
-SELECT k.imie, k.kolor, ks.nazwa
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT k.imie, k.kolor, ks.nazwa
 FROM klienci k
 JOIN ksztalty ks ON k.ksztalt = ks.id
-WHERE ks.nazwa = 'migdał';
-```
+WHERE ks.nazwa = 'migdał';`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: dodanie kolumny doplata
 
-```sql
-ALTER TABLE wzory ADD COLUMN doplata INT;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`ALTER TABLE wzory ADD COLUMN doplata INT;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `ALTER TABLE ... ADD COLUMN` — to jedyny arkusz w tej sesji, który wymaga modyfikacji struktury tabeli (DDL zamiast DML). Musisz znać różnicę między SELECT/INSERT (DML) a ALTER/CREATE (DDL).
@@ -69,29 +93,46 @@ ALTER TABLE wzory ADD COLUMN doplata INT;
 
 ### Wersja JavaScript:
 
-```javascript
-var sekcja3 = document.getElementById("sekcja3");
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="JAVASCRIPT"
+    title="Kod JavaScript"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`var sekcja3 = document.getElementById("sekcja3");
 for (var i = 1; i <= 10; i++) {
     var img = document.createElement("img");
     img.src = i + ".jpg";
     img.className = "wzory";
     img.title = i;
     sekcja3.appendChild(img);
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ### Wersja PHP:
 
-```php
-for ($i = 1; $i <= 10; $i++) {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`for ($i = 1; $i <= 10; $i++) {
     echo "<img src='$i.jpg' class='wzory' title='$i'>";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ## Skrypt 2 — przełączanie sekcji (JavaScript onmouseover)
 
-```javascript
-function pokaz(nr) {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="JAVASCRIPT"
+    title="Kod JavaScript"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`function pokaz(nr) {
     var sekcje = document.querySelectorAll("section");
     var przyciski = document.querySelectorAll("nav button");
 
@@ -102,16 +143,23 @@ function pokaz(nr) {
 
     sekcje[nr].style.display = "block";
     przyciski[nr].style.backgroundColor = "Salmon";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 HTML przycisków w nav:
 
-```html
-<button onmouseover="pokaz(0)">Kolor</button>
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="HTML"
+    title="Kod HTML"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<button onmouseover="pokaz(0)">Kolor</button>
 <button onmouseover="pokaz(1)">Kształt</button>
-<button onmouseover="pokaz(2)">Wzór</button>
-```
+<button onmouseover="pokaz(2)">Wzór</button>`}
+  />
+</ExamCodeGrid>
 
 <Callout type="warning" title="onmouseover, nie onclick">
 Polecenie mówi "zdarzenie najechania kursorem" — to `onmouseover`. Użycie `onclick` = utrata punktu za "działanie witryny".
@@ -119,8 +167,13 @@ Polecenie mówi "zdarzenie najechania kursorem" — to `onmouseover`. Użycie `o
 
 ## Styl CSS (styl.css)
 
-```css
-* {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`* {
     font-family: 'Trebuchet MS', sans-serif;
 }
 
@@ -180,8 +233,9 @@ button:not(:first-of-type) {
     width: 70px;
     border-radius: 100%;
     margin: 5px;
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ## Omówienie punktacji
 

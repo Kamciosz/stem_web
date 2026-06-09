@@ -36,39 +36,69 @@ index.php + aktor.php. Wspólne: header1 (h2 z odnośnikiem "Portal kina" do ind
 
 ### Zapytanie 1: filmy trwające min. 100 minut
 
-```sql
-SELECT id, tytul, rok, czas_trwania FROM filmy
-WHERE czas_trwania >= 100;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, tytul, rok, czas_trwania FROM filmy
+WHERE czas_trwania >= 100;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: aktor o id=3
 
-```sql
-SELECT imie, nazwisko, plik_awatara FROM aktorzy WHERE id = 3;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT imie, nazwisko, plik_awatara FROM aktorzy WHERE id = 3;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: wszyscy aktorzy posortowani
 
-```sql
-SELECT * FROM aktorzy ORDER BY nazwisko ASC, imie ASC;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT * FROM aktorzy ORDER BY nazwisko ASC, imie ASC;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: filmy aktora id=3 (JOIN n:m)
 
-```sql
-SELECT f.id, f.tytul, f.rok
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT f.id, f.tytul, f.rok
 FROM filmy f
 JOIN filmy_aktorzy fa ON f.id = fa.id_film
-WHERE fa.id_aktor = 3;
-```
+WHERE fa.id_aktor = 3;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 5: liczba filmów każdego aktora
 
-```sql
-SELECT id_aktor, COUNT(*) AS liczba_filmow
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id_aktor, COUNT(*) AS liczba_filmow
 FROM filmy_aktorzy
-GROUP BY id_aktor;
-```
+GROUP BY id_aktor;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 5 zapytań SQL — tak jak w arkuszu 04 (matura). Zapytanie 4 (JOIN n:m) i 5 (GROUP BY + COUNT + alias) to najtrudniejsze. Zwróć uwagę na alias `liczba_filmow` — egzaminator sprawdza dokładną nazwę.
@@ -78,16 +108,27 @@ GROUP BY id_aktor;
 
 ### Połączenie z bazą
 
-```php
-<?php
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`<?php
 $conn = mysqli_connect("localhost", "root", "", "kino");
-mysqli_query($conn, "SET CHARSET utf8");
-```
+mysqli_query($conn, "SET CHARSET utf8");`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 1 — grid aktorów (index.php)
 
-```php
-$wynik = mysqli_query($conn,
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik = mysqli_query($conn,
     "SELECT * FROM aktorzy ORDER BY nazwisko ASC, imie ASC");
 
 echo "<div class='aktorzy'>";
@@ -100,8 +141,9 @@ while ($row = mysqli_fetch_array($wynik)) {
     echo "<p>" . $row['imie'] . " " . $row['nazwisko'] . "</p>";
     echo "</div></a>";
 }
-echo "</div>";
-```
+echo "</div>";`}
+  />
+</ExamCodeGrid>
 
 <Callout type="tip" title="Cały blok jako odnośnik">
 Cały div z awatarem i imieniem jest zawinięty w `a` — kliknięcie gdziekolwiek w bloku prowadzi do aktor.php. To wymaga `display: inline-block` na div, żeby bloki stały obok siebie.
@@ -109,8 +151,13 @@ Cały div z awatarem i imieniem jest zawinięty w `a` — kliknięcie gdziekolwi
 
 ### Skrypt 2 — szczegóły aktora (aktor.php)
 
-```php
-$id = $_GET['id'];
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$id = $_GET['id'];
 $wynik2 = mysqli_query($conn,
     "SELECT imie, nazwisko, plik_awatara FROM aktorzy WHERE id = $id");
 $aktor = mysqli_fetch_array($wynik2);
@@ -120,13 +167,19 @@ echo "<img src='" . $aktor['plik_awatara'] . "' alt='"
      . $aktor['imie'] . " " . $aktor['nazwisko']
      . "' title='" . $aktor['imie'] . " " . $aktor['nazwisko'] . "'>";
 echo "<h1>" . $aktor['imie'] . " " . $aktor['nazwisko'] . "</h1>";
-echo "</div>";
-```
+echo "</div>";`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 3 — filmy aktora + komunikat (aktor.php)
 
-```php
-$wynik3 = mysqli_query($conn,
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik3 = mysqli_query($conn,
     "SELECT f.id, f.tytul, f.rok FROM filmy f
      JOIN filmy_aktorzy fa ON f.id = fa.id_film
      WHERE fa.id_aktor = $id");
@@ -144,8 +197,9 @@ if ($liczba == 0) {
         echo "<tr><td>" . $row['tytul'] . "</td><td>" . $row['rok'] . "</td></tr>";
     }
     echo "</table>";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 `mysqli_num_rows()` — sprawdza liczbę zwróconych wierszy. Jeśli 0 = komunikat "nie znajduje się na listach". Egzaminator testuje aktora bez filmów — musisz obsłużyć ten przypadek.
@@ -153,15 +207,26 @@ if ($liczba == 0) {
 
 ### Zamknięcie
 
-```php
-mysqli_close($conn);
-?>
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`mysqli_close($conn);
+?>`}
+  />
+</ExamCodeGrid>
 
 ## Styl CSS (styl.css)
 
-```css
-* {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`* {
     font-family: 'Gill Sans MT', Calibri;
 }
 
@@ -212,8 +277,9 @@ a {
 
 a:hover {
     color: #E30613;
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 ## Omówienie punktacji
 

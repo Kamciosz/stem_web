@@ -31,24 +31,42 @@ Baza: `zgloszenia`. Plik SQL: `zgloszenia.sql`.
 
 ### Zapytanie 1: policjanci z personelu
 
-```sql
-SELECT id, imie, nazwisko FROM personel
-WHERE status = 'policjant';
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, imie, nazwisko FROM personel
+WHERE status = 'policjant';`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: liczba pojazdów wg typu
 
-```sql
-SELECT typ, COUNT(*) AS liczba FROM pojazdy
-GROUP BY typ;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT typ, COUNT(*) AS liczba FROM pojazdy
+GROUP BY typ;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: osoby bez zgłoszeń (NOT IN)
 
-```sql
-SELECT id, nazwisko FROM personel
-WHERE id NOT IN (SELECT id_personel FROM rejestr);
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT id, nazwisko FROM personel
+WHERE id NOT IN (SELECT id_personel FROM rejestr);`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 Podzapytanie `NOT IN` — to zaawansowany wzorzec. Alternatywnie można użyć `LEFT JOIN ... WHERE rejestr.id IS NULL`, ale NOT IN jest prostszy do napisania na egzaminie.
@@ -56,10 +74,16 @@ Podzapytanie `NOT IN` — to zaawansowany wzorzec. Alternatywnie można użyć `
 
 ### Zapytanie 4: wstawienie rekordu z aktualną datą
 
-```sql
-INSERT INTO rejestr (id_personel, id_pojazd, data)
-VALUES (1, 14, CURDATE());
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`INSERT INTO rejestr (id_personel, id_pojazd, data)
+VALUES (1, 14, CURDATE());`}
+  />
+</ExamCodeGrid>
 
 <Callout type="tip" title="CURDATE()">
 `CURDATE()` wstawia aktualną datę (format YYYY-MM-DD). Egzaminator sprawdza, czy użyłeś funkcji a nie wpisałeś datę na sztywno.

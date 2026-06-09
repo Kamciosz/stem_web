@@ -47,9 +47,15 @@ Baza: `bazar`. Plik SQL: `baza-nowa.sql`.
 
 ### Zapytanie 1: 10 pierwszych towarów — nazwa i plik
 
-```sql
-SELECT nazwa, plik FROM towar LIMIT 10;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 1: 10 pierwszych towarów — nazwa i plik"
+    description="Zapytanie uruchom najpierw w bazie, dopiero potem użyj w PHP."
+    mistake="Nie zmieniaj warunków, LIMIT ani kolumn względem polecenia."
+    code={`SELECT nazwa, plik FROM towar LIMIT 10;`}
+  />
+</ExamCodeGrid>
 
 <Callout type="tip" title="Dlaczego nie ORDER BY?">
 Polecenie mówi "10 pierwszych rekordów" — bez sortowania. `LIMIT 10` wystarczy. Nie dodawaj `ORDER BY` jeśli nie jest wymagany — egzaminator może uznać to za niezgodność z poleceniem.
@@ -57,22 +63,40 @@ Polecenie mówi "10 pierwszych rekordów" — bez sortowania. `LIMIT 10` wystarc
 
 ### Zapytanie 2: identyfikator i nazwa towarów
 
-```sql
-SELECT id, nazwa FROM towar;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 2: identyfikator i nazwa towarów"
+    description="Zapytanie uruchom najpierw w bazie, dopiero potem użyj w PHP."
+    mistake="Nie zmieniaj warunków, LIMIT ani kolumn względem polecenia."
+    code={`SELECT id, nazwa FROM towar;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: rodzaj, nazwa i cena towaru o id = 1
 
-```sql
-SELECT rodzaj, nazwa, cena FROM towar WHERE id = 1;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 3: rodzaj, nazwa i cena towaru o id = 1"
+    description="Zapytanie uruchom najpierw w bazie, dopiero potem użyj w PHP."
+    mistake="Nie zmieniaj warunków, LIMIT ani kolumn względem polecenia."
+    code={`SELECT rodzaj, nazwa, cena FROM towar WHERE id = 1;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: wstawienie rekordu do zamowienie
 
-```sql
-INSERT INTO zamowienie (id_towar, id_sklep, kilogramy)
-VALUES (9, 2, 20);
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Zapytanie 4: wstawienie rekordu do zamowienie"
+    description="Zapytanie uruchom najpierw w bazie, dopiero potem użyj w PHP."
+    mistake="Nie zmieniaj warunków, LIMIT ani kolumn względem polecenia."
+    code={`INSERT INTO zamowienie (id_towar, id_sklep, kilogramy)
+  VALUES (9, 2, 20);`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 Klucz główny jest nadawany automatycznie (AUTO_INCREMENT) — **nie wpisuj go** w INSERT. Egzaminator sprawdza, czy nie wymuszasz id ręcznie.
@@ -82,22 +106,34 @@ Klucz główny jest nadawany automatycznie (AUTO_INCREMENT) — **nie wpisuj go*
 
 ### Połączenie z bazą
 
-```php
-<?php
-$conn = mysqli_connect("localhost", "root", "", "bazar");
-mysqli_query($conn, "SET CHARSET utf8");
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Połączenie z bazą"
+    description="Kod z rozwiązania arkusza INF.03-02."
+    mistake="Najczęstszy błąd: literówka w nazwie pola, tabeli, pliku albo metoda formularza niezgodna z poleceniem."
+    code={`<?php
+  $conn = mysqli_connect("localhost", "root", "", "bazar");
+  mysqli_query($conn, "SET CHARSET utf8");`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 1 — obrazki owoców w nawigacji
 
 Skrypt wysyła zapytanie 1 i dla każdego wiersza wyświetla obraz:
 
-```php
-$wynik = mysqli_query($conn, "SELECT nazwa, plik FROM towar LIMIT 10");
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Kod PHP"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`$wynik = mysqli_query($conn, "SELECT nazwa, plik FROM towar LIMIT 10");
 while ($row = mysqli_fetch_array($wynik)) {
     echo "<img src='" . $row['plik'] . "' alt='" . $row['nazwa'] . "'>";
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 <Callout type="tip" title="Nawigacja obrazkowa">
 Blok `nav` ma `overflow: hidden` i `height: 150px` — jeśli jest więcej owoców niż mieści się w 150px, reszta zostanie ukryta. To celowe zachowanie z polecenia.
@@ -105,36 +141,48 @@ Blok `nav` ma `overflow: hidden` i `height: 150px` — jeśli jest więcej owoc�
 
 ### Skrypt 2 — lista rozwijana w formularzu
 
-```php
-echo "<select name='towar'>";
-$wynik2 = mysqli_query($conn, "SELECT id, nazwa FROM towar");
-while ($row = mysqli_fetch_array($wynik2)) {
-    echo "<option value='" . $row['id'] . "'>" . $row['nazwa'] . "</option>";
-}
-echo "</select>";
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Skrypt 2 — lista rozwijana w formularzu"
+    description="Kod z rozwiązania arkusza INF.03-02."
+    mistake="Najczęstszy błąd: literówka w nazwie pola, tabeli, pliku albo metoda formularza niezgodna z poleceniem."
+    code={`echo "<select name='towar'>";
+  $wynik2 = mysqli_query($conn, "SELECT id, nazwa FROM towar");
+  while ($row = mysqli_fetch_array($wynik2)) {
+      echo "<option value='" . $row['id'] . "'>" . $row['nazwa'] . "</option>";
+  }
+  echo "</select>";`}
+  />
+</ExamCodeGrid>
 
 ### Skrypt 3 — obliczenie wartości po wysłaniu formularza
 
-```php
-if (isset($_POST['towar'])) {
-    $id_towaru = $_POST['towar'];
-    $kilogramy = $_POST['kilogramy'];
-
-    $wynik3 = mysqli_query($conn,
-        "SELECT rodzaj, nazwa, cena FROM towar WHERE id = $id_towaru");
-    $row = mysqli_fetch_array($wynik3);
-
-    $wartosc = $row['cena'] * $kilogramy;
-
-    echo "<p>" . $row['rodzaj'] . " " . $row['nazwa']
-         . " wartość: " . $wartosc . " zł</p>";
-
-    mysqli_query($conn,
-        "INSERT INTO zamowienie (id_towar, id_sklep, kilogramy)
-         VALUES ($id_towaru, 2, $kilogramy)");
-}
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Skrypt 3 — obliczenie wartości po wysłaniu formularza"
+    description="Kod z rozwiązania arkusza INF.03-02."
+    mistake="Najczęstszy błąd: literówka w nazwie pola, tabeli, pliku albo metoda formularza niezgodna z poleceniem."
+    code={`if (isset($_POST['towar'])) {
+      $id_towaru = $_POST['towar'];
+      $kilogramy = $_POST['kilogramy'];
+  
+      $wynik3 = mysqli_query($conn,
+          "SELECT rodzaj, nazwa, cena FROM towar WHERE id = $id_towaru");
+      $row = mysqli_fetch_array($wynik3);
+  
+      $wartosc = $row['cena'] * $kilogramy;
+  
+      echo "<p>" . $row['rodzaj'] . " " . $row['nazwa']
+           . " wartość: " . $wartosc . " zł</p>";
+  
+      mysqli_query($conn,
+          "INSERT INTO zamowienie (id_towar, id_sklep, kilogramy)
+           VALUES ($id_towaru, 2, $kilogramy)");
+  }`}
+  />
+</ExamCodeGrid>
 
 <Callout type="warning" title="Metoda bezpieczna = POST">
 Polecenie mówi "formularz wysyłający dane metodą bezpieczną" — to znaczy `method="POST"`. Użycie GET = utrata punktu.
@@ -142,27 +190,44 @@ Polecenie mówi "formularz wysyłający dane metodą bezpieczną" — to znaczy 
 
 ### Formularz HTML (wewnątrz section)
 
-```php
-echo "<p>Wybierz owoc lub warzywo i podaj jego wagę:</p>";
-echo "<form method='POST' action='index.php'>";
-// Tu skrypt 2 (lista rozwijana)
-echo "<input type='number' name='kilogramy'>";
-echo "<button type='submit'>Zamów</button>";
-echo "</form>";
-// Tu skrypt 3 (wynik)
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Formularz HTML (wewnątrz section)"
+    description="Kod z rozwiązania arkusza INF.03-02."
+    mistake="Najczęstszy błąd: literówka w nazwie pola, tabeli, pliku albo metoda formularza niezgodna z poleceniem."
+    code={`echo "<p>Wybierz owoc lub warzywo i podaj jego wagę:</p>";
+  echo "<form method='POST' action='index.php'>";
+  // Tu skrypt 2 (lista rozwijana)
+  echo "<input type='number' name='kilogramy'>";
+  echo "<button type='submit'>Zamów</button>";
+  echo "</form>";
+  // Tu skrypt 3 (wynik)`}
+  />
+</ExamCodeGrid>
 
 ### Zamknięcie połączenia
 
-```php
-mysqli_close($conn);
-?>
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="PHP"
+    title="Zamknięcie połączenia"
+    description="Kod z rozwiązania arkusza INF.03-02."
+    mistake="Najczęstszy błąd: literówka w nazwie pola, tabeli, pliku albo metoda formularza niezgodna z poleceniem."
+    code={`mysqli_close($conn);
+  ?>`}
+  />
+</ExamCodeGrid>
 
 ## Styl CSS (styl.css)
 
-```css
-* {
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="CSS"
+    title="Kod CSS"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`* {
     font-family: Georgia, serif;
 }
 
@@ -199,8 +264,9 @@ aside img {
 p {
     font-size: 120%;
     font-style: italic;
-}
-```
+}`}
+  />
+</ExamCodeGrid>
 
 <Callout type="exam">
 Polecenie mówi: "styl CSS paragrafu należy zdefiniować wyłącznie przy pomocy selektora tego znacznika" — to znaczy użyj `p { }`, NIE `.klasa` ani `#id`. Egzaminator to weryfikuje.

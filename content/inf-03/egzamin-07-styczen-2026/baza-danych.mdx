@@ -31,34 +31,58 @@ Baza: `pogoda`. Plik SQL: `pogoda.sql`.
 
 ### Zapytanie 1: średnia temperatura dla miesiąca id=7
 
-```sql
-SELECT ROUND(AVG(temp), 2) AS srednia FROM temperatura
-WHERE id_miesiac = 7;
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT ROUND(AVG(temp), 2) AS srednia FROM temperatura
+WHERE id_miesiac = 7;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 2: wstawienie nowej miejscowości
 
-```sql
-INSERT INTO miejscowosc (nazwa, kraj) VALUES ('Kijów', 'Ukraina');
-```
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`INSERT INTO miejscowosc (nazwa, kraj) VALUES ('Kijów', 'Ukraina');`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 3: miasta + temperatury w lipcu (JOIN)
 
-```sql
-SELECT m.nazwa, m.kraj, t.temp
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT m.nazwa, m.kraj, t.temp
 FROM miejscowosc m
 JOIN temperatura t ON m.id = t.id_miejscowosc
-WHERE t.id_miesiac = 7;
-```
+WHERE t.id_miesiac = 7;`}
+  />
+</ExamCodeGrid>
 
 ### Zapytanie 4: miesiące + średnie temperatury
 
-```sql
-SELECT mi.nazwa, AVG(t.temp) AS srednia
+<ExamCodeGrid>
+  <ExamCodeBlock
+    language="SQL"
+    title="Kod SQL"
+    description="Kod z rozwiązania arkusza INF.03."
+    mistake="Sprawdź nazwy plików, pól, tabel i zgodność z poleceniem."
+    code={`SELECT mi.nazwa, AVG(t.temp) AS srednia
 FROM miesiace mi
 JOIN temperatura t ON mi.id = t.id_miesiac
-GROUP BY mi.id;
-```
+GROUP BY mi.id;`}
+  />
+</ExamCodeGrid>
 
 ## Jak myśli egzaminator przy danych
 

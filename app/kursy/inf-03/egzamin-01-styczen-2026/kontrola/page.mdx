@@ -53,6 +53,26 @@ Pelna, klikana lokalnie. Stan zostaje w przegladarce — `localStorage`. Resetuj
   ]}
 />
 
+
+## Tryb egzaminatora
+
+Przejdź stronę tak, jak zrobi to osoba sprawdzająca: bez znajomości twoich intencji. Widać dane z bazy? Obrazki są na miejscu? Układ jest zgodny z makietą? Jeśli odpowiedź brzmi „trzeba wiedzieć, że...”, to znaczy, że rozwiązanie nie broni się samo.
+
+## Za co bym obciął bez dyskusji
+
+- strona nie łączy się z bazą albo baza ma złą nazwę,
+- brak `set_charset`, gdy przez to psują się polskie znaki,
+- zapytanie 3 zwraca złe dane przez błędny `JOIN`,
+- cena całkowita nie jest liczona w PHP,
+- środkowa tabela nie ma `rowspan="2"`,
+- obrazki mają złe rozszerzenia albo są w złym katalogu,
+- CSS nie odtwarza makiety, tylko robi własną wersję.
+
+## Decyzja końcowa
+
+Oddajesz dopiero wtedy, gdy możesz wskazać palcem każde wymaganie w działającej stronie. Nie wystarczy, że kod „nie ma błędu”. Musi być widoczny efekt: tabela, dwa losowe pojazdy, kontakt z obrazkiem, trzy kolumny i zgodna kolorystyka.
+
+
 <div className="exam-step-next">
   Gotowe? Otworz strone w przegladarce. Porownaj z makieta. Oddaj.
 </div>
