@@ -40,8 +40,8 @@ export const examMeta: ExamMeta = {
     lessonSlug: "egzamin-11-styczen-2026",
     examId: "INF.03-11",
     session: "Styczeń 2026",
-    title: "Arkusz 11 — KinoTEKA",
-    topic: "KinoTEKA",
+    title: "Arkusz 11 — Portal kina",
+    topic: "Portal kina",
     description:
         "Przewodnik po rozwiązaniu w kolejności pracy. Cztery etapy, każdy na osobnej stronie. Plan, materiały, błędy i kod — bez jednego długiego scrolla.",
     rule: "SQL → PHP → CSS → Kontrola",
@@ -49,7 +49,7 @@ export const examMeta: ExamMeta = {
     technologies: ["PHP", "SQL", "CSS", "HTML"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
-    objective: "Realizacja zadania: KinoTEKA",
+    objective: "Wykonanie aplikacji internetowej portalu kina",
 };
 
 export const examSteps: ExamStep[] = [
@@ -116,13 +116,13 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
-        { src: "/img/egzaminy/e11-lato.png", alt: "e11-lato.png — materiał arkusza INF.03-11", title: "e11-lato.png", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e11-opona.jpg", alt: "e11-opona.jpg — materiał arkusza INF.03-11", title: "e11-opona.jpg", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e11-opona.png", alt: "e11-opona.png — materiał arkusza INF.03-11", title: "e11-opona.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e11-awatar_1.jpg", alt: "e11-awatar_1.jpg — materiał arkusza INF.03-11", title: "e11-awatar_1.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e11-awatar_2.jpg", alt: "e11-awatar_2.jpg — materiał arkusza INF.03-11", title: "e11-awatar_2.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e11-awatar_nieznany.png", alt: "e11-awatar_nieznany.png — materiał arkusza INF.03-11", title: "e11-awatar_nieznany.png", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e11-kw4.png",
-        alt: "Makieta lub wynik końcowy INF.03-11 — KinoTEKA",
+        alt: "Makieta lub wynik końcowy INF.03-11 — Portal kina",
         title: "e11-kw4.png",
         caption: "porównaj z własnym rozwiązaniem",
     },

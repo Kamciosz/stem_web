@@ -40,8 +40,8 @@ export const examMeta: ExamMeta = {
     lessonSlug: "egzamin-09-styczen-2026",
     examId: "INF.03-09",
     session: "Styczeń 2026",
-    title: "Arkusz 09 — Salon paznokci",
-    topic: "Salon paznokci",
+    title: "Arkusz 09 — Salon stylizacji paznokci",
+    topic: "Salon stylizacji paznokci",
     description:
         "Przewodnik po rozwiązaniu w kolejności pracy. Cztery etapy, każdy na osobnej stronie. Plan, materiały, błędy i kod — bez jednego długiego scrolla.",
     rule: "SQL → PHP → CSS → Kontrola",
@@ -49,7 +49,7 @@ export const examMeta: ExamMeta = {
     technologies: ["PHP", "SQL", "CSS", "HTML"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
-    objective: "Realizacja zadania: Salon paznokci",
+    objective: "Wykonanie aplikacji internetowej salonu stylizacji paznokci",
 };
 
 export const examSteps: ExamStep[] = [
@@ -116,13 +116,13 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
-        { src: "/img/egzaminy/e09-cegla.jpg", alt: "e09-cegla.jpg — materiał arkusza INF.03-09", title: "e09-cegla.jpg", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e09-logo.jpg", alt: "e09-logo.jpg — materiał arkusza INF.03-09", title: "e09-logo.jpg", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e09-logo.png", alt: "e09-logo.png — materiał arkusza INF.03-09", title: "e09-logo.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e09-manicure.jpg", alt: "e09-manicure.jpg — materiał arkusza INF.03-09", title: "e09-manicure.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e09-kolory.png", alt: "e09-kolory.png — materiał arkusza INF.03-09", title: "e09-kolory.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e09-ksztalt.png", alt: "e09-ksztalt.png — materiał arkusza INF.03-09", title: "e09-ksztalt.png", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e09-kw5.png",
-        alt: "Makieta lub wynik końcowy INF.03-09 — Salon paznokci",
+        alt: "Makieta lub wynik końcowy INF.03-09 — Salon stylizacji paznokci",
         title: "e09-kw5.png",
         caption: "porównaj z własnym rozwiązaniem",
     },

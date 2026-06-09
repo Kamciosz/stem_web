@@ -49,7 +49,7 @@ export const examMeta: ExamMeta = {
     technologies: ["PHP", "SQL", "CSS", "HTML"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
-    objective: "Realizacja zadania: Korona gór polskich",
+    objective: "Wykonanie aplikacji internetowej portalu korony gór polskich",
 };
 
 export const examSteps: ExamStep[] = [
@@ -116,9 +116,9 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
-        { src: "/img/egzaminy/e08-baner.png", alt: "e08-baner.png — materiał arkusza INF.03-08", title: "e08-baner.png", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e08-fav.jpg", alt: "e08-fav.jpg — materiał arkusza INF.03-08", title: "e08-fav.jpg", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e08-fav.png", alt: "e08-fav.png — materiał arkusza INF.03-08", title: "e08-fav.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e08-logo.png", alt: "e08-logo.png — materiał arkusza INF.03-08", title: "e08-logo.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e08-babiagora.jpg", alt: "e08-babiagora.jpg — materiał arkusza INF.03-08", title: "e08-babiagora.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e08-rysy.jpg", alt: "e08-rysy.jpg — materiał arkusza INF.03-08", title: "e08-rysy.jpg", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e08-kw4.png",

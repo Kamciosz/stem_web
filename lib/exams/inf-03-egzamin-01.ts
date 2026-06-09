@@ -50,7 +50,7 @@ export const examMeta: ExamMeta = {
     technologies: ["PHP", "SQL", "CSS", "HTML"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
-    objective: "Strona salonu samochodowego z bazą i widokiem zgodnym z makietą",
+    objective: "Wykonanie aplikacji internetowej portalu samochodowego",
 };
 
 export const examSteps: ExamStep[] = [
@@ -99,15 +99,15 @@ export const examSteps: ExamStep[] = [
 /** Materialy z arkusza — thumbnails + makieta koncowa */
 export const examMaterials = {
     files: [
-        { src: "/img/egzaminy/e01-a1.jpg", alt: "a1.jpg — niebieskie Audi", title: "e01-a1.jpg", caption: "sekcja środkowa" },
-        { src: "/img/egzaminy/e01-a2.jpg", alt: "a2.jpg — białe BMW", title: "e01-a2.jpg", caption: "drugi pojazd" },
-        { src: "/img/egzaminy/e01-a3.png", alt: "a3.png — czerwony kabriolet", title: "e01-a3.png", caption: "sekcja kontakt" },
+        { src: "/img/egzaminy/e01-a1.jpg", alt: "e01-a1.jpg — materiał arkusza INF.03-01", title: "e01-a1.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e01-a2.jpg", alt: "e01-a2.jpg — materiał arkusza INF.03-01", title: "e01-a2.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e01-a3.png", alt: "e01-a3.png — materiał arkusza INF.03-01", title: "e01-a3.png", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e01-rozwiazanie.webp",
-        alt: "Makieta końcowa INF.03-01-26.01",
-        title: "Makieta końcowa",
-        caption: "do odtworzenia 1:1",
+        alt: "Makieta lub wynik końcowy INF.03-01 — Portal samochodowy",
+        title: "e01-rozwiazanie.webp",
+        caption: "porównaj z własnym rozwiązaniem",
     },
 } as const;
 

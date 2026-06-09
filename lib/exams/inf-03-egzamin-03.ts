@@ -40,8 +40,8 @@ export const examMeta: ExamMeta = {
     lessonSlug: "egzamin-03-styczen-2026",
     examId: "INF.03-03",
     session: "Styczeń 2026",
-    title: "Arkusz 03 — Pola figur",
-    topic: "Pola figur",
+    title: "Arkusz 03 — Witryna matematyczna",
+    topic: "Witryna matematyczna",
     description:
         "Przewodnik po rozwiązaniu w kolejności pracy. Cztery etapy, każdy na osobnej stronie. Plan, materiały, błędy i kod — bez jednego długiego scrolla.",
     rule: "SQL → PHP → CSS → Kontrola",
@@ -49,7 +49,7 @@ export const examMeta: ExamMeta = {
     technologies: ["PHP", "SQL", "CSS", "HTML"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
-    objective: "Realizacja zadania: Pola figur",
+    objective: "Wykonanie witryny matematycznej z animacją i skryptem JavaScript",
 };
 
 export const examSteps: ExamStep[] = [
@@ -116,13 +116,13 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
-        { src: "/img/egzaminy/e03-kalendarz.gif", alt: "e03-kalendarz.gif — materiał arkusza INF.03-03", title: "e03-kalendarz.gif", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e03-kalendarz01.png", alt: "e03-kalendarz01.png — materiał arkusza INF.03-03", title: "e03-kalendarz01.png", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e03-kalendarz02.png", alt: "e03-kalendarz02.png — materiał arkusza INF.03-03", title: "e03-kalendarz02.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e03-kolo.gif", alt: "e03-kolo.gif — materiał arkusza INF.03-03", title: "e03-kolo.gif", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e03-parametry.jpg", alt: "e03-parametry.jpg — materiał arkusza INF.03-03", title: "e03-parametry.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e03-1d.bmp", alt: "e03-1d.bmp — materiał arkusza INF.03-03", title: "e03-1d.bmp", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e03-kw4.png",
-        alt: "Makieta lub wynik końcowy INF.03-03 — Pola figur",
+        alt: "Makieta lub wynik końcowy INF.03-03 — Witryna matematyczna",
         title: "e03-kw4.png",
         caption: "porównaj z własnym rozwiązaniem",
     },

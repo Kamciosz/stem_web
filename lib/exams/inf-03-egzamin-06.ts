@@ -40,8 +40,8 @@ export const examMeta: ExamMeta = {
     lessonSlug: "egzamin-06-styczen-2026",
     examId: "INF.03-06",
     session: "Styczeń 2026",
-    title: "Arkusz 06 — Diagnostyka online",
-    topic: "Diagnostyka online",
+    title: "Arkusz 06 — Portal diagnostyki online",
+    topic: "Portal diagnostyki online",
     description:
         "Przewodnik po rozwiązaniu w kolejności pracy. Cztery etapy, każdy na osobnej stronie. Plan, materiały, błędy i kod — bez jednego długiego scrolla.",
     rule: "SQL → PHP → CSS → Kontrola",
@@ -49,7 +49,7 @@ export const examMeta: ExamMeta = {
     technologies: ["PHP", "SQL", "CSS", "HTML"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
-    objective: "Realizacja zadania: Diagnostyka online",
+    objective: "Wykonanie aplikacji internetowej portalu do diagnostyki online",
 };
 
 export const examSteps: ExamStep[] = [
@@ -116,13 +116,11 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
-        { src: "/img/egzaminy/e06-0.png", alt: "e06-0.png — materiał arkusza INF.03-06", title: "e06-0.png", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e06-1.png", alt: "e06-1.png — materiał arkusza INF.03-06", title: "e06-1.png", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e06-2.png", alt: "e06-2.png — materiał arkusza INF.03-06", title: "e06-2.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e06-zdrowia.png", alt: "e06-zdrowia.png — materiał arkusza INF.03-06", title: "e06-zdrowia.png", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e06-kw5.jpeg",
-        alt: "Makieta lub wynik końcowy INF.03-06 — Diagnostyka online",
+        alt: "Makieta lub wynik końcowy INF.03-06 — Portal diagnostyki online",
         title: "e06-kw5.jpeg",
         caption: "porównaj z własnym rozwiązaniem",
     },

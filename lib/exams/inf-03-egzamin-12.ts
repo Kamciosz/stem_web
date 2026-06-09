@@ -49,7 +49,7 @@ export const examMeta: ExamMeta = {
     technologies: ["PHP", "SQL", "CSS", "HTML"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
-    objective: "Realizacja zadania: Studio tatuażu",
+    objective: "Wykonanie aplikacji internetowej studia tatuażu",
 };
 
 export const examSteps: ExamStep[] = [
@@ -116,9 +116,9 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
-        { src: "/img/egzaminy/e12-obraz1.jpg", alt: "e12-obraz1.jpg — materiał arkusza INF.03-12", title: "e12-obraz1.jpg", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e12-obraz2.png", alt: "e12-obraz2.png — materiał arkusza INF.03-12", title: "e12-obraz2.png", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e12-obraz3.png", alt: "e12-obraz3.png — materiał arkusza INF.03-12", title: "e12-obraz3.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-logo.png", alt: "e12-logo.png — materiał arkusza INF.03-12", title: "e12-logo.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-smok.png", alt: "e12-smok.png — materiał arkusza INF.03-12", title: "e12-smok.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e12-tygrys.png", alt: "e12-tygrys.png — materiał arkusza INF.03-12", title: "e12-tygrys.png", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e12-kw4.png",

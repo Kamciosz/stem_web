@@ -49,7 +49,7 @@ export const examMeta: ExamMeta = {
     technologies: ["PHP", "SQL", "CSS", "HTML"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
-    objective: "Realizacja zadania: Blog kulinarny",
+    objective: "Wykonanie aplikacji internetowej bloga kulinarnego",
 };
 
 export const examSteps: ExamStep[] = [
@@ -116,9 +116,9 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
-        { src: "/img/egzaminy/e10-1.jpg", alt: "e10-1.jpg — materiał arkusza INF.03-10", title: "e10-1.jpg", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e10-2.jpg", alt: "e10-2.jpg — materiał arkusza INF.03-10", title: "e10-2.jpg", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e10-3.jpg", alt: "e10-3.jpg — materiał arkusza INF.03-10", title: "e10-3.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e10-churros.jpg", alt: "e10-churros.jpg — materiał arkusza INF.03-10", title: "e10-churros.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e10-hamburger.jpg", alt: "e10-hamburger.jpg — materiał arkusza INF.03-10", title: "e10-hamburger.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e10-sernik.jpg", alt: "e10-sernik.jpg — materiał arkusza INF.03-10", title: "e10-sernik.jpg", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e10-kw4.png",

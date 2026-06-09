@@ -49,7 +49,7 @@ export const examMeta: ExamMeta = {
     technologies: ["PHP", "SQL", "CSS", "HTML"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
-    objective: "Realizacja zadania: Stacja meteorologiczna",
+    objective: "Wykonanie aplikacji internetowej dla stacji meteorologicznej",
 };
 
 export const examSteps: ExamStep[] = [
@@ -116,9 +116,9 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
-        { src: "/img/egzaminy/e07-01.jpg", alt: "e07-01.jpg — materiał arkusza INF.03-07", title: "e07-01.jpg", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e07-02.jpg", alt: "e07-02.jpg — materiał arkusza INF.03-07", title: "e07-02.jpg", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e07-03.jpg", alt: "e07-03.jpg — materiał arkusza INF.03-07", title: "e07-03.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e07-chmury.png", alt: "e07-chmury.png — materiał arkusza INF.03-07", title: "e07-chmury.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e07-deszcz.png", alt: "e07-deszcz.png — materiał arkusza INF.03-07", title: "e07-deszcz.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e07-slonce.png", alt: "e07-slonce.png — materiał arkusza INF.03-07", title: "e07-slonce.png", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e07-kw5.png",

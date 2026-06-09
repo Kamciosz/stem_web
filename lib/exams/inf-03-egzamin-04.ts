@@ -49,7 +49,7 @@ export const examMeta: ExamMeta = {
     technologies: ["PHP", "SQL", "CSS", "HTML"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
-    objective: "Realizacja zadania: Portal maturzystów",
+    objective: "Wykonanie aplikacji internetowej portalu dla maturzystów",
 };
 
 export const examSteps: ExamStep[] = [
@@ -116,9 +116,9 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
-        { src: "/img/egzaminy/e04-but1.png", alt: "e04-but1.png — materiał arkusza INF.03-04", title: "e04-but1.png", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e04-but2.png", alt: "e04-but2.png — materiał arkusza INF.03-04", title: "e04-but2.png", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e04-but3.png", alt: "e04-but3.png — materiał arkusza INF.03-04", title: "e04-but3.png", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e04-ma.jpg", alt: "e04-ma.jpg — materiał arkusza INF.03-04", title: "e04-ma.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e04-ra.jpg", alt: "e04-ra.jpg — materiał arkusza INF.03-04", title: "e04-ra.jpg", caption: "materiał z arkusza" },
+        { src: "/img/egzaminy/e04-tu.jpg", alt: "e04-tu.jpg — materiał arkusza INF.03-04", title: "e04-tu.jpg", caption: "materiał z arkusza" },
     ],
     result: {
         src: "/img/egzaminy/e04-kw4.png",

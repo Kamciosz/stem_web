@@ -40,8 +40,8 @@ export const examMeta: ExamMeta = {
     lessonSlug: "egzamin-05-styczen-2026",
     examId: "INF.03-05",
     session: "Styczeń 2026",
-    title: "Arkusz 05 — Zgłoszenia wypadków",
-    topic: "Zgłoszenia wypadków",
+    title: "Arkusz 05 — Portal zgłoszeń wypadków",
+    topic: "Portal zgłoszeń wypadków",
     description:
         "Przewodnik po rozwiązaniu w kolejności pracy. Cztery etapy, każdy na osobnej stronie. Plan, materiały, błędy i kod — bez jednego długiego scrolla.",
     rule: "SQL → PHP → CSS → Kontrola",
@@ -49,7 +49,7 @@ export const examMeta: ExamMeta = {
     technologies: ["PHP", "SQL", "CSS", "HTML"],
     scoreTarget: "~22 / 30 pkt",
     scoringTotal: "30 pkt",
-    objective: "Realizacja zadania: Zgłoszenia wypadków",
+    objective: "Wykonanie aplikacji internetowej portalu zgłoszeń wypadków",
 };
 
 export const examSteps: ExamStep[] = [
@@ -116,13 +116,11 @@ export function toExamStepView(step: ExamStep): ExamStepView {
 /** Materialy z arkusza — dashboard pokazuje realne pliki arkusza. */
 export const examMaterials = {
     files: [
-        { src: "/img/egzaminy/e05-1.jpg", alt: "e05-1.jpg — materiał arkusza INF.03-05", title: "e05-1.jpg", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e05-10.jpg", alt: "e05-10.jpg — materiał arkusza INF.03-05", title: "e05-10.jpg", caption: "materiał z arkusza" },
-        { src: "/img/egzaminy/e05-2.jpg", alt: "e05-2.jpg — materiał arkusza INF.03-05", title: "e05-2.jpg", caption: "materiał z arkusza" },
+
     ],
     result: {
         src: "/img/egzaminy/e05-kw4.png",
-        alt: "Makieta lub wynik końcowy INF.03-05 — Zgłoszenia wypadków",
+        alt: "Makieta lub wynik końcowy INF.03-05 — Portal zgłoszeń wypadków",
         title: "e05-kw4.png",
         caption: "porównaj z własnym rozwiązaniem",
     },
