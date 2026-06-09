@@ -61,11 +61,13 @@ export function ExamImagePreview({ src, alt, title, className }: ExamImagePrevie
                         <span>Podgląd materiału egzaminacyjnego</span>
                     </div>
                     <div className="exam-image-lightbox-actions" aria-label="Sterowanie obrazem">
-                        <span className="exam-image-lightbox-zoom" aria-live="polite">Zoom {zoomPercent}%</span>
-                        <button type="button" onClick={() => setZoom((value) => clampZoom(value - 0.25))} aria-label="Pomniejsz obraz">−</button>
-                        <button type="button" onClick={() => setZoom(1)} aria-label="Przywróć domyślny rozmiar obrazu">Reset</button>
-                        <button type="button" onClick={() => setZoom((value) => clampZoom(value + 0.25))} aria-label="Powiększ obraz">+</button>
-                        <a href={src} target="_blank" rel="noopener noreferrer">Nowa karta</a>
+                        <div className="exam-image-lightbox-zoomgroup" role="group" aria-label="Powiększenie obrazu">
+                            <button type="button" onClick={() => setZoom((value) => clampZoom(value - 0.25))} aria-label="Pomniejsz obraz">−</button>
+                            <span className="exam-image-lightbox-zoom" aria-live="polite">{zoomPercent}%</span>
+                            <button type="button" onClick={() => setZoom((value) => clampZoom(value + 0.25))} aria-label="Powiększ obraz">+</button>
+                            <button type="button" className="exam-image-lightbox-reset" onClick={() => setZoom(1)} aria-label="Przywróć zoom 100%">100%</button>
+                        </div>
+                        <a className="exam-image-lightbox-secondary" href={src} target="_blank" rel="noopener noreferrer">Otwórz plik</a>
                         <button type="button" className="exam-image-lightbox-close" onClick={close} aria-label="Zamknij podgląd">×</button>
                     </div>
                 </div>

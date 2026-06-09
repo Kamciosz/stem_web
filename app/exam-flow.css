@@ -1466,19 +1466,82 @@ html.exam-lightbox-open body {
 }
 .exam-image-lightbox-actions {
     flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
 }
+.exam-image-lightbox-zoomgroup {
+    min-height: 38px;
+    display: inline-grid;
+    grid-template-columns: 38px minmax(62px, auto) 38px 54px;
+    align-items: stretch;
+    overflow: hidden;
+    border: 1px solid var(--ef-border);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.035);
+}
+.exam-image-lightbox-zoomgroup button,
 .exam-image-lightbox-zoom {
+    min-width: 0;
     min-height: 36px;
     display: inline-flex;
     align-items: center;
-    padding: 0 10px;
-    border: 1px solid var(--ef-border);
-    border-radius: 999px;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-left: 1px solid var(--ef-border);
+    border-radius: 0;
+    background: transparent;
+    color: var(--ef-text) !important;
+    font-family: var(--ef-font-mono);
+    font-size: 12px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+.exam-image-lightbox-zoomgroup button:first-child {
+    border-left: 0;
+}
+.exam-image-lightbox-zoom {
     color: var(--ef-muted) !important;
-    background: rgba(255, 255, 255, 0.035);
+    background: rgba(255, 255, 255, 0.025);
+}
+.exam-image-lightbox-reset {
+    font-size: 11px !important;
+    color: var(--ef-muted) !important;
+}
+.exam-image-lightbox-zoomgroup button:hover {
+    background: rgba(124, 58, 237, 0.14);
+    color: var(--ef-text) !important;
+}
+.exam-image-lightbox-secondary {
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ef-dim) !important;
+    font-family: var(--ef-font-mono);
+    font-size: 11px;
+    line-height: 1;
+    text-decoration: none;
+}
+.exam-image-lightbox-secondary:hover {
+    border-color: var(--ef-border-em);
+    color: var(--ef-muted) !important;
 }
 .exam-image-lightbox-close {
-    min-width: 36px;
+    min-width: 38px;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 999px;
     font-size: 18px !important;
     line-height: 1;
 }
@@ -1578,6 +1641,11 @@ html.exam-lightbox-open body {
     }
     .exam-image-lightbox-actions {
         justify-content: flex-start;
+        width: 100%;
+        gap: 6px;
+    }
+    .exam-image-lightbox-zoomgroup {
+        grid-template-columns: 38px minmax(58px, auto) 38px 50px;
     }
     .exam-image-lightbox {
         padding: 0;
