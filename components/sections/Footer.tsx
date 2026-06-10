@@ -18,7 +18,7 @@ export function Footer() {
                             <Link href="/egzaminy">Wszystkie egzaminy (54)</Link>
                         </li>
                         <li>
-                            <Link href="/progres">Twoj progres</Link>
+                            <Link href="/progres">Twój progres</Link>
                         </li>
                         <li>
                             <Link href="/notatki">Notatki</Link>

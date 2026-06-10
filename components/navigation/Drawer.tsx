@@ -41,7 +41,7 @@ export function Drawer({ open, onClose }: DrawerProps) {
     }, [open, onClose]);
 
     return (
-        <div className={`drawer-shell ${open ? "is-open" : ""}`} aria-hidden={!open}>
+        <div className={`drawer-shell ${open ? "is-open" : ""}`} aria-hidden={!open} inert={!open}>
             <button className="drawer-backdrop" type="button" aria-label="Zamknij nawigację" onClick={onClose} />
             <aside className="drawer-panel" aria-label="Nawigacja STEM">
                 <p className="drawer-kicker font-mono-industrial">STEM / NAVIGATION</p>

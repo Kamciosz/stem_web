@@ -12,14 +12,14 @@ const baseUrl = "https://stem-web-569q.vercel.app";
 const url = `${baseUrl}/progres`;
 
 export const metadata: Metadata = {
-    title: "Twoj progres — STEM",
+    title: "Twój progres — STEM",
     description:
-        "Sprawdz ktore egzaminy INF.03 juz przerobiles, ktore sa w trakcie, a ktore czekaja. Postap w 54 arkuszach z 6 sesji (styczen 2023 — styczen 2026).",
+        "Sprawdź, które egzaminy INF.03 już przerobiłeś, które są w trakcie, a które czekają. Śledź progres w 54 arkuszach z 6 sesji (styczeń 2023 — styczeń 2026).",
     alternates: { canonical: url },
     openGraph: {
-        title: "Twoj progres — STEM INF.03",
+        title: "Twój progres — STEM INF.03",
         description:
-            "54 arkusze INF.03 z 6 sesji. Sledz swoj progres: ukonczone, w trakcie, nie rozpoczete.",
+            "54 arkusze INF.03 z 6 sesji. Śledź swój progres: ukończone, w trakcie, nierozpoczęte.",
         url,
         siteName: "STEM",
         locale: "pl_PL",
@@ -33,10 +33,10 @@ export default function ProgresPage() {
         <article className="progres-page section-shell">
             <div className="section-inner progres-container">
                 <header className="progres-header">
-                    <p className="progres-eyebrow">Tylko na tym urzadzeniu</p>
-                    <h1 className="progres-title">Twoj progres</h1>
+                    <p className="progres-eyebrow">Tylko na tym urządzeniu</p>
+                    <h1 className="progres-title">Twój progres</h1>
                     <p className="progres-lead">
-                        Checklista z kazdego egzaminu zapisuje sie lokalnie (localStorage). Ta
+                        Checklista z każdego egzaminu zapisuje się lokalnie (localStorage). Ta
                         strona zbiera wszystko w jedno miejsce — bez kont, bez logowania.
                     </p>
                 </header>

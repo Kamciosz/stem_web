@@ -227,26 +227,59 @@ export function useExamProgressMutator(examSlug: string, totalChecklist: number)
     };
 }
 
+/* Cache stabilnej referencji dla snapshotu ZBIORCZEGO (wszystkie slugi).
+ * useSyncExternalStore wymaga, by getSnapshot zwracal te sama referencje,
+ * dopoki dane sie nie zmienily. Bez tego React 19/Next 16 wpada w
+ * "getServerSnapshot should be cached" + "Maximum update depth exceeded". */
+type AllCacheEntry = { key: string; value: Record<string, ExamProgressSnapshot> };
+const allClientCache = new Map<string, AllCacheEntry>();
+const allSsrCache = new Map<string, Record<string, ExamProgressSnapshot>>();
+
+function getAllClientSnapshot(
+    examSlugs: string[],
+    totalBySlug: Record<string, number>
+): Record<string, ExamProgressSnapshot> {
+    const out: Record<string, ExamProgressSnapshot> = {};
+    const keyParts: string[] = [];
+    for (const slug of examSlugs) {
+        const snap = getClientSnapshot(slug, totalBySlug[slug] ?? 0);
+        out[slug] = snap;
+        keyParts.push(`${slug}:${snap.done}/${snap.total}/${snap.visited.length}/${snap.isComplete ? 1 : 0}`);
+    }
+    const cacheId = examSlugs.join("|");
+    const key = keyParts.join(",");
+    const cached = allClientCache.get(cacheId);
+    if (cached && cached.key === key) return cached.value;
+    allClientCache.set(cacheId, { key, value: out });
+    return out;
+}
+
+function getAllServerSnapshot(examSlugs: string[]): Record<string, ExamProgressSnapshot> {
+    const cacheId = examSlugs.join("|");
+    const cached = allSsrCache.get(cacheId);
+    if (cached) return cached;
+    const out: Record<string, ExamProgressSnapshot> = {};
+    for (const slug of examSlugs) out[slug] = SSR_FALLBACK;
+    allSsrCache.set(cacheId, out);
+    return out;
+}
+
 /**
  * Wszystkie egzaminy naraz — dla dashboardu / paska globalnego.
  * Zwraca Record<slug, ExamProgressSnapshot>.
  */
 export function useAllExamProgress(examSlugs: string[], totalBySlug: Record<string, number>) {
-    return useSyncExternalStore(
-        subscribe,
-        () => {
-            const out: Record<string, ExamProgressSnapshot> = {};
-            for (const slug of examSlugs) {
-                out[slug] = getClientSnapshot(slug, totalBySlug[slug] ?? 0);
-            }
-            return out;
-        },
-        () => {
-            const out: Record<string, ExamProgressSnapshot> = {};
-            for (const slug of examSlugs) out[slug] = { ...SSR_FALLBACK };
-            return out;
-        }
+    const getClient = useCallback(
+        () => getAllClientSnapshot(examSlugs, totalBySlug),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [examSlugs.join("|"), JSON.stringify(totalBySlug)]
     );
+    const getServer = useCallback(
+        () => getAllServerSnapshot(examSlugs),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [examSlugs.join("|")]
+    );
+    return useSyncExternalStore(subscribe, getClient, getServer);
 }
 
 export type GlobalSummary = {

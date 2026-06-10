@@ -16,13 +16,13 @@ export default function NotFound() {
                     Strona mogła zostać przeniesiona, usunięta lub link jest nieaktualny.
                 </p>
                 <nav className="not-found-actions" aria-label="Sugerowane strony">
-                    <Link href="/" className="not-found-btn primary">Strona glowna</Link>
+                    <Link href="/" className="not-found-btn primary">Strona główna</Link>
                     <Link href="/egzaminy" className="not-found-btn">Wszystkie egzaminy</Link>
-                    <Link href="/progres" className="not-found-btn">Twoj progres</Link>
+                    <Link href="/progres" className="not-found-btn">Twój progres</Link>
                     <Link href="/kursy/inf-03" className="not-found-btn">Kurs INF.03</Link>
                 </nav>
                 <div className="not-found-search">
-                    <p className="not-found-search-hint">Szybki dostep (Ctrl/Cmd + K):</p>
+                    <p className="not-found-search-hint">Szybki dostęp (Ctrl/Cmd + K):</p>
                 </div>
             </div>
         </article>

@@ -55,6 +55,11 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
                     <div className="member-info-block">
                         <span className="member-role-tag font-mono-industrial">{m.role}</span>
                         <h1 id="member-name">{m.name}</h1>
+                        {m.demo && (
+                            <p className="demo-banner" role="note">
+                                Profil demonstracyjny — przykładowe dane prezentujące układ strony.
+                            </p>
+                        )}
                         <p className="member-description">{m.description}</p>
                         <nav className="member-links" aria-label={`Linki: ${m.name}`}>
                             {m.github && (

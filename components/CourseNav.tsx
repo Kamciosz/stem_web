@@ -13,8 +13,18 @@ type CourseNavProps = {
 
 export function CourseNav({ course, collapsed, onCollapsedChange }: CourseNavProps) {
     const [open, setOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set());
     const pathname = usePathname();
+
+    // Wykryj tryb mobile (sidebar chowany za ekran) — tylko wtedy blokujemy fokus
+    useEffect(() => {
+        const mq = window.matchMedia("(max-width: 899px)");
+        const update = () => setIsMobile(mq.matches);
+        update();
+        mq.addEventListener("change", update);
+        return () => mq.removeEventListener("change", update);
+    }, []);
 
     // Auto-expand moduł z aktywną lekcją
     useEffect(() => {
@@ -98,7 +108,12 @@ export function CourseNav({ course, collapsed, onCollapsedChange }: CourseNavPro
             )}
 
             {/* Sidebar */}
-            <aside className={`course-nav ${open ? "open" : ""} ${collapsed ? "collapsed" : ""}`} aria-label="Nawigacja kursu">
+            <aside
+                className={`course-nav ${open ? "open" : ""} ${collapsed ? "collapsed" : ""}`}
+                aria-label="Nawigacja kursu"
+                aria-hidden={isMobile && !open ? true : undefined}
+                inert={isMobile && !open}
+            >
                 {/* Desktop collapse toggle */}
                 <button
                     className="course-nav-collapse-toggle"
@@ -118,7 +133,7 @@ export function CourseNav({ course, collapsed, onCollapsedChange }: CourseNavPro
                     <Link href="/kursy" className="course-nav-back">
                         ← Kursy
                     </Link>
-                    <h2 className="course-nav-title">{course.title}</h2>
+                    <p className="course-nav-title">{course.title}</p>
                     <div className="course-nav-progress">
                         <div className="course-nav-progress-bar">
                             <div
@@ -157,7 +172,7 @@ export function CourseNav({ course, collapsed, onCollapsedChange }: CourseNavPro
                                         {String(mi + 1).padStart(2, "0")}
                                     </span>
                                     <div className="course-nav-module-info">
-                                        <h3 className="course-nav-module-title">{module.title}</h3>
+                                        <span className="course-nav-module-title">{module.title}</span>
                                         <span className="course-nav-module-count">
                                             {modulePublished}/{moduleTotal}
                                         </span>

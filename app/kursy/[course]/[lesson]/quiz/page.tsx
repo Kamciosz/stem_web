@@ -65,8 +65,32 @@ export default async function QuizPage({ params }: QuizPageProps) {
     const safe = found as NonNullable<typeof found>;
     const { course, module, lesson } = safe;
 
+    const baseUrl = "https://stem-web-569q.vercel.app";
+    const quizJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "LearningResource",
+        name: `Quiz: ${lesson.title}`,
+        description: `Quiz sprawdzający wiedzę z lekcji "${lesson.title}" w kursie ${course.title}.`,
+        learningResourceType: "quiz",
+        educationalLevel: "secondary education/vocational",
+        inLanguage: "pl",
+        isAccessibleForFree: true,
+        assesses: lesson.title,
+        isPartOf: {
+            "@type": "Course",
+            name: course.title,
+            url: `${baseUrl}/kursy/${course.id}`,
+        },
+        provider: { "@type": "Organization", name: "STEM", sameAs: baseUrl },
+        url: `${baseUrl}/kursy/${course.id}/${lessonSlug}/quiz`,
+    };
+
     return (
         <section className="quiz-page section-shell">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(quizJsonLd) }}
+            />
             <div className="section-inner lesson-inner">
                 <nav className="lesson-breadcrumb" aria-label="Ścieżka nawigacji">
                     <Link href="/kursy">KURSY</Link>

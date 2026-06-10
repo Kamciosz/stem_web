@@ -12,6 +12,7 @@ export type TeamMember = {
     linkedin?: string;
     image: string;
     description: string;
+    demo?: boolean;
 };
 
 export type Project = {
@@ -26,6 +27,7 @@ export type Project = {
     image: string;
     featured: boolean;
     fallbackGithub: GithubFallback;
+    demo?: boolean;
 };
 
 export type Partner = {
@@ -148,49 +150,56 @@ export const team: TeamMember[] = [
         name: "Jan Kowalski",
         role: "Robotyka",
         image: "/images/team-jan-kowalski.svg",
-        description: "Buduje prototypy mobilnych robotów, kalibruje czujniki i zamienia testy torowe w konkretne poprawki."
+        description: "Buduje prototypy mobilnych robotów, kalibruje czujniki i zamienia testy torowe w konkretne poprawki.",
+        demo: true
     },
     {
         slug: "anna-nowak",
         name: "Anna Nowak",
         role: "Mechatronika",
         image: "/images/team-anna-nowak.svg",
-        description: "Łączy mechanikę, elektronikę i sterowanie. Pilnuje, żeby każdy układ był mierzalny i powtarzalny."
+        description: "Łączy mechanikę, elektronikę i sterowanie. Pilnuje, żeby każdy układ był mierzalny i powtarzalny.",
+        demo: true
     },
     {
         slug: "piotr-wisniewski",
         name: "Piotr Wiśniewski",
         role: "Programowanie",
         image: "/images/team-piotr-wisniewski.svg",
-        description: "Tworzy interfejsy, automatyzacje i szybkie narzędzia wspierające pracę zespołu projektowego."
+        description: "Tworzy interfejsy, automatyzacje i szybkie narzędzia wspierające pracę zespołu projektowego.",
+        demo: true
     },
     {
         slug: "katarzyna-lewandowska",
         name: "Katarzyna Lewandowska",
         role: "Mechatronika",
         image: "/images/team-katarzyna-lewandowska.svg",
-        description: "Odpowiada za testy modułów, dokumentację prototypów i porządek w schematach układów."
+        description: "Odpowiada za testy modułów, dokumentację prototypów i porządek w schematach układów.",
+        demo: true
     },
     {
         slug: "michal-zielinski",
         name: "Michał Zieliński",
         role: "Robotyka",
         image: "/images/team-michal-zielinski.svg",
-        description: "Pracuje nad napędami, czujnikami i algorytmami sterowania ruchem dla małych platform autonomicznych."
+        description: "Pracuje nad napędami, czujnikami i algorytmami sterowania ruchem dla małych platform autonomicznych.",
+        demo: true
     },
     {
         slug: "aleksandra-dabrowska",
         name: "Aleksandra Dąbrowska",
         role: "Programowanie",
         image: "/images/team-aleksandra-dabrowska.svg",
-        description: "Buduje prototypy aplikacji, strukturyzuje dane projektowe i dopina szczegóły interakcji."
+        description: "Buduje prototypy aplikacji, strukturyzuje dane projektowe i dopina szczegóły interakcji.",
+        demo: true
     },
     {
         slug: "tomasz-szymanski",
         name: "Tomasz Szymański",
         role: "Mechatronika",
         image: "/images/team-tomasz-szymanski.svg",
-        description: "Składa stanowiska testowe, pracuje z aktuatorami i doprowadza mechanikę do stanu gotowego na kod."
+        description: "Składa stanowiska testowe, pracuje z aktuatorami i doprowadza mechanikę do stanu gotowego na kod.",
+        demo: true
     }
 ];
 
@@ -225,7 +234,8 @@ export const projects: Project[] = [
             stars: 0,
             language: "C++",
             lastCommit: "2026-01-08"
-        }
+        },
+        demo: true
     },
     {
         slug: "projekt-mechatronika",
@@ -240,7 +250,8 @@ export const projects: Project[] = [
             stars: 0,
             language: "Structured Text",
             lastCommit: "2026-01-03"
-        }
+        },
+        demo: true
     }
 ];
 

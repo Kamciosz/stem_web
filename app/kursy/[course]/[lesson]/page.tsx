@@ -170,11 +170,42 @@ export default async function LessonPage({ params }: LessonPageProps) {
     const hasQuiz = lessonHasQuiz(courseId, lessonSlug);
     const isExamLesson = module.id === "_egzaminy" || lessonSlug.startsWith("egzamin-");
 
+    // JSON-LD LearningResource dla zwyklych lekcji (egzaminy maja wlasny JSON-LD w dashboardach).
+    const baseUrl = "https://stem-web-569q.vercel.app";
+    const lessonUrl = `${baseUrl}/kursy/${course.id}/${lessonSlug}`;
+    const lessonJsonLd = !isExamLesson
+        ? {
+              "@context": "https://schema.org",
+              "@type": "LearningResource",
+              name: lesson.title,
+              description: lesson.summary ?? `Lekcja kursu ${course.title}: ${lesson.title}.`,
+              learningResourceType: "lesson",
+              educationalLevel: "secondary education/vocational",
+              inLanguage: "pl",
+              isAccessibleForFree: true,
+              ...(lesson.minutes ? { timeRequired: `PT${lesson.minutes}M` } : {}),
+              teaches: lesson.title,
+              isPartOf: {
+                  "@type": "Course",
+                  name: course.title,
+                  url: `${baseUrl}/kursy/${course.id}`,
+              },
+              provider: { "@type": "Organization", name: "STEM", sameAs: baseUrl },
+              url: lessonUrl,
+          }
+        : null;
+
     return (
         <article
             className={`lesson-page section-shell ${isExamLesson ? "exam-lesson-page" : ""}`}
             data-exam-slug={isExamLesson ? lessonSlug : undefined}
         >
+            {lessonJsonLd && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(lessonJsonLd) }}
+                />
+            )}
             <div className={`section-inner lesson-container ${isExamLesson ? "exam-lesson-container" : ""}`}>
                 {!isExamLesson && (
                     <aside className="lesson-sidebar">
@@ -190,7 +221,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
                         </div>
 
                         <div className="lesson-module-nav">
-                            <h3 className="lesson-module-nav-title">Lekcje w module</h3>
+                            <p className="lesson-module-nav-title">Lekcje w module</p>
                             <ol className="lesson-module-list">
                                 {module.lessons
                                     .filter((l) => l.published)

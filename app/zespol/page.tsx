@@ -37,6 +37,11 @@ export default function TeamPage() {
                                     <span>{member.name}</span>
                                     <small>{member.role}</small>
                                 </Link>
+                                {member.demo && (
+                                    <span className="demo-tag" title="Profil demonstracyjny — przykładowe dane">
+                                        Profil demonstracyjny
+                                    </span>
+                                )}
                             </div>
                         </ScrollReveal>
                     ))}

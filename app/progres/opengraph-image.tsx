@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Twoj progres - STEM INF.03";
+export const alt = "Twój progres - STEM INF.03";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -56,7 +56,7 @@ export default async function Image() {
                             letterSpacing: "-0.03em",
                         }}
                     >
-                        Twoj progres
+                        Twój progres
                     </div>
                     <div
                         style={{
@@ -66,7 +66,7 @@ export default async function Image() {
                             maxWidth: 900,
                         }}
                     >
-                        Sledz swoje ukonczone arkusze, zdobywaj odznaki, eksportuj dane. Wszystko lokalnie, bez kont.
+                        Śledź swoje ukończone arkusze, zdobywaj odznaki, eksportuj dane. Wszystko lokalnie, bez kont.
                     </div>
                 </div>
                 <div

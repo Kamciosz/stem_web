@@ -103,6 +103,9 @@ main.page-transition > .exam-flow {
     color: var(--ef-dim);
 }
 .exam-flow-breadcrumb a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--ef-muted);
     text-decoration: none;
     transition: color 0.15s ease;
@@ -238,6 +241,7 @@ main.page-transition > .exam-flow {
 .exam-flow-step {
     display: inline-flex;
     align-items: center;
+    min-height: 44px;
     gap: 8px;
     padding: clamp(8px, 1vw, 10px) clamp(8px, 1.2vw, 14px);
     border-radius: 8px;
@@ -711,7 +715,9 @@ main.page-transition > .exam-flow {
     transition: width 0.3s ease;
 }
 .exam-flow-progress-link {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     margin-top: 4px;
     font-size: 12px;
     color: var(--ef-accent-2);

@@ -29,7 +29,10 @@ export default async function ProjectsPage() {
                     {projects.map((project, index) => (
                         <ScrollReveal as="article" className="project-row" delay={index * 0.1} key={project.slug}>
                             <Link href={`/projekt/${project.slug}`}>
-                                <span className="project-row-title">{project.title}</span>
+                                <span className="project-row-title">
+                                    {project.title}
+                                    {project.demo && <span className="demo-tag demo-tag-inline">demo</span>}
+                                </span>
                                 <span className="project-row-meta font-mono-industrial">{project.category}</span>
                                 <span className="project-row-feed terminal-feed">
                                     {stats[project.slug].language} / {stats[project.slug].stars} STARS / {stats[project.slug].lastCommit}

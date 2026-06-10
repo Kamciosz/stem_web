@@ -36,6 +36,11 @@ export async function Projects() {
                                     <DepthCard className="project-card">
                                         <p className="font-mono-industrial body-muted">{project.category}</p>
                                         <h3 className="headline-medium">{project.title}</h3>
+                                        {project.demo && (
+                                            <span className="demo-tag" title="Projekt demonstracyjny — przykładowe dane">
+                                                Projekt demonstracyjny
+                                            </span>
+                                        )}
                                         <p>{project.description}</p>
                                         <dl className="project-terminal terminal-feed">
                                             <div>

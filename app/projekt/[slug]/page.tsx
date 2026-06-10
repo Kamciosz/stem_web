@@ -63,6 +63,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                         <h1 className="headline-large" id="project-detail-title">
                             {proj.title}
                         </h1>
+                        {proj.demo && (
+                            <p className="demo-banner" role="note">
+                                Projekt demonstracyjny — przykładowe dane prezentujące układ strony.
+                            </p>
+                        )}
                         <p>{proj.description}</p>
                     </ScrollReveal>
                     <ScrollReveal as="aside" className="project-sidebar" delay={0.15}>

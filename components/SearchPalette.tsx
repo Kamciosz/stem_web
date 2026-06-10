@@ -105,7 +105,7 @@ export function SearchPalette() {
                             <input
                                 ref={inputRef}
                                 type="search"
-                                placeholder="Szukaj egzaminu... (np. PHP, Motory, Styczen 2025)"
+                                placeholder="Szukaj egzaminu... (np. PHP, Motory, Styczeń 2025)"
                                 className="search-palette-input"
                                 value={q}
                                 onChange={(e) => {

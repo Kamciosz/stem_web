@@ -207,31 +207,61 @@ export function ExamPlan({ steps }: { steps: PlanStep[] }) {
     );
 }
 
+function isPlaceholder(item?: Material | null): boolean {
+    if (!item) return true;
+    const src = (item.src ?? "").toLowerCase();
+    const alt = (item.alt ?? "").toLowerCase();
+    return src.includes("placeholder") || alt === "placeholder" || alt.trim() === "";
+}
+
 export function ExamMaterials({ materials, result }: { materials: Material[]; result: Material }) {
+    // Odfiltruj placeholdery — nie pokazujemy zepsutych/zastepczych obrazow jako realnych materialow.
+    const realMaterials = materials.filter((m) => !isPlaceholder(m));
+    // Result pokazujemy tylko gdy sa realne materialy zrodlowe. Bez nich pojedynczy
+    // "result" to zwykle recyklowany obraz z innego arkusza — lepiej go nie pokazywac.
+    const hasResult = realMaterials.length > 0 && !isPlaceholder(result);
+
+    // Brak realnych materialow graficznych — komunikat zamiast pustych ramek z placeholderami.
+    if (realMaterials.length === 0) {
+        return (
+            <div className="exam-materials-pending" role="note">
+                <p className="exam-materials-pending-title">Materiały graficzne w przygotowaniu</p>
+                <p className="exam-materials-pending-body">
+                    Zdjęcia arkusza i screenshot rozwiązania dla tego egzaminu nie są jeszcze
+                    dostępne. Omówienie strategii, kodu i punktacji poniżej jest kompletne.
+                </p>
+            </div>
+        );
+    }
+
     return (
         <div className="exam-materials-layout">
-            <div className="exam-materials-grid" aria-label="Pliki z arkusza">
-                {materials.map((item) => (
-                    <figure key={item.src}>
-                        <a href={item.src} target="_blank" rel="noopener">
-                            <img src={item.src} alt={item.alt} loading="lazy" />
-                        </a>
-                        <figcaption>
-                            <strong>{item.title}</strong>
-                            <span>{item.caption}</span>
-                        </figcaption>
-                    </figure>
-                ))}
-            </div>
-            <figure className="exam-materials-result">
-                <a href={result.src} target="_blank" rel="noopener">
-                    <img src={result.src} alt={result.alt} loading="lazy" />
-                </a>
-                <figcaption>
-                    <strong>{result.title}</strong>
-                    <span>{result.caption}</span>
-                </figcaption>
-            </figure>
+            {realMaterials.length > 0 && (
+                <div className="exam-materials-grid" aria-label="Pliki z arkusza">
+                    {realMaterials.map((item) => (
+                        <figure key={item.src}>
+                            <a href={item.src} target="_blank" rel="noopener">
+                                <img src={item.src} alt={item.alt} loading="lazy" />
+                            </a>
+                            <figcaption>
+                                <strong>{item.title}</strong>
+                                <span>{item.caption}</span>
+                            </figcaption>
+                        </figure>
+                    ))}
+                </div>
+            )}
+            {hasResult && (
+                <figure className="exam-materials-result">
+                    <a href={result.src} target="_blank" rel="noopener">
+                        <img src={result.src} alt={result.alt} loading="lazy" />
+                    </a>
+                    <figcaption>
+                        <strong>{result.title}</strong>
+                        <span>{result.caption}</span>
+                    </figcaption>
+                </figure>
+            )}
         </div>
     );
 }
