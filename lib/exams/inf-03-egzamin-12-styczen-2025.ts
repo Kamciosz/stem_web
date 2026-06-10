@@ -33,7 +33,7 @@ export const examMeta: ExamMeta = {
     courseId: "inf-03",
     lessonSlug: "egzamin-12-styczen-2025",
     examId: "INF.03-12-ST25",
-    session: "Styczen 2025",
+    session: "Styczeń 2025",
     title: "Arkusz 12 — Piekarnia",
     topic: "Piekarnia",
     description: "Piekarnia — katalog, zamowienia, dostawy.",

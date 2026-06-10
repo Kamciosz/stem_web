@@ -33,7 +33,7 @@ export const examMeta: ExamMeta = {
     courseId: "inf-03",
     lessonSlug: "egzamin-07-styczen-2025",
     examId: "INF.03-07-ST25",
-    session: "Styczen 2025",
+    session: "Styczeń 2025",
     title: "Arkusz 07 — Wykaz",
     topic: "Wykaz",
     description: "System wykazow z baza.",

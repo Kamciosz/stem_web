@@ -24,6 +24,7 @@ export type Project = {
     authorNickname?: string;
     authorSlug: string;
     githubUrl?: string;
+    liveUrl?: string;
     image: string;
     featured: boolean;
     fallbackGithub: GithubFallback;
@@ -210,15 +211,47 @@ export const projects: Project[] = [
         category: "PROGRAMOWANIE",
         description: "PWA stworzona dla społeczności uczniowskiej. Zarządzanie zadaniami, harmonogram i komunikacja w jednej aplikacji.",
         author: "Szymon Sosnowski",
-        authorNickname: "Szymek",
         authorSlug: "szymon-sosnowski",
         githubUrl: "https://github.com/Kamciosz/teb-app-production",
         image: "/images/project-teb-app.svg",
         featured: true,
         fallbackGithub: {
+            stars: 1,
+            language: "JavaScript",
+            lastCommit: "2026-05-29"
+        }
+    },
+    {
+        slug: "agent-manager",
+        title: "Agent Manager",
+        category: "PROGRAMOWANIE",
+        description: "Narzędzie do zarządzania agentami AI — orkiestracja zadań, konfiguracja i monitoring w jednym miejscu.",
+        author: "Szymon Sosnowski",
+        authorSlug: "szymon-sosnowski",
+        githubUrl: "https://github.com/Kamciosz/agent-manager",
+        image: "/images/project-teb-app.svg",
+        featured: true,
+        fallbackGithub: {
+            stars: 1,
+            language: "JavaScript",
+            lastCommit: "2026-05-04"
+        }
+    },
+    {
+        slug: "stem-news",
+        title: "STEM News",
+        category: "PROGRAMOWANIE",
+        description: "Blog newsowy STEM — codzienne artykuły o AI, bezpieczeństwie, hardware i open-source. Vanilla HTML/CSS/JS na GitHub Pages, bez kroku budowania.",
+        author: "Szymon Sosnowski",
+        authorSlug: "szymon-sosnowski",
+        githubUrl: "https://github.com/Kamciosz/Kamciosz.github.io",
+        liveUrl: "https://kamciosz.github.io/",
+        image: "/images/project-teb-app.svg",
+        featured: true,
+        fallbackGithub: {
             stars: 0,
-            language: "TypeScript",
-            lastCommit: "2026-01-15"
+            language: "HTML",
+            lastCommit: "2026-06-10"
         }
     },
     {
@@ -229,7 +262,7 @@ export const projects: Project[] = [
         author: "Jan Kowalski",
         authorSlug: "jan-kowalski",
         image: "/images/project-robotyka.svg",
-        featured: true,
+        featured: false,
         fallbackGithub: {
             stars: 0,
             language: "C++",
@@ -245,7 +278,7 @@ export const projects: Project[] = [
         author: "Anna Nowak",
         authorSlug: "anna-nowak",
         image: "/images/project-mechatronika.svg",
-        featured: true,
+        featured: false,
         fallbackGithub: {
             stars: 0,
             language: "Structured Text",
@@ -259,8 +292,8 @@ export const partners: Partner[] = [];
 
 export const terminalLogs = [
     "SYSTEM ONLINE",
-    "3 PROJECTS LOADED",
-    "8 MEMBERS ACTIVE",
+    "5 PROJECTS LOADED",
+    "GIT SYNC ACTIVE",
     "BUILD STATIC",
     "NO BACKEND ATTACHED"
 ] as const;

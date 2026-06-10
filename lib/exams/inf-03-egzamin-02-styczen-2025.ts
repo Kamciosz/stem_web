@@ -33,7 +33,7 @@ export const examMeta: ExamMeta = {
     courseId: "inf-03",
     lessonSlug: "egzamin-02-styczen-2025",
     examId: "INF.03-02-ST25",
-    session: "Styczen 2025",
+    session: "Styczeń 2025",
     title: "Arkusz 02 — Przewozy",
     topic: "Przewozy",
     description: "Portal przewozowy z rozkładami i trasami.",

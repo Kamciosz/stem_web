@@ -10,6 +10,7 @@ import { useMemo, useState } from "react";
 import {
     useAllExamProgress,
 } from "./useExamProgressGlobal";
+import { sessionSortKey } from "@/lib/exam-index";
 
 type Entry = {
     slug: string;
@@ -23,21 +24,18 @@ type Entry = {
     courseId: string;
 };
 
-const ALL_SESSIONS = [
-    "Styczen 2023",
-    "Czerwiec 2024",
-    "Styczen 2024",
-    "Czerwiec 2025",
-    "Styczen 2025",
-    "Styczen 2026",
-] as const;
-
 const ALL_TECHS = ["PHP", "SQL", "JavaScript", "HTML", "CSS", "JS"] as const;
 
 export function ExamGrid({ entries }: { entries: Entry[] }) {
     const [tech, setTech] = useState<string>("all");
     const [session, setSession] = useState<string>("all");
     const [status, setStatus] = useState<string>("all");
+
+    // Sesje generowane dynamicznie z danych (z polskimi znakami, posortowane: najnowsza pierwsza).
+    const allSessions = useMemo(() => {
+        const unique = Array.from(new Set(entries.map((e) => e.session)));
+        return unique.sort((a, b) => sessionSortKey(b) - sessionSortKey(a));
+    }, [entries]);
 
     const examSlugs = useMemo(() => entries.map((e) => e.slug), [entries]);
     const totalBySlug = useMemo(
@@ -81,7 +79,7 @@ export function ExamGrid({ entries }: { entries: Entry[] }) {
                     <label htmlFor="egzaminy-session">Sesja</label>
                     <select id="egzaminy-session" value={session} onChange={(e) => setSession(e.target.value)}>
                         <option value="all">Wszystkie</option>
-                        {ALL_SESSIONS.map((s) => (
+                        {allSessions.map((s) => (
                             <option key={s} value={s}>
                                 {s}
                             </option>
@@ -111,6 +109,7 @@ export function ExamGrid({ entries }: { entries: Entry[] }) {
                         <li key={e.slug} className={`exam-grid-item ${tone}`}>
                             <Link href={e.basePath} className="exam-grid-card">
                                 <span className="exam-grid-id">{e.examId}</span>
+                                <span className="exam-grid-session">{e.session}</span>
                                 <strong className="exam-grid-title">{e.title}</strong>
                                 <span className="exam-grid-topic">{e.topic}</span>
                                 <div className="exam-grid-techs">

@@ -33,7 +33,7 @@ export const examMeta: ExamMeta = {
     courseId: "inf-03",
     lessonSlug: "egzamin-05-styczen-2025",
     examId: "INF.03-05-ST25",
-    session: "Styczen 2025",
+    session: "Styczeń 2025",
     title: "Arkusz 05 — Firma",
     topic: "Firma",
     description: "Strona firmy z formularzem kontaktowym.",

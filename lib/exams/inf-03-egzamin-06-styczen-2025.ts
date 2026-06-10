@@ -33,7 +33,7 @@ export const examMeta: ExamMeta = {
     courseId: "inf-03",
     lessonSlug: "egzamin-06-styczen-2025",
     examId: "INF.03-06-ST25",
-    session: "Styczen 2025",
+    session: "Styczeń 2025",
     title: "Arkusz 06 — Szachy",
     topic: "Szachy",
     description: "Turniej szachowy: gracze, partie, ranking.",

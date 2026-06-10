@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 
 export type ExamEntry = {
     id: string;
@@ -54,21 +55,47 @@ export function ExamPicker({
     courseId: string;
     label?: string;
 }) {
-    const current = sessions[0];
+    // Sesje od najnowszej. Navigator pozwala przelaczac miedzy wszystkimi sesjami.
+    const [index, setIndex] = useState(0);
+    const current = sessions[index];
+    const total = sessions.length;
+
+    const goPrev = () => setIndex((i) => (i - 1 + total) % total);
+    const goNext = () => setIndex((i) => (i + 1) % total);
+
+    if (!current) return null;
 
     return (
         <div className="exam-picker">
             <header className="exam-picker-static-head">
                 <span className="exam-picker-label">{label}</span>
-                <span className="exam-picker-static-note">zawsze widoczne</span>
+                <span className="exam-picker-static-note">{total} sesji</span>
             </header>
 
             <div className="exam-picker-panel open">
-                {/* Session navigator */}
+                {/* Session navigator — strzalki przelaczaja sesje */}
                 <div className="exam-nav">
+                    <button
+                        type="button"
+                        className="exam-nav-arrow"
+                        onClick={goPrev}
+                        aria-label="Poprzednia sesja"
+                        disabled={total <= 1}
+                    >
+                        ‹
+                    </button>
                     <span className="exam-nav-title">
                         {current.month.toUpperCase()} {current.year}
                     </span>
+                    <button
+                        type="button"
+                        className="exam-nav-arrow"
+                        onClick={goNext}
+                        aria-label="Następna sesja"
+                        disabled={total <= 1}
+                    >
+                        ›
+                    </button>
                 </div>
 
                 {/* Exams list or "coming soon" */}
@@ -83,6 +110,9 @@ export function ExamPicker({
                                     <TechBadges tech={exam.tech} />
                                     <span className="exam-row-id">{exam.id}</span>
                                     <span className="exam-row-topic">{exam.topic}</span>
+                                    <span className="exam-row-session">
+                                        {current.month} {current.year}
+                                    </span>
                                 </Link>
                             </li>
                         ))}

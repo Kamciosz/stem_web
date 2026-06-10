@@ -33,7 +33,7 @@ export const examMeta: ExamMeta = {
     courseId: "inf-03",
     lessonSlug: "egzamin-08-styczen-2025",
     examId: "INF.03-08-ST25",
-    session: "Styczen 2025",
+    session: "Styczeń 2025",
     title: "Arkusz 08 — Mieszalnia",
     topic: "Mieszalnia",
     description: "Mieszalnia farb — karty kolorow.",

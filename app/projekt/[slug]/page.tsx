@@ -96,6 +96,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                                 REPOZYTORIUM →
                             </TerminalLink>
                         )}
+                        {proj.liveUrl && (
+                            <TerminalLink href={proj.liveUrl} external>
+                                ZOBACZ NA ŻYWO →
+                            </TerminalLink>
+                        )}
                     </ScrollReveal>
                 </div>
             </section>

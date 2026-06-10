@@ -33,7 +33,7 @@ export const examMeta: ExamMeta = {
     courseId: "inf-03",
     lessonSlug: "egzamin-01-styczen-2025",
     examId: "INF.03-01-ST25",
-    session: "Styczen 2025",
+    session: "Styczeń 2025",
     title: "Arkusz 01 — Obuwie",
     topic: "Obuwie",
     description: "Sklep obuwniczy z ratami i katalogiem.",

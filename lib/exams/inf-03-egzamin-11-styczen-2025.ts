@@ -33,7 +33,7 @@ export const examMeta: ExamMeta = {
     courseId: "inf-03",
     lessonSlug: "egzamin-11-styczen-2025",
     examId: "INF.03-11-ST25",
-    session: "Styczen 2025",
+    session: "Styczeń 2025",
     title: "Arkusz 11 — Konkurs",
     topic: "Konkurs",
     description: "System konkursowy z glosowaniem.",
